@@ -1,0 +1,793 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<script src="{% static 'js/console_error_fixes.js' %}"></script>
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-clipboard-check text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-cyan-600 to-blue-800 bg-clip-text text-transparent">
+                        {% trans "Attendance Management" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "Mark and manage student attendance efficiently" %}</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <!-- Export Buttons -->
+                <div class="flex gap-2">
+                    <button onclick="exportData('csv')" class="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" title="Export to CSV">
+                        <i class="fas fa-file-csv mr-2"></i>CSV
+                    </button>
+                    <button onclick="exportData('excel')" class="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" title="Export to Excel">
+                        <i class="fas fa-file-excel mr-2"></i>Excel
+                    </button>
+                    <button onclick="exportData('pdf')" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" title="Export to PDF">
+                        <i class="fas fa-file-pdf mr-2"></i>PDF
+                    </button>
+                </div>
+                <a href="{% url 'dashboard' %}" 
+                   class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                    <i class="fas fa-home mr-2"></i>{% trans "Dashboard" %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div id="form-messages" class="fixed top-24 right-4 z-50 space-y-2 max-w-md">
+        {% for message in messages %}
+        <div class="{% if message.tags == 'error' %}bg-red-500{% elif message.tags == 'warning' %}bg-yellow-500{% elif message.tags == 'success' %}bg-green-500{% else %}bg-blue-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in message-item">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% elif message.tags == 'success' %}fa-check-circle{% else %}fa-info-circle{% endif %} mr-3"></i>
+                    <span class="font-medium">{{ message }}</span>
+                </div>
+                <button onclick="removeMessage(this)" class="ml-3 text-white hover:text-gray-200 focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if error_message %}
+    <div class="bg-red-50 border-2 border-red-200 rounded-2xl p-6 mb-8">
+        <div class="flex items-center">
+            <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-exclamation-triangle text-white"></i>
+            </div>
+            <div>
+                <h3 class="text-red-800 font-bold text-lg">{% trans "Error" %}</h3>
+                <p class="text-red-600">{{ error_message }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Export Notifications -->
+    <div id="export-notifications" class="fixed top-36 right-4 z-50 space-y-2 max-w-md"></div>
+
+
+
+    <!-- Search & Filter Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-200">
+        <div class="bg-gradient-to-r from-cyan-500 to-blue-600 p-4 rounded-xl mb-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-cog mr-3"></i>{% trans "Attendance Configuration" %}
+            </h2>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+                    <i class="fas fa-calendar mr-2 text-cyan-500"></i>{% trans "Attendance Date" %}
+                </label>
+                <input type="date" id="attendance_date" value="{{ today|date:'Y-m-d' }}" class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-400 focus:ring-0 transition-all duration-300">
+            </div>
+
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+                    <i class="fas fa-school mr-2 text-blue-500"></i>{% trans "Class & Section" %}
+                </label>
+                <select id="classSectionDropdown" class="form-select w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-400 focus:ring-0 transition-all duration-300">
+                    <option value="">{% trans "Choose..." %}</option>
+                    {% for item in class_sections %}
+                    <option value="{{ item.id }}_{{ item.section_id }}">{{ item.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2">&nbsp;</label>
+                <a href="{% url 'attendance:attendance_report' %}" class="block w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 text-center">
+                    <i class="fas fa-chart-line mr-2"></i>{% trans "View Reports" %}
+                </a>
+            </div>
+
+            <!-- <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2">&nbsp;</label>
+                <button onclick="window.history.back()" class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-arrow-left mr-2"></i>{% trans "Back" %}
+                </button>
+            </div> -->
+        </div>
+
+        <!-- Stats Display -->
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-4 rounded-xl border border-blue-200">
+                <div class="flex items-center">
+                    <i class="fas fa-users text-blue-500 text-2xl mr-3"></i>
+                    <div>
+                        <p class="text-sm text-gray-600">{% trans "Total Students" %}</p>
+                        <p class="text-xl font-bold text-blue-600" id="totalStudentsCount">-</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200">
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle text-green-500 text-2xl mr-3"></i>
+                    <div>
+                        <p class="text-sm text-gray-600">{% trans "Present" %}</p>
+                        <p class="text-xl font-bold text-green-600" id="presentCount">-</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gradient-to-r from-red-50 to-pink-50 p-4 rounded-xl border border-red-200">
+                <div class="flex items-center">
+                    <i class="fas fa-times-circle text-red-500 text-2xl mr-3"></i>
+                    <div>
+                        <p class="text-sm text-gray-600">{% trans "Absent" %}</p>
+                        <p class="text-xl font-bold text-red-600" id="absentCount">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Students Attendance Table -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-cyan-500 to-blue-600 p-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-white text-xl font-bold flex items-center">
+                    <i class="fas fa-users mr-3"></i>{% trans "Student Attendance" %}
+                </h2>
+                <div class="flex gap-2">
+                    <button id="markAllPresent" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105" disabled>
+                        <i class="fas fa-check-double mr-1"></i>{% trans "All Present" %}
+                    </button>
+                    <button id="markAllAbsent" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105" disabled>
+                        <i class="fas fa-times-circle mr-1"></i>{% trans "All Absent" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                            <i class="fas fa-user mr-2 text-blue-500"></i>{% trans "Student Name" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                            <i class="fas fa-id-badge mr-2 text-purple-500"></i>{% trans "Admission No" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                            <i class="fas fa-clipboard-check mr-2 text-green-500"></i>{% trans "Attendance" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                            <i class="fas fa-info-circle mr-2 text-orange-500"></i>{% trans "Status" %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="studentsList">
+                    <tr>
+                        <td colspan="4" class="px-6 py-12 text-center">
+                            <div class="flex flex-col items-center">
+                                <i class="fas fa-users text-6xl text-gray-300 mb-4"></i>
+                                <h3 class="text-xl font-bold text-gray-500 mb-2">{% trans "No Students Loaded" %}</h3>
+                                <p class="text-gray-400">{% trans "Please select date and class to load students" %}</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bg-gray-50 p-6 border-t">
+            <div class="flex justify-between items-center">
+                <div class="text-sm text-gray-600">
+                    <span id="attendanceProgress">{% trans "No students loaded" %}</span>
+                </div>
+                <button id="saveAttendance" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105" disabled>
+                    <i class="fas fa-save mr-2"></i>{% trans "Save Attendance" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const datePicker = document.getElementById('attendance_date');
+    const classDropdown = document.getElementById('classSectionDropdown');
+    const studentsList = document.getElementById('studentsList');
+    const saveBtn = document.getElementById('saveAttendance');
+    const markAllPresentBtn = document.getElementById('markAllPresent');
+    const markAllAbsentBtn = document.getElementById('markAllAbsent');
+    
+    // Stats elements
+    const totalStudentsCount = document.getElementById('totalStudentsCount');
+    const presentCount = document.getElementById('presentCount');
+    const absentCount = document.getElementById('absentCount');
+    const attendanceProgress = document.getElementById('attendanceProgress');
+    
+    // Get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    // Update attendance statistics
+    function updateStats() {
+        const checkboxes = document.querySelectorAll('input[name="attendance"]');
+        const total = checkboxes.length;
+        const present = Array.from(checkboxes).filter(cb => cb.checked).length;
+        const absent = total - present;
+        
+        totalStudentsCount.textContent = total;
+        presentCount.textContent = present;
+        absentCount.textContent = absent;
+        
+        if (total > 0) {
+            const percentage = ((present / total) * 100).toFixed(1);
+            attendanceProgress.textContent = `${present}/${total} students present (${percentage}%)`;
+        } else {
+            attendanceProgress.textContent = '{% trans "No students loaded" %}';
+        }
+        
+        // Enable/disable buttons
+        const hasStudents = total > 0;
+        saveBtn.disabled = !hasStudents;
+        markAllPresentBtn.disabled = !hasStudents;
+        markAllAbsentBtn.disabled = !hasStudents;
+    }
+    
+    // Load previous attendance
+    async function loadPreviousAttendance(classId, sectionId, date) {
+        try {
+            const response = await fetch(`/attendance/get_previous/?class_section_id=${classId}&date=${date}`);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+            const data = await response.json();
+            const attendanceData = Array.isArray(data) ? data : (data.attendance || []);
+            attendanceData.forEach(record => {
+                const checkbox = document.querySelector(`input[value="${record.student_id}"]`);
+                if (checkbox) {
+                    checkbox.checked = record.status === 'Present';
+                    const row = checkbox.closest('tr');
+                    if (row) {
+                        updateRowStatus(row, record.status === 'Present');
+                    }
+                }
+            });
+            updateStats();
+        } catch (error) {
+            console.error('Error loading previous attendance:', error);
+        }
+    }
+    
+    // Update row visual status
+    function updateRowStatus(row, isPresent) {
+        const statusCell = row.querySelector('.status-indicator');
+        if (statusCell) {
+            if (isPresent) {
+                statusCell.innerHTML = '<span class="badge badge-success"><i class="fas fa-check mr-1"></i>{% trans "Present" %}</span>';
+                row.classList.remove('bg-red-50');
+                row.classList.add('bg-green-50');
+            } else {
+                statusCell.innerHTML = '<span class="badge badge-danger"><i class="fas fa-times mr-1"></i>{% trans "Absent" %}</span>';
+                row.classList.remove('bg-green-50');
+                row.classList.add('bg-red-50');
+            }
+        }
+    }
+    
+    // Load students list
+    async function loadStudents() {
+        const selectedValue = classDropdown.value;
+        const date = datePicker.value;
+        
+        if (!selectedValue || !date) {
+            studentsList.innerHTML = `
+                <tr>
+                    <td colspan="4" class="text-center py-8 text-muted">
+                        <i class="fas fa-info-circle text-4xl mb-3"></i>
+                        <p>{% trans "Please select date and class to load students" %}</p>
+                    </td>
+                </tr>
+            `;
+            updateStats();
+            return;
+        }
+        
+        // Show loading
+        studentsList.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-3"></div>
+                    <p class="text-muted">{% trans "Loading students..." %}</p>
+                </td>
+            </tr>
+        `;
+        
+        try {
+            const classId = selectedValue.split('_')[0];
+            if (isNaN(classId)) {
+                throw new Error('Invalid class section ID: ' + classId);
+            }
+            
+            const response = await fetch(`/attendance/get_students/${classId}/`);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+            const data = await response.json();
+            
+            // Ensure we have an array of students
+            const students = Array.isArray(data) ? data : (data.students || []);
+            
+            if (students.length === 0) {
+                studentsList.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center py-8 text-muted">
+                            <i class="fas fa-user-slash text-4xl mb-3"></i>
+                            <p>{% trans "No students found in this class" %}</p>
+                        </td>
+                    </tr>
+                `;
+                updateStats();
+                return;
+            }
+            
+            // Render students
+            studentsList.innerHTML = students.map((student, index) => `
+                <tr class="hover:bg-gray-50 attendance-row" data-student-id="${student.id}">
+                    <td class="font-medium">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">
+                                ${student.first_name.charAt(0)}${student.last_name.charAt(0)}
+                            </div>
+                            <span>${student.first_name} ${student.last_name}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge badge-info">${student.admission_number || 'N/A'}</span>
+                    </td>
+                    <td>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" name="attendance" value="${student.id}"
+                                   class="h-5 w-5 text-blue-600 rounded focus:ring-blue-500 attendance-checkbox">
+                            <span class="text-sm">{% trans "Mark Present" %}</span>
+                        </label>
+                    </td>
+                    <td class="status-indicator">
+                        <span class="badge badge-danger"><i class="fas fa-times mr-1"></i>{% trans "Absent" %}</span>
+                    </td>
+                </tr>
+            `).join('');
+            
+            // Add event listeners to checkboxes
+            document.querySelectorAll('.attendance-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const row = this.closest('tr');
+                    updateRowStatus(row, this.checked);
+                    updateStats();
+                });
+            });
+            
+            // Load previous attendance
+            await loadPreviousAttendance(classId, null, date);
+            
+        } catch (error) {
+            console.error('Error loading students:', error);
+            studentsList.innerHTML = `
+                <tr>
+                    <td colspan="4" class="text-center py-8 text-danger">
+                        <i class="fas fa-exclamation-triangle text-4xl mb-3"></i>
+                        <p>{% trans "Error loading students" %}: ${error.message}</p>
+                        <p class="text-sm text-gray-500 mt-2">Please check if the API endpoint exists and returns valid data</p>
+                    </td>
+                </tr>
+            `;
+            updateStats();
+        }
+    }
+    
+    // Save attendance
+    async function saveAttendance() {
+        const classSection = classDropdown.value;
+        const date = datePicker.value;
+        
+        if (!classSection || !date) {
+            alert('{% trans "Please select date and class" %}');
+            return;
+        }
+        
+        const classId = classSection.split('_')[0];
+        const checkboxes = document.querySelectorAll('input[name="attendance"]');
+        const presentStudents = Array.from(checkboxes)
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.value);
+        
+        // Show saving state
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>{% trans "Saving..." %}';
+        
+        try {
+            const csrftoken = getCookie('csrftoken');
+            const response = await fetch("{% url 'attendance:mark_attendance' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                body: JSON.stringify({
+                    class_section_id: classId,
+                    date: date,
+                    attendance: presentStudents
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Error code: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // Show success message
+                const successAlert = document.createElement('div');
+                successAlert.className = 'alert alert-success fixed top-4 right-4 z-50 animate-slide-in';
+                successAlert.innerHTML = `
+                    <i class="fas fa-check-circle mr-2"></i>
+                    ${result.message}
+                `;
+                document.body.appendChild(successAlert);
+                
+                // Auto-hide success message
+                setTimeout(() => {
+                    successAlert.style.opacity = '0';
+                    successAlert.style.transform = 'translateX(100%)';
+                    setTimeout(() => successAlert.remove(), 500);
+                }, 3000);
+                
+                saveBtn.innerHTML = '<i class="fas fa-check mr-2"></i>{% trans "Saved!" %}';
+                setTimeout(() => {
+                    saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>{% trans "Save Attendance" %}';
+                }, 2000);
+            } else {
+                alert('{% trans "Error occurred" %}: ' + (result.message || ''));
+            }
+            
+        } catch (error) {
+            console.error('Save error:', error);
+            alert('{% trans "Error" %}: ' + error.message);
+        } finally {
+            saveBtn.disabled = false;
+            if (saveBtn.innerHTML.includes('Saving')) {
+                saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>{% trans "Save Attendance" %}';
+            }
+        }
+    }
+    
+    // Mark all present/absent
+    markAllPresentBtn.addEventListener('click', function() {
+        document.querySelectorAll('.attendance-checkbox').forEach(checkbox => {
+            checkbox.checked = true;
+            const row = checkbox.closest('tr');
+            updateRowStatus(row, true);
+        });
+        updateStats();
+    });
+    
+    markAllAbsentBtn.addEventListener('click', function() {
+        document.querySelectorAll('.attendance-checkbox').forEach(checkbox => {
+            checkbox.checked = false;
+            const row = checkbox.closest('tr');
+            updateRowStatus(row, false);
+        });
+        updateStats();
+    });
+    
+    // Event listeners
+    let debounceTimer;
+    function handleChange() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(loadStudents, 300);
+    }
+    
+    classDropdown.addEventListener('change', handleChange);
+    datePicker.addEventListener('change', handleChange);
+    saveBtn.addEventListener('click', saveAttendance);
+    
+    // Initialize
+    updateStats();
+});
+
+// Add slide-in animation styles
+const slideInStyles = `
+    @keyframes slide-in {
+        from { opacity: 0; transform: translateX(100%); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    .animate-slide-in { animation: slide-in 0.3s ease-out; }
+`;
+const styleSheet = document.createElement("style");
+styleSheet.innerText = slideInStyles;
+document.head.appendChild(styleSheet);
+
+// Export functionality
+function exportData(format) {
+    console.log('🚀 [ATTENDANCE EXPORT] Starting export process', {
+        format: format,
+        timestamp: new Date().toISOString(),
+        module: 'attendance'
+    });
+    
+    // Show loading state
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Exporting...';
+    button.disabled = true;
+    
+    // Get current filters
+    const attendanceDate = document.getElementById('attendance_date').value;
+    const classSection = document.getElementById('classSectionDropdown').value;
+    
+    // Prepare export data
+    const exportData = {
+        module: 'attendance',
+        data_type: 'attendance_list',
+        format: format,
+        filters: {
+            date: attendanceDate,
+            class_section: classSection
+        }
+    };
+    
+    // Call export API
+    const formData = new FormData();
+    formData.append('module', exportData.module);
+    formData.append('data_type', exportData.data_type);
+    formData.append('format', exportData.format);
+    formData.append('filters', JSON.stringify(exportData.filters));
+    // Get CSRF token
+    function getCsrfToken() {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [name, value] = cookie.trim().split('=');
+            if (name === 'csrftoken') {
+                return decodeURIComponent(value);
+            }
+        }
+        return document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+    }
+    
+    formData.append('csrfmiddlewaretoken', getCsrfToken());
+    
+    fetch('/core/api/export/initiate/', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success && data.request_id) {
+            showNotification('Export initiated successfully! Download will start shortly.', 'success');
+            checkExportStatus(data.request_id, format);
+        } else if (data.request_id) {
+            showNotification('Export initiated successfully! Download will start shortly.', 'success');
+            checkExportStatus(data.request_id, format);
+        } else {
+            showNotification('Export failed: ' + (data.error || 'Unknown error'), 'error');
+        }
+    })
+    .catch(error => {
+        console.error('💥 [ATTENDANCE EXPORT] Export error:', error);
+        showNotification('Export failed: Network error', 'error');
+    })
+    .finally(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+    });
+}
+
+function checkExportStatus(requestId, format) {
+    const checkStatus = () => {
+        fetch(`/core/api/export/status/${requestId}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'completed') {
+                window.location.href = `/core/api/export/download/${requestId}/`;
+                showNotification(`${format.toUpperCase()} export completed!`, 'success');
+            } else if (data.status === 'failed') {
+                showNotification('Export failed: ' + (data.error || 'Processing error'), 'error');
+            } else {
+                setTimeout(checkStatus, 2000);
+            }
+        })
+        .catch(error => {
+            showNotification('Failed to check export status', 'error');
+        });
+    };
+    setTimeout(checkStatus, 1000);
+}
+
+// Message management functions
+function removeMessage(button) {
+    const messageDiv = button.closest('.message-item');
+    if (messageDiv) {
+        messageDiv.style.opacity = '0';
+        messageDiv.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            messageDiv.remove();
+            // Remove container if no messages left
+            const container = document.getElementById('form-messages');
+            if (container && container.children.length === 0) {
+                container.remove();
+            }
+        }, 300);
+    }
+}
+
+function showNotification(message, type) {
+    const container = document.getElementById('export-notifications');
+    const notification = document.createElement('div');
+    notification.className = `p-4 rounded-xl shadow-lg animate-slide-in ${
+        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+    } text-white`;
+    notification.innerHTML = `
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <i class="fas ${
+                    type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'
+                } mr-3"></i>
+                <span class="font-medium">${message}</span>
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-3 text-white hover:text-gray-200 focus:outline-none">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    container.appendChild(notification);
+    
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 500);
+        }
+    }, 5000);
+}
+
+// Auto-hide messages with staggered removal and animate elements
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-hide Django messages with staggered removal
+    const messages = document.querySelectorAll('.message-item');
+    messages.forEach((message, index) => {
+        setTimeout(() => {
+            if (message.parentNode) {
+                message.style.opacity = '0';
+                message.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (message.parentNode) {
+                        message.remove();
+                        // Remove container if no messages left
+                        const container = document.getElementById('form-messages');
+                        if (container && container.children.length === 0) {
+                            container.remove();
+                        }
+                    }
+                }, 300);
+            }
+        }, 4000 + (index * 500)); // 4 seconds + staggered delay
+    });
+
+    // Animate table rows on load
+    const tableRows = document.querySelectorAll('tbody tr');
+    tableRows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            row.style.transition = 'all 0.5s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+});
+</script>
+
+{% block extra_css %}
+<style>
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Enhanced form styling */
+.form-input, .form-select {
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    box-shadow: inset 2px 2px 5px #e2e8f0, inset -2px -2px 5px #ffffff;
+}
+
+.form-input:focus, .form-select:focus {
+    background: #ffffff;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+}
+
+/* Table enhancements */
+tbody tr:hover {
+    background: linear-gradient(to right, rgba(6, 182, 212, 0.05), rgba(59, 130, 246, 0.05));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Badge styling */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.badge-info {
+    background: linear-gradient(135deg, #06B6D4, #0891B2);
+    color: white;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    color: white;
+}
+</style>
+{% endblock %}
+{% endblock %}

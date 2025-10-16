@@ -1,0 +1,43 @@
+<!-- Fee Export Script - Add to fees_report.html -->
+<script>
+function exportFeeReport(format) {
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Exporting...';
+    button.disabled = true;
+    
+    try {
+        // Create download link
+        const link = document.createElement('a');
+        link.href = `/backup/api/export/fees_report/${format}/`;
+        link.download = `fees_report_${new Date().toISOString().split('T')[0]}.${format}`;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        console.log(`Export initiated: ${format}`);
+    } catch (error) {
+        console.error('Export failed:', error);
+    }
+    
+    setTimeout(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+    }, 2000);
+}
+
+// Replace existing exportData calls with exportFeeReport
+document.addEventListener('DOMContentLoaded', function() {
+    // Update existing buttons to use new function
+    const buttons = document.querySelectorAll('button[onclick*="exportData"]');
+    buttons.forEach(button => {
+        const onclick = button.getAttribute('onclick');
+        if (onclick.includes('fees_report')) {
+            const format = onclick.match(/'(\w+)'/)[1];
+            button.setAttribute('onclick', `exportFeeReport('${format}')`);
+        }
+    });
+});
+</script>

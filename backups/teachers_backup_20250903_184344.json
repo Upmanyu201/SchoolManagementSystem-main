@@ -1,0 +1,1924 @@
+[
+{
+  "model": "teachers.teacher",
+  "pk": 1,
+  "fields": {
+    "name": "Shambhu Jha Sir",
+    "mobile": "9525377010",
+    "email": "9473089919@bh.com",
+    "qualification": "BED",
+    "joining_date": "2025-04-22",
+    "photo": "teacher_photos/Screenshot_2025-04-20_112850.jpg",
+    "resume": "teacher_resumes/RBI_ICICI.pdf",
+    "joining_letter": "teacher_letters/RBI_ICICI.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 2,
+  "fields": {
+    "name": "Sanjay Kumar Thakur",
+    "mobile": "9525377123",
+    "email": "admin@school.in",
+    "qualification": "BED",
+    "joining_date": "2025-04-20",
+    "photo": "teacher_photos/Screenshot_2025-04-20_112850_EsshiNV.jpg",
+    "resume": "teacher_resumes/RBI_ICICI_w4anuni.pdf",
+    "joining_letter": "teacher_letters/RBI_ICICI_tQ7cjSc.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 3,
+  "fields": {
+    "name": "Samarat Sir",
+    "mobile": "9525377123",
+    "email": "farihi3952@namewok.com",
+    "qualification": "BA",
+    "joining_date": "2025-04-21",
+    "photo": "teacher_photos/Screenshot_2025-04-20_112850_5ju0uLc.jpg",
+    "resume": "teacher_resumes/Application_Wise_RD_Drivers.pdf",
+    "joining_letter": "teacher_letters/Application_Wise_RD_Drivers.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 4,
+  "fields": {
+    "name": "Raja Kumar",
+    "mobile": "9525377123",
+    "email": "9473089@bh.in",
+    "qualification": "BA",
+    "joining_date": "2025-04-20",
+    "photo": "teacher_photos/Screenshot_2025-04-15_212529.jpg",
+    "resume": "teacher_resumes/Application_Wise_RD_Drivers_63lC3or.pdf",
+    "joining_letter": "teacher_letters/Application_Wise_RD_Drivers_sCvSQzy.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 5,
+  "fields": {
+    "name": "lovely kumari",
+    "mobile": "9525377010",
+    "email": "admin@ut.com",
+    "qualification": "BED",
+    "joining_date": "2025-07-22",
+    "photo": "teacher_photos/Screenshot_2025-07-22_192721.jpg",
+    "resume": "teacher_resumes/TDC_Part1.pdf",
+    "joining_letter": "teacher_letters/TDC_Part1.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 6,
+  "fields": {
+    "name": "Prence",
+    "mobile": "3456789012",
+    "email": "paxeyen334@lassora.com",
+    "qualification": "BED",
+    "joining_date": "2025-08-15",
+    "photo": "teacher_photos/Screenshot_2025-08-14_173352.png",
+    "resume": "teacher_resumes/fees_report_20250815_143756.pdf",
+    "joining_letter": "teacher_letters/Manage_Fines.pdf"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 1,
+  "fields": {
+    "class_name": "Class 10",
+    "section_name": "A",
+    "room_number": "R-10A",
+    "created_at": "2025-08-18T12:41:37.984Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 2,
+  "fields": {
+    "class_name": "Class 9",
+    "section_name": "A",
+    "room_number": "R-9A",
+    "created_at": "2025-08-18T12:48:49.883Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 3,
+  "fields": {
+    "class_name": "Class 9",
+    "section_name": "B",
+    "room_number": "R-9B",
+    "created_at": "2025-08-18T12:48:49.889Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 4,
+  "fields": {
+    "class_name": "Class 8",
+    "section_name": "A",
+    "room_number": "R-8A",
+    "created_at": "2025-08-18T12:48:49.891Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 5,
+  "fields": {
+    "class_name": "Class 7",
+    "section_name": "A",
+    "room_number": "R-7A",
+    "created_at": "2025-09-02T08:53:37.343Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 6,
+  "fields": {
+    "class_name": "Class 6",
+    "section_name": "A",
+    "room_number": "R-6A",
+    "created_at": "2025-09-02T08:56:23.135Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 7,
+  "fields": {
+    "class_name": "Class 5",
+    "section_name": "A",
+    "room_number": "R-5A",
+    "created_at": "2025-09-02T08:56:48.341Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 8,
+  "fields": {
+    "class_name": "Class 4",
+    "section_name": "A",
+    "room_number": "R-4A",
+    "created_at": "2025-09-02T08:57:08.495Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 9,
+  "fields": {
+    "class_name": "Class 3",
+    "section_name": "A",
+    "room_number": "R-3A",
+    "created_at": "2025-09-02T08:57:36.821Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 10,
+  "fields": {
+    "class_name": "Class 2",
+    "section_name": "A",
+    "room_number": "R-2A",
+    "created_at": "2025-09-02T08:57:57.880Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 11,
+  "fields": {
+    "class_name": "Class 1",
+    "section_name": "A",
+    "room_number": "R-1A",
+    "created_at": "2025-09-02T08:58:20.003Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 12,
+  "fields": {
+    "class_name": "UKG",
+    "section_name": "A",
+    "room_number": "R-UKG-A",
+    "created_at": "2025-09-02T08:58:52.723Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 13,
+  "fields": {
+    "class_name": "Nursary",
+    "section_name": "A",
+    "room_number": "R-Nursary-A",
+    "created_at": "2025-09-02T08:59:27.817Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 14,
+  "fields": {
+    "class_name": "LKG",
+    "section_name": "A",
+    "room_number": "R-LKG-A",
+    "created_at": "2025-09-02T08:59:48.476Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 27,
+  "fields": {
+    "class_name": "Play",
+    "section_name": "A",
+    "room_number": "R-Play-A",
+    "created_at": "2025-09-02T14:36:31.728Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 30,
+  "fields": {
+    "class_name": "Test Class",
+    "section_name": "A",
+    "room_number": "TEST-ROOM",
+    "created_at": "2025-09-03T12:23:31.126Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 1,
+  "fields": {
+    "name": "हिंदी",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 2,
+  "fields": {
+    "name": "संस्कृत",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 3,
+  "fields": {
+    "name": "English",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 4,
+  "fields": {
+    "name": "Math",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 5,
+  "fields": {
+    "name": "Social Sc / SST",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 6,
+  "fields": {
+    "name": "Science",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 7,
+  "fields": {
+    "name": "Compute",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 9,
+  "fields": {
+    "name": "Moral Science",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 10,
+  "fields": {
+    "name": "Mathematics",
+    "created_at": "2025-08-18T12:57:28.627Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 1,
+  "fields": {
+    "class_section": null,
+    "subject": 1,
+    "teacher": null,
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 3,
+  "fields": {
+    "class_section": null,
+    "subject": 9,
+    "teacher": null,
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 4,
+  "fields": {
+    "class_section": 1,
+    "subject": 4,
+    "teacher": 2,
+    "created_at": "2025-08-18T12:57:28.635Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 5,
+  "fields": {
+    "class_section": 11,
+    "subject": 1,
+    "teacher": 4,
+    "created_at": "2025-09-02T09:02:53.559Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 6,
+  "fields": {
+    "class_section": 10,
+    "subject": 1,
+    "teacher": 3,
+    "created_at": "2025-09-02T09:03:18.289Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 7,
+  "fields": {
+    "class_section": 9,
+    "subject": 3,
+    "teacher": 5,
+    "created_at": "2025-09-02T09:03:35.422Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 8,
+  "fields": {
+    "class_section": 8,
+    "subject": 4,
+    "teacher": 2,
+    "created_at": "2025-09-02T09:03:48.742Z"
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 51,
+  "fields": {
+    "created_at": "2025-09-02T16:06:58.484Z",
+    "updated_at": "2025-09-02T16:06:58.513Z",
+    "is_active": true,
+    "student": 12,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 52,
+  "fields": {
+    "created_at": "2025-09-02T16:06:58.504Z",
+    "updated_at": "2025-09-02T16:06:58.516Z",
+    "is_active": true,
+    "student": 37,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 53,
+  "fields": {
+    "created_at": "2025-09-02T16:06:58.506Z",
+    "updated_at": "2025-09-02T16:06:58.520Z",
+    "is_active": true,
+    "student": 108,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 54,
+  "fields": {
+    "created_at": "2025-09-02T16:06:58.509Z",
+    "updated_at": "2025-09-02T16:06:58.523Z",
+    "is_active": true,
+    "student": 112,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 55,
+  "fields": {
+    "created_at": "2025-09-02T16:07:07.534Z",
+    "updated_at": "2025-09-02T16:07:07.550Z",
+    "is_active": true,
+    "student": 16,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 56,
+  "fields": {
+    "created_at": "2025-09-02T16:07:07.540Z",
+    "updated_at": "2025-09-02T16:07:07.554Z",
+    "is_active": true,
+    "student": 25,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 57,
+  "fields": {
+    "created_at": "2025-09-02T16:07:07.543Z",
+    "updated_at": "2025-09-02T16:07:07.558Z",
+    "is_active": true,
+    "student": 36,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 58,
+  "fields": {
+    "created_at": "2025-09-02T16:07:07.546Z",
+    "updated_at": "2025-09-02T16:07:07.561Z",
+    "is_active": true,
+    "student": 50,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 59,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.053Z",
+    "updated_at": "2025-09-02T16:07:18.088Z",
+    "is_active": true,
+    "student": 10,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 60,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.060Z",
+    "updated_at": "2025-09-02T16:07:18.091Z",
+    "is_active": true,
+    "student": 14,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 61,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.069Z",
+    "updated_at": "2025-09-02T16:07:18.094Z",
+    "is_active": true,
+    "student": 22,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 62,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.072Z",
+    "updated_at": "2025-09-02T16:07:18.072Z",
+    "is_active": true,
+    "student": 27,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 63,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.074Z",
+    "updated_at": "2025-09-02T16:07:18.097Z",
+    "is_active": true,
+    "student": 29,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 64,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.077Z",
+    "updated_at": "2025-09-02T16:07:18.077Z",
+    "is_active": true,
+    "student": 35,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 65,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.079Z",
+    "updated_at": "2025-09-02T16:07:18.100Z",
+    "is_active": true,
+    "student": 38,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 66,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.082Z",
+    "updated_at": "2025-09-02T16:07:18.103Z",
+    "is_active": true,
+    "student": 41,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 67,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.085Z",
+    "updated_at": "2025-09-02T16:07:18.107Z",
+    "is_active": true,
+    "student": 47,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 68,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.231Z",
+    "updated_at": "2025-09-02T16:07:30.266Z",
+    "is_active": true,
+    "student": 11,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 69,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.238Z",
+    "updated_at": "2025-09-02T16:07:30.238Z",
+    "is_active": true,
+    "student": 15,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 70,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.247Z",
+    "updated_at": "2025-09-02T16:07:30.269Z",
+    "is_active": true,
+    "student": 17,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 71,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.250Z",
+    "updated_at": "2025-09-02T16:07:30.272Z",
+    "is_active": true,
+    "student": 18,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 72,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.253Z",
+    "updated_at": "2025-09-02T16:07:30.275Z",
+    "is_active": true,
+    "student": 20,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 73,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.255Z",
+    "updated_at": "2025-09-02T16:07:30.278Z",
+    "is_active": true,
+    "student": 24,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 74,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.257Z",
+    "updated_at": "2025-09-02T16:07:30.282Z",
+    "is_active": true,
+    "student": 44,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 75,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.260Z",
+    "updated_at": "2025-09-02T16:07:30.285Z",
+    "is_active": true,
+    "student": 51,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 76,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.262Z",
+    "updated_at": "2025-09-02T16:07:30.288Z",
+    "is_active": true,
+    "student": 102,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 77,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.098Z",
+    "updated_at": "2025-09-02T16:07:48.098Z",
+    "is_active": true,
+    "student": 13,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 78,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.103Z",
+    "updated_at": "2025-09-02T16:07:48.129Z",
+    "is_active": true,
+    "student": 21,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 79,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.106Z",
+    "updated_at": "2025-09-02T16:07:48.132Z",
+    "is_active": true,
+    "student": 23,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 80,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.108Z",
+    "updated_at": "2025-09-02T16:07:48.135Z",
+    "is_active": true,
+    "student": 26,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 81,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.111Z",
+    "updated_at": "2025-09-02T16:07:48.138Z",
+    "is_active": true,
+    "student": 28,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 82,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.113Z",
+    "updated_at": "2025-09-02T16:07:48.142Z",
+    "is_active": true,
+    "student": 31,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 83,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.116Z",
+    "updated_at": "2025-09-02T16:07:48.145Z",
+    "is_active": true,
+    "student": 34,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 84,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.118Z",
+    "updated_at": "2025-09-02T16:07:48.118Z",
+    "is_active": true,
+    "student": 40,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 85,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.121Z",
+    "updated_at": "2025-09-02T16:07:48.149Z",
+    "is_active": true,
+    "student": 43,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 86,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.123Z",
+    "updated_at": "2025-09-02T16:07:48.152Z",
+    "is_active": true,
+    "student": 53,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 87,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.125Z",
+    "updated_at": "2025-09-02T16:07:48.125Z",
+    "is_active": true,
+    "student": 57,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 88,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.078Z",
+    "updated_at": "2025-09-02T16:08:03.116Z",
+    "is_active": true,
+    "student": 32,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 89,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.083Z",
+    "updated_at": "2025-09-02T16:08:03.083Z",
+    "is_active": true,
+    "student": 48,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 90,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.086Z",
+    "updated_at": "2025-09-02T16:08:03.119Z",
+    "is_active": true,
+    "student": 49,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 91,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.089Z",
+    "updated_at": "2025-09-02T16:08:03.123Z",
+    "is_active": true,
+    "student": 52,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 92,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.091Z",
+    "updated_at": "2025-09-02T16:08:03.091Z",
+    "is_active": true,
+    "student": 56,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 93,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.094Z",
+    "updated_at": "2025-09-02T16:08:03.126Z",
+    "is_active": true,
+    "student": 58,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 94,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.096Z",
+    "updated_at": "2025-09-02T16:08:03.130Z",
+    "is_active": true,
+    "student": 59,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 95,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.098Z",
+    "updated_at": "2025-09-02T16:08:03.098Z",
+    "is_active": true,
+    "student": 62,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 96,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.100Z",
+    "updated_at": "2025-09-02T16:08:03.133Z",
+    "is_active": true,
+    "student": 65,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 97,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.103Z",
+    "updated_at": "2025-09-02T16:08:03.136Z",
+    "is_active": true,
+    "student": 78,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 98,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.105Z",
+    "updated_at": "2025-09-02T16:08:03.105Z",
+    "is_active": true,
+    "student": 84,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 99,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.107Z",
+    "updated_at": "2025-09-02T16:08:03.139Z",
+    "is_active": true,
+    "student": 86,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 100,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.110Z",
+    "updated_at": "2025-09-02T16:08:03.143Z",
+    "is_active": true,
+    "student": 88,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 101,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.112Z",
+    "updated_at": "2025-09-02T16:08:03.112Z",
+    "is_active": true,
+    "student": 89,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 102,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.936Z",
+    "updated_at": "2025-09-02T16:08:23.976Z",
+    "is_active": true,
+    "student": 6,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 103,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.941Z",
+    "updated_at": "2025-09-02T16:08:23.941Z",
+    "is_active": true,
+    "student": 45,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 104,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.943Z",
+    "updated_at": "2025-09-02T16:08:23.978Z",
+    "is_active": true,
+    "student": 54,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 105,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.946Z",
+    "updated_at": "2025-09-02T16:08:23.981Z",
+    "is_active": true,
+    "student": 64,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 106,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.949Z",
+    "updated_at": "2025-09-02T16:08:23.949Z",
+    "is_active": true,
+    "student": 68,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 107,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.951Z",
+    "updated_at": "2025-09-02T16:08:23.984Z",
+    "is_active": true,
+    "student": 69,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 108,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.953Z",
+    "updated_at": "2025-09-02T16:08:23.987Z",
+    "is_active": true,
+    "student": 72,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 109,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.956Z",
+    "updated_at": "2025-09-02T16:08:23.990Z",
+    "is_active": true,
+    "student": 73,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 110,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.957Z",
+    "updated_at": "2025-09-02T16:08:23.957Z",
+    "is_active": true,
+    "student": 75,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 111,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.960Z",
+    "updated_at": "2025-09-02T16:08:23.992Z",
+    "is_active": true,
+    "student": 82,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 112,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.962Z",
+    "updated_at": "2025-09-02T16:08:23.995Z",
+    "is_active": true,
+    "student": 83,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 113,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.964Z",
+    "updated_at": "2025-09-02T16:08:23.998Z",
+    "is_active": true,
+    "student": 93,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 114,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.966Z",
+    "updated_at": "2025-09-02T16:08:24.000Z",
+    "is_active": true,
+    "student": 95,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 115,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.969Z",
+    "updated_at": "2025-09-02T16:08:23.969Z",
+    "is_active": true,
+    "student": 99,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 116,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.971Z",
+    "updated_at": "2025-09-02T16:08:24.003Z",
+    "is_active": true,
+    "student": 100,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 117,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.973Z",
+    "updated_at": "2025-09-02T16:08:24.006Z",
+    "is_active": true,
+    "student": 101,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 118,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.074Z",
+    "updated_at": "2025-09-02T16:08:35.098Z",
+    "is_active": true,
+    "student": 39,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 119,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.079Z",
+    "updated_at": "2025-09-02T16:08:35.101Z",
+    "is_active": true,
+    "student": 60,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 120,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.081Z",
+    "updated_at": "2025-09-02T16:08:35.081Z",
+    "is_active": true,
+    "student": 61,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 121,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.084Z",
+    "updated_at": "2025-09-02T16:08:35.104Z",
+    "is_active": true,
+    "student": 63,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 122,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.087Z",
+    "updated_at": "2025-09-02T16:08:35.107Z",
+    "is_active": true,
+    "student": 67,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 123,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.090Z",
+    "updated_at": "2025-09-02T16:08:35.090Z",
+    "is_active": true,
+    "student": 76,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 124,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.093Z",
+    "updated_at": "2025-09-02T16:08:35.110Z",
+    "is_active": true,
+    "student": 85,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 125,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.095Z",
+    "updated_at": "2025-09-02T16:08:35.095Z",
+    "is_active": true,
+    "student": 90,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 126,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.872Z",
+    "updated_at": "2025-09-02T16:08:48.896Z",
+    "is_active": true,
+    "student": 1,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 127,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.877Z",
+    "updated_at": "2025-09-02T16:08:48.877Z",
+    "is_active": true,
+    "student": 3,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 128,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.879Z",
+    "updated_at": "2025-09-02T16:08:48.899Z",
+    "is_active": true,
+    "student": 70,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 129,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.881Z",
+    "updated_at": "2025-09-02T16:08:48.903Z",
+    "is_active": true,
+    "student": 71,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 130,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.884Z",
+    "updated_at": "2025-09-02T16:08:48.884Z",
+    "is_active": true,
+    "student": 74,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 131,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.886Z",
+    "updated_at": "2025-09-02T16:08:48.906Z",
+    "is_active": true,
+    "student": 77,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 132,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.888Z",
+    "updated_at": "2025-09-02T16:08:48.909Z",
+    "is_active": true,
+    "student": 81,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 133,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.891Z",
+    "updated_at": "2025-09-02T16:08:48.891Z",
+    "is_active": true,
+    "student": 96,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 134,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.893Z",
+    "updated_at": "2025-09-02T16:08:48.912Z",
+    "is_active": true,
+    "student": 97,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 135,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.102Z",
+    "updated_at": "2025-09-02T16:09:00.102Z",
+    "is_active": true,
+    "student": 4,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 136,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.108Z",
+    "updated_at": "2025-09-02T16:09:00.108Z",
+    "is_active": true,
+    "student": 5,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 137,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.117Z",
+    "updated_at": "2025-09-02T16:09:00.135Z",
+    "is_active": true,
+    "student": 7,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 138,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.120Z",
+    "updated_at": "2025-09-02T16:09:00.120Z",
+    "is_active": true,
+    "student": 42,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 139,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.122Z",
+    "updated_at": "2025-09-02T16:09:00.138Z",
+    "is_active": true,
+    "student": 46,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 140,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.124Z",
+    "updated_at": "2025-09-02T16:09:00.141Z",
+    "is_active": true,
+    "student": 66,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 141,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.127Z",
+    "updated_at": "2025-09-02T16:09:00.145Z",
+    "is_active": true,
+    "student": 80,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 142,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.130Z",
+    "updated_at": "2025-09-02T16:09:00.147Z",
+    "is_active": true,
+    "student": 91,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 143,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.132Z",
+    "updated_at": "2025-09-02T16:09:00.150Z",
+    "is_active": true,
+    "student": 94,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 144,
+  "fields": {
+    "created_at": "2025-09-02T16:09:09.154Z",
+    "updated_at": "2025-09-02T16:09:09.170Z",
+    "is_active": true,
+    "student": 19,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 145,
+  "fields": {
+    "created_at": "2025-09-02T16:09:09.159Z",
+    "updated_at": "2025-09-02T16:09:09.159Z",
+    "is_active": true,
+    "student": 87,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 146,
+  "fields": {
+    "created_at": "2025-09-02T16:09:09.162Z",
+    "updated_at": "2025-09-02T16:09:09.174Z",
+    "is_active": true,
+    "student": 92,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 147,
+  "fields": {
+    "created_at": "2025-09-02T16:09:09.164Z",
+    "updated_at": "2025-09-02T16:09:09.177Z",
+    "is_active": true,
+    "student": 98,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 148,
+  "fields": {
+    "created_at": "2025-09-02T16:09:09.167Z",
+    "updated_at": "2025-09-02T16:09:09.181Z",
+    "is_active": true,
+    "student": 103,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 149,
+  "fields": {
+    "created_at": "2025-09-02T16:09:16.556Z",
+    "updated_at": "2025-09-02T16:09:16.556Z",
+    "is_active": true,
+    "student": 30,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 150,
+  "fields": {
+    "created_at": "2025-09-02T16:09:23.871Z",
+    "updated_at": "2025-09-02T16:09:23.882Z",
+    "is_active": true,
+    "student": 33,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 151,
+  "fields": {
+    "created_at": "2025-09-02T16:09:23.876Z",
+    "updated_at": "2025-09-02T16:09:23.885Z",
+    "is_active": true,
+    "student": 55,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 152,
+  "fields": {
+    "created_at": "2025-09-02T16:09:23.879Z",
+    "updated_at": "2025-09-02T16:09:23.888Z",
+    "is_active": true,
+    "student": 79,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "Nursary",
+    "section": "1",
+    "room_number": "101"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 3,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "LKG",
+    "section": "1",
+    "room_number": "103"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 4,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "UKG",
+    "section": "1",
+    "room_number": "104"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 5,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.877Z",
+    "is_active": true,
+    "name": "Class 1",
+    "section": "1",
+    "room_number": "105"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 6,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.885Z",
+    "is_active": true,
+    "name": "Class 2",
+    "section": "1",
+    "room_number": "106"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 7,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.886Z",
+    "is_active": true,
+    "name": "Class 3",
+    "section": "1",
+    "room_number": "107"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 8,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "Play",
+    "section": "1",
+    "room_number": "100"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 9,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.887Z",
+    "is_active": true,
+    "name": "Class 4",
+    "section": "1",
+    "room_number": "108"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 10,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.888Z",
+    "is_active": true,
+    "name": "Class 5",
+    "section": "1",
+    "room_number": "109"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 11,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.890Z",
+    "is_active": true,
+    "name": "Class 6",
+    "section": "1",
+    "room_number": "110"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 12,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.891Z",
+    "is_active": true,
+    "name": "Class 7",
+    "section": "1",
+    "room_number": "111"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 13,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.892Z",
+    "is_active": true,
+    "name": "Class 8",
+    "section": "1",
+    "room_number": "112"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 14,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.894Z",
+    "is_active": true,
+    "name": "Class 9",
+    "section": "1",
+    "room_number": "113"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 15,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-16T10:04:05.179Z",
+    "is_active": true,
+    "name": "Class 10",
+    "section": "A",
+    "room_number": "114"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 19,
+  "fields": {
+    "created_at": "2025-08-18T08:32:49.518Z",
+    "updated_at": "2025-08-18T08:32:49.518Z",
+    "is_active": true,
+    "name": "Test Class",
+    "section": "",
+    "room_number": ""
+  }
+},
+{
+  "model": "core.section",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "A"
+  }
+},
+{
+  "model": "core.section",
+  "pk": 5,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "B"
+  }
+},
+{
+  "model": "core.section",
+  "pk": 6,
+  "fields": {
+    "created_at": "2025-08-15T14:47:39.672Z",
+    "updated_at": "2025-08-15T14:47:39.672Z",
+    "is_active": true,
+    "name": "C"
+  }
+}
+]

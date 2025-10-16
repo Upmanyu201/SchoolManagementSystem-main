@@ -1,0 +1,357 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Settings Dashboard - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-8">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-cogs text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                                Settings Dashboard
+                            </h1>
+                            <p class="text-gray-600 mt-1">Configure and monitor your school management system</p>
+                        </div>
+                    </div>
+                    <a href="{% url 'dashboard' %}" 
+                       class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                        <i class="fas fa-home mr-2"></i>Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <!-- System Status Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- System Health -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">System Health</p>
+                            <p class="text-2xl font-bold text-green-600">
+                                {% if system_health %}{{ system_health.status|title }}{% else %}Unknown{% endif %}
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-heartbeat text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ML Models -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">ML Models</p>
+                            <p class="text-2xl font-bold text-purple-600">
+                                {% if system_health %}{{ system_health.ml_models_loaded }}{% else %}0{% endif %}
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-brain text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Database Size -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Database Size</p>
+                            <p class="text-2xl font-bold text-blue-600">
+                                {% if system_health %}{{ system_health.db_size_mb|floatformat:1 }} MB{% else %}N/A{% endif %}
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-database text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Response Time -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-orange-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Avg Response</p>
+                            <p class="text-2xl font-bold text-orange-600">
+                                {% if system_health %}{{ system_health.avg_response_time_ms|floatformat:0 }}ms{% else %}N/A{% endif %}
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-tachometer-alt text-orange-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Categories -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- System Settings -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4">
+                        <h3 class="text-white text-lg font-bold flex items-center">
+                            <i class="fas fa-cog mr-3"></i>System Settings
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4">Configure academic year, fees, attendance, and core system parameters.</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span>Academic Year:</span>
+                                <span class="font-medium">{{ system_settings.academic_year }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span>Late Fee:</span>
+                                <span class="font-medium">
+                                    {% if system_settings.late_fee_enabled %}{{ system_settings.late_fee_percentage }}%{% else %}Disabled{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <a href="{% url 'settings:system' %}" 
+                           class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 block text-center">
+                            Configure
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Notification Settings -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-4">
+                        <h3 class="text-white text-lg font-bold flex items-center">
+                            <i class="fas fa-bell mr-3"></i>Notifications
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4">Setup SMS, WhatsApp, and email notifications for parents and staff.</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span>SMS Provider:</span>
+                                <span class="font-medium">{{ notification_settings.sms_provider|upper }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span>Email:</span>
+                                <span class="font-medium">
+                                    {% if notification_settings.email_enabled %}Enabled{% else %}Disabled{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <a href="{% url 'settings:notifications' %}" 
+                           class="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 block text-center">
+                            Configure
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ML Settings -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-600 p-4">
+                        <h3 class="text-white text-lg font-bold flex items-center">
+                            <i class="fas fa-brain mr-3"></i>AI & ML
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4">Configure machine learning models for predictions and analytics.</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span>Performance Model:</span>
+                                <span class="font-medium">
+                                    {% if ml_settings.student_performance_model_enabled %}Enabled{% else %}Disabled{% endif %}
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span>Real-time:</span>
+                                <span class="font-medium">
+                                    {% if ml_settings.real_time_predictions %}Yes{% else %}No{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <a href="{% url 'settings:ml' %}" 
+                           class="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 block text-center">
+                            Configure
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div class="bg-gradient-to-r from-red-500 to-pink-600 p-4">
+                        <h3 class="text-white text-lg font-bold flex items-center">
+                            <i class="fas fa-shield-alt mr-3"></i>Security
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4">Manage security policies, session timeouts, and access controls.</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span>Session Timeout:</span>
+                                <span class="font-medium">{{ system_settings.session_timeout_minutes }} min</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span>Max Login Attempts:</span>
+                                <span class="font-medium">{{ system_settings.max_login_attempts }}</span>
+                            </div>
+                        </div>
+                        <a href="{% url 'settings:security' %}" 
+                           class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 block text-center">
+                            Configure
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Backup Settings -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div class="bg-gradient-to-r from-teal-500 to-cyan-600 p-4">
+                        <h3 class="text-white text-lg font-bold flex items-center">
+                            <i class="fas fa-cloud-upload-alt mr-3"></i>Backup
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4">Configure automatic backups and data retention policies.</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span>Auto Backup:</span>
+                                <span class="font-medium">
+                                    {% if system_settings.auto_backup_enabled %}Enabled{% else %}Disabled{% endif %}
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span>Retention:</span>
+                                <span class="font-medium">{{ system_settings.backup_retention_days }} days</span>
+                            </div>
+                        </div>
+                        <a href="{% url 'settings:backup' %}" 
+                           class="w-full bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 block text-center">
+                            Configure
+                        </a>
+                    </div>
+                </div>
+
+                <!-- User Preferences -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-4">
+                        <h3 class="text-white text-lg font-bold flex items-center">
+                            <i class="fas fa-user-cog mr-3"></i>My Preferences
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-4">Customize your personal interface and notification preferences.</p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span>Theme:</span>
+                                <span class="font-medium">
+                                    {% if user_preferences %}{{ user_preferences.theme|title }}{% else %}Light{% endif %}
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span>Language:</span>
+                                <span class="font-medium">
+                                    {% if user_preferences %}{{ user_preferences.get_language_display }}{% else %}English{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <a href="{% url 'settings:preferences' %}" 
+                           class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 block text-center">
+                            Configure
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- System Health -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-chart-line mr-3 text-green-500"></i>System Health
+                    </h3>
+                    <div class="space-y-3">
+                        <a href="{% url 'settings:health' %}" 
+                           class="flex items-center justify-between p-3 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg hover:from-green-100 hover:to-emerald-100 transition-all duration-300">
+                            <span class="flex items-center">
+                                <i class="fas fa-heartbeat mr-2 text-green-600"></i>View Health Dashboard
+                            </span>
+                            <i class="fas fa-chevron-right text-green-600"></i>
+                        </a>
+                        <button onclick="checkSystemStatus()" 
+                                class="w-full flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg hover:from-blue-100 hover:to-indigo-100 transition-all duration-300">
+                            <span class="flex items-center">
+                                <i class="fas fa-sync-alt mr-2 text-blue-600"></i>Refresh Status
+                            </span>
+                            <i class="fas fa-chevron-right text-blue-600"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Maintenance -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-tools mr-3 text-orange-500"></i>System Maintenance
+                    </h3>
+                    <div class="space-y-3">
+                        <a href="{% url 'settings:maintenance' %}" 
+                           class="flex items-center justify-between p-3 bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg hover:from-orange-100 hover:to-yellow-100 transition-all duration-300">
+                            <span class="flex items-center">
+                                <i class="fas fa-wrench mr-2 text-orange-600"></i>Maintenance Tools
+                            </span>
+                            <i class="fas fa-chevron-right text-orange-600"></i>
+                        </a>
+                        <a href="{% url 'settings:language' %}" 
+                           class="flex items-center justify-between p-3 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg hover:from-purple-100 hover:to-pink-100 transition-all duration-300">
+                            <span class="flex items-center">
+                                <i class="fas fa-globe mr-2 text-purple-600"></i>Language Settings
+                            </span>
+                            <i class="fas fa-chevron-right text-purple-600"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function checkSystemStatus() {
+    const btn = event.target.closest('button');
+    const originalContent = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Checking...';
+    btn.disabled = true;
+    
+    try {
+        const response = await fetch('{% url "settings:api_status" %}');
+        const data = await response.json();
+        
+        if (data.overall === 'healthy') {
+            btn.innerHTML = '<i class="fas fa-check mr-2"></i>System Healthy';
+            btn.classList.add('bg-green-100', 'text-green-800');
+        } else {
+            btn.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Issues Detected';
+            btn.classList.add('bg-red-100', 'text-red-800');
+        }
+        
+        setTimeout(() => {
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+            btn.classList.remove('bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+        }, 3000);
+        
+    } catch (error) {
+        btn.innerHTML = '<i class="fas fa-times mr-2"></i>Check Failed';
+        btn.classList.add('bg-red-100', 'text-red-800');
+        
+        setTimeout(() => {
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+            btn.classList.remove('bg-red-100', 'text-red-800');
+        }, 3000);
+    }
+}
+</script>
+
+{% endblock %}

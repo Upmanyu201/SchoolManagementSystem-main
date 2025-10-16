@@ -1,0 +1,437 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Edit Payment" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen p-6">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-edit text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                        ✏️ {% trans "Edit Payment Record" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "Modify payment details and information" %}</p>
+                </div>
+            </div>
+            <button onclick="history.back()" 
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i>{% trans "Back" %}
+            </button>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div id="form-messages" class="fixed top-4 right-4 z-50 space-y-2">
+        {% for message in messages %}
+        <div class="{% if message.tags == 'success' %}bg-green-500{% elif message.tags == 'error' %}bg-red-500{% else %}bg-blue-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in">
+            <div class="flex items-center">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} mr-3"></i>
+                <span class="font-medium">{{ message }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Edit Form -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 max-w-4xl mx-auto">
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-money-bill-wave mr-3"></i>{% trans "Payment Information" %}
+            </h2>
+        </div>
+        
+        <form method="post" class="p-8 space-y-8">
+            {% csrf_token %}
+            
+            <!-- Payment Summary Overview (Using AtomicFeeCalculator) -->
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                <h3 class="text-lg font-bold text-blue-800 mb-4 flex items-center">
+                    <i class="fas fa-calculator mr-3 text-blue-500"></i>📊 {% trans "Payment Summary" %}
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-white rounded-lg p-4 border border-blue-200 text-center">
+                        <div class="text-sm text-blue-600 font-medium mb-1">{% trans "Original Amount" %}</div>
+                        <div class="text-xl font-bold text-blue-700" id="original_amount">₹ {{ deposit.amount|floatformat:2 }}</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-green-200 text-center">
+                        <div class="text-sm text-green-600 font-medium mb-1">{% trans "Paid Amount" %}</div>
+                        <div class="text-xl font-bold text-green-700" id="paid_amount">₹ {{ deposit.amount|floatformat:2 }}</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-orange-200 text-center">
+                        <div class="text-sm text-orange-600 font-medium mb-1">{% trans "Discount" %}</div>
+                        <div class="text-xl font-bold text-orange-700" id="discount_amount">₹ {{ deposit.discount|default:0|floatformat:2 }}</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-red-200 text-center">
+                        <div class="text-sm text-red-600 font-medium mb-1">{% trans "Net Payment" %}</div>
+                        <div class="text-xl font-bold text-red-700" id="net_payment">₹ {{ deposit.amount|add:deposit.discount|default:deposit.amount|floatformat:2 }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Payment Info -->
+            <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-info-circle mr-3 text-gray-500"></i>📋 {% trans "Current Payment Details" %}
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <label class="block text-gray-600 text-sm font-semibold mb-1">
+                            <i class="fas fa-hashtag mr-1 text-blue-500"></i>{% trans "Receipt Number" %}
+                        </label>
+                        <p class="font-mono text-lg font-bold text-gray-800">{{ deposit.receipt_no }}</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <label class="block text-gray-600 text-sm font-semibold mb-1">
+                            <i class="fas fa-user mr-1 text-green-500"></i>{% trans "Student" %}
+                        </label>
+                        <p class="text-lg font-bold text-gray-800">{{ deposit.student.get_full_display_name }}</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <label class="block text-gray-600 text-sm font-semibold mb-1">
+                            <i class="fas fa-calendar mr-1 text-purple-500"></i>{% trans "Payment Date" %}
+                        </label>
+                        <p class="text-lg font-bold text-gray-800">{{ deposit.deposit_date|date:'d M Y, H:i' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Left Column -->
+                <div class="space-y-6">
+                    <!-- Amount Field (AtomicFeeCalculator) -->
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-money-bill-wave mr-2 text-green-500"></i>{% trans "Payment Amount" %} *
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg font-bold">₹</span>
+                            <input type="number" id="payment_amount" name="amount" value="{{ deposit.amount }}" step="0.01" min="0" required
+                                   class="w-full pl-8 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                                   data-original-amount="{{ deposit.amount }}">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">{% trans "Enter the payment amount in rupees" %}</p>
+                    </div>
+
+                    <!-- Discount Field (AtomicFeeCalculator) -->
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-percentage mr-2 text-orange-500"></i>💸 {% trans "Discount Amount" %}
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg font-bold">₹</span>
+                            <input type="number" id="discount_amount_input" name="discount" value="{{ deposit.discount|default:0 }}" step="0.01" min="0"
+                                   class="w-full pl-8 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">{% trans "Optional discount applied to this payment" %}</p>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    <!-- Payment Method -->
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-wallet mr-2 text-purple-500"></i>💳 {% trans "Payment Method" %}
+                        </label>
+                        <select name="payment_mode" class="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200">
+                            <option value="Cash" {% if deposit.payment_mode == 'Cash' %}selected{% endif %}>💵 {% trans "Cash" %}</option>
+                            <option value="Online" {% if deposit.payment_mode == 'Online' %}selected{% endif %}>{% trans "Online Transfer" %}</option>
+                            <option value="UPI" {% if deposit.payment_mode == 'UPI' %}selected{% endif %}>{% trans "UPI" %}</option>
+                            <option value="Cheque" {% if deposit.payment_mode == 'Cheque' %}selected{% endif %}>📄 {% trans "Cheque" %}</option>
+                            <option value="Card" {% if deposit.payment_mode == 'Card' %}selected{% endif %}>💳 {% trans "Card" %}</option>
+                        </select>
+                    </div>
+
+                    <!-- Previous Payments Info -->
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-history mr-2 text-blue-500"></i>📈 {% trans "Previous Payments" %}
+                        </label>
+                        <div class="bg-blue-50 px-4 py-3 border-2 border-blue-200 rounded-lg">
+                            <div class="text-sm text-blue-700">
+                                <div class="flex justify-between mb-1">
+                                    <span>{% trans "Partial Payments" %}:</span>
+                                    <span class="font-semibold">{{ deposit.partial_payments|default:0 }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>{% trans "Previous Paid" %}:</span>
+                                    <span class="font-semibold">₹ {{ deposit.previous_paid|default:0|floatformat:2 }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">{% trans "Payment history for this student" %}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                    <i class="fas fa-sticky-note mr-2 text-yellow-500"></i>📝 {% trans "Payment Notes" %}
+                </label>
+                <textarea name="note" rows="4" placeholder="{% trans 'Add any additional notes about this payment...' %}"
+                          class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 resize-none">{{ deposit.note|default:'' }}</textarea>
+                <p class="text-xs text-gray-500 mt-1">{% trans "Optional notes for record keeping" %}</p>
+            </div>
+
+            <!-- Payment Breakdown -->
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <h4 class="font-bold text-lg mb-4 flex items-center text-gray-800">
+                    <i class="fas fa-chart-pie mr-2 text-blue-500"></i>{% trans "Payment Breakdown" %}
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Current Payment Details -->
+                    <div class="space-y-3">
+                        <h5 class="font-semibold text-gray-700 border-b pb-2">{% trans "Current Payment" %}</h5>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">{% trans "Amount" %}:</span>
+                                <span class="font-semibold">₹ {{ deposit.amount|floatformat:2 }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">{% trans "Discount" %}:</span>
+                                <span class="font-semibold text-green-600">₹ {{ deposit.discount|default:0|floatformat:2 }}</span>
+                            </div>
+                            <div class="flex justify-between border-t pt-2">
+                                <span class="text-gray-600 font-medium">{% trans "Net Payment" %}:</span>
+                                <span class="font-bold text-blue-600">₹ {{ deposit.amount|floatformat:2 }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Method & Status -->
+                    <div class="space-y-3">
+                        <h5 class="font-semibold text-gray-700 border-b pb-2">{% trans "Payment Details" %}</h5>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">{% trans "Mode" %}:</span>
+                                <span class="font-semibold">{{ deposit.payment_mode }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">{% trans "Transaction" %}:</span>
+                                <span class="font-semibold">{{ deposit.transaction_no|default:"N/A" }}</span>
+                            </div>
+                            <div class="flex justify-between border-t pt-2">
+                                <span class="text-gray-600 font-medium">{% trans "Status" %}:</span>
+                                <span class="font-bold text-green-600">{% trans "Completed" %}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction Details -->
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <h4 class="font-bold text-lg mb-4 flex items-center text-gray-800">
+                    <i class="fas fa-credit-card mr-2 text-blue-500"></i>{% trans "Transaction Details" %}
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                            <i class="fas fa-hashtag mr-1 text-blue-500"></i>{% trans "Transaction Number" %}
+                        </label>
+                        <input type="text" name="transaction_no" value="{{ deposit.transaction_no|default:'' }}"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                               placeholder="{% trans 'Enter transaction number' %}">
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                            <i class="fas fa-building mr-1 text-blue-500"></i>{% trans "Payment Source" %}
+                        </label>
+                        <input type="text" name="payment_source" value="{{ deposit.payment_source|default:'' }}"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                               placeholder="{% trans 'Enter payment source' %}">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit Information -->
+            <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-history mr-3 text-gray-500"></i>🕒 {% trans "Audit Information" %}
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                        <span class="text-gray-600">{% trans "Created" %}:</span>
+                        <span class="font-semibold ml-2">{{ deposit.deposit_date|date:"d M Y, H:i" }}</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">{% trans "Receipt" %}:</span>
+                        <span class="font-semibold ml-2">{{ deposit.receipt_no }}</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">{% trans "Mode of Payment" %}:</span>
+                        <span class="font-semibold ml-2">{{ deposit.payment_mode }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center">
+                <div class="flex gap-4 justify-center">
+                    <button type="button" onclick="history.back()" 
+                            class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
+                    </button>
+                    <button type="submit" 
+                            class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg focus:outline-none focus:ring-4 focus:ring-green-300">
+                        <i class="fas fa-save mr-2"></i>{% trans "Update Payment" %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// AtomicFeeCalculator Integration
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-hide messages
+    const messages = document.getElementById('form-messages');
+    if (messages) {
+        setTimeout(() => {
+            messages.style.opacity = '0';
+            messages.style.transform = 'translateX(100%)';
+            setTimeout(() => messages.remove(), 500);
+        }, 5000);
+    }
+    
+    // Initialize AtomicFeeCalculator for edit form
+    if (window.atomicFeeCalculator) {
+        const paymentAmountInput = document.getElementById('payment_amount');
+        const discountAmountInput = document.getElementById('discount_amount_input');
+        
+        // Real-time calculation updates
+        function updateCalculations() {
+            const originalAmount = parseFloat(paymentAmountInput.dataset.originalAmount || 0);
+            const currentAmount = parseFloat(paymentAmountInput.value || 0);
+            const discountAmount = parseFloat(discountAmountInput.value || 0);
+            
+            // Use AtomicFeeCalculator for consistent calculations
+            const netPayment = window.atomicFeeCalculator.toDecimal(currentAmount - discountAmount);
+            
+            // Update display elements
+            const originalAmountEl = document.getElementById('original_amount');
+            const paidAmountEl = document.getElementById('paid_amount');
+            const discountAmountEl = document.getElementById('discount_amount');
+            const netPaymentEl = document.getElementById('net_payment');
+            
+            if (originalAmountEl) originalAmountEl.textContent = `₹ ${originalAmount.toFixed(2)}`;
+            if (paidAmountEl) paidAmountEl.textContent = `₹ ${currentAmount.toFixed(2)}`;
+            if (discountAmountEl) discountAmountEl.textContent = `₹ ${discountAmount.toFixed(2)}`;
+            if (netPaymentEl) netPaymentEl.textContent = `₹ ${Math.max(0, netPayment).toFixed(2)}`;
+            
+            console.log('🔍 [EDIT CALC] Updated calculations:', {
+                original: originalAmount,
+                current: currentAmount,
+                discount: discountAmount,
+                net: netPayment
+            });
+        }
+        
+        // Add event listeners for real-time updates
+        paymentAmountInput.addEventListener('input', updateCalculations);
+        discountAmountInput.addEventListener('input', updateCalculations);
+        
+        // Initial calculation
+        updateCalculations();
+    }
+    
+    // Form validation with AtomicFeeCalculator
+    const form = document.querySelector('form');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    form.addEventListener('submit', function(e) {
+        const amount = parseFloat(document.querySelector('input[name="amount"]').value);
+        const discount = parseFloat(document.querySelector('input[name="discount"]').value) || 0;
+        
+        // Use AtomicFeeCalculator validation
+        if (window.atomicFeeCalculator) {
+            const validation = window.atomicFeeCalculator.validatePayment({
+                selected_fees: [{
+                    amount: amount,
+                    discount: discount,
+                    display_name: 'Payment Edit'
+                }],
+                payment_mode: document.querySelector('select[name="payment_mode"]').value
+            });
+            
+            if (!validation.isValid) {
+                e.preventDefault();
+                alert(validation.errors.join('\n'));
+                return;
+            }
+        } else {
+            // Fallback validation
+            if (discount > amount) {
+                e.preventDefault();
+                alert('{% trans "Discount cannot be greater than the payment amount" %}');
+                return;
+            }
+        }
+        
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>{% trans "Updating..." %}';
+        submitBtn.disabled = true;
+    });
+});
+</script>
+
+{% block extra_css %}
+<style>
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+/* Enhanced form styling matching fee_form.html */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+/* Button hover effects */
+button {
+    transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* AtomicFeeCalculator styling */
+#original_amount, #paid_amount, #discount_amount, #net_payment {
+    transition: all 0.3s ease;
+}
+
+#original_amount:hover, #paid_amount:hover, #discount_amount:hover, #net_payment:hover {
+    transform: scale(1.05);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/atomic_fee_calculator.js' %}"></script>
+{% endblock %}
+{% endblock %}

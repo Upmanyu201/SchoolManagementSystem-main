@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Fee Deposits" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-money-bill-wave text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                        {% trans "Fee Deposits" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "Manage student fee payments" %}</p>
+                </div>
+            </div>
+            <a href="{% url 'dashboard' %}" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-home mr-2"></i>{% trans "Dashboard" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Redirect to main deposit page -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 text-center border border-gray-200">
+        <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-blue-100 to-indigo-200 rounded-full flex items-center justify-center">
+            <i class="fas fa-arrow-right text-3xl text-blue-500"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-700 mb-4">{% trans "Redirecting to Fee Management" %}</h3>
+        <p class="text-gray-500 mb-6">{% trans "Please use the main fee deposit interface" %}</p>
+        <a href="{% url 'student_fees:fee_deposit' %}" 
+           class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+            <i class="fas fa-money-check-alt mr-2"></i>{% trans "Go to Fee Deposit" %}
+        </a>
+    </div>
+</div>
+{% endblock %}

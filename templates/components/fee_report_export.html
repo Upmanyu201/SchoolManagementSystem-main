@@ -1,0 +1,20 @@
+<!-- Fee Report Export Buttons Component -->
+<div class="flex gap-2">
+    <button onclick="exportFeeReport('csv')" 
+            class="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold py-2 px-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg" 
+            title="Export to CSV">
+        <i class="fas fa-file-csv mr-1"></i>CSV
+    </button>
+    <button onclick="exportFeeReport('excel')" 
+            class="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-bold py-2 px-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg" 
+            title="Export to Excel">
+        <i class="fas fa-file-excel mr-1"></i>Excel
+    </button>
+    <button onclick="exportFeeReport('pdf')" 
+            class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-2 px-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg" 
+            title="Export to PDF">
+        <i class="fas fa-file-pdf mr-1"></i>PDF
+    </button>
+</div>
+
+<script src="{% load static %}{% static 'js/fee_report_export.js' %}"></script>

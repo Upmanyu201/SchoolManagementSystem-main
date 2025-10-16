@@ -1,0 +1,460 @@
+{% load static %}
+{% load i18n %}
+
+<!-- Consolidated Fee Payment Form Component -->
+<script>
+console.log('🔍 [FEE FORM] Template loaded for student', {
+    studentId: '{{ student.id }}',
+    admissionNumber: '{{ student.admission_number }}',
+    feesCount: {{ fees|length }},
+    discountEnabled: {{ discount_enabled|yesno:"true,false" }},
+    discountEnabledRaw: '{{ discount_enabled }}',
+    discountEnabledType: typeof {{ discount_enabled|yesno:"true,false" }},
+    templateLocation: 'fee_form.html',
+    timestamp: new Date().toISOString()
+});
+
+// Log template rendering context
+console.log('🔍 [FEE FORM] Template context check', {
+    hasStudent: {{ student|yesno:"true,false" }},
+    hasFees: {{ fees|yesno:"true,false" }},
+    feesLength: {{ fees|length }},
+    studentData: {
+        id: '{{ student.id }}',
+        admissionNumber: '{{ student.admission_number }}',
+        firstName: '{{ student.first_name|escapejs }}',
+        lastName: '{{ student.last_name|escapejs }}'
+    }
+});
+
+// Check if discount column is rendered
+setTimeout(() => {
+    const discountHeaders = document.querySelectorAll('th:contains("Discount")');
+    const discountInputs = document.querySelectorAll('.discount-input');
+    console.log('🔍 [FEE FORM] Discount elements check:', {
+        discountHeaders: discountHeaders.length,
+        discountInputs: discountInputs.length,
+        discountEnabled: {{ discount_enabled|yesno:"true,false" }}
+    });
+}, 100);
+</script>
+
+<div id="fee-form-container" data-fee-calculator data-student-id="{{ student.id }}" class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+    <form id="depositForm-{{ student.admission_number }}" action="{% url 'student_fees:submit_deposit' %}" method="POST" class="space-y-6">
+        {% csrf_token %}
+        <input type="hidden" name="student_id" value="{{ student.id }}">
+        
+        {% if fees %}
+        <script>
+        console.log('✅ [FEE FORM] Fees available, rendering table', {
+            feesCount: {{ fees|length }},
+            formId: 'depositForm-{{ student.admission_number }}',
+            expectedFormId: 'depositForm-{{ student.admission_number }}'
+        });
+        
+        {% for fee in fees %}
+        console.log('🔍 [FEE FORM] Fee {{ forloop.counter }}:', {
+            id: '{{ fee.id }}',
+            displayName: '{{ fee.display_name|escapejs }}',
+            amount: {{ fee.amount }},
+            isOverdue: {{ fee.is_overdue|yesno:"true,false" }}
+        });
+        {% endfor %}
+        
+        // Check if form will be created
+        setTimeout(() => {
+            const form = document.getElementById('depositForm-{{ student.admission_number }}');
+            console.log('🔍 [FEE FORM] Form creation check', {
+                formExists: !!form,
+                formId: form?.id,
+                formAction: form?.action,
+                formElementsCount: form?.elements?.length || 0
+            });
+        }, 100);
+        </script>
+        
+        <!-- Fees Table -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4">
+                <h3 class="text-white font-bold text-lg flex items-center">
+                    <i class="fas fa-list-alt mr-2"></i>{% trans "Payable Fees" %}
+                </h3>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">
+                                <i class="fas fa-check-square mr-1"></i>{% trans "Select" %}
+                            </th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">
+                                <i class="fas fa-tag mr-1"></i>{% trans "Fee Type" %}
+                            </th>
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-700">
+                                <i class="fas fa-money-bill mr-1"></i>{% trans "Amount" %}
+                            </th>
+                            {% if discount_enabled %}
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-700">
+                                <i class="fas fa-percentage mr-1"></i>{% trans "Discount" %}
+                            </th>
+                            {% endif %}
+                            <!-- DEBUG: discount_enabled = {{ discount_enabled }} -->
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-700">
+                                <i class="fas fa-calculator mr-1"></i>{% trans "Payable" %}
+                            </th>
+                            <th class="px-4 py-3 text-right text-sm font-medium text-gray-700">
+                                <i class="fas fa-exclamation-circle mr-1"></i>{% trans "Due" %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fee in fees %}
+                        <tr class="fee-row border-b hover:bg-gray-50 transition-colors duration-200 {% if fee.is_overdue %}bg-red-50 border-l-4 border-red-400{% elif fee.type == 'carry_forward' %}bg-yellow-50 border-l-4 border-yellow-400{% endif %}"
+                            data-paid-amount="{{ fee.paid_amount|default:0 }}"
+                            data-discount-paid="{{ fee.discount_paid|default:0 }}">
+                            <td class="px-4 py-3">
+                                <input type="checkbox" 
+                                       class="fee-checkbox form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500" 
+                                       name="selected_fees" 
+                                       value="{{ fee.id }}" 
+                                       data-amount="{{ fee.amount }}"
+                                       data-paid-amount="{{ fee.paid_amount|default:0 }}"
+                                       data-discount-paid="{{ fee.discount_paid|default:0 }}">
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="font-medium text-gray-900">
+                                    {% if fee.is_overdue %}
+                                        <i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>
+                                    {% endif %}
+                                    {{ fee.display_name }}
+                                    {% if fee.id == 'carry_forward' %}
+                                        <span class="ml-2 px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">
+                                            <i class="fas fa-history mr-1"></i>Previous Due
+                                        </span>
+                                    {% elif fee.id|slice:":5" == 'fine_' %}
+                                        <span class="ml-2 px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">
+                                            <i class="fas fa-exclamation-circle mr-1"></i>Fine
+                                        </span>
+                                    {% else %}
+                                        <span class="ml-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                                            <i class="fas fa-graduation-cap mr-1"></i>Fee
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                {% if fee.due_date %}
+                                    <div class="text-sm {% if fee.is_overdue %}text-red-600{% else %}text-gray-600{% endif %} mt-1">
+                                        <i class="fas fa-calendar-{% if fee.is_overdue %}times{% else %}check{% endif %} mr-1"></i>
+                                        {% trans "Due:" %} {{ fee.due_date }}
+                                    </div>
+                                {% endif %}
+                                {% if fee.type == 'carry_forward' %}
+                                    <div class="text-sm text-yellow-600 mt-1">
+                                        <i class="fas fa-info-circle mr-1"></i>{% trans "Previous session balance" %}
+                                    </div>
+                                {% else %}
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        <i class="fas fa-info-circle mr-1"></i>{{ fee.type }}
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3 text-right">
+                                <span class="fee-amount font-semibold {% if fee.type == 'carry_forward' %}text-yellow-700{% else %}text-gray-900{% endif %}">₹ {{ fee.amount|floatformat:2 }}</span>
+                                <input type="hidden" name="original_amount_{{ fee.id }}" value="{{ fee.amount }}">
+                                <input type="hidden" name="paid_amount_{{ fee.id }}" value="{{ fee.paid_amount|default:0 }}">
+                                <input type="hidden" name="discount_paid_{{ fee.id }}" value="{{ fee.discount_paid|default:0 }}">
+                            </td>
+                            {% if discount_enabled %}
+                            <td class="px-4 py-3 text-right">
+                                <div class="relative">
+                                    <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">₹</span>
+                                    <input type="number" 
+                                           class="discount-input w-16 pl-4 pr-1 py-1 border border-gray-300 rounded text-right text-xs focus:ring-1 focus:ring-blue-500 focus:border-blue-500" 
+                                           name="discount_{{ fee.id }}" 
+                                           min="0" 
+                                           max="{{ fee.amount }}" 
+                                           step="0.01" 
+                                           value="0"
+                                           placeholder="0"
+                                           data-fee-id="{{ fee.id }}"
+                                           data-fee-amount="{{ fee.amount }}">
+                                </div>
+                            </td>
+                            {% endif %}
+                            <td class="px-4 py-3 text-right">
+                                <div class="relative">
+                                    <span class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">₹</span>
+                                    <input type="number" 
+                                           class="payable-input w-28 pl-6 pr-2 py-2 border-2 border-green-300 rounded-lg text-right text-sm font-bold {% if fee.type == 'carry_forward' %}text-yellow-600{% else %}text-green-600{% endif %} focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-green-50 hover:bg-white transition-colors" 
+                                           name="payable_{{ fee.id }}" 
+                                           min="0.01" 
+                                           max="{{ fee.payable }}" 
+                                           step="0.01" 
+                                           value="{{ fee.payable }}"
+                                           data-fee-id="{{ fee.id }}"
+                                           data-original="{{ fee.amount }}"
+                                           data-paid-amount="{{ fee.paid_amount|default:0 }}"
+                                           data-discount-paid="{{ fee.discount_paid|default:0 }}"
+                                           title="Enter partial payment amount (editable)">
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-right">
+                                <span class="due-amount font-bold text-red-600">₹ {{ fee.due|floatformat:2 }}</span>
+                                <input type="hidden" name="due_{{ fee.id }}" value="{{ fee.due }}">
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Payment Summary -->
+        <div class="bg-white rounded-xl p-6 shadow-lg">
+            <h4 class="font-bold text-lg mb-4 flex items-center text-gray-800">
+                <i class="fas fa-calculator mr-2 text-blue-500"></i>{% trans "Payment Summary" %}
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4 text-center">
+                    <div class="text-sm text-blue-600 font-medium mb-1">{% trans "Total Selected" %}</div>
+                    <div id="total_selected" class="text-2xl font-bold text-blue-700">₹ 0.00</div>
+                    <div id="total-original" class="text-2xl font-bold text-blue-700" style="display: none;">₹ 0.00</div>
+                </div>
+                {% if discount_enabled %}
+                <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4 text-center">
+                    <div class="text-sm text-green-600 font-medium mb-1">{% trans "Total Discount" %}</div>
+                    <div id="total_discount" class="text-2xl font-bold text-green-700">₹ 0.00</div>
+                    <div id="total-discount" class="text-2xl font-bold text-green-700" style="display: none;">₹ 0.00</div>
+                </div>
+                {% endif %}
+                <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-4 text-center">
+                    <div class="text-sm text-purple-600 font-medium mb-1">{% trans "Total Payable" %}</div>
+                    <div id="total_payable" class="text-2xl font-bold text-purple-700">₹ 0.00</div>
+                    <div id="total-payable" class="text-2xl font-bold text-purple-700" style="display: none;">₹ 0.00</div>
+                    <div id="final-amount" class="text-2xl font-bold text-purple-700" style="display: none;">₹ 0.00</div>
+                </div>
+                <div class="bg-gradient-to-r from-red-50 to-red-100 rounded-lg p-4 text-center">
+                    <div class="text-sm text-red-600 font-medium mb-1">{% trans "Total Due" %}</div>
+                    <div id="total_due" class="text-2xl font-bold text-red-700">₹ 0.00</div>
+                    <div id="total-due" class="text-2xl font-bold text-red-700" style="display: none;">₹ 0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Details -->
+        <div class="bg-white rounded-xl p-6 shadow-lg">
+            <h4 class="font-bold text-lg mb-4 flex items-center text-gray-800">
+                <i class="fas fa-credit-card mr-2 text-blue-500"></i>{% trans "Payment Details" %}
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="form-group">
+                    <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                        <i class="fas fa-wallet mr-1 text-blue-500"></i>{% trans "Payment Method" %} *
+                    </label>
+                    <select id="payment_mode" name="payment_mode" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200" 
+                            required>
+                        <option value="Cash">{% trans "Cash" %}</option>
+                        <option value="Online">{% trans "Online Transfer" %}</option>
+                        <option value="UPI">{% trans "UPI" %}</option>
+                        <option value="Cheque">{% trans "Cheque" %}</option>
+                        <option value="Card">{% trans "Card" %}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                        <i class="fas fa-calendar mr-1 text-blue-500"></i>{% trans "Payment Date" %} *
+                    </label>
+                    <input type="datetime-local" id="deposit_date" name="deposit_date" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200" 
+                           required>
+                </div>
+            </div>
+            
+            <div id="extra_fields" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4" style="display: none;">
+                <div class="form-group">
+                    <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                        <i class="fas fa-hashtag mr-1 text-blue-500"></i>{% trans "Transaction Number" %}
+                    </label>
+                    <input type="text" id="trans_no" name="transaction_no" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                           placeholder="{% trans 'Enter transaction number' %}">
+                </div>
+                <div class="form-group">
+                    <label id="source_label" class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                        <i class="fas fa-building mr-1 text-blue-500"></i>{% trans "Payment Source" %}
+                    </label>
+                    <input type="text" id="pay_source" name="payment_source" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                           placeholder="{% trans 'Enter payment source' %}">
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button type="button" id="confirmPaymentBtn"
+                    class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg focus:outline-none focus:ring-4 focus:ring-green-300">
+                <i class="fas fa-credit-card mr-2"></i>{% trans "Process Payment" %}
+            </button>
+        </div>
+
+        {% else %}
+        <script>
+        console.log('⚠️ [FEE FORM] No fees available', {
+            studentId: '{{ student.id }}',
+            admissionNumber: '{{ student.admission_number }}',
+            feesCount: {{ fees|length }},
+            feesExists: {{ fees|yesno:"true,false" }}
+        });
+        </script>
+        
+        <!-- No fees to pay -->
+        <div class="bg-green-50 border-2 border-green-200 rounded-xl p-8 text-center">
+            <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check-circle text-white text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-green-800 mb-2">{% trans "All Fees Paid!" %}</h3>
+            <p class="text-green-600">{% trans "This student has no pending fees to pay." %}</p>
+        </div>
+        {% endif %}
+    </form>
+</div>
+
+<script>
+// CRITICAL FIX: Force AtomicFeeCalculator initialization for this specific form
+document.addEventListener('DOMContentLoaded', function() {
+    const formContainer = document.getElementById('fee-form-container');
+    const studentId = formContainer?.dataset.studentId;
+    const formId = 'depositForm-{{ student.admission_number }}';
+    
+    console.log('🔍 [FEE FORM] DOM loaded - initializing calculator', {
+        formContainer: !!formContainer,
+        studentId: studentId,
+        formId: formId,
+        atomicCalculatorAvailable: !!window.atomicFeeCalculator
+    });
+    
+    // Wait for AtomicFeeCalculator to be available
+    let initAttempts = 0;
+    const maxAttempts = 10;
+    
+    function tryInitialize() {
+        initAttempts++;
+        
+        if (window.atomicFeeCalculator) {
+            console.log('✅ [FEE FORM] AtomicFeeCalculator found, initializing form');
+            
+            // Initialize the form
+            window.atomicFeeCalculator.initializeForm(formId, studentId);
+            
+            // Force initial calculation after a short delay
+            setTimeout(() => {
+                const form = document.getElementById(formId);
+                if (form && window.consolidatedFeeManager) {
+                    console.log('🔍 [FEE FORM] Forcing initial totals calculation');
+                    window.consolidatedFeeManager.updateTotals(form);
+                }
+            }, 500);
+            
+        } else if (initAttempts < maxAttempts) {
+            console.log(`🔍 [FEE FORM] AtomicFeeCalculator not ready, attempt ${initAttempts}/${maxAttempts}`);
+            setTimeout(tryInitialize, 200);
+        } else {
+            console.error('❌ [FEE FORM] AtomicFeeCalculator failed to initialize after', maxAttempts, 'attempts');
+        }
+    }
+    
+    // Start initialization attempts
+    tryInitialize();
+});
+</script>
+
+<!-- Payment Confirmation Modal -->
+<div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl p-4 max-w-sm w-full mx-4 transform transition-all">
+        <div class="text-center mb-4">
+            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                <i class="fas fa-receipt text-white"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-800">{% trans "Confirm Payment" %}</h3>
+        </div>
+        
+        <div class="space-y-3 mb-4">
+            <!-- Student Info -->
+            <div class="bg-blue-50 rounded-lg p-3">
+                <div class="text-sm space-y-1">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Name:</span>
+                        <span class="font-medium">{{ student.first_name }} {{ student.last_name }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Admission:</span>
+                        <span class="font-medium">{{ student.admission_number }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Class:</span>
+                        <span class="font-medium">{{ student.class_section.display_name|default:"N/A" }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Father:</span>
+                        <span class="font-medium">{{ student.father_name|default:"N/A" }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Mobile:</span>
+                        <span class="font-medium">{{ student.mobile_number|default:"N/A" }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Payment Info -->
+            <div class="bg-green-50 rounded-lg p-3">
+                <div class="text-sm space-y-1">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Method:</span>
+                        <span class="font-medium" id="modalPaymentMethod">Cash</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Date:</span>
+                        <span class="font-medium" id="modalPaymentDate">-</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Payment Summary -->
+            <div class="bg-purple-50 rounded-lg p-3">
+                <div id="modalFeesList" class="text-sm mb-2"></div>
+                <div class="border-t pt-2 space-y-1 text-sm">
+                    <div class="flex justify-between">
+                        <span>Total Amount:</span>
+                        <span class="font-semibold" id="modalTotalAmount">₹ 0.00</span>
+                    </div>
+                    <div class="flex justify-between" id="modalDiscountRow" style="display: none;">
+                        <span>Discount:</span>
+                        <span class="font-semibold text-green-600" id="modalTotalDiscount">₹ 0.00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Paying:</span>
+                        <span class="font-semibold" id="modalTotalPaying">₹ 0.00</span>
+                    </div>
+                    <div class="flex justify-between border-t pt-1">
+                        <span class="font-bold text-red-700">Due:</span>
+                        <span class="font-bold text-red-700" id="modalTotalDue">₹ 0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex gap-2">
+            <button type="button" id="cancelPayment" 
+                    class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                <i class="fas fa-times mr-1"></i>{% trans "Cancel" %}
+            </button>
+            <button type="button" id="confirmPayment" 
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                <i class="fas fa-check mr-1"></i>{% trans "Confirm" %}
+            </button>
+        </div>
+    </div>
+</div>
+

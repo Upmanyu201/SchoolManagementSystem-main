@@ -1,0 +1,501 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "WhatsApp Groups" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-green-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fab fa-whatsapp text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-800 bg-clip-text text-transparent">
+                        {% trans "WhatsApp Groups" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "Manage WhatsApp groups for efficient messaging" %}</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" data-bs-toggle="modal" data-bs-target="#createGroupModal">
+                    <i class="fas fa-plus mr-2"></i>{% trans "Create New Group" %}
+                </button>
+                <a href="{% url 'messaging:dashboard' %}" 
+                   class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                    <i class="fas fa-arrow-left mr-2"></i>{% trans "Back" %}
+                </a>
+            </div>
+        </div>
+    </div>
+        
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 hover:shadow-lg">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mr-4">
+                    <i class="fas fa-users text-white text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-blue-600 mb-1">{% trans "Total Groups" %}</p>
+                    <p class="text-2xl font-bold text-blue-900">{{ groups|length }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border-2 border-green-200 hover:border-green-400 transition-all duration-300 hover:shadow-lg">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mr-4">
+                    <i class="fas fa-check-circle text-white text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-green-600 mb-1">{% trans "Active Groups" %}</p>
+                    <p class="text-2xl font-bold text-green-900">{% for group in groups %}{% if group.group_link %}{{ forloop.counter0|add:1 }}{% endif %}{% empty %}0{% endfor %}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-6 border-2 border-orange-200 hover:border-orange-400 transition-all duration-300 hover:shadow-lg">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mr-4">
+                    <i class="fas fa-graduation-cap text-white text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-orange-600 mb-1">{% trans "Class Groups" %}</p>
+                    <p class="text-2xl font-bold text-orange-900">{% for group in groups %}{% if group.group_type == 'CLASS_STUDENTS' %}{{ forloop.counter0|add:1 }}{% endif %}{% empty %}0{% endfor %}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border-2 border-purple-200 hover:border-purple-400 transition-all duration-300 hover:shadow-lg">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mr-4">
+                    <i class="fas fa-school text-white text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-purple-600 mb-1">{% trans "School Groups" %}</p>
+                    <p class="text-2xl font-bold text-purple-900">{% for group in groups %}{% if group.group_type == 'ALL_SCHOOL' %}{{ forloop.counter0|add:1 }}{% endif %}{% empty %}0{% endfor %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Groups Grid -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+        <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-4 rounded-xl mb-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fab fa-whatsapp mr-3"></i>{% trans "WhatsApp Groups" %}
+            </h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for group in groups %}
+            <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden hover:shadow-2xl hover:border-green-300 transition-all duration-300 transform hover:scale-105">
+                <div class="bg-gradient-to-r {% if group.group_type == 'ALL_STUDENTS' %}from-blue-500 to-indigo-600{% elif group.group_type == 'ALL_TEACHERS' %}from-green-500 to-emerald-600{% elif group.group_type == 'ALL_SCHOOL' %}from-purple-500 to-indigo-600{% else %}from-orange-500 to-red-600{% endif %} text-white p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-xl">{{ group.name }}</h3>
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i class="fas {% if group.group_type == 'ALL_STUDENTS' %}fa-graduation-cap{% elif group.group_type == 'ALL_TEACHERS' %}fa-chalkboard-teacher{% elif group.group_type == 'ALL_SCHOOL' %}fa-school{% else %}fa-users{% endif %} text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                            <span class="text-sm font-semibold text-gray-700 flex items-center">
+                                <i class="fas fa-tag mr-2 text-blue-500"></i>{% trans "Type" %}:
+                            </span>
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full {% if group.group_type == 'ALL_STUDENTS' %}bg-blue-100 text-blue-800{% elif group.group_type == 'ALL_TEACHERS' %}bg-green-100 text-green-800{% elif group.group_type == 'ALL_SCHOOL' %}bg-purple-100 text-purple-800{% else %}bg-orange-100 text-orange-800{% endif %}">
+                                {{ group.get_group_type_display }}
+                            </span>
+                        </div>
+                        
+                        {% if group.class_filter %}
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                            <span class="text-sm font-semibold text-gray-700 flex items-center">
+                                <i class="fas fa-school mr-2 text-orange-500"></i>{% trans "Class" %}:
+                            </span>
+                            <span class="text-sm font-bold text-gray-800 bg-orange-100 px-3 py-1 rounded-full">{{ group.class_filter.name }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                            <span class="text-sm font-semibold text-gray-700 flex items-center">
+                                <i class="fas fa-users mr-2 text-purple-500"></i>{% trans "Members" %}:
+                            </span>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-bold">{{ group.get_members_count }}</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                            <span class="text-sm font-semibold text-gray-700 flex items-center">
+                                <i class="fas fa-info-circle mr-2 text-indigo-500"></i>{% trans "Status" %}:
+                            </span>
+                            {% if group.group_link %}
+                                <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full bg-green-100 text-green-800">
+                                    <i class="fas fa-check-circle mr-1"></i>{% trans "Active" %}
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full bg-yellow-100 text-yellow-800">
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>{% trans "Link Required" %}
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        {% if group.group_link %}
+                        <button class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center" onclick="sendGroupMessage({{ group.id }}, '{{ group.name }}')">
+                            <i class="fas fa-paper-plane mr-2"></i>{% trans "Send" %}
+                        </button>
+                        {% endif %}
+                        <button class="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center" onclick="updateGroupLink({{ group.id }}, '{{ group.name }}')">
+                            <i class="fas fa-link mr-2"></i>🔗 {% if group.group_link %}{% trans "Update" %}{% else %}{% trans "Add" %}{% endif %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full">
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-12 text-center">
+                    <div class="w-24 h-24 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fab fa-whatsapp text-4xl text-green-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-green-800 mb-4">{% trans "No Groups Created Yet" %}</h3>
+                    <p class="text-green-700 mb-8 text-lg">{% trans "Create your first WhatsApp group to start efficient bulk messaging!" %}</p>
+                    <button class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" data-bs-toggle="modal" data-bs-target="#createGroupModal">
+                        <i class="fas fa-plus mr-2"></i>{% trans "Create First Group" %}
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Create Group Modal -->
+<div class="modal fade" id="createGroupModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-2xl">
+            <div class="modal-header bg-gradient-to-r from-blue-600 to-blue-800 text-white border-0 rounded-t-lg">
+                <h5 class="modal-title font-bold text-xl flex items-center gap-3">
+                    <span class="bg-white bg-opacity-20 p-2 rounded-full">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    Create WhatsApp Group
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-6 bg-gray-50">
+                <form id="createGroupForm" class="space-y-6">
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <label class="block text-sm font-bold text-gray-700 mb-3">Group Name</label>
+                        <input type="text" class="w-full p-3 bg-gray-50 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200" id="groupName" placeholder="Enter group name..." required>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <label class="block text-sm font-bold text-gray-700 mb-3">Group Type</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex items-center p-3 bg-blue-50 rounded-lg border-2 border-blue-200 cursor-pointer hover:bg-blue-100 transition-all duration-200">
+                                <input class="form-radio mr-3" type="radio" name="groupTypeRadio" value="ALL_STUDENTS">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-graduation-cap text-blue-600"></i>
+                                    <span class="font-semibold text-blue-700">All Students</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 bg-green-50 rounded-lg border-2 border-green-200 cursor-pointer hover:bg-green-100 transition-all duration-200">
+                                <input class="form-radio mr-3" type="radio" name="groupTypeRadio" value="ALL_TEACHERS">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-chalkboard-teacher text-green-600"></i>
+                                    <span class="font-semibold text-green-700">All Teachers</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 bg-purple-50 rounded-lg border-2 border-purple-200 cursor-pointer hover:bg-purple-100 transition-all duration-200">
+                                <input class="form-radio mr-3" type="radio" name="groupTypeRadio" value="ALL_SCHOOL">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-school text-purple-600"></i>
+                                    <span class="font-semibold text-purple-700">All School</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 bg-orange-50 rounded-lg border-2 border-orange-200 cursor-pointer hover:bg-orange-100 transition-all duration-200">
+                                <input class="form-radio mr-3" type="radio" name="groupTypeRadio" value="CLASS_STUDENTS">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-users text-orange-600"></i>
+                                    <span class="font-semibold text-orange-700">Class Students</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-gray-200" id="classSelectDiv" style="display: none;">
+                        <label class="block text-sm font-bold text-gray-700 mb-3">Select Class</label>
+                        <select class="w-full p-3 bg-gray-50 border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all duration-200" id="classSelect">
+                            <option value="">Choose a class...</option>
+                            {% for class in classes %}
+                            <option value="{{ class.id }}">{{ class.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-white border-0 rounded-b-lg p-6">
+                <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 mr-3" data-bs-dismiss="modal">
+                    <i class="fas fa-times mr-2"></i>Cancel
+                </button>
+                <button type="button" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg" onclick="createGroup()">
+                    <i class="fas fa-plus mr-2"></i>Create Group
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Send Message Modal -->
+<div class="modal fade" id="sendMessageModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content border-0 shadow-2xl">
+            <div class="modal-header bg-gradient-to-r from-green-600 to-green-800 text-white border-0 rounded-t-lg">
+                <h5 class="modal-title font-bold text-xl flex items-center gap-3">
+                    <span class="bg-white bg-opacity-20 p-2 rounded-full">
+                        <i class="fas fa-paper-plane"></i>
+                    </span>
+                    Send Group Message
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-6 bg-gray-50">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-1">
+                        <div class="bg-white rounded-xl p-6 shadow-md border border-gray-200">
+                            <div class="text-center">
+                                <div class="mx-auto mb-4 w-20 h-20 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h6 class="font-bold text-gray-800 mb-2">Sending to Group:</h6>
+                                <p id="selectedGroupName" class="text-green-600 font-bold bg-green-100 px-3 py-1 rounded-full"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <div class="bg-white rounded-xl p-6 shadow-md border border-gray-200">
+                            <div class="mb-4">
+                                <label class="block text-sm font-bold text-gray-700 mb-3">Message Content</label>
+                                <textarea class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 resize-none" id="groupMessage" rows="8" placeholder="Type your group message here..."></textarea>
+                                <div class="flex justify-between items-center mt-2">
+                                    <div class="text-sm text-gray-500">Character count: <span id="groupCharCount" class="font-semibold text-green-600">0</span>/1000</div>
+                                    <div class="text-xs text-gray-400">📢 This message will be sent to the entire group</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-white border-0 rounded-b-lg p-6">
+                <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 mr-3" data-bs-dismiss="modal">
+                    <i class="fas fa-times mr-2"></i>Cancel
+                </button>
+                <button type="button" class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane mr-2"></i>Send Message
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Link Modal -->
+<div class="modal fade" id="updateLinkModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-2xl">
+            <div class="modal-header bg-gradient-to-r from-blue-600 to-blue-800 text-white border-0 rounded-t-lg">
+                <h5 class="modal-title font-bold text-xl flex items-center gap-3">
+                    <span class="bg-white bg-opacity-20 p-2 rounded-full">
+                        <i class="fas fa-link"></i>
+                    </span>
+                    Update Group Link
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-6 bg-gray-50">
+                <div class="bg-white rounded-xl p-6 shadow-md border border-gray-200">
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Group Name:</label>
+                        <p id="linkGroupName" class="text-lg font-bold text-blue-600 bg-blue-100 px-4 py-2 rounded-lg"></p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold text-gray-700 mb-3">WhatsApp Group Invite Link</label>
+                        <input type="url" class="w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200" id="groupLink" placeholder="https://chat.whatsapp.com/...">
+                        <div class="mt-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <h6 class="font-semibold text-blue-800 mb-2">📱 How to get WhatsApp group link:</h6>
+                            <ol class="text-sm text-blue-700 space-y-1">
+                                <li>1. Open WhatsApp group</li>
+                                <li>2. Tap group name at top</li>
+                                <li>3. Tap "Invite to group via link"</li>
+                                <li>4. Copy and paste the link here</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-white border-0 rounded-b-lg p-6">
+                <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 mr-3" data-bs-dismiss="modal">
+                    <i class="fas fa-times mr-2"></i>Cancel
+                </button>
+                <button type="button" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg" onclick="updateLink()">
+                    <i class="fas fa-link mr-2"></i>Update Link
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentGroupId = null;
+
+// Show class select when CLASS_STUDENTS is selected
+document.querySelectorAll('input[name="groupTypeRadio"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const classDiv = document.getElementById('classSelectDiv');
+        if (this.value === 'CLASS_STUDENTS') {
+            classDiv.style.display = 'block';
+            document.getElementById('classSelect').required = true;
+        } else {
+            classDiv.style.display = 'none';
+            document.getElementById('classSelect').required = false;
+        }
+    });
+});
+
+// Character counter for group message
+document.getElementById('groupMessage').addEventListener('input', function() {
+    const charCount = this.value.length;
+    const counter = document.getElementById('groupCharCount');
+    counter.textContent = charCount;
+    
+    if (charCount > 800) {
+        counter.className = 'font-semibold text-red-600';
+    } else if (charCount > 600) {
+        counter.className = 'font-semibold text-yellow-600';
+    } else {
+        counter.className = 'font-semibold text-green-600';
+    }
+});
+
+function createGroup() {
+    const groupName = document.getElementById('groupName').value;
+    const groupType = document.querySelector('input[name="groupTypeRadio"]:checked')?.value;
+    const classId = document.getElementById('classSelect').value;
+    
+    if (!groupName || !groupType) {
+        alert('Please fill all required fields');
+        return;
+    }
+    
+    if (groupType === 'CLASS_STUDENTS' && !classId) {
+        alert('Please select a class');
+        return;
+    }
+    
+    fetch('{% url "messaging:create_group" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            group_name: groupName,
+            group_type: groupType,
+            class_id: classId || null
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            location.reload();
+        } else {
+            alert(data.message);
+        }
+    });
+}
+
+function sendGroupMessage(groupId, groupName) {
+    currentGroupId = groupId;
+    document.getElementById('selectedGroupName').textContent = groupName;
+    document.getElementById('groupMessage').value = '';
+    new bootstrap.Modal(document.getElementById('sendMessageModal')).show();
+}
+
+function sendMessage() {
+    const message = document.getElementById('groupMessage').value;
+    
+    if (!message.trim()) {
+        alert('Please enter a message');
+        return;
+    }
+    
+    fetch('{% url "messaging:send_group_message" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            group_id: currentGroupId,
+            message: message
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            bootstrap.Modal.getInstance(document.getElementById('sendMessageModal')).hide();
+        }
+    });
+}
+
+function updateGroupLink(groupId, groupName) {
+    currentGroupId = groupId;
+    document.getElementById('linkGroupName').textContent = groupName;
+    document.getElementById('groupLink').value = '';
+    new bootstrap.Modal(document.getElementById('updateLinkModal')).show();
+}
+
+function updateLink() {
+    const groupLink = document.getElementById('groupLink').value;
+    
+    if (!groupLink.trim()) {
+        alert('Please enter a group link');
+        return;
+    }
+    
+    if (!groupLink.includes('chat.whatsapp.com')) {
+        alert('Please enter a valid WhatsApp group invite link');
+        return;
+    }
+    
+    fetch('{% url "messaging:update_group_link" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            group_id: currentGroupId,
+            group_link: groupLink
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            bootstrap.Modal.getInstance(document.getElementById('updateLinkModal')).hide();
+            location.reload();
+        }
+    });
+}
+</script>
+{% endblock %}

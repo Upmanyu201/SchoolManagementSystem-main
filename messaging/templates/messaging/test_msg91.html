@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSG91 SMS Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen py-8">
+    <div class="container mx-auto px-4 max-w-2xl">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <span class="text-red-500 mr-2">📱</span>
+                MSG91 SMS Test
+            </h1>
+            
+            <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h3 class="font-semibold text-blue-800 mb-2">Configuration Status</h3>
+                <div id="configStatus" class="text-sm text-blue-700">
+                    Checking configuration...
+                </div>
+            </div>
+            
+            <form id="smsTestForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Phone Number (with country code)
+                    </label>
+                    <input type="tel" id="phoneNumber" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="919876543210" value="919876543210">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Message
+                    </label>
+                    <textarea id="messageText" rows="3"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              placeholder="Enter your test message">Test SMS from School Management System - MSG91 Integration</textarea>
+                </div>
+                
+                <button type="submit" id="sendButton"
+                        class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Send Test SMS
+                </button>
+            </form>
+            
+            <div id="result" class="mt-6 hidden">
+                <h3 class="font-semibold text-gray-800 mb-2">Result:</h3>
+                <div id="resultContent" class="p-4 rounded-md"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check configuration status
+        fetch('/messaging/test-sms/')
+            .then(response => response.json())
+            .then(data => {
+                const statusDiv = document.getElementById('configStatus');
+                if (data.auth_key_configured) {
+                    statusDiv.innerHTML = '✅ MSG91 Auth Key is configured';
+                    statusDiv.className = 'text-sm text-green-700';
+                } else {
+                    statusDiv.innerHTML = '❌ MSG91 Auth Key not configured';
+                    statusDiv.className = 'text-sm text-red-700';
+                }
+            })
+            .catch(error => {
+                document.getElementById('configStatus').innerHTML = '⚠️ Error checking configuration';
+            });
+
+        // Handle form submission
+        document.getElementById('smsTestForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const phone = document.getElementById('phoneNumber').value;
+            const message = document.getElementById('messageText').value;
+            const sendButton = document.getElementById('sendButton');
+            const resultDiv = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+            
+            // Disable button and show loading
+            sendButton.disabled = true;
+            sendButton.textContent = 'Sending...';
+            
+            // Send SMS
+            fetch('/messaging/test-sms/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phone: phone,
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultDiv.classList.remove('hidden');
+                
+                if (data.success) {
+                    resultContent.className = 'p-4 rounded-md bg-green-50 border border-green-200';
+                    resultContent.innerHTML = `
+                        <div class="text-green-800">
+                            <div class="font-semibold">✅ SMS Sent Successfully!</div>
+                            <div class="text-sm mt-2">
+                                <div>Phone: ${data.phone}</div>
+                                <div>Message ID: ${data.details.message_id || 'N/A'}</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultContent.className = 'p-4 rounded-md bg-red-50 border border-red-200';
+                    resultContent.innerHTML = `
+                        <div class="text-red-800">
+                            <div class="font-semibold">❌ SMS Failed</div>
+                            <div class="text-sm mt-2">
+                                <div>Error: ${data.error || data.details?.error || 'Unknown error'}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                resultDiv.classList.remove('hidden');
+                resultContent.className = 'p-4 rounded-md bg-red-50 border border-red-200';
+                resultContent.innerHTML = `
+                    <div class="text-red-800">
+                        <div class="font-semibold">❌ Request Failed</div>
+                        <div class="text-sm mt-2">Error: ${error.message}</div>
+                    </div>
+                `;
+            })
+            .finally(() => {
+                // Re-enable button
+                sendButton.disabled = false;
+                sendButton.textContent = 'Send Test SMS';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,422 @@
+[
+{
+  "model": "teachers.teacher",
+  "pk": 101,
+  "fields": {
+    "name": "Dr. Rajesh Kumar",
+    "mobile": "9876543210",
+    "email": "rajesh.kumar@school.edu",
+    "qualification": "PhD Mathematics",
+    "joining_date": "2020-04-01",
+    "photo": "teacher_photos/rajesh_kumar.jpg",
+    "resume": "teacher_resumes/rajesh_kumar.pdf",
+    "joining_letter": "teacher_letters/rajesh_kumar.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 102,
+  "fields": {
+    "name": "Mrs. Priya Sharma",
+    "mobile": "9876543211",
+    "email": "priya.sharma@school.edu",
+    "qualification": "M.Sc Physics, B.Ed",
+    "joining_date": "2019-06-15",
+    "photo": "teacher_photos/priya_sharma.jpg",
+    "resume": "teacher_resumes/priya_sharma.pdf",
+    "joining_letter": "teacher_letters/priya_sharma.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 103,
+  "fields": {
+    "name": "Mr. Amit Singh",
+    "mobile": "9876543212",
+    "email": "amit.singh@school.edu",
+    "qualification": "M.A English, B.Ed",
+    "joining_date": "2021-03-10",
+    "photo": "teacher_photos/amit_singh.jpg",
+    "resume": "teacher_resumes/amit_singh.pdf",
+    "joining_letter": "teacher_letters/amit_singh.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 104,
+  "fields": {
+    "name": "Dr. Sunita Gupta",
+    "mobile": "9876543213",
+    "email": "sunita.gupta@school.edu",
+    "qualification": "PhD Chemistry",
+    "joining_date": "2018-07-20",
+    "photo": "teacher_photos/sunita_gupta.jpg",
+    "resume": "teacher_resumes/sunita_gupta.pdf",
+    "joining_letter": "teacher_letters/sunita_gupta.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 105,
+  "fields": {
+    "name": "Mr. Vikash Yadav",
+    "mobile": "9876543214",
+    "email": "vikash.yadav@school.edu",
+    "qualification": "M.Sc Biology, B.Ed",
+    "joining_date": "2020-08-12",
+    "photo": "teacher_photos/vikash_yadav.jpg",
+    "resume": "teacher_resumes/vikash_yadav.pdf",
+    "joining_letter": "teacher_letters/vikash_yadav.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 106,
+  "fields": {
+    "name": "Mrs. Kavita Jha",
+    "mobile": "9876543215",
+    "email": "kavita.jha@school.edu",
+    "qualification": "M.A Hindi, B.Ed",
+    "joining_date": "2019-01-25",
+    "photo": "teacher_photos/kavita_jha.jpg",
+    "resume": "teacher_resumes/kavita_jha.pdf",
+    "joining_letter": "teacher_letters/kavita_jha.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 107,
+  "fields": {
+    "name": "Mr. Deepak Thakur",
+    "mobile": "9876543216",
+    "email": "deepak.thakur@school.edu",
+    "qualification": "M.A History, B.Ed",
+    "joining_date": "2021-05-18",
+    "photo": "teacher_photos/deepak_thakur.jpg",
+    "resume": "teacher_resumes/deepak_thakur.pdf",
+    "joining_letter": "teacher_letters/deepak_thakur.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 108,
+  "fields": {
+    "name": "Mrs. Neha Pandey",
+    "mobile": "9876543217",
+    "email": "neha.pandey@school.edu",
+    "qualification": "M.A Geography, B.Ed",
+    "joining_date": "2020-02-14",
+    "photo": "teacher_photos/neha_pandey.jpg",
+    "resume": "teacher_resumes/neha_pandey.pdf",
+    "joining_letter": "teacher_letters/neha_pandey.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 109,
+  "fields": {
+    "name": "Mr. Ravi Kumar",
+    "mobile": "9876543218",
+    "email": "ravi.kumar@school.edu",
+    "qualification": "MCA, B.Ed",
+    "joining_date": "2022-01-10",
+    "photo": "teacher_photos/ravi_kumar.jpg",
+    "resume": "teacher_resumes/ravi_kumar.pdf",
+    "joining_letter": "teacher_letters/ravi_kumar.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 110,
+  "fields": {
+    "name": "Mrs. Sushma Singh",
+    "mobile": "9876543219",
+    "email": "sushma.singh@school.edu",
+    "qualification": "M.Com, B.Ed",
+    "joining_date": "2019-09-05",
+    "photo": "teacher_photos/sushma_singh.jpg",
+    "resume": "teacher_resumes/sushma_singh.pdf",
+    "joining_letter": "teacher_letters/sushma_singh.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 111,
+  "fields": {
+    "name": "Mr. Manoj Mishra",
+    "mobile": "9876543220",
+    "email": "manoj.mishra@school.edu",
+    "qualification": "M.A Sanskrit, B.Ed",
+    "joining_date": "2018-11-22",
+    "photo": "teacher_photos/manoj_mishra.jpg",
+    "resume": "teacher_resumes/manoj_mishra.pdf",
+    "joining_letter": "teacher_letters/manoj_mishra.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 112,
+  "fields": {
+    "name": "Mrs. Rekha Devi",
+    "mobile": "9876543221",
+    "email": "rekha.devi@school.edu",
+    "qualification": "B.P.Ed, M.A Physical Education",
+    "joining_date": "2020-06-30",
+    "photo": "teacher_photos/rekha_devi.jpg",
+    "resume": "teacher_resumes/rekha_devi.pdf",
+    "joining_letter": "teacher_letters/rekha_devi.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 113,
+  "fields": {
+    "name": "Mr. Santosh Kumar",
+    "mobile": "9876543222",
+    "email": "santosh.kumar@school.edu",
+    "qualification": "M.A Economics, B.Ed",
+    "joining_date": "2021-08-16",
+    "photo": "teacher_photos/santosh_kumar.jpg",
+    "resume": "teacher_resumes/santosh_kumar.pdf",
+    "joining_letter": "teacher_letters/santosh_kumar.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 114,
+  "fields": {
+    "name": "Mrs. Anita Kumari",
+    "mobile": "9876543223",
+    "email": "anita.kumari@school.edu",
+    "qualification": "M.Sc Mathematics, B.Ed",
+    "joining_date": "2019-04-08",
+    "photo": "teacher_photos/anita_kumari.jpg",
+    "resume": "teacher_resumes/anita_kumari.pdf",
+    "joining_letter": "teacher_letters/anita_kumari.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 115,
+  "fields": {
+    "name": "Mr. Suresh Babu",
+    "mobile": "9876543224",
+    "email": "suresh.babu@school.edu",
+    "qualification": "M.A Political Science, B.Ed",
+    "joining_date": "2020-10-12",
+    "photo": "teacher_photos/suresh_babu.jpg",
+    "resume": "teacher_resumes/suresh_babu.pdf",
+    "joining_letter": "teacher_letters/suresh_babu.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 116,
+  "fields": {
+    "name": "Mrs. Geeta Sharma",
+    "mobile": "9876543225",
+    "email": "geeta.sharma@school.edu",
+    "qualification": "M.A Sociology, B.Ed",
+    "joining_date": "2021-12-03",
+    "photo": "teacher_photos/geeta_sharma.jpg",
+    "resume": "teacher_resumes/geeta_sharma.pdf",
+    "joining_letter": "teacher_letters/geeta_sharma.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 117,
+  "fields": {
+    "name": "Mr. Ramesh Chandra",
+    "mobile": "9876543226",
+    "email": "ramesh.chandra@school.edu",
+    "qualification": "M.A Philosophy, B.Ed",
+    "joining_date": "2018-05-17",
+    "photo": "teacher_photos/ramesh_chandra.jpg",
+    "resume": "teacher_resumes/ramesh_chandra.pdf",
+    "joining_letter": "teacher_letters/ramesh_chandra.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 118,
+  "fields": {
+    "name": "Mrs. Pooja Singh",
+    "mobile": "9876543227",
+    "email": "pooja.singh@school.edu",
+    "qualification": "M.A Psychology, B.Ed",
+    "joining_date": "2020-03-28",
+    "photo": "teacher_photos/pooja_singh.jpg",
+    "resume": "teacher_resumes/pooja_singh.pdf",
+    "joining_letter": "teacher_letters/pooja_singh.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 119,
+  "fields": {
+    "name": "Mr. Ajay Verma",
+    "mobile": "9876543228",
+    "email": "ajay.verma@school.edu",
+    "qualification": "M.Sc Environmental Science, B.Ed",
+    "joining_date": "2021-07-11",
+    "photo": "teacher_photos/ajay_verma.jpg",
+    "resume": "teacher_resumes/ajay_verma.pdf",
+    "joining_letter": "teacher_letters/ajay_verma.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 120,
+  "fields": {
+    "name": "Mrs. Shanti Devi",
+    "mobile": "9876543229",
+    "email": "shanti.devi@school.edu",
+    "qualification": "M.A Home Science, B.Ed",
+    "joining_date": "2019-12-15",
+    "photo": "teacher_photos/shanti_devi.jpg",
+    "resume": "teacher_resumes/shanti_devi.pdf",
+    "joining_letter": "teacher_letters/shanti_devi.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 121,
+  "fields": {
+    "name": "Mr. Dinesh Kumar",
+    "mobile": "9876543230",
+    "email": "dinesh.kumar@school.edu",
+    "qualification": "M.A Music, B.Ed",
+    "joining_date": "2020-09-07",
+    "photo": "teacher_photos/dinesh_kumar.jpg",
+    "resume": "teacher_resumes/dinesh_kumar.pdf",
+    "joining_letter": "teacher_letters/dinesh_kumar.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 122,
+  "fields": {
+    "name": "Mrs. Lata Mangeshkar",
+    "mobile": "9876543231",
+    "email": "lata.mangeshkar@school.edu",
+    "qualification": "M.A Fine Arts, B.Ed",
+    "joining_date": "2021-02-19",
+    "photo": "teacher_photos/lata_mangeshkar.jpg",
+    "resume": "teacher_resumes/lata_mangeshkar.pdf",
+    "joining_letter": "teacher_letters/lata_mangeshkar.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 123,
+  "fields": {
+    "name": "Mr. Harish Chandra",
+    "mobile": "9876543232",
+    "email": "harish.chandra@school.edu",
+    "qualification": "M.Sc Statistics, B.Ed",
+    "joining_date": "2019-08-24",
+    "photo": "teacher_photos/harish_chandra.jpg",
+    "resume": "teacher_resumes/harish_chandra.pdf",
+    "joining_letter": "teacher_letters/harish_chandra.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 124,
+  "fields": {
+    "name": "Mrs. Usha Rani",
+    "mobile": "9876543233",
+    "email": "usha.rani@school.edu",
+    "qualification": "M.A Library Science, B.Ed",
+    "joining_date": "2020-11-06",
+    "photo": "teacher_photos/usha_rani.jpg",
+    "resume": "teacher_resumes/usha_rani.pdf",
+    "joining_letter": "teacher_letters/usha_rani.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 125,
+  "fields": {
+    "name": "Mr. Yogesh Prasad",
+    "mobile": "9876543234",
+    "email": "yogesh.prasad@school.edu",
+    "qualification": "M.A Journalism, B.Ed",
+    "joining_date": "2021-04-13",
+    "photo": "teacher_photos/yogesh_prasad.jpg",
+    "resume": "teacher_resumes/yogesh_prasad.pdf",
+    "joining_letter": "teacher_letters/yogesh_prasad.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 126,
+  "fields": {
+    "name": "Mrs. Kiran Bala",
+    "mobile": "9876543235",
+    "email": "kiran.bala@school.edu",
+    "qualification": "M.Sc Botany, B.Ed",
+    "joining_date": "2018-10-29",
+    "photo": "teacher_photos/kiran_bala.jpg",
+    "resume": "teacher_resumes/kiran_bala.pdf",
+    "joining_letter": "teacher_letters/kiran_bala.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 127,
+  "fields": {
+    "name": "Mr. Ashok Kumar",
+    "mobile": "9876543236",
+    "email": "ashok.kumar@school.edu",
+    "qualification": "M.Sc Zoology, B.Ed",
+    "joining_date": "2020-01-21",
+    "photo": "teacher_photos/ashok_kumar.jpg",
+    "resume": "teacher_resumes/ashok_kumar.pdf",
+    "joining_letter": "teacher_letters/ashok_kumar.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 128,
+  "fields": {
+    "name": "Mrs. Radha Kumari",
+    "mobile": "9876543237",
+    "email": "radha.kumari@school.edu",
+    "qualification": "M.A Anthropology, B.Ed",
+    "joining_date": "2021-06-08",
+    "photo": "teacher_photos/radha_kumari.jpg",
+    "resume": "teacher_resumes/radha_kumari.pdf",
+    "joining_letter": "teacher_letters/radha_kumari.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 129,
+  "fields": {
+    "name": "Mr. Brijesh Singh",
+    "mobile": "9876543238",
+    "email": "brijesh.singh@school.edu",
+    "qualification": "M.Tech Computer Science, B.Ed",
+    "joining_date": "2022-03-15",
+    "photo": "teacher_photos/brijesh_singh.jpg",
+    "resume": "teacher_resumes/brijesh_singh.pdf",
+    "joining_letter": "teacher_letters/brijesh_singh.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 130,
+  "fields": {
+    "name": "Mrs. Sarita Devi",
+    "mobile": "9876543239",
+    "email": "sarita.devi@school.edu",
+    "qualification": "M.A Linguistics, B.Ed",
+    "joining_date": "2019-07-02",
+    "photo": "teacher_photos/sarita_devi.jpg",
+    "resume": "teacher_resumes/sarita_devi.pdf",
+    "joining_letter": "teacher_letters/sarita_devi.pdf"
+  }
+}
+]

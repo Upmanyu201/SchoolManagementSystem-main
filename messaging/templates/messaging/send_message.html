@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header -->
+    <div class="card mb-6">
+        <div class="card-header">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="card-title">
+                        <i class="fas fa-paper-plane mr-2"></i>Send Custom Message
+                    </h1>
+                    <p class="text-gray-600 mt-1">Send SMS or WhatsApp messages to students and parents</p>
+                </div>
+                <a href="{% url 'messaging:dashboard' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Send Message Form -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-edit mr-2"></i>Message Details
+            </h2>
+        </div>
+        <div class="card-body">
+            <form method="POST" id="messageForm">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Recipient Selection -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-users mr-2"></i>Recipient Type
+                        </label>
+                        {{ form.recipient_type }}
+                    </div>
+                    
+                    <!-- Provider Selection -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-server mr-2"></i>Provider
+                        </label>
+                        {{ form.provider }}
+                    </div>
+                </div>
+
+                <!-- Dynamic Recipient Fields -->
+                <div id="recipientFields" class="mt-6">
+                    <!-- Individual Student -->
+                    <div id="individualField" class="form-group hidden">
+                        <label class="form-label">
+                            <i class="fas fa-user mr-2"></i>Select Student
+                        </label>
+                        {{ form.individual_student }}
+                    </div>
+                    
+                    <!-- Class Selection -->
+                    <div id="classField" class="form-group hidden">
+                        <label class="form-label">
+                            <i class="fas fa-school mr-2"></i>Select Class
+                        </label>
+                        {{ form.student_class }}
+                    </div>
+                    
+                    <!-- Multiple Students -->
+                    <div id="multipleField" class="form-group hidden">
+                        <label class="form-label">
+                            <i class="fas fa-user-friends mr-2"></i>Select Students
+                        </label>
+                        <div class="max-h-60 overflow-y-auto border rounded-lg p-4">
+                            {{ form.selected_students }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Content -->
+                <div class="form-group mt-6">
+                    <label class="form-label">
+                        <i class="fas fa-comment mr-2"></i>Message Content
+                    </label>
+                    {{ form.message }}
+                    <div class="text-sm text-gray-500 mt-1">
+                        <span id="charCount">0</span>/1000 characters
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div class="form-group">
+                    <div class="flex items-center">
+                        {{ form.send_to_parents }}
+                        <label for="{{ form.send_to_parents.id_for_label }}" class="ml-2 text-sm">
+                            Send to parent's mobile number
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-end mt-6">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane mr-2"></i>Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const recipientType = document.getElementById('{{ form.recipient_type.id_for_label }}');
+    const messageTextarea = document.getElementById('{{ form.message.id_for_label }}');
+    const charCount = document.getElementById('charCount');
+    
+    // Toggle recipient fields
+    function toggleRecipientFields(value) {
+        document.getElementById('individualField').classList.add('hidden');
+        document.getElementById('classField').classList.add('hidden');
+        document.getElementById('multipleField').classList.add('hidden');
+        
+        if (value === 'individual') {
+            document.getElementById('individualField').classList.remove('hidden');
+        } else if (value === 'class') {
+            document.getElementById('classField').classList.remove('hidden');
+        } else if (value === 'multiple') {
+            document.getElementById('multipleField').classList.remove('hidden');
+        }
+    }
+    
+    // Character counter
+    function updateCharCount() {
+        const count = messageTextarea.value.length;
+        charCount.textContent = count;
+        charCount.className = count > 1000 ? 'text-red-500' : 'text-gray-500';
+    }
+    
+    // Event listeners
+    recipientType.addEventListener('change', function() {
+        toggleRecipientFields(this.value);
+    });
+    
+    messageTextarea.addEventListener('input', updateCharCount);
+    
+    // Initialize
+    toggleRecipientFields(recipientType.value);
+    updateCharCount();
+});
+
+// Make function global for form onchange
+function toggleRecipientFields(value) {
+    document.getElementById('individualField').classList.add('hidden');
+    document.getElementById('classField').classList.add('hidden');
+    document.getElementById('multipleField').classList.add('hidden');
+    
+    if (value === 'individual') {
+        document.getElementById('individualField').classList.remove('hidden');
+    } else if (value === 'class') {
+        document.getElementById('classField').classList.remove('hidden');
+    } else if (value === 'multiple') {
+        document.getElementById('multipleField').classList.remove('hidden');
+    }
+}
+</script>
+{% endblock %}

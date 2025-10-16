@@ -1,0 +1,9 @@
+{% if messages %}
+    <ul class="mb-4">
+        {% for message in messages %}
+            <li class="text-{{ message.tags }}-600 bg-{{ message.tags }}-100 border border-{{ message.tags }}-300 rounded p-2 my-2">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

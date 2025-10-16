@@ -1,0 +1,44 @@
+{% load i18n %}
+{% load i18n %}
+{% if page_obj.paginator.num_pages > 1 %}
+<div class="bg-white rounded-xl shadow-lg p-6 mt-8 border border-gray-200">
+    <nav class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_route %}&route={{ selected_route }}{% endif %}"
+               class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center">
+                <i class="fas fa-chevron-left mr-2"></i>{% trans "Previous" %}
+            </a>
+            {% endif %}
+        </div>
+        
+        <div class="flex items-center gap-2">
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <span class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 py-2 rounded-lg font-bold">
+                    {{ num }}
+                </span>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_route %}&route={{ selected_route }}{% endif %}"
+                   class="bg-gray-100 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-600 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105">
+                    {{ num }}
+                </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        
+        <div class="flex items-center gap-2">
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_route %}&route={{ selected_route }}{% endif %}"
+               class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center">
+                {% trans "Next" %}<i class="fas fa-chevron-right ml-2"></i>
+            </a>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <div class="text-center mt-4 text-sm text-gray-600">
+        📄 {% trans "Showing page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,290 @@
+{% extends 'fines/base_fine.html' %}
+{% load static %}
+
+{% block fine_content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-xl font-semibold text-gray-800 mb-6">Waive Fine</h2>
+    
+    <div class="mb-6">
+        <label for="fine-id" class="block text-sm font-medium text-gray-700 mb-1">Fine ID</label>
+        <div class="flex">
+            <input type="number" id="fine-id" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Enter Fine ID">
+            <button id="load-fine" class="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 transition duration-200">Load</button>
+        </div>
+    </div>
+    
+    <div id="fine-details" class="mb-6 hidden">
+        <h3 class="text-lg font-medium text-gray-800 mb-2">Fine Details</h3>
+        <div class="bg-gray-50 p-4 rounded-md">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-sm text-gray-500">Type:</p>
+                    <p id="fine-type" class="font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Amount:</p>
+                    <p id="fine-amount" class="font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Scope:</p>
+                    <p id="fine-scope" class="font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Due Date:</p>
+                    <p id="fine-due-date" class="font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Status:</p>
+                    <p id="fine-status" class="font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Reason:</p>
+                    <p id="fine-reason" class="font-medium"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="waiver-form" class="mb-6 hidden">
+        <h3 class="text-lg font-medium text-gray-800 mb-2">Waive Fine</h3>
+        <form id="fine-waiver-form" class="space-y-4">
+            <div>
+                <label for="waived-amount" class="block text-sm font-medium text-gray-700 mb-1">Waived Amount</label>
+                <input type="number" id="waived-amount" name="waived_amount" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" step="0.01" required>
+            </div>
+            
+            <div>
+                <label for="reason" class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
+                <textarea id="reason" name="reason" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required></textarea>
+            </div>
+            
+            <div id="target-student-container" class="hidden">
+                <label for="target-student" class="block text-sm font-medium text-gray-700 mb-1">Target Student</label>
+                <select id="target-student" name="target_student" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Select Student</option>
+                </select>
+            </div>
+            
+            <div class="flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200">Waive Fine</button>
+            </div>
+        </form>
+    </div>
+    
+    <div id="bulk-waiver-form" class="mb-6 hidden">
+        <h3 class="text-lg font-medium text-gray-800 mb-2">Bulk Waive Fine</h3>
+        <form id="bulk-fine-waiver-form" class="space-y-4">
+            <input type="hidden" id="bulk-fine-id" name="fine_id">
+            
+            <div>
+                <label for="bulk-waived-amount" class="block text-sm font-medium text-gray-700 mb-1">Waived Amount</label>
+                <input type="number" id="bulk-waived-amount" name="waived_amount" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" step="0.01" required>
+            </div>
+            
+            <div>
+                <label for="bulk-reason" class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
+                <textarea id="bulk-reason" name="reason" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required></textarea>
+            </div>
+            
+            <div class="flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200">Bulk Waive Fine</button>
+            </div>
+        </form>
+    </div>
+    
+    <div id="result-message" class="hidden p-4 mb-6 rounded-md"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static 'js/fine-api-client.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fineIdInput = document.getElementById('fine-id');
+        const loadFineButton = document.getElementById('load-fine');
+        const fineDetails = document.getElementById('fine-details');
+        const waiverForm = document.getElementById('waiver-form');
+        const bulkWaiverForm = document.getElementById('bulk-waiver-form');
+        const targetStudentContainer = document.getElementById('target-student-container');
+        const targetStudentSelect = document.getElementById('target-student');
+        const resultMessage = document.getElementById('result-message');
+        
+        // Check if fine_id is in URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const fineIdParam = urlParams.get('fine_id');
+        if (fineIdParam) {
+            fineIdInput.value = fineIdParam;
+            loadFineDetails(fineIdParam);
+        }
+        
+        // Load fine details
+        loadFineButton.addEventListener('click', async function() {
+            const fineId = fineIdInput.value.trim();
+            if (!fineId) {
+                showMessage('Please enter a Fine ID', 'error');
+                return;
+            }
+            
+            loadFineDetails(fineId);
+        });
+        
+        // Function to load fine details
+        async function loadFineDetails(fineId) {
+            try {
+                const fine = await FineApiClient.getFine(fineId);
+                displayFineDetails(fine);
+                
+                // Show appropriate waiver form based on fine scope
+                if (fine.target_scope === 'Individual') {
+                    waiverForm.classList.remove('hidden');
+                    bulkWaiverForm.classList.add('hidden');
+                    targetStudentContainer.classList.add('hidden');
+                } else {
+                    // For Class or All scopes
+                    if (fine.is_paid) {
+                        waiverForm.classList.add('hidden');
+                        bulkWaiverForm.classList.add('hidden');
+                        showMessage('This fine has already been paid', 'info');
+                    } else {
+                        waiverForm.classList.remove('hidden');
+                        bulkWaiverForm.classList.remove('hidden');
+                        targetStudentContainer.classList.remove('hidden');
+                        document.getElementById('bulk-fine-id').value = fine.id;
+                        
+                        // Load students for this fine
+                        loadFineStudents(fine.id);
+                    }
+                }
+            } catch (error) {
+                showMessage(`Error loading fine: ${error.message}`, 'error');
+            }
+        }
+        
+        // Handle individual waiver form submission
+        document.getElementById('fine-waiver-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const fineId = fineIdInput.value.trim();
+            const waivedAmount = document.getElementById('waived-amount').value;
+            const reason = document.getElementById('reason').value;
+            const targetStudent = document.getElementById('target-student').value;
+            
+            try {
+                const data = {
+                    waived_amount: waivedAmount,
+                    reason: reason
+                };
+                
+                if (targetStudent) {
+                    data.target_student = targetStudent;
+                }
+                
+                const result = await FineApiClient.waiveFine(fineId, data);
+                showMessage('Fine waived successfully!', 'success');
+                
+                // Reload fine details
+                const fine = await FineApiClient.getFine(fineId);
+                displayFineDetails(fine);
+                
+                // Hide forms if fine is now paid
+                if (fine.is_paid) {
+                    waiverForm.classList.add('hidden');
+                    bulkWaiverForm.classList.add('hidden');
+                }
+            } catch (error) {
+                showMessage(`Error waiving fine: ${error.message}`, 'error');
+            }
+        });
+        
+        // Handle bulk waiver form submission
+        document.getElementById('bulk-fine-waiver-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const fineId = document.getElementById('bulk-fine-id').value;
+            const waivedAmount = document.getElementById('bulk-waived-amount').value;
+            const reason = document.getElementById('bulk-reason').value;
+            
+            try {
+                const data = {
+                    fine_id: fineId,
+                    waived_amount: waivedAmount,
+                    reason: reason
+                };
+                
+                const result = await FineApiClient.bulkWaiveFines(data);
+                showMessage(`Successfully waived fine for ${result.waiver_count} students!`, 'success');
+                
+                // Reload fine details
+                const fine = await FineApiClient.getFine(fineId);
+                displayFineDetails(fine);
+                
+                // Hide forms if fine is now paid
+                if (fine.is_paid) {
+                    waiverForm.classList.add('hidden');
+                    bulkWaiverForm.classList.add('hidden');
+                }
+            } catch (error) {
+                showMessage(`Error bulk waiving fine: ${error.message}`, 'error');
+            }
+        });
+        
+        // Display fine details
+        function displayFineDetails(fine) {
+            document.getElementById('fine-type').textContent = fine.fine_type_name;
+            document.getElementById('fine-amount').textContent = `₹${fine.amount}`;
+            document.getElementById('fine-scope').textContent = fine.target_scope;
+            document.getElementById('fine-due-date').textContent = fine.due_date;
+            document.getElementById('fine-status').textContent = fine.is_paid ? 'Paid' : 'Unpaid';
+            document.getElementById('fine-status').className = fine.is_paid ? 'font-medium text-green-600' : 'font-medium text-yellow-600';
+            document.getElementById('fine-reason').textContent = fine.reason;
+            
+            // Set max amount for waiver
+            document.getElementById('waived-amount').max = fine.amount;
+            document.getElementById('waived-amount').value = fine.amount;
+            document.getElementById('bulk-waived-amount').max = fine.amount;
+            document.getElementById('bulk-waived-amount').value = fine.amount;
+            
+            fineDetails.classList.remove('hidden');
+        }
+        
+        // Load students for a fine
+        async function loadFineStudents(fineId) {
+            try {
+                const fineStudents = await FineApiClient.getFineStudents(fineId);
+                targetStudentSelect.innerHTML = '<option value="">Select Student</option>';
+                
+                fineStudents.results.forEach(fineStudent => {
+                    if (!fineStudent.is_paid) {
+                        const option = document.createElement('option');
+                        option.value = fineStudent.student.id;
+                        option.textContent = fineStudent.student.full_name;
+                        targetStudentSelect.appendChild(option);
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading students:', error);
+            }
+        }
+        
+        // Show message
+        function showMessage(message, type) {
+            resultMessage.textContent = message;
+            resultMessage.className = 'p-4 mb-6 rounded-md';
+            
+            if (type === 'success') {
+                resultMessage.classList.add('bg-green-100', 'text-green-800');
+            } else if (type === 'error') {
+                resultMessage.classList.add('bg-red-100', 'text-red-800');
+            } else if (type === 'info') {
+                resultMessage.classList.add('bg-blue-100', 'text-blue-800');
+            }
+            
+            resultMessage.classList.remove('hidden');
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                resultMessage.classList.add('hidden');
+            }, 5000);
+        }
+    });
+</script>
+{% endblock %}

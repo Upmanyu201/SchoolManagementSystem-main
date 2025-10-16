@@ -1,0 +1,31 @@
+<!-- Financial Summary Card -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" x-data="{ loading: false }">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+            <i data-lucide="credit-card" class="w-5 h-5 mr-2 text-blue-600"></i>
+            Financial Summary
+        </h3>
+        <button @click="refreshFinancialData()" :disabled="loading" 
+                class="text-blue-600 hover:text-blue-800 transition-colors">
+            <i data-lucide="refresh-cw" class="w-4 h-4" :class="{ 'animate-spin': loading }"></i>
+        </button>
+    </div>
+    
+    <div class="grid grid-cols-2 gap-4">
+        <div class="bg-red-50 rounded-lg p-4">
+            <div class="text-sm text-red-600 font-medium">Current Dues</div>
+            <div class="text-2xl font-bold text-red-700" x-text="formatCurrency(financialData.current_dues || 0)">₹0</div>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4">
+            <div class="text-sm text-green-600 font-medium">Total Paid</div>
+            <div class="text-2xl font-bold text-green-700" x-text="formatCurrency(financialData.total_paid || 0)">₹0</div>
+        </div>
+    </div>
+    
+    <div class="mt-4 pt-4 border-t border-gray-200">
+        <div class="flex justify-between items-center text-sm">
+            <span class="text-gray-600">Last Payment:</span>
+            <span class="font-medium" x-text="financialData.last_payment?.amount ? formatCurrency(financialData.last_payment.amount) : 'No payments'">No payments</span>
+        </div>
+    </div>
+</div>

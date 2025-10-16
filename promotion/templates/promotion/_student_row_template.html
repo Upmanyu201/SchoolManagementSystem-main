@@ -1,0 +1,55 @@
+<script type="text/template" id="student-row-template">
+    <tr class="hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 transition-all duration-300">
+        <td class="px-6 py-4 whitespace-nowrap">
+            <input type="checkbox" class="student-checkbox form-checkbox h-5 w-5 text-green-600 rounded focus:ring-green-500" value="{{student.id}}">
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                    <i class="fas fa-id-badge"></i>
+                </div>
+                <div class="text-sm font-bold text-gray-900">{{student.adm_no}}</div>
+            </div>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                    {{student.name|first|upper}}
+                </div>
+                <div>
+                    <div class="text-sm font-bold text-gray-900">{{student.name}}</div>
+                    <div class="text-xs text-gray-500">👤 Student</div>
+                </div>
+            </div>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{student.father_name}}</td>
+        <td class="px-6 py-4 whitespace-nowrap">
+            <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-800">
+                <i class="fas fa-school mr-1"></i>{{student.current_class}} - {{student.section}}
+            </span>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap">
+            <select class="form-select new-class-select" id="new-class-{{student.id}}">
+                <option value="">🎯 Select new class...</option>
+                {% for class in classes %}
+                <option value="{{class.id}}">{{class.full_name}}</option>
+                {% endfor %}
+            </select>
+        </td>
+    </tr>
+</script>
+
+<style>
+/* Enhanced form styling for template */
+.form-select {
+    @apply w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-green-400 focus:ring-0 transition-all duration-300 bg-white text-sm;
+}
+
+.form-select:focus {
+    @apply shadow-lg transform scale-[1.02];
+}
+
+.form-checkbox {
+    @apply rounded focus:ring-2 focus:ring-green-500 focus:ring-offset-0;
+}
+</style>

@@ -1,0 +1,6711 @@
+[
+{
+  "model": "core.academicclass",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "Nursary",
+    "section": "1",
+    "room_number": "101"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 3,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "LKG",
+    "section": "1",
+    "room_number": "103"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 4,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "UKG",
+    "section": "1",
+    "room_number": "104"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 5,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.877Z",
+    "is_active": true,
+    "name": "Class 1",
+    "section": "1",
+    "room_number": "105"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 6,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.885Z",
+    "is_active": true,
+    "name": "Class 2",
+    "section": "1",
+    "room_number": "106"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 7,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.886Z",
+    "is_active": true,
+    "name": "Class 3",
+    "section": "1",
+    "room_number": "107"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 8,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "Play",
+    "section": "1",
+    "room_number": "100"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 9,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.887Z",
+    "is_active": true,
+    "name": "Class 4",
+    "section": "1",
+    "room_number": "108"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 10,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.888Z",
+    "is_active": true,
+    "name": "Class 5",
+    "section": "1",
+    "room_number": "109"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 11,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.890Z",
+    "is_active": true,
+    "name": "Class 6",
+    "section": "1",
+    "room_number": "110"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 12,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.891Z",
+    "is_active": true,
+    "name": "Class 7",
+    "section": "1",
+    "room_number": "111"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 13,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.892Z",
+    "is_active": true,
+    "name": "Class 8",
+    "section": "1",
+    "room_number": "112"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 14,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T11:13:22.894Z",
+    "is_active": true,
+    "name": "Class 9",
+    "section": "1",
+    "room_number": "113"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 15,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-16T10:04:05.179Z",
+    "is_active": true,
+    "name": "Class 10",
+    "section": "A",
+    "room_number": "114"
+  }
+},
+{
+  "model": "core.academicclass",
+  "pk": 19,
+  "fields": {
+    "created_at": "2025-08-18T08:32:49.518Z",
+    "updated_at": "2025-08-18T08:32:49.518Z",
+    "is_active": true,
+    "name": "Test Class",
+    "section": "",
+    "room_number": ""
+  }
+},
+{
+  "model": "core.section",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "A"
+  }
+},
+{
+  "model": "core.section",
+  "pk": 5,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "name": "B"
+  }
+},
+{
+  "model": "core.section",
+  "pk": 6,
+  "fields": {
+    "created_at": "2025-08-15T14:47:39.672Z",
+    "updated_at": "2025-08-15T14:47:39.672Z",
+    "is_active": true,
+    "name": "C"
+  }
+},
+{
+  "model": "school_profile.schoolprofile",
+  "pk": 1,
+  "fields": {
+    "school_name": "Gyan Varsha International School",
+    "principal_name": "Sumit Chaudhary",
+    "address": "Madhkaul, Belsand",
+    "email": "gvismadhkaul@gmail.com",
+    "mobile": "9135748551",
+    "registration_number": "SIT/BEL/015/EE/20",
+    "website": null,
+    "logo": "uploads/school_logos/School_Logo_vzzswZo.jpg",
+    "academic_calendar": "",
+    "start_date": "2025-04-01",
+    "end_date": "2026-03-31",
+    "academic_session_start_month": 4
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 1,
+  "fields": {
+    "name": "Shambhu Jha Sir",
+    "mobile": "9525377010",
+    "email": "9473089919@bh.com",
+    "qualification": "BED",
+    "joining_date": "2025-04-22",
+    "photo": "teacher_photos/Screenshot_2025-04-20_112850.jpg",
+    "resume": "teacher_resumes/RBI_ICICI.pdf",
+    "joining_letter": "teacher_letters/RBI_ICICI.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 2,
+  "fields": {
+    "name": "Sanjay Kumar Thakur",
+    "mobile": "9525377123",
+    "email": "admin@school.in",
+    "qualification": "BED",
+    "joining_date": "2025-04-20",
+    "photo": "teacher_photos/Screenshot_2025-04-20_112850_EsshiNV.jpg",
+    "resume": "teacher_resumes/RBI_ICICI_w4anuni.pdf",
+    "joining_letter": "teacher_letters/RBI_ICICI_tQ7cjSc.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 3,
+  "fields": {
+    "name": "Samarat Sir",
+    "mobile": "9525377123",
+    "email": "farihi3952@namewok.com",
+    "qualification": "BA",
+    "joining_date": "2025-04-21",
+    "photo": "teacher_photos/Screenshot_2025-04-20_112850_5ju0uLc.jpg",
+    "resume": "teacher_resumes/Application_Wise_RD_Drivers.pdf",
+    "joining_letter": "teacher_letters/Application_Wise_RD_Drivers.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 4,
+  "fields": {
+    "name": "Raja Kumar",
+    "mobile": "9525377123",
+    "email": "9473089@bh.in",
+    "qualification": "BA",
+    "joining_date": "2025-04-20",
+    "photo": "teacher_photos/Screenshot_2025-04-15_212529.jpg",
+    "resume": "teacher_resumes/Application_Wise_RD_Drivers_63lC3or.pdf",
+    "joining_letter": "teacher_letters/Application_Wise_RD_Drivers_sCvSQzy.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 5,
+  "fields": {
+    "name": "lovely kumari",
+    "mobile": "9525377010",
+    "email": "admin@ut.com",
+    "qualification": "BED",
+    "joining_date": "2025-07-22",
+    "photo": "teacher_photos/Screenshot_2025-07-22_192721.jpg",
+    "resume": "teacher_resumes/TDC_Part1.pdf",
+    "joining_letter": "teacher_letters/TDC_Part1.pdf"
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 6,
+  "fields": {
+    "name": "Prence",
+    "mobile": "3456789012",
+    "email": "paxeyen334@lassora.com",
+    "qualification": "BED",
+    "joining_date": "2025-08-15",
+    "photo": "teacher_photos/Screenshot_2025-08-14_173352.png",
+    "resume": "teacher_resumes/fees_report_20250815_143756.pdf",
+    "joining_letter": "teacher_letters/Manage_Fines.pdf"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 1,
+  "fields": {
+    "class_name": "Class 10",
+    "section_name": "A",
+    "room_number": "R-10A",
+    "created_at": "2025-08-18T12:41:37.984Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 2,
+  "fields": {
+    "class_name": "Class 9",
+    "section_name": "A",
+    "room_number": "R-9A",
+    "created_at": "2025-08-18T12:48:49.883Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 3,
+  "fields": {
+    "class_name": "Class 9",
+    "section_name": "B",
+    "room_number": "R-9B",
+    "created_at": "2025-08-18T12:48:49.889Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 4,
+  "fields": {
+    "class_name": "Class 8",
+    "section_name": "A",
+    "room_number": "R-8A",
+    "created_at": "2025-08-18T12:48:49.891Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 5,
+  "fields": {
+    "class_name": "Class 7",
+    "section_name": "A",
+    "room_number": "R-7A",
+    "created_at": "2025-09-02T08:53:37.343Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 6,
+  "fields": {
+    "class_name": "Class 6",
+    "section_name": "A",
+    "room_number": "R-6A",
+    "created_at": "2025-09-02T08:56:23.135Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 7,
+  "fields": {
+    "class_name": "Class 5",
+    "section_name": "A",
+    "room_number": "R-5A",
+    "created_at": "2025-09-02T08:56:48.341Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 8,
+  "fields": {
+    "class_name": "Class 4",
+    "section_name": "A",
+    "room_number": "R-4A",
+    "created_at": "2025-09-02T08:57:08.495Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 9,
+  "fields": {
+    "class_name": "Class 3",
+    "section_name": "A",
+    "room_number": "R-3A",
+    "created_at": "2025-09-02T08:57:36.821Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 10,
+  "fields": {
+    "class_name": "Class 2",
+    "section_name": "A",
+    "room_number": "R-2A",
+    "created_at": "2025-09-02T08:57:57.880Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 11,
+  "fields": {
+    "class_name": "Class 1",
+    "section_name": "A",
+    "room_number": "R-1A",
+    "created_at": "2025-09-02T08:58:20.003Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 12,
+  "fields": {
+    "class_name": "UKG",
+    "section_name": "A",
+    "room_number": "R-UKG-A",
+    "created_at": "2025-09-02T08:58:52.723Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 13,
+  "fields": {
+    "class_name": "Nursary",
+    "section_name": "A",
+    "room_number": "R-Nursary-A",
+    "created_at": "2025-09-02T08:59:27.817Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 14,
+  "fields": {
+    "class_name": "LKG",
+    "section_name": "A",
+    "room_number": "R-LKG-A",
+    "created_at": "2025-09-02T08:59:48.476Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 27,
+  "fields": {
+    "class_name": "Play",
+    "section_name": "A",
+    "room_number": "R-Play-A",
+    "created_at": "2025-09-02T14:36:31.728Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 30,
+  "fields": {
+    "class_name": "Test Class",
+    "section_name": "A",
+    "room_number": "TEST-ROOM",
+    "created_at": "2025-09-03T12:23:31.126Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 1,
+  "fields": {
+    "name": "हिंदी",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 2,
+  "fields": {
+    "name": "संस्कृत",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 3,
+  "fields": {
+    "name": "English",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 4,
+  "fields": {
+    "name": "Math",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 5,
+  "fields": {
+    "name": "Social Sc / SST",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 6,
+  "fields": {
+    "name": "Science",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 7,
+  "fields": {
+    "name": "Compute",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 9,
+  "fields": {
+    "name": "Moral Science",
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 10,
+  "fields": {
+    "name": "Mathematics",
+    "created_at": "2025-08-18T12:57:28.627Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 1,
+  "fields": {
+    "class_section": null,
+    "subject": 1,
+    "teacher": null,
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 3,
+  "fields": {
+    "class_section": null,
+    "subject": 9,
+    "teacher": null,
+    "created_at": "2025-08-04T20:57:43.267Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 4,
+  "fields": {
+    "class_section": 1,
+    "subject": 4,
+    "teacher": 2,
+    "created_at": "2025-08-18T12:57:28.635Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 5,
+  "fields": {
+    "class_section": 11,
+    "subject": 1,
+    "teacher": 4,
+    "created_at": "2025-09-02T09:02:53.559Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 6,
+  "fields": {
+    "class_section": 10,
+    "subject": 1,
+    "teacher": 3,
+    "created_at": "2025-09-02T09:03:18.289Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 7,
+  "fields": {
+    "class_section": 9,
+    "subject": 3,
+    "teacher": 5,
+    "created_at": "2025-09-02T09:03:35.422Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 8,
+  "fields": {
+    "class_section": 8,
+    "subject": 4,
+    "teacher": 2,
+    "created_at": "2025-09-02T09:03:48.742Z"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-03T12:26:28.214Z",
+    "is_active": false,
+    "admission_number": "GVIS00001",
+    "first_name": "SURBHI",
+    "last_name": "KUMARI",
+    "father_name": "BHAGIRATH OJA",
+    "mother_name": "RANI DEVI",
+    "date_of_birth": "2018-06-01",
+    "date_of_admission": "2025-04-02",
+    "aadhaar_number": "1234-5678-9012",
+    "pen_number": "12345678901",
+    "class_section": 10,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHKAUL JAFARPUR Belsand",
+    "mobile_number": "9702949981",
+    "email": "TEST@bh.in",
+    "blood_group": "UNKN",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/New_Logo_Enyv0GO.gif",
+    "transfer_certificate": "students/documents/New_Logo_PicY4i2.gif",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 3,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:09:36.639Z",
+    "is_active": true,
+    "admission_number": "GVIS00002",
+    "first_name": "ARYAN",
+    "last_name": "KUMAR",
+    "father_name": "PANKAJ KUMAR",
+    "mother_name": "CHANDANI DEVI",
+    "date_of_birth": "2018-07-11",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "89781234567",
+    "class_section": 10,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHKAUL BELSAND",
+    "mobile_number": "6209704534",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/New_Logo_8kl58Fn.gif",
+    "transfer_certificate": "students/documents/New_Logo_cHo3xuK.gif",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 4,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:09:36.642Z",
+    "is_active": true,
+    "admission_number": "GVIS00003",
+    "first_name": "RAMAN",
+    "last_name": "KUMAR",
+    "father_name": "RAMBHAROS OJHA",
+    "mother_name": "JULI DEVI",
+    "date_of_birth": "2019-01-11",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "89781234567",
+    "class_section": 11,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHKAUL JAFFARPUR BELSAND",
+    "mobile_number": "7970462025",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_pjVQzdN.pdf",
+    "transfer_certificate": "students/documents/Demo_3UQuLTP.pdf",
+    "due_amount": "5600.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 5,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:09:36.646Z",
+    "is_active": true,
+    "admission_number": "GVIS00004",
+    "first_name": "KRISHAN",
+    "last_name": "KUMAR",
+    "father_name": "CHUNCHUN CHAUDHARY",
+    "mother_name": "SONI DEVI",
+    "date_of_birth": "2018-12-09",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "98765456789",
+    "class_section": 11,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "BHANDARI BELSAND",
+    "mobile_number": "9523319503",
+    "email": "DEMO@ut.com",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_0NwKom6.pdf",
+    "transfer_certificate": "students/documents/Demo_OlwIL73.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 6,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:09:36.649Z",
+    "is_active": true,
+    "admission_number": "GVIS00005",
+    "first_name": "GINDEL",
+    "last_name": "KUMARI",
+    "father_name": "RAJAN SAH",
+    "mother_name": "BABITA DEVI",
+    "date_of_birth": "2016-05-11",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "98765456789",
+    "class_section": 8,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "PARRAHI BELSAND",
+    "mobile_number": "7091391461",
+    "email": "DEMO@school.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Screenshot_2025-04-20_112850_HSiThUl.jpg",
+    "transfer_certificate": "students/documents/Screenshot_2025-04-20_112850_RD7rEGO.jpg",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 7,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:09:36.651Z",
+    "is_active": true,
+    "admission_number": "GVIS00006",
+    "first_name": "PRANAV",
+    "last_name": "KUMAR",
+    "father_name": "RAJA SINGH",
+    "mother_name": "BABITA",
+    "date_of_birth": "2019-02-28",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "98765456789",
+    "class_section": 11,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "BHANDARI BELSAND",
+    "mobile_number": "8857915326",
+    "email": "DEMO@CO.IN",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Screenshot_2025-04-20_112850_lQrLNFP.jpg",
+    "transfer_certificate": "students/documents/Screenshot_2025-04-20_112850_NK9N6g6.jpg",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 10,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:09:36.656Z",
+    "is_active": true,
+    "admission_number": "GVIS08002",
+    "first_name": "JANVI",
+    "last_name": "KUMARI",
+    "father_name": "RAVINDRA SAH",
+    "mother_name": "RAMKALI DEVI",
+    "date_of_birth": "2011-12-20",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9012",
+    "pen_number": "98765456789",
+    "class_section": 4,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MARAR JAFFARPUR BELSAND",
+    "mobile_number": "8864092620",
+    "email": "TEST@TE.IN",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo.pdf",
+    "transfer_certificate": "students/documents/Demo_uUlMRS9.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 11,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:09:36.659Z",
+    "is_active": false,
+    "admission_number": "GVIS07001",
+    "first_name": "AANYA",
+    "last_name": "KUMARI",
+    "father_name": "JAYSHANKAR SAH",
+    "mother_name": "SUNITA KUMARI",
+    "date_of_birth": "2013-07-29",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "2348-5359-2848",
+    "pen_number": "23498656123",
+    "class_section": 5,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MADHKAUL JAFFARPUR BELSAND SITAMADHI . PIN. 843316",
+    "mobile_number": "9934532661",
+    "email": "TEAST@CO.com",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/210982-3840x2160-desktop-4k-attack-on-titan-the-final-season-backgrou_Ebq7bNG.jpg",
+    "transfer_certificate": "students/documents/211023-2048x1134-desktop-hd-attack-on-titan-the-final-season-wallpape_v7tyw9V.jpg",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 12,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:19:29.297Z",
+    "is_active": true,
+    "admission_number": "GVIS08001",
+    "first_name": "SHRUTI",
+    "last_name": "PRIYA",
+    "father_name": "MITARAM SAH",
+    "mother_name": "MUNNI SAH",
+    "date_of_birth": "2008-08-31",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "0987-0506-1256",
+    "pen_number": "23145617851",
+    "class_section": 1,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MATHKAUL, JAFFARPUR BELSAND , SITAMARHI",
+    "mobile_number": "8097609981",
+    "email": "JUSTTEST12@GMAIL.COM",
+    "blood_group": "UNKN",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_1_pujDM3p.jpeg",
+    "transfer_certificate": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_BrJVz5V.jpeg",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 13,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:09:36.663Z",
+    "is_active": true,
+    "admission_number": "GVIS05001",
+    "first_name": "ANJALI",
+    "last_name": "JHA",
+    "father_name": "DINKAR JHA",
+    "mother_name": "MADHU JHA",
+    "date_of_birth": "2014-08-12",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "7902-3296-2991",
+    "pen_number": "45623879614",
+    "class_section": 6,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL-HANSAWR, WARD NO.-06, P.O-TARIYANI-CHAPRA,SITAMARHI.",
+    "mobile_number": "9708521219",
+    "email": "ANJALI5@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_iE1vFeY.pdf",
+    "transfer_certificate": "students/documents/Demo_I0hXHZy.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 14,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:09:36.666Z",
+    "is_active": true,
+    "admission_number": "GVIS07002",
+    "first_name": "SHIVANI",
+    "last_name": "KUMARI",
+    "father_name": "CHITRANJAN SAH",
+    "mother_name": "RUKMINI KUMARI",
+    "date_of_birth": "2011-12-16",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "4356-2348-6784",
+    "pen_number": "14579236094",
+    "class_section": 4,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MADHKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "9031872720",
+    "email": "SHIVANI@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_tv0QnwV.pdf",
+    "transfer_certificate": "students/documents/Demo_Oyht9CU.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 15,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:09:36.670Z",
+    "is_active": true,
+    "admission_number": "GVIS05003",
+    "first_name": "KHUSHBU",
+    "last_name": "KUMARI",
+    "father_name": "RAKESH KUMAR YADAV",
+    "mother_name": "AASH DEVI",
+    "date_of_birth": "2012-12-14",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "6934-0464-3148",
+    "pen_number": "90865375859",
+    "class_section": 5,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILLI-RUPALI, P.O-SAULI, P.S- TARIYANI CHHAPRA ;DIST- SITAMARHI",
+    "mobile_number": "8969636364",
+    "email": "KHUSHBU05@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_lOBrmhQ.pdf",
+    "transfer_certificate": "students/documents/Demo_05rzLZ0.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 16,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.403Z",
+    "is_active": true,
+    "admission_number": "GVIS07003",
+    "first_name": "ANKITA",
+    "last_name": "SAH",
+    "father_name": "MITARAM SAH",
+    "mother_name": "MUNNI SAH",
+    "date_of_birth": "2011-07-18",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "5346-7321-8964",
+    "pen_number": "67821950232",
+    "class_section": 2,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "9545114347",
+    "email": "ANKITA@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_sX8rA4X.pdf",
+    "transfer_certificate": "students/documents/Demo_V9Qz0x9.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 17,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.410Z",
+    "is_active": true,
+    "admission_number": "GVIS05004",
+    "first_name": "KHUSHBU",
+    "last_name": "KUMARI",
+    "father_name": "RAKESH KUMAR YADAV",
+    "mother_name": "AASH DEVI",
+    "date_of_birth": "2012-12-12",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "6934-0464-3149",
+    "pen_number": "90865375859",
+    "class_section": 5,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILLI-RUPALI, P.O-SAULI, P.S- TARIYANI CHHAPRA ;DIST- SITAMARHI",
+    "mobile_number": "8969636364",
+    "email": "KHUSHBU05@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_NtqAyZd.pdf",
+    "transfer_certificate": "students/documents/Demo_6GiRR5a.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 18,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.413Z",
+    "is_active": true,
+    "admission_number": "GVIS07004",
+    "first_name": "VAANEE",
+    "last_name": "KUMARI",
+    "father_name": "RAVINDRA SHA",
+    "mother_name": "RAMKALI DEVI",
+    "date_of_birth": "2013-06-22",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "5467-9821-7482",
+    "pen_number": "65980234569",
+    "class_section": 5,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MARAR, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "8864092620",
+    "email": "VAANEE@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_mUIDAv7.pdf",
+    "transfer_certificate": "students/documents/Demo_ErdoyWr.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 19,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:15:23.102Z",
+    "is_active": false,
+    "admission_number": "GVIS05007",
+    "first_name": "LALTI",
+    "last_name": "KUMAR",
+    "father_name": "BIGU SAH",
+    "mother_name": "GITTA DEVI",
+    "date_of_birth": "2025-07-20",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "4083-7361-7118",
+    "pen_number": "27435756838",
+    "class_section": 12,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILLI+P.O+P.S- TARIYANI CHHAPRA, DIST :- SHEOHAR",
+    "mobile_number": "8873873931",
+    "email": "LALTI13@GMAIL.COM",
+    "blood_group": "UNKN",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_1_P1EL1Pq.jpeg",
+    "transfer_certificate": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_gdxaCBp.jpeg",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 20,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.416Z",
+    "is_active": true,
+    "admission_number": "GVIS07005",
+    "first_name": "PALAK",
+    "last_name": "GUPTA",
+    "father_name": "BAIJU KUMAR GUPTA",
+    "mother_name": "RAGNI DEVI",
+    "date_of_birth": "2013-06-04",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "7834-8654-1286",
+    "pen_number": "34578901238",
+    "class_section": 5,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "7898967312",
+    "email": "PALAK@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_iWGfKj1.pdf",
+    "transfer_certificate": "students/documents/Demo_jClUSGW.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 21,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.419Z",
+    "is_active": true,
+    "admission_number": "GVIS05008",
+    "first_name": "SWATI",
+    "last_name": "SINGH",
+    "father_name": "BHARAT BHUSHAN SINGH",
+    "mother_name": "KAJAL SINGH",
+    "date_of_birth": "2014-07-15",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "7872-4049-3328",
+    "pen_number": "22434757675",
+    "class_section": 6,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL+P.O+P.S- TARIYANI CHAPRA.",
+    "mobile_number": "9060523626",
+    "email": "SWATI420@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_seDDYL7.pdf",
+    "transfer_certificate": "students/documents/Demo_eijpURZ.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 22,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.423Z",
+    "is_active": true,
+    "admission_number": "GVIS07006",
+    "first_name": "ASHIK",
+    "last_name": "KUMAR",
+    "father_name": "KANHAI MAHTO",
+    "mother_name": "PINKI DEVI",
+    "date_of_birth": "2011-12-04",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "8967-3465-9123",
+    "pen_number": "43298756103",
+    "class_section": 4,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "9065683756",
+    "email": "ASHIK@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_HXRezw4.pdf",
+    "transfer_certificate": "students/documents/Demo_KK9nn01.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 23,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.426Z",
+    "is_active": true,
+    "admission_number": "GVIS05009",
+    "first_name": "SURYA",
+    "last_name": "KUMAR",
+    "father_name": "BIDHI BHUSAN SINGH",
+    "mother_name": "PRIYANK SINGH",
+    "date_of_birth": "2014-08-04",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "7976-2096-4223",
+    "pen_number": "38285796572",
+    "class_section": 6,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL+P.O+P.S- TARIYANI CHAPRA. DISTRICT :- SHOHAR",
+    "mobile_number": "9365902328",
+    "email": "SURYA320@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_CX9UjMy.pdf",
+    "transfer_certificate": "students/documents/Demo_ITqsdzD.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 24,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.429Z",
+    "is_active": true,
+    "admission_number": "GVIS07007",
+    "first_name": "PRIYANSHI",
+    "last_name": "KUMARI",
+    "father_name": "KAMOD CHAUDHARY",
+    "mother_name": "NUTAN DEVI",
+    "date_of_birth": "2013-01-01",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "6578-2345-0976",
+    "pen_number": "87503216784",
+    "class_section": 5,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "7091436384",
+    "email": "PRIYANSHI@CO.IN",
+    "blood_group": "B-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_xUQRN7s.pdf",
+    "transfer_certificate": "students/documents/Demo_U8FcEIf.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 25,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.433Z",
+    "is_active": true,
+    "admission_number": "GVIS05006",
+    "first_name": "AMARDEEP",
+    "last_name": "KUMAR",
+    "father_name": "SURESH BAITHA",
+    "mother_name": "LALITA DEVI",
+    "date_of_birth": "2011-03-09",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "6934-0264-3144",
+    "pen_number": "23764563442",
+    "class_section": 2,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "SC",
+    "address": "VILL+P.O- JAHARPUR. PS- BELSAND, DIST:- SITAMARHI",
+    "mobile_number": "8126991178",
+    "email": "AMARDEEP360@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_WFbGZmu.pdf",
+    "transfer_certificate": "students/documents/Demo_SGzFtGa.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 26,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.436Z",
+    "is_active": true,
+    "admission_number": "GVIS05000",
+    "first_name": "PALAK",
+    "last_name": "SINGH",
+    "father_name": "PRIYESH SINGH",
+    "mother_name": "NEHA SINGH",
+    "date_of_birth": "2014-08-24",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "2777-3261-9793",
+    "pen_number": "12837565467",
+    "class_section": 6,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL+P.O+P.S- TARIYANI CHAPRA. DIST:- sheohar",
+    "mobile_number": "9102765797",
+    "email": "PALAK430@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_hycxAtF.pdf",
+    "transfer_certificate": "students/documents/Demo_NQLK9E9.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 27,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.440Z",
+    "is_active": true,
+    "admission_number": "GVIS06001",
+    "first_name": "ANANYA",
+    "last_name": "SINGH",
+    "father_name": "AMOD SINGH",
+    "mother_name": "KANCHAN DEVI",
+    "date_of_birth": "2012-04-03",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "6798-3458-0943",
+    "pen_number": "98745203465",
+    "class_section": 4,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "6205394814",
+    "email": "ANANYA@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_aBgOTAR.pdf",
+    "transfer_certificate": "students/documents/Demo_R1bdJXi.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 28,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.444Z",
+    "is_active": true,
+    "admission_number": "GVIS050000",
+    "first_name": "MANVI",
+    "last_name": "SINGH",
+    "father_name": "DEEPAK SINGH",
+    "mother_name": "ANJALI SINGH",
+    "date_of_birth": "2014-08-20",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "8505-1934-9475",
+    "pen_number": "23375643782",
+    "class_section": 6,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL+P.O+P.S- TARIYANI CHAPRA. DIST:- sheohar",
+    "mobile_number": "7464094216",
+    "email": "MANVI340@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_NcJrvvB.pdf",
+    "transfer_certificate": "students/documents/Demo_rrZXVFr.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 29,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.448Z",
+    "is_active": true,
+    "admission_number": "GVIS06002",
+    "first_name": "PURNIMA",
+    "last_name": "SINGH",
+    "father_name": "SAROJ SINGH",
+    "mother_name": "ALKA DEVI",
+    "date_of_birth": "2012-01-19",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "6578-9804-2034",
+    "pen_number": "34806912348",
+    "class_section": 4,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "8294098876",
+    "email": "PURNIMA@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_CpTacSG.pdf",
+    "transfer_certificate": "students/documents/Demo_hU02LLK.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 30,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:12:42.572Z",
+    "is_active": true,
+    "admission_number": "GVIS05005",
+    "first_name": "ANKUR",
+    "last_name": "KUMAR",
+    "father_name": "RAM MANOHAR SINGH",
+    "mother_name": "GURIYA DEVI",
+    "date_of_birth": "2025-11-21",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "8682-0419-1144",
+    "pen_number": "43857465432",
+    "class_section": 13,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL- MADHKAUL, P.O- JATTARFUR - BELSAND, SITAMARHI",
+    "mobile_number": "9931490284",
+    "email": "ANKUR21@GMAIL.COM",
+    "blood_group": "UNKN",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_1_2IU3rJW.jpeg",
+    "transfer_certificate": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_RaoXtm4.jpeg",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 31,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.452Z",
+    "is_active": true,
+    "admission_number": "GVIS06003",
+    "first_name": "ANSHIL",
+    "last_name": "KUMAR",
+    "father_name": "MUKESH SINGH",
+    "mother_name": "DEEPIKA SINGH",
+    "date_of_birth": "2014-07-11",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "8906-8975-0321",
+    "pen_number": "45627087654",
+    "class_section": 6,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "SAHIYARA, SITAMARHI",
+    "mobile_number": "9113405754",
+    "email": "ANSHIL@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_heXyRAY.pdf",
+    "transfer_certificate": "students/documents/Demo_1t4ScVu.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 32,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.455Z",
+    "is_active": true,
+    "admission_number": "GVIS06004",
+    "first_name": "PARIDHI",
+    "last_name": "SINGH",
+    "father_name": "KUNDAN SINGH",
+    "mother_name": "PUJA SINGH",
+    "date_of_birth": "2014-10-12",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "2345-7890-5671",
+    "pen_number": "98704572317",
+    "class_section": 7,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "7488613040",
+    "email": "PARIDHI@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_esKPfS1.pdf",
+    "transfer_certificate": "students/documents/Demo_dbMHJhX.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 33,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:17:09.097Z",
+    "is_active": false,
+    "admission_number": "GVIS050005",
+    "first_name": "RAHUL",
+    "last_name": "KUMAR",
+    "father_name": "VIRENDRA CHAUDHARY",
+    "mother_name": "RANI CHAUDHARY",
+    "date_of_birth": "2025-07-20",
+    "date_of_admission": "2025-09-02",
+    "aadhaar_number": "5226-2250-4076",
+    "pen_number": "45623879615",
+    "class_section": 14,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILL- MADHKAUL. P.O- JAHARPUR. P.S-BLESAND, SITAMARHI",
+    "mobile_number": "8235694602",
+    "email": "RAHUL420@GMAIL.COM",
+    "blood_group": "UNKN",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_1_DlKza1y.jpeg",
+    "transfer_certificate": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_PvuFGjf.jpeg",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 34,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.459Z",
+    "is_active": true,
+    "admission_number": "GVIS06005",
+    "first_name": "AKASH",
+    "last_name": "JHA",
+    "father_name": "MUKESH JHA",
+    "mother_name": "SUDHA JHA",
+    "date_of_birth": "2014-04-24",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "7650-4578-2306",
+    "pen_number": "67893459276",
+    "class_section": 6,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "TARIYANI,CHAPRA,BELSAND, SITAMARHI",
+    "mobile_number": "6204088803",
+    "email": "AKASH@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_f9Hj1Sl.pdf",
+    "transfer_certificate": "students/documents/Demo_SNIDa4v.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 35,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.462Z",
+    "is_active": true,
+    "admission_number": "GVIS06006",
+    "first_name": "SONAKSHI",
+    "last_name": "SINGH",
+    "father_name": "SANTOSH SINGH",
+    "mother_name": "PUNAM SINGH",
+    "date_of_birth": "2012-07-01",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "9804-3691-6573",
+    "pen_number": "45896763085",
+    "class_section": 4,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "TARIYANI CHOPRA, SHEOHAR PIN-843316",
+    "mobile_number": "7369937574",
+    "email": "SONAKSHI@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_dwNtTTT.pdf",
+    "transfer_certificate": "students/documents/Demo_kIw5y2V.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 36,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.467Z",
+    "is_active": true,
+    "admission_number": "GVIS06007",
+    "first_name": "KHUSHBU",
+    "last_name": "KUMARI",
+    "father_name": "SHANKAR SAH",
+    "mother_name": "CHANCHALA SINGH",
+    "date_of_birth": "2010-11-14",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "9807-2568-7543",
+    "pen_number": "37988408743",
+    "class_section": 2,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MARA, KANSAR ,BELSAND,SITAMARHI PIN-843316",
+    "mobile_number": "7462991617",
+    "email": "KHUSHBU@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_caXMK7B.pdf",
+    "transfer_certificate": "students/documents/Demo_HSWl28C.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 37,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:14:40.696Z",
+    "is_active": true,
+    "admission_number": "GVIS04001",
+    "first_name": "KUNDAN",
+    "last_name": "SINGH",
+    "father_name": "SANJEET SINGH",
+    "mother_name": "MONI DEVI",
+    "date_of_birth": "2025-06-11",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "2216-3031-6169",
+    "pen_number": "21827464657",
+    "class_section": 1,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL+P.O- TARIYANI CHHAPRA, P.S- TRIYANI CHHAPRA, DIST- SHEOHAR ( BIHAR )",
+    "mobile_number": "8651548896",
+    "email": "KUNDAN420@GMAIL.COM",
+    "blood_group": "UNKN",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_1_rrn7GKe.jpeg",
+    "transfer_certificate": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_oP69Tj3.jpeg",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 38,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.470Z",
+    "is_active": true,
+    "admission_number": "GVIS06008",
+    "first_name": "AJMERI",
+    "last_name": "KHATOON",
+    "father_name": "MD. SABIB",
+    "mother_name": "JANISHA KHATOON",
+    "date_of_birth": "2011-11-28",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "2367-8704-8095",
+    "pen_number": "98720856276",
+    "class_section": 4,
+    "gender": "Female",
+    "religion": "Muslim",
+    "caste_category": "EBC",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "7091393590",
+    "email": "AJMERI@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_WoRPbS1.pdf",
+    "transfer_certificate": "students/documents/Demo_sDNnrjJ.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 39,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.473Z",
+    "is_active": true,
+    "admission_number": "GVIS00007",
+    "first_name": "VAISHNAVI",
+    "last_name": "KUMARI",
+    "father_name": "BALIRAM SINGH",
+    "mother_name": "JULI DEVI",
+    "date_of_birth": "2017-01-05",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "98765456789",
+    "class_section": 9,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MASHKAUL JAFFARPUR BELSAND",
+    "mobile_number": "7257042856",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_RTTXvwG.pdf",
+    "transfer_certificate": "students/documents/Demo_X7xzBA8.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 40,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.476Z",
+    "is_active": true,
+    "admission_number": "GVIS04002",
+    "first_name": "VISHAL",
+    "last_name": "KUMAR",
+    "father_name": "MUKESH SAH",
+    "mother_name": "DRAUPATI DEVI",
+    "date_of_birth": "2014-05-01",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "5047-2861-5113",
+    "pen_number": "45623879613",
+    "class_section": 6,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILL- MATHKAUL, P.O- JAFFARPUR, P.S- TARIYANI BELSAND, DIST- SITAMARHI, ( BIHAR )",
+    "mobile_number": "9781574265",
+    "email": "vishal340@gmail.com",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_pM7Dli0.pdf",
+    "transfer_certificate": "students/documents/Demo_aHS83ew.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 41,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.480Z",
+    "is_active": true,
+    "admission_number": "GVIS06009",
+    "first_name": "ANUSHKA",
+    "last_name": "KUMARI",
+    "father_name": "UMESH SAH",
+    "mother_name": "BACHICHI DEVI",
+    "date_of_birth": "2011-11-11",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "8760-5874-3659",
+    "pen_number": "98562532075",
+    "class_section": 4,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "8002185862",
+    "email": "ANUSHKA@CO.IN",
+    "blood_group": "B-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_ka4qN9X.pdf",
+    "transfer_certificate": "students/documents/Demo_rZEgfJD.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 42,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.483Z",
+    "is_active": true,
+    "admission_number": "GVIS00008",
+    "first_name": "DILKHUSH",
+    "last_name": "LUMAR",
+    "father_name": "NANDLAL MAHTO",
+    "mother_name": "PHOOL KUMARI DEVI",
+    "date_of_birth": "2018-12-25",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "34806912348",
+    "class_section": 11,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MADHKAUL BELSAND",
+    "mobile_number": "9955652058",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_ZduXktO.pdf",
+    "transfer_certificate": "students/documents/Demo_OvL6V0u.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 43,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.486Z",
+    "is_active": true,
+    "admission_number": "GVIS03001",
+    "first_name": "SURCHI",
+    "last_name": "KUMARI",
+    "father_name": "KANHAI MAHTO",
+    "mother_name": "PINKI DEVI",
+    "date_of_birth": "2014-04-27",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "9866-8891-3322",
+    "pen_number": "77888446590",
+    "class_section": 6,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "9065683756",
+    "email": "SURCHI@CO.IN",
+    "blood_group": "O+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_4QY52yb.pdf",
+    "transfer_certificate": "students/documents/Demo_ATMDqWs.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 44,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.490Z",
+    "is_active": true,
+    "admission_number": "GVIS04003",
+    "first_name": "SANDHYA",
+    "last_name": "KUMARI",
+    "father_name": "ANIL MANDAL",
+    "mother_name": "CHANDRA DEVI",
+    "date_of_birth": "2013-08-03",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "7225-4651-8511",
+    "pen_number": "09864467446",
+    "class_section": 5,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILL+P.0- TARIYANI CHHAPRA, P.S- TARIYANI CHHAPRA, DIST- SHEOHAR, PIN CODE - 843316, ( BIHAR ) .",
+    "mobile_number": "8235694602",
+    "email": "SANDHYA12@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_4E2MVQn.pdf",
+    "transfer_certificate": "students/documents/Demo_xaWcjOh.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 45,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.494Z",
+    "is_active": true,
+    "admission_number": "GVIS00009",
+    "first_name": "RUDRAKSH",
+    "last_name": "KUMAR",
+    "father_name": "KUNDAN KUMAR SINGH",
+    "mother_name": "MANISHA DEVI",
+    "date_of_birth": "2016-01-01",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "98765456789",
+    "class_section": 8,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "DUMRA TARIYANI CHAPRA BELSAND",
+    "mobile_number": "8780061053",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_8PXCsMA.pdf",
+    "transfer_certificate": "students/documents/Demo_0RT0X2Z.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 46,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.497Z",
+    "is_active": true,
+    "admission_number": "GVIS00010",
+    "first_name": "ARYAN",
+    "last_name": "KUMAR",
+    "father_name": "SUNIL KUMAR SHARAMA",
+    "mother_name": "DOLLY DEVI",
+    "date_of_birth": "2019-01-23",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "12345678901",
+    "class_section": 11,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MADHKAUL BELSAND",
+    "mobile_number": "8404919074",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_o9bF5A0.pdf",
+    "transfer_certificate": "students/documents/Demo_QPs7nw1.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 47,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.501Z",
+    "is_active": true,
+    "admission_number": "GVIS04004",
+    "first_name": "ARTI",
+    "last_name": "KUMARI",
+    "father_name": "SHANKAR SAH",
+    "mother_name": "CHANCHLA DEVI",
+    "date_of_birth": "2012-03-17",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "6466-9408-8118",
+    "pen_number": "45623879614",
+    "class_section": 4,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILL- MARAR, P.S- BELSAND, SITAMARHI, ( BIHAR )",
+    "mobile_number": "9199327864",
+    "email": "ARTI34@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_5JuX9vF.pdf",
+    "transfer_certificate": "students/documents/Demo_EYpds7g.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 48,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.504Z",
+    "is_active": true,
+    "admission_number": "GVIS03002",
+    "first_name": "SANAYA",
+    "last_name": "KUMARI",
+    "father_name": "BHOLA MANDAL",
+    "mother_name": "JYOTI DEVI",
+    "date_of_birth": "2015-08-06",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "3488-4466-7601",
+    "pen_number": "87654905472",
+    "class_section": 7,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "TARIYANI CHHAPRA , SHEOHAR PIN-843316",
+    "mobile_number": "9507890568",
+    "email": "SANAYA@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_zOZIM7D.pdf",
+    "transfer_certificate": "students/documents/Demo_5qwMy7B.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 49,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.508Z",
+    "is_active": true,
+    "admission_number": "GVIS04005",
+    "first_name": "NIDHI",
+    "last_name": "JHA",
+    "father_name": "PALAK RANJAN JHA",
+    "mother_name": "RANJNA JHA",
+    "date_of_birth": "2015-02-01",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "5591-4175-5786",
+    "pen_number": "22434757672",
+    "class_section": 7,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL- HANSAUR, P.O- TARIYANI, TARIYANI CHHAPRA, P.S- BELSAND, SITAMARHI, ( BIHAR )",
+    "mobile_number": "7480950731",
+    "email": "NIDHI42@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_havFUwz.pdf",
+    "transfer_certificate": "students/documents/Demo_sFa3a33.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 50,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:18:25.525Z",
+    "is_active": false,
+    "admission_number": "GVIS03003",
+    "first_name": "SATYAM",
+    "last_name": "KUMAR",
+    "father_name": "SUJEET THAKUR",
+    "mother_name": "SONI DEVI",
+    "date_of_birth": "2013-07-20",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "8809-6698-5673",
+    "pen_number": "99886747623",
+    "class_section": 2,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "TARIYANI CHHAPRA, SHEOHAR PIN-843316",
+    "mobile_number": "8809480920",
+    "email": "SATYAM@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_1_XXu1X8t.jpeg",
+    "transfer_certificate": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_UYdnzOG.jpeg",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 51,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.511Z",
+    "is_active": true,
+    "admission_number": "GVIS04006",
+    "first_name": "NAMRTA",
+    "last_name": "SINGH",
+    "father_name": "ABHAY SINGH",
+    "mother_name": "NIKKI DEVI",
+    "date_of_birth": "2012-12-12",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "6934-0464-3147",
+    "pen_number": "90865375359",
+    "class_section": 5,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL- MATHKAUL, P.O- JAFFARPUR, P.S- BELSAND, DIST- SITAMARHI, ( BIHAR )",
+    "mobile_number": "8873788176",
+    "email": "NAMRTA22@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_NfX3ykS.pdf",
+    "transfer_certificate": "students/documents/Demo_EbQH3gy.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 52,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.514Z",
+    "is_active": true,
+    "admission_number": "GVIS03004",
+    "first_name": "SATYA",
+    "last_name": "PRAKASH",
+    "father_name": "CHITRANJAN SAH",
+    "mother_name": "RUKMANI KUMARI",
+    "date_of_birth": "2015-03-24",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "8770-6581-8765",
+    "pen_number": "99774667722",
+    "class_section": 7,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "9031873720",
+    "email": "SATYA@CO.IN",
+    "blood_group": "O+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_PG9LRB7.pdf",
+    "transfer_certificate": "students/documents/Demo_kI0LRpE.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 53,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.517Z",
+    "is_active": true,
+    "admission_number": "GVIS04007",
+    "first_name": "PRACHI",
+    "last_name": "SINGH",
+    "father_name": "BENAM PAPA",
+    "mother_name": "RAVINDRA SINGH",
+    "date_of_birth": "2013-09-16",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "2350-7000-2771",
+    "pen_number": "12837165467",
+    "class_section": 6,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL- MATHKAUL, P.O- JAFFARPUR, P.S- TARIYANI BELSAND, DIST- SITAMARHI, ( BIHAR )",
+    "mobile_number": "9102133399",
+    "email": "PRACHI420@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_CK5PKPZ.pdf",
+    "transfer_certificate": "students/documents/Demo_5L5IJVr.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 54,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:17:49.512Z",
+    "is_active": false,
+    "admission_number": "GVIS03005",
+    "first_name": "RAJAT",
+    "last_name": "KUMAR",
+    "father_name": "MUKESH SINGH",
+    "mother_name": "RINKU DEVI",
+    "date_of_birth": "2015-07-20",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "5670-7893-6571",
+    "pen_number": "45618487349",
+    "class_section": 8,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "9771397017",
+    "email": "RAJAT@CO.IN",
+    "blood_group": "B-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_1_luRFxS5.jpeg",
+    "transfer_certificate": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_6ip6RnE.jpeg",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 55,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:14:12.653Z",
+    "is_active": false,
+    "admission_number": "GVIS04008",
+    "first_name": "KHUSHBU",
+    "last_name": "KUMARI",
+    "father_name": "BALIRAM SINGH",
+    "mother_name": "JULI DEVI",
+    "date_of_birth": "2025-07-20",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "8505-1924-9475",
+    "pen_number": "23375641782",
+    "class_section": 14,
+    "gender": "Female",
+    "religion": "Other",
+    "caste_category": "Other",
+    "address": "VILL- MATHKAUL, P.O- JAFFARPUR, P.S- TARIYANI BELSAND, DIST- SITAMARHI, ( BIHAR )",
+    "mobile_number": "7257042856",
+    "email": "KHUSHBU@GMAIL.COM",
+    "blood_group": "UNKN",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_7aQcjFJ.jpeg",
+    "transfer_certificate": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_1_pohKr7t.jpeg",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 56,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.521Z",
+    "is_active": true,
+    "admission_number": "GVIS03006",
+    "first_name": "RUHI",
+    "last_name": "SINGH",
+    "father_name": "NEERAJ SINGH",
+    "mother_name": "SONI SINGH",
+    "date_of_birth": "2014-11-13",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "8754-3451-8764",
+    "pen_number": "76543892075",
+    "class_section": 7,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "DUMARA, BELSAND, SITAMARHI PIN-843316",
+    "mobile_number": "8541923994",
+    "email": "RUHI@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_l7OeMOX.pdf",
+    "transfer_certificate": "students/documents/Demo_cxaFNx4.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 57,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.525Z",
+    "is_active": true,
+    "admission_number": "GVIS040008",
+    "first_name": "MONU",
+    "last_name": "KUMAR",
+    "father_name": "RAMESH SAH",
+    "mother_name": "MINA DEVI",
+    "date_of_birth": "2013-09-29",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "6037-6410-6590",
+    "pen_number": "45622879614",
+    "class_section": 6,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILL- MATHKAUL, P.S- BELSAND, DIST- SITAMARHI, ( BIHAR )",
+    "mobile_number": "8084778020",
+    "email": "MONU34@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_h6JA2xy.pdf",
+    "transfer_certificate": "students/documents/Demo_K2Sqi6i.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 58,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.529Z",
+    "is_active": true,
+    "admission_number": "GVIS040009",
+    "first_name": "ADARSH",
+    "last_name": "KUMAR",
+    "father_name": "RAMESH SAH",
+    "mother_name": "ARTI DEVI",
+    "date_of_birth": "2015-07-09",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "6943-4273-0257",
+    "pen_number": "23145517651",
+    "class_section": 7,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILL- PARRAHI, P.O- KONSAR, P.S-  BELSAND, DIST- SITAMARHI, ( BIHAR )",
+    "mobile_number": "8652493170",
+    "email": "ADARSH420@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_rjsanZf.pdf",
+    "transfer_certificate": "students/documents/Demo_TluuUNR.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 59,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.532Z",
+    "is_active": true,
+    "admission_number": "GVIS03007",
+    "first_name": "NEHA",
+    "last_name": "KUMARI",
+    "father_name": "GULTEN DAS",
+    "mother_name": "RENU DEVI",
+    "date_of_birth": "2015-05-03",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "8876-8097-6043",
+    "pen_number": "45759834002",
+    "class_section": 7,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "SC",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "7547005334",
+    "email": "NEHA@CO.IN",
+    "blood_group": "AB+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_lMHvLA0.pdf",
+    "transfer_certificate": "students/documents/Demo_LPe1cni.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 60,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:19:06.111Z",
+    "is_active": false,
+    "admission_number": "GVIS03008",
+    "first_name": "SHIVAM",
+    "last_name": "KUMAR",
+    "father_name": "RAVINDRA SAH",
+    "mother_name": "RAMKALI DEVI",
+    "date_of_birth": "2016-08-11",
+    "date_of_admission": "2025-07-20",
+    "aadhaar_number": "6609-0976-3241",
+    "pen_number": "57453893267",
+    "class_section": 9,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MARAR, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "8864092620",
+    "email": "SHIVAMI@CO.IN",
+    "blood_group": "B-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_1_fH10fTg.jpeg",
+    "transfer_certificate": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_4neQKkq.jpeg",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 61,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.536Z",
+    "is_active": true,
+    "admission_number": "GVIS00011",
+    "first_name": "AYUSH",
+    "last_name": "KUMAR",
+    "father_name": "RANJAN KUMAR",
+    "mother_name": "SUJA DEVI",
+    "date_of_birth": "2017-04-23",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "",
+    "pen_number": "12237565467",
+    "class_section": 9,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "Other",
+    "address": "VILL- MADHKAUL, P.O- JAFFARPUR, P.S- BELSAND, DIST- SITAMARHI.",
+    "mobile_number": "9546653764",
+    "email": "AYUSH34@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_D7ihanI.pdf",
+    "transfer_certificate": "students/documents/Demo_4uB5Gb3.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 62,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.539Z",
+    "is_active": true,
+    "admission_number": "GVIS03009",
+    "first_name": "ANAND",
+    "last_name": "KUMAR",
+    "father_name": "ALIK SINGH",
+    "mother_name": "REETAM DEVI",
+    "date_of_birth": "2015-04-14",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "5566-4830-9865",
+    "pen_number": "32781324769",
+    "class_section": 7,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "TARIYANT CHHAPRA, SHEOHAR PIN-843316",
+    "mobile_number": "9077704991",
+    "email": "ANAND@CO.IN",
+    "blood_group": "O+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_AZtxrPf.pdf",
+    "transfer_certificate": "students/documents/Demo_Y4Bu1sS.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 63,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.543Z",
+    "is_active": true,
+    "admission_number": "GVIS0002",
+    "first_name": "M.D ADIL",
+    "last_name": "RAJA",
+    "father_name": "M.D JULPHEKAR MANSURI",
+    "mother_name": "RAWANA DEVI",
+    "date_of_birth": "2017-04-24",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "8535-1934-9475",
+    "pen_number": "23335643782",
+    "class_section": 9,
+    "gender": "Male",
+    "religion": "Muslim",
+    "caste_category": "Other",
+    "address": "VILL- MADHKAUL, P.O- JAFFARPUR, P.S- BELSAND, DIST- SITAMARHI.",
+    "mobile_number": "9682679455",
+    "email": "ADIL33@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_Lc2KatE.pdf",
+    "transfer_certificate": "students/documents/Demo_kgGiFFL.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 64,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.546Z",
+    "is_active": true,
+    "admission_number": "GVIS03010",
+    "first_name": "SWETA",
+    "last_name": "KUMARI",
+    "father_name": "RAJESH MAHTO",
+    "mother_name": "GEETA KUMARI",
+    "date_of_birth": "2016-02-22",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "7876-9850-3453",
+    "pen_number": "65534378999",
+    "class_section": 8,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "9540853368",
+    "email": "SWETAI@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_vMPnfz2.pdf",
+    "transfer_certificate": "students/documents/Demo_40ly0jA.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 65,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.550Z",
+    "is_active": true,
+    "admission_number": "GVIS0003",
+    "first_name": "SATYAM",
+    "last_name": "KUMAR",
+    "father_name": "UDAY KUMAR",
+    "mother_name": "RINKI DEVI",
+    "date_of_birth": "2015-08-15",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "",
+    "pen_number": "23315643782",
+    "class_section": 7,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "VILL- MADHKAUL, P.O- JAFFARPUR, P.S- BELSAND, DIST- SITAMARHI.",
+    "mobile_number": "7031836785",
+    "email": "SATYAM420@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_iMj2Soc.pdf",
+    "transfer_certificate": "students/documents/Demo_oGmAQny.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 66,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.553Z",
+    "is_active": true,
+    "admission_number": "GVIS0004",
+    "first_name": "SANSKAR",
+    "last_name": "KUMAR",
+    "father_name": "RAHUL SINGH",
+    "mother_name": "KRISHNA DEVI",
+    "date_of_birth": "2018-10-14",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "8205-1934-9475",
+    "pen_number": "22433757675",
+    "class_section": 11,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL- MADHKAUL, P.O- JAFFARPUR, P.S- BELSAND, DIST- SITAMARHI.",
+    "mobile_number": "6200669601",
+    "email": "SANSKARJEE@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_k4qIcTA.pdf",
+    "transfer_certificate": "students/documents/Demo_t4P2cFl.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 67,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.558Z",
+    "is_active": true,
+    "admission_number": "GVIS01001",
+    "first_name": "PRACHI",
+    "last_name": "KUMARI",
+    "father_name": "RAJESH KUMAR SINGH",
+    "mother_name": "ARCHNA DEVI",
+    "date_of_birth": "2017-08-26",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "8863-8823-9921",
+    "pen_number": "87340923959",
+    "class_section": 9,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MARAR, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "6207274078",
+    "email": "PRACHI@CO.IN",
+    "blood_group": "B-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_KSqPVAm.pdf",
+    "transfer_certificate": "students/documents/Demo_SWS66pk.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 68,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.561Z",
+    "is_active": true,
+    "admission_number": "GVIS0005",
+    "first_name": "PRINCE",
+    "last_name": "KUMAR",
+    "father_name": "SHANKAR SAH",
+    "mother_name": "PHOOLO DEVI",
+    "date_of_birth": "2015-11-23",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "7871-4049-3328",
+    "pen_number": "12832565467",
+    "class_section": 8,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILL- MADHKAUL, P.O- JAFFARPUR, P.S- BELSAND, DIST- SITAMARHI.",
+    "mobile_number": "9065070329",
+    "email": "PRINCE45@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_c2VWTg9.pdf",
+    "transfer_certificate": "students/documents/Demo_TCiVeBX.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 69,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.564Z",
+    "is_active": true,
+    "admission_number": "GVIS01002",
+    "first_name": "SAKSHI",
+    "last_name": "KUMARI",
+    "father_name": "AMAR THAKUR",
+    "mother_name": "AMANKA DEVI",
+    "date_of_birth": "2016-08-13",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "7783-0974-3821",
+    "pen_number": "88943290132",
+    "class_section": 8,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "7543025326",
+    "email": "SAKSHI@CO.IN",
+    "blood_group": "O+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_ztHeCjz.pdf",
+    "transfer_certificate": "students/documents/Demo_a8RfEIb.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 70,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.567Z",
+    "is_active": true,
+    "admission_number": "GVIS0011",
+    "first_name": "PRIYANSHU",
+    "last_name": "KUMAR",
+    "father_name": "UMESH KUMAR",
+    "mother_name": "SANJU DEVI",
+    "date_of_birth": "2018-02-20",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "12345678901",
+    "class_section": 10,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "MARAR BELSAND",
+    "mobile_number": "7562034985",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_AZTmzdz.pdf",
+    "transfer_certificate": "students/documents/Demo_YNvHK1P.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 71,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.571Z",
+    "is_active": true,
+    "admission_number": "GVIS0006",
+    "first_name": "ARADHYA",
+    "last_name": "KUMARI",
+    "father_name": "DEEPLAL MAHTO",
+    "mother_name": "AMRITA DEVI",
+    "date_of_birth": "2018-04-01",
+    "date_of_admission": "2015-04-01",
+    "aadhaar_number": "7822-4049-3328",
+    "pen_number": "92865375859",
+    "class_section": 10,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILL+P.O+P.S- TARIYANI CHHAPRA, DIST- SHEOHAR",
+    "mobile_number": "9117795298",
+    "email": "ARADHYA23@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_2Mjw6Bp.pdf",
+    "transfer_certificate": "students/documents/Demo_BsNWQYX.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 72,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.574Z",
+    "is_active": true,
+    "admission_number": "GVIS01003",
+    "first_name": "SONAKSHI",
+    "last_name": "KUMARI",
+    "father_name": "RAKESH MAHTO",
+    "mother_name": "KANCHAN DEVI",
+    "date_of_birth": "2016-02-11",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "8730-6694-4812",
+    "pen_number": "87347897897",
+    "class_section": 8,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "MARAR, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "8228960742",
+    "email": "SONA@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_v8eP5NC.pdf",
+    "transfer_certificate": "students/documents/Demo_0iP9MwW.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 73,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.577Z",
+    "is_active": true,
+    "admission_number": "GVIS0007",
+    "first_name": "NANDANI",
+    "last_name": "KUMARI",
+    "father_name": "SUSHIL SAH",
+    "mother_name": "PRIYANKA DEVI",
+    "date_of_birth": "2016-03-24",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "",
+    "pen_number": "45633879614",
+    "class_section": 8,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILL- RUPALI, P.O- SAULI, P.S- TRIYANA CHHAPRA, DIST- SITAMARHI.",
+    "mobile_number": "7715836746",
+    "email": "NANDU420@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_Cu02TTe.pdf",
+    "transfer_certificate": "students/documents/Demo_HKrsMVj.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 74,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.580Z",
+    "is_active": true,
+    "admission_number": "GVIS0012",
+    "first_name": "HARISH",
+    "last_name": "MURTUZA",
+    "father_name": "MD MUTUZA",
+    "mother_name": "SAMINA KHATUN",
+    "date_of_birth": "2018-08-29",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "12345678901",
+    "class_section": 10,
+    "gender": "Male",
+    "religion": "Muslim",
+    "caste_category": "General",
+    "address": "MADHAKUL BELSAND",
+    "mobile_number": "8491892337",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_RDKeflQ.pdf",
+    "transfer_certificate": "students/documents/Demo_3rhfZcP.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 75,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.583Z",
+    "is_active": true,
+    "admission_number": "GVIS0008",
+    "first_name": "SAKSHI",
+    "last_name": "KUMARI",
+    "father_name": "BIYAN SAH",
+    "mother_name": "SANGITA DEVI",
+    "date_of_birth": "2015-12-04",
+    "date_of_admission": "2025-01-04",
+    "aadhaar_number": "8502-1934-9475",
+    "pen_number": "45622879614",
+    "class_section": 8,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "VILL- MADHKAUL, P.O- JAFFARPUR, P.S- BELSAND, DIST- SITAMARHI.",
+    "mobile_number": "9354037975",
+    "email": "SAKSHI420@GMAIL.COM",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_DyCWUkP.pdf",
+    "transfer_certificate": "students/documents/Demo_rXYmyoU.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 76,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.586Z",
+    "is_active": true,
+    "admission_number": "GVIS01004",
+    "first_name": "KAJAL",
+    "last_name": "KUMARI",
+    "father_name": "SHYAM BABU SINHGH",
+    "mother_name": "SAPNA SINGH",
+    "date_of_birth": "2017-02-01",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "6784-9404-7563",
+    "pen_number": "98340327965",
+    "class_section": 9,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "TARIYANI CHHAPRA SHEOHA",
+    "mobile_number": "8800433595",
+    "email": "KAJAL@CO.IN",
+    "blood_group": "O-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_oQGGwYr.pdf",
+    "transfer_certificate": "students/documents/Demo_wy7ttKD.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 77,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:16:35.645Z",
+    "is_active": false,
+    "admission_number": "GVIS0009",
+    "first_name": "M.D SAMIULLAH",
+    "last_name": "NO",
+    "father_name": "M.D SAMIULLAH",
+    "mother_name": "HALIMA KHATOON",
+    "date_of_birth": "2013-05-07",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "2772-3261-9793",
+    "pen_number": "12837565467",
+    "class_section": 10,
+    "gender": "Male",
+    "religion": "Muslim",
+    "caste_category": "Other",
+    "address": "VILL- PARRAHI, P.O- KANSAR, P.S- BELSAND, DIST- SITAMARHI.",
+    "mobile_number": "8340509603",
+    "email": "ZIR34@GMAIL.COM",
+    "blood_group": "UNKN",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_1_dozJDMJ.jpeg",
+    "transfer_certificate": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_YTID5UH.jpeg",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 78,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.589Z",
+    "is_active": true,
+    "admission_number": "GVIS01005",
+    "first_name": "PRIYANSHU",
+    "last_name": "KUMAR",
+    "father_name": "ABHAY SINGH",
+    "mother_name": "NIKKI DEVI",
+    "date_of_birth": "2014-11-28",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "6088-1190-3409",
+    "pen_number": "76834209813",
+    "class_section": 7,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "7383766852",
+    "email": "PRIYANSHU@CO.IN",
+    "blood_group": "A-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_fDeahXt.pdf",
+    "transfer_certificate": "students/documents/Demo_BiToMqg.pdf",
+    "due_amount": "5400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 79,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.594Z",
+    "is_active": true,
+    "admission_number": "GVIS0013",
+    "first_name": "ANUSHKA",
+    "last_name": "SAH",
+    "father_name": "RAKESH SAH",
+    "mother_name": "KANCHAN DEVI",
+    "date_of_birth": "2020-12-25",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "12345678901",
+    "class_section": 14,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "MARAR BELSAND",
+    "mobile_number": "8228960742",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_N67wEnC.pdf",
+    "transfer_certificate": "students/documents/Demo_jJdFfr9.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 80,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T11:55:24.632Z",
+    "is_active": false,
+    "admission_number": "GVIS0010",
+    "first_name": "ANANYA",
+    "last_name": "KUMARI",
+    "father_name": "DINKAR JHA",
+    "mother_name": "MADHU JHA",
+    "date_of_birth": "2019-02-04",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "8565-1934-9475",
+    "pen_number": "23374643782",
+    "class_section": 11,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "VILL+P.O+P.S-TARIYANI CHHAPRA , DIST- SHEOHAR.",
+    "mobile_number": "7480950731",
+    "email": "ANANYA03@GMAIL.COM",
+    "blood_group": "UNKN",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM.jpeg",
+    "transfer_certificate": "students/documents/WhatsApp_Image_2025-09-01_at_1.42.43_PM_1.jpeg",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 81,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.599Z",
+    "is_active": true,
+    "admission_number": "GVIS01006",
+    "first_name": "UTKARSH",
+    "last_name": "RAJ",
+    "father_name": "KUNDAN SINGH",
+    "mother_name": "POOJA SINGH",
+    "date_of_birth": "2017-10-17",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "8477-6972-3680",
+    "pen_number": "87946209289",
+    "class_section": 10,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "9708006728",
+    "email": "UTKARSH@CO.IN",
+    "blood_group": "O+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_XbtvCPc.pdf",
+    "transfer_certificate": "students/documents/Demo_PiPFIWN.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 82,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.602Z",
+    "is_active": true,
+    "admission_number": "GVIS01007",
+    "first_name": "ARYAN",
+    "last_name": "KUMAR",
+    "father_name": "RAMNATH THAKUR",
+    "mother_name": "AMBIKA DEVI",
+    "date_of_birth": "2015-11-11",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "3441-3862-4817",
+    "pen_number": "98023407939",
+    "class_section": 8,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "EBC",
+    "address": "MARAR, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "7255069905",
+    "email": "ARYAN@CO.IN",
+    "blood_group": "AB-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_07D6gs7.pdf",
+    "transfer_certificate": "students/documents/Demo_Xdbyucq.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 83,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.606Z",
+    "is_active": true,
+    "admission_number": "GVIS01008",
+    "first_name": "SHEKHAR",
+    "last_name": "SUMAN",
+    "father_name": "BIGU SAH",
+    "mother_name": "GITA DEVI",
+    "date_of_birth": "2016-03-06",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "3312-1751-8564",
+    "pen_number": "87130932789",
+    "class_section": 8,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "TARIYANI CHHAPRA SHEOHAR",
+    "mobile_number": "8873873931",
+    "email": "SHAKNARI@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_szqwfnO.pdf",
+    "transfer_certificate": "students/documents/Demo_zr4IwL9.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 84,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.610Z",
+    "is_active": true,
+    "admission_number": "GVIS01009",
+    "first_name": "IMANSHU",
+    "last_name": "RAJ",
+    "father_name": "RANJEET BAITHA",
+    "mother_name": "ANCHLA DEVI",
+    "date_of_birth": "2014-10-30",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "2681-9629-5298",
+    "pen_number": "78813890312",
+    "class_section": 7,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "TARIYANI CHHAPRA SHEOHAR",
+    "mobile_number": "7091012202",
+    "email": "HIMAN@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_UNUepJG.pdf",
+    "transfer_certificate": "students/documents/Demo_hUrE72o.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 85,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.613Z",
+    "is_active": true,
+    "admission_number": "GVIS0014",
+    "first_name": "KUNG",
+    "last_name": "SINGH",
+    "father_name": "BHARAT SINGH",
+    "mother_name": "SANJU DEVI",
+    "date_of_birth": "2017-04-26",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "12345678901",
+    "class_section": 9,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MARAR BELSAND",
+    "mobile_number": "7654358978",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_apLrNwy.pdf",
+    "transfer_certificate": "students/documents/Demo_l2YJske.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 86,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.616Z",
+    "is_active": true,
+    "admission_number": "GVIS01010",
+    "first_name": "ARUHI",
+    "last_name": "KUMARI",
+    "father_name": "ANIL MANDAL",
+    "mother_name": "CHANDA DEVI",
+    "date_of_birth": "2015-01-28",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "2178-7374-2508",
+    "pen_number": "87312894894",
+    "class_section": 7,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "TARIYANI CHHAPRA SHEOHAR",
+    "mobile_number": "8235694602",
+    "email": "ARUHI@CO.IN",
+    "blood_group": "B+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_YNNpHp0.pdf",
+    "transfer_certificate": "students/documents/Demo_553nCxu.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 87,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.620Z",
+    "is_active": true,
+    "admission_number": "GVIS0015",
+    "first_name": "VEER",
+    "last_name": "SINGH",
+    "father_name": "SATISH SINGH",
+    "mother_name": "NISHA DEVI",
+    "date_of_birth": "2019-11-17",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "",
+    "class_section": 12,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "TARIYANI CHAPDA",
+    "mobile_number": "7352485119",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_5SOOFE4.pdf",
+    "transfer_certificate": "students/documents/Demo_OSkdOkl.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 88,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.623Z",
+    "is_active": true,
+    "admission_number": "GVIS02001",
+    "first_name": "BAJRANGI",
+    "last_name": "KUMAR",
+    "father_name": "CHINKU  MANDAL",
+    "mother_name": "SITA DEVI",
+    "date_of_birth": "2015-02-19",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "2233-8854-8672",
+    "pen_number": "87324989138",
+    "class_section": 7,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "TARIYANI CHHAPRA SHEOHAR",
+    "mobile_number": "7070542211",
+    "email": "BAJRANGI@CO.IN",
+    "blood_group": "O-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_RrLBwOB.pdf",
+    "transfer_certificate": "students/documents/Demo_TwNPjYC.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 89,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.627Z",
+    "is_active": true,
+    "admission_number": "GVIS02002",
+    "first_name": "KHUSHI",
+    "last_name": "KUMARI",
+    "father_name": "SARVESH PANDEY",
+    "mother_name": "ASMITA BHARTI",
+    "date_of_birth": "2015-02-12",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "2331-7681-7654",
+    "pen_number": "87234099018",
+    "class_section": 7,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MARAR, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "7079905726",
+    "email": "KHUSHI@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_h58bsxz.pdf",
+    "transfer_certificate": "students/documents/Demo_DVvD8Mj.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 90,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.629Z",
+    "is_active": true,
+    "admission_number": "GVIS02003",
+    "first_name": "SUNNY",
+    "last_name": "KUMAR",
+    "father_name": "MUNTUN MANDAL",
+    "mother_name": "MIRA DEVI",
+    "date_of_birth": "2016-12-08",
+    "date_of_admission": "2025-01-04",
+    "aadhaar_number": "6643-8721-8471",
+    "pen_number": "72990298438",
+    "class_section": 9,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "TARIYANI CHHAPRA SHEOHAR",
+    "mobile_number": "7829377271",
+    "email": "SUNNY@CO.IN",
+    "blood_group": "O-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_z9t9sBy.pdf",
+    "transfer_certificate": "students/documents/Demo_OXJCmhx.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 91,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.632Z",
+    "is_active": true,
+    "admission_number": "GVIS0016",
+    "first_name": "ARYAN",
+    "last_name": "KUMAR",
+    "father_name": "ROHIT MANDAL",
+    "mother_name": "KAJAL DEVI",
+    "date_of_birth": "2019-02-03",
+    "date_of_admission": "2025-01-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "12345678901",
+    "class_section": 11,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "TARIYANI CHAPRA",
+    "mobile_number": "9297632954",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_MrYXVVc.pdf",
+    "transfer_certificate": "students/documents/Demo_snSnGV8.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 92,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.636Z",
+    "is_active": true,
+    "admission_number": "GVIS0017",
+    "first_name": "ISHAN",
+    "last_name": "SINGH",
+    "father_name": "AKASH SINGH",
+    "mother_name": "MAUSHAM DEVI",
+    "date_of_birth": "2019-12-27",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "12345678901",
+    "class_section": 12,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHKAUL",
+    "mobile_number": "9534421102",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_iUeyXBe.pdf",
+    "transfer_certificate": "students/documents/Demo_2vplY18.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 93,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.639Z",
+    "is_active": true,
+    "admission_number": "GVIS02004",
+    "first_name": "AMITESH",
+    "last_name": "KUMAR",
+    "father_name": "AMRMEDAR KUMAR",
+    "mother_name": "AARTI DEVI",
+    "date_of_birth": "2016-03-30",
+    "date_of_admission": "2025-01-04",
+    "aadhaar_number": "4250-3253-9751",
+    "pen_number": "87290472091",
+    "class_section": 8,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "HANSHAUR , TARIYANI CHHAPRA SHEOHAR",
+    "mobile_number": "9507726343",
+    "email": "AMITESH@CO.IN",
+    "blood_group": "O-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_ZWbMn18.pdf",
+    "transfer_certificate": "students/documents/Demo_SCBh0W1.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 94,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.642Z",
+    "is_active": true,
+    "admission_number": "GVIS0018",
+    "first_name": "PRITAM KUMAR",
+    "last_name": "MANDAL",
+    "father_name": "PRAKASH KR MANDAL",
+    "mother_name": "RAGNI DEVI",
+    "date_of_birth": "2018-10-30",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "12345678901",
+    "class_section": 11,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "TARIYANI CHHAPRA",
+    "mobile_number": "8560041897",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_sbIeJHJ.pdf",
+    "transfer_certificate": "students/documents/Demo_SMa6218.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 95,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.644Z",
+    "is_active": true,
+    "admission_number": "GVIS02005",
+    "first_name": "TRISHA",
+    "last_name": "KUMARI",
+    "father_name": "DHARMENDRA SINGH",
+    "mother_name": "SAVITA DEVI",
+    "date_of_birth": "2016-06-25",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "8753-4811-8456",
+    "pen_number": "87732947832",
+    "class_section": 8,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MARAR, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "9708788872",
+    "email": "TRISHA@CO.IN",
+    "blood_group": "O-",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_XsJrU0P.pdf",
+    "transfer_certificate": "students/documents/Demo_MGpty5K.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 96,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.648Z",
+    "is_active": true,
+    "admission_number": "GVIS0019",
+    "first_name": "TANIYA",
+    "last_name": "KUMARI",
+    "father_name": "DEEPAK SAH",
+    "mother_name": "BABITA DEVI",
+    "date_of_birth": "2018-05-04",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "12345678901",
+    "class_section": 10,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "TARIYANI CHAPRA",
+    "mobile_number": "8083667139",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_JHuz61K.pdf",
+    "transfer_certificate": "students/documents/Demo_rLAy6Bj.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 97,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.651Z",
+    "is_active": true,
+    "admission_number": "GVIS020036",
+    "first_name": "ANUSHKA",
+    "last_name": "KUMARI",
+    "father_name": "PAPPU KUMAR SINGH",
+    "mother_name": "GANITA DEVI",
+    "date_of_birth": "2017-10-20",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "7439-7219-8291",
+    "pen_number": "87924390301",
+    "class_section": 10,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MARAR, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "9122870637",
+    "email": "ANUSHKA@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_OVkjlHe.pdf",
+    "transfer_certificate": "students/documents/Demo_qHUtJia.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 98,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.655Z",
+    "is_active": true,
+    "admission_number": "GVIS0020",
+    "first_name": "ANURADHA",
+    "last_name": "SINGH",
+    "father_name": "RAJESH SINGH",
+    "mother_name": "KHUSHBU DEVI",
+    "date_of_birth": "2019-12-15",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "12345678901",
+    "class_section": 12,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "TARIYANI CHHAPRA",
+    "mobile_number": "7260939308",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_Bu2ySQq.pdf",
+    "transfer_certificate": "students/documents/Demo_vRNrJz7.pdf",
+    "due_amount": "4400.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 99,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.658Z",
+    "is_active": true,
+    "admission_number": "GVIS02007",
+    "first_name": "PINU",
+    "last_name": "SINGH",
+    "father_name": "YIDHI BHUSHAN SINGH",
+    "mother_name": "PRIYANKA SINGH",
+    "date_of_birth": "2016-08-17",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "0248-9912-8349",
+    "pen_number": "81222349348",
+    "class_section": 8,
+    "gender": "Female",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "TARIYANI CHHAPRA SHEOHAR",
+    "mobile_number": "9365902328",
+    "email": "PINU@CO.IN",
+    "blood_group": "AB+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_eABtjk6.pdf",
+    "transfer_certificate": "students/documents/Demo_6Znldzg.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 100,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.661Z",
+    "is_active": true,
+    "admission_number": "GVIS02008",
+    "first_name": "VIRAT",
+    "last_name": "KUMAR",
+    "father_name": "VIDHI BHUSHAN SINGH",
+    "mother_name": "PRIYANKA SINGH",
+    "date_of_birth": "2016-08-17",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "4019-0729-9288",
+    "pen_number": "87923902398",
+    "class_section": 8,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "TARIYANI CHHAPRA SHEOHAR",
+    "mobile_number": "9365902328",
+    "email": "VIRAT@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_PZm0Plh.pdf",
+    "transfer_certificate": "students/documents/Demo_hPUpYAE.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 101,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.664Z",
+    "is_active": true,
+    "admission_number": "GVIS02009",
+    "first_name": "SURYANSH",
+    "last_name": "KUMAR",
+    "father_name": "RANUJ KUMAR SINGH",
+    "mother_name": "KRISHNA DEVI",
+    "date_of_birth": "2016-02-02",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "7823-8232-8239",
+    "pen_number": "87312031298",
+    "class_section": 8,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "MADHUKAUL, JAFARPUR, BELSAND, SITAMADHI PIN-843316",
+    "mobile_number": "6200669601",
+    "email": "SURYANSH@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_lImLEc3.pdf",
+    "transfer_certificate": "students/documents/Demo_2GD7N03.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 102,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.667Z",
+    "is_active": true,
+    "admission_number": "GVIS02010",
+    "first_name": "MD.ABDULLAH",
+    "last_name": "ALAM",
+    "father_name": "MD. SAMIULLAM",
+    "mother_name": "HALIMA KHATOON",
+    "date_of_birth": "2013-04-01",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "5272-8230-8291",
+    "pen_number": "82903421900",
+    "class_section": 5,
+    "gender": "Male",
+    "religion": "Muslim",
+    "caste_category": "OBC",
+    "address": "PARRAHI, KANSAR, BELSAND,SITAMERHI PIN-843316",
+    "mobile_number": "8340509603",
+    "email": "ABDULLAM@CO.IN",
+    "blood_group": "A+",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_z19CIZj.pdf",
+    "transfer_certificate": "students/documents/Demo_IdFCtRj.pdf",
+    "due_amount": "3200.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 103,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-02T12:10:58.671Z",
+    "is_active": true,
+    "admission_number": "GVIS00311",
+    "first_name": "ABHINASH",
+    "last_name": "KUMAR",
+    "father_name": "ASHOK RAY",
+    "mother_name": "REKHA DEVI",
+    "date_of_birth": "2019-12-20",
+    "date_of_admission": "2025-04-01",
+    "aadhaar_number": "1234-5678-9876",
+    "pen_number": "12345678901",
+    "class_section": 12,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "OBC",
+    "address": "KANSAR BELSAND",
+    "mobile_number": "7546091389",
+    "email": "DEMO@bh.in",
+    "blood_group": "Unkno",
+    "student_image": "students/images/Screenshot_2025-04-20_112850.jpg",
+    "aadhar_card": "students/documents/Demo_IjaoVq6.pdf",
+    "transfer_certificate": "students/documents/Demo_udTG5cO.pdf",
+    "due_amount": "1000.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 108,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-09-03T08:40:12.028Z",
+    "is_active": true,
+    "admission_number": "demo",
+    "first_name": "lovely",
+    "last_name": "kumari",
+    "father_name": "Father's Name",
+    "mother_name": "Mother's Name",
+    "date_of_birth": "2025-07-22",
+    "date_of_admission": "2025-07-22",
+    "aadhaar_number": "1234-5678-9012",
+    "pen_number": "12345678901",
+    "class_section": 3,
+    "gender": "Other",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "ward 11\r\nkailashpuri\r\ndumra",
+    "mobile_number": "9955590919",
+    "email": "TEST@bh.in",
+    "blood_group": "UNKN",
+    "student_image": "students/images/Yurj_q61FB0e.png",
+    "aadhar_card": "students/documents/Yurj_F91tGPD.png",
+    "transfer_certificate": "students/documents/Yurj_PVRfbFV.png",
+    "due_amount": "3700.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 112,
+  "fields": {
+    "created_at": "2025-09-02T11:22:35.281Z",
+    "updated_at": "2025-09-03T12:28:16.372Z",
+    "is_active": false,
+    "admission_number": "10517",
+    "first_name": "Upmanyu",
+    "last_name": "Mukund",
+    "father_name": "Rajnish Kumar",
+    "mother_name": "Baby Devi",
+    "date_of_birth": "2009-04-02",
+    "date_of_admission": "2025-09-02",
+    "aadhaar_number": "1234-5678-9012",
+    "pen_number": "12345678931",
+    "class_section": 1,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "843301",
+    "mobile_number": "7488510511",
+    "email": "upmanyu201@gmail.com",
+    "blood_group": "UNKN",
+    "student_image": "students/images/humming-bird-1935665_1920.png",
+    "aadhar_card": "students/documents/student_fees_export_20250817_170416_l3vhEdG.pdf",
+    "transfer_certificate": "students/documents/fees_export_20250817_215529_apYg9DM.pdf",
+    "due_amount": "0.00"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 113,
+  "fields": {
+    "created_at": "2025-09-03T12:24:58.355Z",
+    "updated_at": "2025-09-03T12:24:58.356Z",
+    "is_active": true,
+    "admission_number": "TEST001",
+    "first_name": "Test",
+    "last_name": "Student",
+    "father_name": "Test Father",
+    "mother_name": "Test Mother",
+    "date_of_birth": "2010-01-01",
+    "date_of_admission": "2025-09-03",
+    "aadhaar_number": null,
+    "pen_number": null,
+    "class_section": 30,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "Test Address",
+    "mobile_number": "9955590919",
+    "email": "test@example.com",
+    "blood_group": "O+",
+    "student_image": "",
+    "aadhar_card": "",
+    "transfer_certificate": "",
+    "due_amount": "1000.00"
+  }
+},
+{
+  "model": "transport.route",
+  "pk": 3,
+  "fields": {
+    "name": "Route 1"
+  }
+},
+{
+  "model": "transport.route",
+  "pk": 6,
+  "fields": {
+    "name": "Route 3"
+  }
+},
+{
+  "model": "transport.route",
+  "pk": 7,
+  "fields": {
+    "name": "Route 4"
+  }
+},
+{
+  "model": "transport.route",
+  "pk": 10,
+  "fields": {
+    "name": "Route 5"
+  }
+},
+{
+  "model": "transport.route",
+  "pk": 17,
+  "fields": {
+    "name": "Route 2"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 4,
+  "fields": {
+    "route": 3,
+    "name": "Madhkaul"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 5,
+  "fields": {
+    "route": 3,
+    "name": "Jaffarpur"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 10,
+  "fields": {
+    "route": 3,
+    "name": "Rupauli"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 12,
+  "fields": {
+    "route": 6,
+    "name": "Belsand"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 13,
+  "fields": {
+    "route": 6,
+    "name": "Patahi"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 14,
+  "fields": {
+    "route": 7,
+    "name": "Tariyani Chhapra"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 15,
+  "fields": {
+    "route": 7,
+    "name": "Hansaur"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 16,
+  "fields": {
+    "route": 7,
+    "name": "Dumra"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 17,
+  "fields": {
+    "route": 7,
+    "name": "Kundal"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 19,
+  "fields": {
+    "route": 10,
+    "name": "Simra"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 20,
+  "fields": {
+    "route": 3,
+    "name": "Partapur"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 21,
+  "fields": {
+    "route": 17,
+    "name": "Athri"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 11,
+  "fields": {
+    "student": 4,
+    "route": 3,
+    "stoppage": 5,
+    "assigned_date": "2025-07-21"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 12,
+  "fields": {
+    "student": 108,
+    "route": 10,
+    "stoppage": 19,
+    "assigned_date": "2025-07-22"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 13,
+  "fields": {
+    "student": 11,
+    "route": 10,
+    "stoppage": 19,
+    "assigned_date": "2025-08-15"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 14,
+  "fields": {
+    "student": 103,
+    "route": 7,
+    "stoppage": 17,
+    "assigned_date": "2025-08-15"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 15,
+  "fields": {
+    "student": 78,
+    "route": 7,
+    "stoppage": 17,
+    "assigned_date": "2025-08-15"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 16,
+  "fields": {
+    "student": 20,
+    "route": 3,
+    "stoppage": 20,
+    "assigned_date": "2025-09-03"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 17,
+  "fields": {
+    "student": 57,
+    "route": 3,
+    "stoppage": 20,
+    "assigned_date": "2025-09-03"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 18,
+  "fields": {
+    "student": 73,
+    "route": 3,
+    "stoppage": 20,
+    "assigned_date": "2025-09-03"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 19,
+  "fields": {
+    "student": 102,
+    "route": 3,
+    "stoppage": 20,
+    "assigned_date": "2025-09-03"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 20,
+  "fields": {
+    "student": 12,
+    "route": 3,
+    "stoppage": 20,
+    "assigned_date": "2025-09-03"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 21,
+  "fields": {
+    "student": 37,
+    "route": 3,
+    "stoppage": 20,
+    "assigned_date": "2025-09-03"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 22,
+  "fields": {
+    "student": 112,
+    "route": 3,
+    "stoppage": 20,
+    "assigned_date": "2025-09-03"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 157,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1000.00",
+    "discount": "0.00",
+    "paid_amount": "1000.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.912Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 158,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "21.00",
+    "discount": "0.00",
+    "paid_amount": "21.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.912Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": "Fine Payment: Late Fees Fine - September"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 159,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "200.00",
+    "discount": "0.00",
+    "paid_amount": "200.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.913Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 160,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "700.00",
+    "discount": "0.00",
+    "paid_amount": "700.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.913Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 161,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1000.00",
+    "discount": "0.00",
+    "paid_amount": "1000.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.913Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 162,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "700.00",
+    "discount": "0.00",
+    "paid_amount": "700.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.913Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 163,
+  "fields": {
+    "student": 108,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "700.00",
+    "discount": "0.00",
+    "paid_amount": "700.00",
+    "receipt_no": "REC-0002",
+    "deposit_date": "2025-08-31T06:51:24.684Z",
+    "payment_mode": "Online",
+    "transaction_no": "14729789963",
+    "payment_source": "SBI",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 164,
+  "fields": {
+    "student": 108,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1000.00",
+    "discount": "0.00",
+    "paid_amount": "1000.00",
+    "receipt_no": "REC-0002",
+    "deposit_date": "2025-08-31T06:51:24.684Z",
+    "payment_mode": "Online",
+    "transaction_no": "14729789963",
+    "payment_source": "SBI",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 165,
+  "fields": {
+    "student": 11,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "800.00",
+    "discount": "0.00",
+    "paid_amount": "800.00",
+    "receipt_no": "REC-0003",
+    "deposit_date": "2025-09-01T08:19:13.198Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 166,
+  "fields": {
+    "student": 11,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "200.00",
+    "discount": "0.00",
+    "paid_amount": "200.00",
+    "receipt_no": "REC-0003",
+    "deposit_date": "2025-09-01T08:19:13.198Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 168,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1800.00",
+    "discount": "0.00",
+    "paid_amount": "1800.00",
+    "receipt_no": "REC-0004",
+    "deposit_date": "2025-09-03T07:08:48.495Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 169,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1800.00",
+    "discount": "0.00",
+    "paid_amount": "1800.00",
+    "receipt_no": "REC-0005",
+    "deposit_date": "2025-09-03T07:23:17.195Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 170,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1800.00",
+    "discount": "50.00",
+    "paid_amount": "1750.00",
+    "receipt_no": "REC-0006",
+    "deposit_date": "2025-09-03T07:25:49.041Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 171,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 279,
+    "amount": "1800.00",
+    "discount": "0.00",
+    "paid_amount": "1800.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 172,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 280,
+    "amount": "1800.00",
+    "discount": "0.00",
+    "paid_amount": "1800.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 173,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 294,
+    "amount": "30.00",
+    "discount": "0.00",
+    "paid_amount": "30.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 174,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 295,
+    "amount": "100.00",
+    "discount": "0.00",
+    "paid_amount": "100.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 175,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 285,
+    "amount": "600.00",
+    "discount": "0.00",
+    "paid_amount": "600.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 176,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "20.00",
+    "discount": "0.00",
+    "paid_amount": "20.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": "Fine Payment: August"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 177,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 281,
+    "amount": "1800.00",
+    "discount": "0.00",
+    "paid_amount": "1800.00",
+    "receipt_no": "REC-0008",
+    "deposit_date": "2025-09-03T12:29:12.794Z",
+    "payment_mode": "UPI",
+    "transaction_no": "654789",
+    "payment_source": "BHIM",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 178,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 289,
+    "amount": "600.00",
+    "discount": "0.00",
+    "paid_amount": "600.00",
+    "receipt_no": "REC-0008",
+    "deposit_date": "2025-09-03T12:29:12.794Z",
+    "payment_mode": "UPI",
+    "transaction_no": "654789",
+    "payment_source": "BHIM",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 179,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "100.00",
+    "discount": "0.00",
+    "paid_amount": "100.00",
+    "receipt_no": "REC-0009",
+    "deposit_date": "2025-09-03T12:40:41.760Z",
+    "payment_mode": "Cash",
+    "transaction_no": "TEST-001",
+    "payment_source": "Office",
+    "note": "Carry Forward Payment"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 180,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "100.00",
+    "discount": "0.00",
+    "paid_amount": "100.00",
+    "receipt_no": "REC-0010",
+    "deposit_date": "2025-09-03T12:41:15.162Z",
+    "payment_mode": "Cash",
+    "transaction_no": "TEST-001",
+    "payment_source": "Office",
+    "note": "Carry Forward Payment"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 181,
+  "fields": {
+    "student": 37,
+    "fees_group": null,
+    "fees_type": 291,
+    "amount": "600.00",
+    "discount": "0.00",
+    "paid_amount": "600.00",
+    "receipt_no": "REC-0011",
+    "deposit_date": "2025-09-03T12:46:53.756Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 182,
+  "fields": {
+    "student": 37,
+    "fees_group": null,
+    "fees_type": 293,
+    "amount": "600.00",
+    "discount": "0.00",
+    "paid_amount": "600.00",
+    "receipt_no": "REC-0011",
+    "deposit_date": "2025-09-03T12:46:53.756Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 2,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T07:26:28.494Z",
+    "is_active": true,
+    "fee_group": "Monthly",
+    "group_type": "Tuition Fee",
+    "fee_type": "Class Based",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 4,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "fee_group": "Monthly",
+    "group_type": "Transport",
+    "fee_type": "Stoppage Based",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 19,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "fee_group": "Quarterly",
+    "group_type": "Exam Fees",
+    "fee_type": "General",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 20,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "fee_group": "One Time",
+    "group_type": "Admission Fees",
+    "fee_type": "General",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 23,
+  "fields": {
+    "created_at": "2025-08-16T13:03:39.897Z",
+    "updated_at": "2025-08-17T04:24:51.912Z",
+    "is_active": true,
+    "fee_group": "One Time",
+    "group_type": "Exam Fees",
+    "fee_type": "Class Based",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 279,
+  "fields": {
+    "created_at": "2025-09-03T08:02:26.755Z",
+    "updated_at": "2025-09-03T08:02:26.755Z",
+    "is_active": true,
+    "fee_group": 2,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 10A",
+    "amount_type": "August",
+    "amount": "1800.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 280,
+  "fields": {
+    "created_at": "2025-09-03T08:02:26.758Z",
+    "updated_at": "2025-09-03T08:02:26.758Z",
+    "is_active": true,
+    "fee_group": 2,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 10A",
+    "amount_type": "September",
+    "amount": "1800.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 281,
+  "fields": {
+    "created_at": "2025-09-03T08:02:26.759Z",
+    "updated_at": "2025-09-03T08:02:26.759Z",
+    "is_active": true,
+    "fee_group": 2,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 10A",
+    "amount_type": "October",
+    "amount": "1800.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 282,
+  "fields": {
+    "created_at": "2025-09-03T08:02:26.760Z",
+    "updated_at": "2025-09-03T08:02:26.760Z",
+    "is_active": true,
+    "fee_group": 2,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 10A",
+    "amount_type": "November",
+    "amount": "1800.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 283,
+  "fields": {
+    "created_at": "2025-09-03T08:02:26.761Z",
+    "updated_at": "2025-09-03T08:02:26.761Z",
+    "is_active": true,
+    "fee_group": 2,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 10A",
+    "amount_type": "December",
+    "amount": "1800.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 284,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.255Z",
+    "updated_at": "2025-09-03T08:34:14.255Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Simra",
+    "amount_type": "August",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 19
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 285,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.258Z",
+    "updated_at": "2025-09-03T08:34:14.258Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Partapur",
+    "amount_type": "August",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 20
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 286,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.261Z",
+    "updated_at": "2025-09-03T08:34:14.261Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Simra",
+    "amount_type": "September",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 19
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 287,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.263Z",
+    "updated_at": "2025-09-03T08:34:14.263Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Partapur",
+    "amount_type": "September",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 20
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 288,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.265Z",
+    "updated_at": "2025-09-03T08:34:14.265Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Simra",
+    "amount_type": "October",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 19
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 289,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.267Z",
+    "updated_at": "2025-09-03T08:34:14.267Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Partapur",
+    "amount_type": "October",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 20
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 290,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.270Z",
+    "updated_at": "2025-09-03T08:34:14.270Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Simra",
+    "amount_type": "November",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 19
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 291,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.272Z",
+    "updated_at": "2025-09-03T08:34:14.272Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Partapur",
+    "amount_type": "November",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 20
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 292,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.274Z",
+    "updated_at": "2025-09-03T08:34:14.274Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Simra",
+    "amount_type": "December",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 19
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 293,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.276Z",
+    "updated_at": "2025-09-03T08:34:14.276Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Partapur",
+    "amount_type": "December",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 20
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 294,
+  "fields": {
+    "created_at": "2025-09-03T08:36:22.250Z",
+    "updated_at": "2025-09-03T08:36:22.250Z",
+    "is_active": true,
+    "fee_group": 19,
+    "group_type": "Exam Fees",
+    "fee_type": "Half Yearly Exam",
+    "amount_type": " Quarterly",
+    "amount": "30.00",
+    "class_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 295,
+  "fields": {
+    "created_at": "2025-09-03T08:36:56.579Z",
+    "updated_at": "2025-09-03T08:36:56.579Z",
+    "is_active": true,
+    "fee_group": 23,
+    "group_type": "Exam Fees",
+    "fee_type": "Class 10A",
+    "amount_type": "One TIme",
+    "amount": "100.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 8,
+  "fields": {
+    "created_at": "2025-08-05T15:34:47.265Z",
+    "updated_at": "2025-08-05T15:34:47.265Z",
+    "is_active": true,
+    "name": "August",
+    "category": "Late Fee",
+    "description": "Late august fees payment."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 9,
+  "fields": {
+    "created_at": "2025-08-05T15:35:44.257Z",
+    "updated_at": "2025-08-05T15:35:44.257Z",
+    "is_active": true,
+    "name": "September",
+    "category": "Late Fee",
+    "description": "Late fees payment."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 10,
+  "fields": {
+    "created_at": "2025-08-05T15:36:18.992Z",
+    "updated_at": "2025-08-05T15:36:18.992Z",
+    "is_active": true,
+    "name": "Banch",
+    "category": "Damage",
+    "description": "Broke banch and desk of class."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 11,
+  "fields": {
+    "created_at": "2025-08-05T15:36:56.930Z",
+    "updated_at": "2025-08-05T15:36:56.930Z",
+    "is_active": true,
+    "name": "Fighting",
+    "category": "Discipline",
+    "description": "Given feital wound to his classmate."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 12,
+  "fields": {
+    "created_at": "2025-08-07T13:42:26.500Z",
+    "updated_at": "2025-08-07T13:42:26.500Z",
+    "is_active": true,
+    "name": "June",
+    "category": "Late Fee",
+    "description": "Late payment of June school fees."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 14,
+  "fields": {
+    "created_at": "2025-08-13T02:00:05.455Z",
+    "updated_at": "2025-08-13T02:00:05.455Z",
+    "is_active": true,
+    "name": "Test Fine",
+    "category": "Other",
+    "description": "Test fine for testing"
+  }
+},
+{
+  "model": "fines.fine",
+  "pk": 1000,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.049Z",
+    "updated_at": "2025-09-01T11:48:05.049Z",
+    "is_active": true,
+    "class_section": 1,
+    "fine_type": 9,
+    "fees_type": null,
+    "amount": "50.00",
+    "dynamic_amount_percent": null,
+    "reason": "Late fees payment.",
+    "due_date": "2025-09-20",
+    "applied_date": "2025-09-01T11:48:05.049Z",
+    "auto_generated": false,
+    "target_scope": "Class",
+    "created_by": 15
+  }
+},
+{
+  "model": "fines.fine",
+  "pk": 1001,
+  "fields": {
+    "created_at": "2025-09-03T08:20:07.538Z",
+    "updated_at": "2025-09-03T08:20:07.538Z",
+    "is_active": true,
+    "class_section": 1,
+    "fine_type": 8,
+    "fees_type": 279,
+    "amount": "20.00",
+    "dynamic_amount_percent": null,
+    "reason": "Late august fees payment.",
+    "due_date": "2025-08-29",
+    "applied_date": "2025-09-03T08:20:07.538Z",
+    "auto_generated": false,
+    "target_scope": "Class",
+    "created_by": 15
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 147,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 70,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 148,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 74,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 149,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 79,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 150,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 85,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 151,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 87,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 152,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 91,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 153,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 92,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 154,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 94,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 155,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 96,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 156,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 98,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 157,
+  "fields": {
+    "created_at": "2025-09-03T08:20:07.551Z",
+    "updated_at": "2025-09-03T08:20:07.551Z",
+    "is_active": true,
+    "fine": 1001,
+    "student": 12,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 158,
+  "fields": {
+    "created_at": "2025-09-03T08:20:07.551Z",
+    "updated_at": "2025-09-03T08:20:07.551Z",
+    "is_active": true,
+    "fine": 1001,
+    "student": 37,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 159,
+  "fields": {
+    "created_at": "2025-09-03T08:20:07.551Z",
+    "updated_at": "2025-09-03T08:20:07.551Z",
+    "is_active": true,
+    "fine": 1001,
+    "student": 108,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 160,
+  "fields": {
+    "created_at": "2025-09-03T08:20:07.551Z",
+    "updated_at": "2025-09-03T09:30:14.081Z",
+    "is_active": true,
+    "fine": 1001,
+    "student": 112,
+    "is_paid": true,
+    "payment_date": "2025-09-03"
+  }
+},
+{
+  "model": "fines.fineauditlog",
+  "pk": 12,
+  "fields": {
+    "created_at": "2025-09-01T11:48:13.556Z",
+    "updated_at": "2025-09-01T11:48:13.556Z",
+    "is_active": true,
+    "fine": 1000,
+    "action": "Created",
+    "user": 15,
+    "timestamp": "2025-09-01T11:48:13.556Z",
+    "details": {
+      "target_scope": "Class",
+      "class_group": "Nursary",
+      "student_count": 10,
+      "sms_sent_count": 10
+    }
+  }
+},
+{
+  "model": "fines.fineauditlog",
+  "pk": 13,
+  "fields": {
+    "created_at": "2025-09-03T08:20:11.822Z",
+    "updated_at": "2025-09-03T08:20:11.822Z",
+    "is_active": true,
+    "fine": 1001,
+    "action": "Created",
+    "user": 15,
+    "timestamp": "2025-09-03T08:20:11.822Z",
+    "details": {
+      "target_scope": "Class",
+      "class_section": "Class 10A",
+      "student_count": 4,
+      "sms_sent_count": 4
+    }
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 51,
+  "fields": {
+    "created_at": "2025-09-02T16:06:58.484Z",
+    "updated_at": "2025-09-02T16:06:58.513Z",
+    "is_active": true,
+    "student": 12,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 52,
+  "fields": {
+    "created_at": "2025-09-02T16:06:58.504Z",
+    "updated_at": "2025-09-02T16:06:58.516Z",
+    "is_active": true,
+    "student": 37,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 53,
+  "fields": {
+    "created_at": "2025-09-02T16:06:58.506Z",
+    "updated_at": "2025-09-02T16:06:58.520Z",
+    "is_active": true,
+    "student": 108,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 54,
+  "fields": {
+    "created_at": "2025-09-02T16:06:58.509Z",
+    "updated_at": "2025-09-02T16:06:58.523Z",
+    "is_active": true,
+    "student": 112,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 55,
+  "fields": {
+    "created_at": "2025-09-02T16:07:07.534Z",
+    "updated_at": "2025-09-02T16:07:07.550Z",
+    "is_active": true,
+    "student": 16,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 56,
+  "fields": {
+    "created_at": "2025-09-02T16:07:07.540Z",
+    "updated_at": "2025-09-02T16:07:07.554Z",
+    "is_active": true,
+    "student": 25,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 57,
+  "fields": {
+    "created_at": "2025-09-02T16:07:07.543Z",
+    "updated_at": "2025-09-02T16:07:07.558Z",
+    "is_active": true,
+    "student": 36,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 58,
+  "fields": {
+    "created_at": "2025-09-02T16:07:07.546Z",
+    "updated_at": "2025-09-02T16:07:07.561Z",
+    "is_active": true,
+    "student": 50,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 59,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.053Z",
+    "updated_at": "2025-09-02T16:07:18.088Z",
+    "is_active": true,
+    "student": 10,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 60,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.060Z",
+    "updated_at": "2025-09-02T16:07:18.091Z",
+    "is_active": true,
+    "student": 14,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 61,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.069Z",
+    "updated_at": "2025-09-02T16:07:18.094Z",
+    "is_active": true,
+    "student": 22,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 62,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.072Z",
+    "updated_at": "2025-09-02T16:07:18.072Z",
+    "is_active": true,
+    "student": 27,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 63,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.074Z",
+    "updated_at": "2025-09-02T16:07:18.097Z",
+    "is_active": true,
+    "student": 29,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 64,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.077Z",
+    "updated_at": "2025-09-02T16:07:18.077Z",
+    "is_active": true,
+    "student": 35,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 65,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.079Z",
+    "updated_at": "2025-09-02T16:07:18.100Z",
+    "is_active": true,
+    "student": 38,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 66,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.082Z",
+    "updated_at": "2025-09-02T16:07:18.103Z",
+    "is_active": true,
+    "student": 41,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 67,
+  "fields": {
+    "created_at": "2025-09-02T16:07:18.085Z",
+    "updated_at": "2025-09-02T16:07:18.107Z",
+    "is_active": true,
+    "student": 47,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 68,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.231Z",
+    "updated_at": "2025-09-02T16:07:30.266Z",
+    "is_active": true,
+    "student": 11,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 69,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.238Z",
+    "updated_at": "2025-09-02T16:07:30.238Z",
+    "is_active": true,
+    "student": 15,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 70,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.247Z",
+    "updated_at": "2025-09-02T16:07:30.269Z",
+    "is_active": true,
+    "student": 17,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 71,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.250Z",
+    "updated_at": "2025-09-02T16:07:30.272Z",
+    "is_active": true,
+    "student": 18,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 72,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.253Z",
+    "updated_at": "2025-09-02T16:07:30.275Z",
+    "is_active": true,
+    "student": 20,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 73,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.255Z",
+    "updated_at": "2025-09-02T16:07:30.278Z",
+    "is_active": true,
+    "student": 24,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 74,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.257Z",
+    "updated_at": "2025-09-02T16:07:30.282Z",
+    "is_active": true,
+    "student": 44,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 75,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.260Z",
+    "updated_at": "2025-09-02T16:07:30.285Z",
+    "is_active": true,
+    "student": 51,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 76,
+  "fields": {
+    "created_at": "2025-09-02T16:07:30.262Z",
+    "updated_at": "2025-09-02T16:07:30.288Z",
+    "is_active": true,
+    "student": 102,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 77,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.098Z",
+    "updated_at": "2025-09-02T16:07:48.098Z",
+    "is_active": true,
+    "student": 13,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 78,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.103Z",
+    "updated_at": "2025-09-02T16:07:48.129Z",
+    "is_active": true,
+    "student": 21,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 79,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.106Z",
+    "updated_at": "2025-09-02T16:07:48.132Z",
+    "is_active": true,
+    "student": 23,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 80,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.108Z",
+    "updated_at": "2025-09-02T16:07:48.135Z",
+    "is_active": true,
+    "student": 26,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 81,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.111Z",
+    "updated_at": "2025-09-02T16:07:48.138Z",
+    "is_active": true,
+    "student": 28,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 82,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.113Z",
+    "updated_at": "2025-09-02T16:07:48.142Z",
+    "is_active": true,
+    "student": 31,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 83,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.116Z",
+    "updated_at": "2025-09-02T16:07:48.145Z",
+    "is_active": true,
+    "student": 34,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 84,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.118Z",
+    "updated_at": "2025-09-02T16:07:48.118Z",
+    "is_active": true,
+    "student": 40,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 85,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.121Z",
+    "updated_at": "2025-09-02T16:07:48.149Z",
+    "is_active": true,
+    "student": 43,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 86,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.123Z",
+    "updated_at": "2025-09-02T16:07:48.152Z",
+    "is_active": true,
+    "student": 53,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 87,
+  "fields": {
+    "created_at": "2025-09-02T16:07:48.125Z",
+    "updated_at": "2025-09-02T16:07:48.125Z",
+    "is_active": true,
+    "student": 57,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 88,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.078Z",
+    "updated_at": "2025-09-02T16:08:03.116Z",
+    "is_active": true,
+    "student": 32,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 89,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.083Z",
+    "updated_at": "2025-09-02T16:08:03.083Z",
+    "is_active": true,
+    "student": 48,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 90,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.086Z",
+    "updated_at": "2025-09-02T16:08:03.119Z",
+    "is_active": true,
+    "student": 49,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 91,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.089Z",
+    "updated_at": "2025-09-02T16:08:03.123Z",
+    "is_active": true,
+    "student": 52,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 92,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.091Z",
+    "updated_at": "2025-09-02T16:08:03.091Z",
+    "is_active": true,
+    "student": 56,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 93,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.094Z",
+    "updated_at": "2025-09-02T16:08:03.126Z",
+    "is_active": true,
+    "student": 58,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 94,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.096Z",
+    "updated_at": "2025-09-02T16:08:03.130Z",
+    "is_active": true,
+    "student": 59,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 95,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.098Z",
+    "updated_at": "2025-09-02T16:08:03.098Z",
+    "is_active": true,
+    "student": 62,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 96,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.100Z",
+    "updated_at": "2025-09-02T16:08:03.133Z",
+    "is_active": true,
+    "student": 65,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 97,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.103Z",
+    "updated_at": "2025-09-02T16:08:03.136Z",
+    "is_active": true,
+    "student": 78,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 98,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.105Z",
+    "updated_at": "2025-09-02T16:08:03.105Z",
+    "is_active": true,
+    "student": 84,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 99,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.107Z",
+    "updated_at": "2025-09-02T16:08:03.139Z",
+    "is_active": true,
+    "student": 86,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 100,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.110Z",
+    "updated_at": "2025-09-02T16:08:03.143Z",
+    "is_active": true,
+    "student": 88,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 101,
+  "fields": {
+    "created_at": "2025-09-02T16:08:03.112Z",
+    "updated_at": "2025-09-02T16:08:03.112Z",
+    "is_active": true,
+    "student": 89,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 102,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.936Z",
+    "updated_at": "2025-09-02T16:08:23.976Z",
+    "is_active": true,
+    "student": 6,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 103,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.941Z",
+    "updated_at": "2025-09-02T16:08:23.941Z",
+    "is_active": true,
+    "student": 45,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 104,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.943Z",
+    "updated_at": "2025-09-02T16:08:23.978Z",
+    "is_active": true,
+    "student": 54,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 105,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.946Z",
+    "updated_at": "2025-09-02T16:08:23.981Z",
+    "is_active": true,
+    "student": 64,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 106,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.949Z",
+    "updated_at": "2025-09-02T16:08:23.949Z",
+    "is_active": true,
+    "student": 68,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 107,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.951Z",
+    "updated_at": "2025-09-02T16:08:23.984Z",
+    "is_active": true,
+    "student": 69,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 108,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.953Z",
+    "updated_at": "2025-09-02T16:08:23.987Z",
+    "is_active": true,
+    "student": 72,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 109,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.956Z",
+    "updated_at": "2025-09-02T16:08:23.990Z",
+    "is_active": true,
+    "student": 73,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 110,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.957Z",
+    "updated_at": "2025-09-02T16:08:23.957Z",
+    "is_active": true,
+    "student": 75,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 111,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.960Z",
+    "updated_at": "2025-09-02T16:08:23.992Z",
+    "is_active": true,
+    "student": 82,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 112,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.962Z",
+    "updated_at": "2025-09-02T16:08:23.995Z",
+    "is_active": true,
+    "student": 83,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 113,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.964Z",
+    "updated_at": "2025-09-02T16:08:23.998Z",
+    "is_active": true,
+    "student": 93,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 114,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.966Z",
+    "updated_at": "2025-09-02T16:08:24.000Z",
+    "is_active": true,
+    "student": 95,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 115,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.969Z",
+    "updated_at": "2025-09-02T16:08:23.969Z",
+    "is_active": true,
+    "student": 99,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 116,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.971Z",
+    "updated_at": "2025-09-02T16:08:24.003Z",
+    "is_active": true,
+    "student": 100,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 117,
+  "fields": {
+    "created_at": "2025-09-02T16:08:23.973Z",
+    "updated_at": "2025-09-02T16:08:24.006Z",
+    "is_active": true,
+    "student": 101,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 118,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.074Z",
+    "updated_at": "2025-09-02T16:08:35.098Z",
+    "is_active": true,
+    "student": 39,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 119,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.079Z",
+    "updated_at": "2025-09-02T16:08:35.101Z",
+    "is_active": true,
+    "student": 60,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 120,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.081Z",
+    "updated_at": "2025-09-02T16:08:35.081Z",
+    "is_active": true,
+    "student": 61,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 121,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.084Z",
+    "updated_at": "2025-09-02T16:08:35.104Z",
+    "is_active": true,
+    "student": 63,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 122,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.087Z",
+    "updated_at": "2025-09-02T16:08:35.107Z",
+    "is_active": true,
+    "student": 67,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 123,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.090Z",
+    "updated_at": "2025-09-02T16:08:35.090Z",
+    "is_active": true,
+    "student": 76,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 124,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.093Z",
+    "updated_at": "2025-09-02T16:08:35.110Z",
+    "is_active": true,
+    "student": 85,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 125,
+  "fields": {
+    "created_at": "2025-09-02T16:08:35.095Z",
+    "updated_at": "2025-09-02T16:08:35.095Z",
+    "is_active": true,
+    "student": 90,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 126,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.872Z",
+    "updated_at": "2025-09-02T16:08:48.896Z",
+    "is_active": true,
+    "student": 1,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 127,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.877Z",
+    "updated_at": "2025-09-02T16:08:48.877Z",
+    "is_active": true,
+    "student": 3,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 128,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.879Z",
+    "updated_at": "2025-09-02T16:08:48.899Z",
+    "is_active": true,
+    "student": 70,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 129,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.881Z",
+    "updated_at": "2025-09-02T16:08:48.903Z",
+    "is_active": true,
+    "student": 71,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 130,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.884Z",
+    "updated_at": "2025-09-02T16:08:48.884Z",
+    "is_active": true,
+    "student": 74,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 131,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.886Z",
+    "updated_at": "2025-09-02T16:08:48.906Z",
+    "is_active": true,
+    "student": 77,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 132,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.888Z",
+    "updated_at": "2025-09-02T16:08:48.909Z",
+    "is_active": true,
+    "student": 81,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 133,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.891Z",
+    "updated_at": "2025-09-02T16:08:48.891Z",
+    "is_active": true,
+    "student": 96,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 134,
+  "fields": {
+    "created_at": "2025-09-02T16:08:48.893Z",
+    "updated_at": "2025-09-02T16:08:48.912Z",
+    "is_active": true,
+    "student": 97,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 135,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.102Z",
+    "updated_at": "2025-09-02T16:09:00.102Z",
+    "is_active": true,
+    "student": 4,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 136,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.108Z",
+    "updated_at": "2025-09-02T16:09:00.108Z",
+    "is_active": true,
+    "student": 5,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 137,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.117Z",
+    "updated_at": "2025-09-02T16:09:00.135Z",
+    "is_active": true,
+    "student": 7,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 138,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.120Z",
+    "updated_at": "2025-09-02T16:09:00.120Z",
+    "is_active": true,
+    "student": 42,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 139,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.122Z",
+    "updated_at": "2025-09-02T16:09:00.138Z",
+    "is_active": true,
+    "student": 46,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 140,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.124Z",
+    "updated_at": "2025-09-02T16:09:00.141Z",
+    "is_active": true,
+    "student": 66,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 141,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.127Z",
+    "updated_at": "2025-09-02T16:09:00.145Z",
+    "is_active": true,
+    "student": 80,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 142,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.130Z",
+    "updated_at": "2025-09-02T16:09:00.147Z",
+    "is_active": true,
+    "student": 91,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 143,
+  "fields": {
+    "created_at": "2025-09-02T16:09:00.132Z",
+    "updated_at": "2025-09-02T16:09:00.150Z",
+    "is_active": true,
+    "student": 94,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 144,
+  "fields": {
+    "created_at": "2025-09-02T16:09:09.154Z",
+    "updated_at": "2025-09-02T16:09:09.170Z",
+    "is_active": true,
+    "student": 19,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 145,
+  "fields": {
+    "created_at": "2025-09-02T16:09:09.159Z",
+    "updated_at": "2025-09-02T16:09:09.159Z",
+    "is_active": true,
+    "student": 87,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 146,
+  "fields": {
+    "created_at": "2025-09-02T16:09:09.162Z",
+    "updated_at": "2025-09-02T16:09:09.174Z",
+    "is_active": true,
+    "student": 92,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 147,
+  "fields": {
+    "created_at": "2025-09-02T16:09:09.164Z",
+    "updated_at": "2025-09-02T16:09:09.177Z",
+    "is_active": true,
+    "student": 98,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 148,
+  "fields": {
+    "created_at": "2025-09-02T16:09:09.167Z",
+    "updated_at": "2025-09-02T16:09:09.181Z",
+    "is_active": true,
+    "student": 103,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 149,
+  "fields": {
+    "created_at": "2025-09-02T16:09:16.556Z",
+    "updated_at": "2025-09-02T16:09:16.556Z",
+    "is_active": true,
+    "student": 30,
+    "date": "2025-09-02",
+    "status": "Absent",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 150,
+  "fields": {
+    "created_at": "2025-09-02T16:09:23.871Z",
+    "updated_at": "2025-09-02T16:09:23.882Z",
+    "is_active": true,
+    "student": 33,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 151,
+  "fields": {
+    "created_at": "2025-09-02T16:09:23.876Z",
+    "updated_at": "2025-09-02T16:09:23.885Z",
+    "is_active": true,
+    "student": 55,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "attendance.attendance",
+  "pk": 152,
+  "fields": {
+    "created_at": "2025-09-02T16:09:23.879Z",
+    "updated_at": "2025-09-02T16:09:23.888Z",
+    "is_active": true,
+    "student": 79,
+    "date": "2025-09-02",
+    "status": "Present",
+    "class_section": null
+  }
+},
+{
+  "model": "messaging.msg91config",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-08-31T07:06:45.229Z",
+    "updated_at": "2025-09-03T07:20:05.993Z",
+    "auth_key": "466878AbS44RRkI68b3cabfP1",
+    "sender_id": "TXTLCL",
+    "is_active": true
+  }
+},
+{
+  "model": "messaging.messagingconfig",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-08-31T06:11:34.028Z",
+    "updated_at": "2025-09-03T07:20:05.990Z",
+    "sender_name": "Test School",
+    "sender_phone": "+919955590919",
+    "sms_enabled": true,
+    "is_active": true
+  }
+},
+{
+  "model": "messaging.messagelog",
+  "pk": 4,
+  "fields": {
+    "created_at": "2025-09-01T11:41:55.696Z",
+    "updated_at": "2025-09-01T11:41:55.696Z",
+    "is_active": true,
+    "sender": 15,
+    "message_type": "SMS",
+    "recipient_type": "INDIVIDUAL",
+    "message_content": "Jai Shree Ram",
+    "total_recipients": 1,
+    "successful_sends": 1,
+    "failed_sends": 0,
+    "status": "SENT",
+    "class_section_filter": null,
+    "recipient_phone": "",
+    "recipient_name": "",
+    "msg91_message_id": "",
+    "error_message": "",
+    "student": null
+  }
+},
+{
+  "model": "messaging.messagelog",
+  "pk": 5,
+  "fields": {
+    "created_at": "2025-09-03T12:16:25.048Z",
+    "updated_at": "2025-09-03T12:16:25.048Z",
+    "is_active": true,
+    "sender": 14,
+    "message_type": "SMS",
+    "recipient_type": "INDIVIDUAL",
+    "message_content": "Test message for logging",
+    "total_recipients": 1,
+    "successful_sends": 1,
+    "failed_sends": 0,
+    "status": "SENT",
+    "class_section_filter": null,
+    "recipient_phone": "+919955590919",
+    "recipient_name": "Test Admin",
+    "msg91_message_id": "",
+    "error_message": "",
+    "student": null
+  }
+},
+{
+  "model": "messaging.messagerecipient",
+  "pk": 2,
+  "fields": {
+    "created_at": "2025-09-01T11:41:55.714Z",
+    "updated_at": "2025-09-01T11:41:55.714Z",
+    "is_active": true,
+    "message_log": 4,
+    "student": 108,
+    "teacher": null,
+    "phone_number": "9955590919",
+    "name": "lovely kumari (demo)",
+    "role": "Student",
+    "status": "SENT",
+    "error_message": ""
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 14,
+  "fields": {
+    "password": "!IKbdWCl4SjnpQcqu4DOW69aE3p91cLk4gG4br0fZ",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "Superuser",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@school.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-08-31T14:28:16.168Z",
+    "role": "user",
+    "mobile": null,
+    "profile_picture": "",
+    "created_by": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 15,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$cwd6GqEWvucbPsLwWWhTee$u5ith1X58tRCTjg4VPbuo6+kHYUYFjjXZsMyo/pjhRc=",
+    "last_login": "2025-09-03T11:43:02.433Z",
+    "is_superuser": true,
+    "username": "SuperUser",
+    "first_name": "",
+    "last_name": "",
+    "email": "superuser@email.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-08-31T14:30:00.314Z",
+    "role": "user",
+    "mobile": null,
+    "profile_picture": "",
+    "created_by": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 16,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$L9xKfMVTd4siqEOp3kH9UO$c3Kb1rF0qDaHREnFn2/DBL8l6OE5RkTzyTL0h/f5WaE=",
+    "last_login": "2025-08-31T14:38:23.780Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@test.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-08-31T14:36:53.788Z",
+    "role": "user",
+    "mobile": null,
+    "profile_picture": "",
+    "created_by": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 17,
+  "fields": {
+    "password": "",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "test_admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@test.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-09-03T12:50:45.980Z",
+    "role": "user",
+    "mobile": null,
+    "profile_picture": "",
+    "created_by": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.useractivity",
+  "pk": 17,
+  "fields": {
+    "user": 15,
+    "action": "login",
+    "target_model": null,
+    "target_id": null,
+    "description": "User logged in",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-08-31T14:30:08.024Z"
+  }
+},
+{
+  "model": "users.useractivity",
+  "pk": 18,
+  "fields": {
+    "user": 15,
+    "action": "login",
+    "target_model": null,
+    "target_id": null,
+    "description": "User logged in",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-09-01T10:26:27.106Z"
+  }
+},
+{
+  "model": "users.useractivity",
+  "pk": 19,
+  "fields": {
+    "user": 15,
+    "action": "login",
+    "target_model": null,
+    "target_id": null,
+    "description": "User logged in",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-09-01T10:35:30.400Z"
+  }
+},
+{
+  "model": "users.useractivity",
+  "pk": 20,
+  "fields": {
+    "user": 15,
+    "action": "login",
+    "target_model": null,
+    "target_id": null,
+    "description": "User logged in",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-09-01T10:39:22.550Z"
+  }
+},
+{
+  "model": "users.useractivity",
+  "pk": 21,
+  "fields": {
+    "user": 15,
+    "action": "login",
+    "target_model": null,
+    "target_id": null,
+    "description": "User logged in",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-09-01T10:40:36.440Z"
+  }
+},
+{
+  "model": "users.useractivity",
+  "pk": 22,
+  "fields": {
+    "user": 15,
+    "action": "login",
+    "target_model": null,
+    "target_id": null,
+    "description": "User logged in",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-09-01T13:18:08.569Z"
+  }
+},
+{
+  "model": "users.useractivity",
+  "pk": 23,
+  "fields": {
+    "user": 15,
+    "action": "login",
+    "target_model": null,
+    "target_id": null,
+    "description": "User logged in",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-09-01T13:21:42.742Z"
+  }
+},
+{
+  "model": "users.useractivity",
+  "pk": 24,
+  "fields": {
+    "user": 15,
+    "action": "login",
+    "target_model": null,
+    "target_id": null,
+    "description": "User logged in",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-09-02T10:45:26.512Z"
+  }
+},
+{
+  "model": "users.useractivity",
+  "pk": 25,
+  "fields": {
+    "user": 15,
+    "action": "login",
+    "target_model": null,
+    "target_id": null,
+    "description": "User logged in",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-09-02T11:28:37.171Z"
+  }
+},
+{
+  "model": "users.useractivity",
+  "pk": 26,
+  "fields": {
+    "user": 15,
+    "action": "login",
+    "target_model": null,
+    "target_id": null,
+    "description": "User logged in",
+    "ip_address": "127.0.0.1",
+    "timestamp": "2025-09-03T07:04:44.815Z"
+  }
+}
+]

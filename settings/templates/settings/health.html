@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}System Health{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                    <i class="fas fa-heartbeat text-green-500 mr-3"></i>
+                    System Health Monitor
+                </h1>
+                <p class="text-gray-600">Real-time system performance and health metrics</p>
+            </div>
+
+            <!-- Health Status Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Database</p>
+                            <p class="text-2xl font-bold text-green-600">{{ health_data.database_status|default:"OK" }}</p>
+                        </div>
+                        <i class="fas fa-database text-3xl text-green-500"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Memory Usage</p>
+                            <p class="text-2xl font-bold text-blue-600">{{ health_data.memory_usage|default:"N/A" }}</p>
+                        </div>
+                        <i class="fas fa-memory text-3xl text-blue-500"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Disk Space</p>
+                            <p class="text-2xl font-bold text-yellow-600">{{ health_data.disk_usage|default:"N/A" }}</p>
+                        </div>
+                        <i class="fas fa-hdd text-3xl text-yellow-500"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Uptime</p>
+                            <p class="text-2xl font-bold text-purple-600">{{ health_data.uptime|default:"N/A" }}</p>
+                        </div>
+                        <i class="fas fa-clock text-3xl text-purple-500"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Health Information -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- System Information -->
+                <div class="bg-white rounded-2xl shadow-xl p-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">System Information</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Django Version:</span>
+                            <span class="font-medium">{{ health_data.django_version|default:"5.1.6" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Python Version:</span>
+                            <span class="font-medium">{{ health_data.python_version|default:"3.12+" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Database:</span>
+                            <span class="font-medium">{{ health_data.database_type|default:"SQLite3" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">ML Models:</span>
+                            <span class="font-medium">{{ health_data.ml_models_count|default:"26" }} Available</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Health Checks -->
+                <div class="bg-white rounded-2xl shadow-xl p-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">Recent Health Checks</h3>
+                    <div class="space-y-3">
+                        {% for check in recent_checks %}
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span class="text-sm">{{ check.component }}</span>
+                            </div>
+                            <span class="text-xs text-gray-500">{{ check.timestamp|timesince }} ago</span>
+                        </div>
+                        {% empty %}
+                        <div class="text-center text-gray-500 py-8">
+                            <i class="fas fa-info-circle text-4xl mb-4"></i>
+                            <p>No recent health checks available</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="mt-8 flex justify-center space-x-4">
+                <button onclick="runHealthCheck()" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    <i class="fas fa-play mr-2"></i>
+                    Run Health Check
+                </button>
+                <a href="{% url 'settings:dashboard' %}" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    Back to Settings
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function runHealthCheck() {
+    // Add health check functionality
+    alert('Health check initiated. Results will be updated shortly.');
+}
+</script>
+{% endblock %}

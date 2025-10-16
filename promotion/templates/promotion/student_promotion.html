@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Student Promotion - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<form style="display: none;">
+    {% csrf_token %}
+</form>
+<div class="animate-fade-in">
+    <!-- Header -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-graduation-cap text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                        🎓 Student Class Promotion
+                    </h1>
+                    <p class="text-gray-600 mt-1">Promote students to next academic session</p>
+                </div>
+            </div>
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary px-4 py-2 rounded-xl">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Academic Sessions -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-200">
+        <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-4 rounded-xl mb-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-calendar-alt mr-3"></i>📅 Academic Sessions
+            </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                    <i class="fas fa-clock mr-2 text-blue-500"></i>Current Session
+                </label>
+                <input type="text" class="form-input bg-blue-50 border-blue-200" value="{{ current_session }}" readonly>
+            </div>
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                    <i class="fas fa-arrow-right mr-2 text-green-500"></i>Next Session
+                </label>
+                <input type="text" class="form-input bg-green-50 border-green-200" value="{{ next_session }}" readonly>
+            </div>
+        </div>
+    </div>
+
+    <!-- Class Selection -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-200">
+        <div class="bg-gradient-to-r from-purple-500 to-indigo-600 p-4 rounded-xl mb-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-school mr-3"></i>🏫 Class Selection
+            </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                    <i class="fas fa-chalkboard mr-2 text-purple-500"></i>Select Class
+                </label>
+                <select id="classSelect" class="form-select">
+                    <option value="">Choose a class...</option>
+                    {% for class in classes %}
+                    <option value="{{ class.id }}">{{ class.display_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-3">&nbsp;</label>
+                <button id="loadStudentsBtn" class="w-full bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105" disabled>
+                    <i class="fas fa-users mr-2"></i>Load Students
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Students List -->
+    <div id="studentsSection" class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 hidden">
+        <div class="bg-gradient-to-r from-orange-500 to-red-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-users mr-3"></i>👥 Student Selection & Promotion
+            </h2>
+        </div>
+        <div class="p-6">
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-6 py-4 text-left">
+                                <input type="checkbox" id="selectAll" class="form-checkbox h-5 w-5 text-blue-600">
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                <i class="fas fa-id-badge mr-2 text-blue-500"></i>Admission No.
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                <i class="fas fa-user mr-2 text-green-500"></i>Student Name
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                <i class="fas fa-school mr-2 text-purple-500"></i>Present Class
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                <i class="fas fa-chart-line mr-2 text-orange-500"></i>Attendance %
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                <i class="fas fa-arrow-right mr-2 text-red-500"></i>Promote to Class
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <!-- Students will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Save Button -->
+            <div class="mt-8 text-center">
+                <button id="savePromotionBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-12 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hidden">
+                    <i class="fas fa-save mr-3"></i>Save Promotions
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+    if (!csrfTokenElement) {
+        console.error('CSRF token not found');
+        return;
+    }
+    const csrfToken = csrfTokenElement.value;
+    const classSelect = document.getElementById('classSelect');
+    const loadStudentsBtn = document.getElementById('loadStudentsBtn');
+    const studentsSection = document.getElementById('studentsSection');
+    const studentsTableBody = document.getElementById('studentsTableBody');
+    const selectAll = document.getElementById('selectAll');
+    const savePromotionBtn = document.getElementById('savePromotionBtn');
+    
+    let allClasses = [];
+    let isLoading = false;
+
+    // Enable load button when class is selected
+    classSelect.addEventListener('change', function() {
+        loadStudentsBtn.disabled = !this.value;
+    });
+
+    // Load students
+    loadStudentsBtn.addEventListener('click', function() {
+        if (isLoading || !classSelect.value) return;
+        
+        isLoading = true;
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Loading...';
+
+        fetch('/promotion/api/get-students/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                class_id: classSelect.value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                allClasses = data.classes;
+                renderStudents(data.students);
+                studentsSection.classList.remove('hidden');
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Network error occurred');
+        })
+        .finally(() => {
+            isLoading = false;
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-users mr-2"></i>Load Students';
+        });
+    });
+
+    // Render students table
+    function renderStudents(students) {
+        studentsTableBody.innerHTML = '';
+        
+        if (students.length === 0) {
+            studentsTableBody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-500">No students found</td></tr>';
+            return;
+        }
+
+        students.forEach(student => {
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-gray-50 border-b';
+            row.innerHTML = `
+                <td class="px-6 py-4">
+                    <input type="checkbox" class="student-checkbox form-checkbox h-5 w-5 text-blue-600" value="${student.id}">
+                </td>
+                <td class="px-6 py-4 font-medium">${student.admission_number}</td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold mr-3">
+                            ${student.name.charAt(0)}
+                        </div>
+                        ${student.name}
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                        ${student.current_class}
+                    </span>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center">
+                        <div class="w-full bg-gray-200 rounded-full h-2 mr-2">
+                            <div class="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full" style="width: ${student.attendance_percentage}%"></div>
+                        </div>
+                        <span class="text-sm font-medium">${student.attendance_percentage}%</span>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">${student.present_days}/${student.total_days} days</div>
+                </td>
+                <td class="px-6 py-4">
+                    <select class="promotion-select form-select w-full" data-student-id="${student.id}">
+                        <option value="">Select new class...</option>
+                        ${allClasses.map(cls => `<option value="${cls.id}">${cls.name}</option>`).join('')}
+                    </select>
+                </td>
+            `;
+            studentsTableBody.appendChild(row);
+        });
+
+        // Add event listeners
+        addEventListeners();
+    }
+
+    // Add event listeners for checkboxes and selects
+    function addEventListeners() {
+        // Select all functionality
+        selectAll.addEventListener('change', function() {
+            document.querySelectorAll('.student-checkbox').forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            toggleSaveButton();
+        });
+
+        // Individual checkbox change
+        document.querySelectorAll('.student-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', toggleSaveButton);
+        });
+
+        // Promotion select change
+        document.querySelectorAll('.promotion-select').forEach(select => {
+            select.addEventListener('change', toggleSaveButton);
+        });
+    }
+
+    // Toggle save button visibility
+    function toggleSaveButton() {
+        const checkedBoxes = document.querySelectorAll('.student-checkbox:checked');
+        const hasValidPromotions = Array.from(checkedBoxes).some(checkbox => {
+            const studentId = checkbox.value;
+            const select = document.querySelector(`[data-student-id="${studentId}"]`);
+            return select && select.value;
+        });
+        
+        savePromotionBtn.classList.toggle('hidden', !hasValidPromotions);
+    }
+
+    // Save promotions
+    savePromotionBtn.addEventListener('click', function() {
+        const promotions = [];
+        
+        document.querySelectorAll('.student-checkbox:checked').forEach(checkbox => {
+            const studentId = checkbox.value;
+            const select = document.querySelector(`[data-student-id="${studentId}"]`);
+            
+            if (select && select.value) {
+                promotions.push({
+                    student_id: studentId,
+                    new_class_id: select.value
+                });
+            }
+        });
+
+        if (promotions.length === 0) {
+            alert('Please select students and their new classes');
+            return;
+        }
+
+        if (!confirm(`Are you sure you want to promote ${promotions.length} students?`)) {
+            return;
+        }
+
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>Saving...';
+
+        fetch('/promotion/api/promote/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                promotions: promotions
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message);
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+                if (data.errors) {
+                    console.error('Promotion errors:', data.errors);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Network error occurred');
+        })
+        .finally(() => {
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-save mr-3"></i>💾 Save Promotions';
+        });
+    });
+});
+</script>
+
+<style>
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-input, .form-select {
+    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300 bg-white;
+}
+
+.form-input:focus, .form-select:focus {
+    @apply shadow-lg transform scale-[1.02];
+}
+
+.form-checkbox {
+    @apply rounded focus:ring-2 focus:ring-blue-500;
+}
+</style>
+{% endblock %}

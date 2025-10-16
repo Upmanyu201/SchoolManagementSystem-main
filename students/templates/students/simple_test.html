@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Student Test</title>
+</head>
+<body>
+    <h1>Simple Student List Test</h1>
+    <p>Total students found: {{ students|length }}</p>
+    
+    {% if students %}
+        <ul>
+        {% for student in students %}
+            <li>{{ student.admission_number }} - {{ student.first_name }} {{ student.last_name }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No students found!</p>
+    {% endif %}
+</body>
+</html>

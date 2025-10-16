@@ -1,0 +1,745 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}License Status - School Management System{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8">
+    <div class="max-w-5xl mx-auto px-4">
+        
+        <!-- Header with Animation -->
+        <div class="text-center mb-8 animate-fade-in">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                <i data-lucide="shield-check" class="w-8 h-8 text-blue-600"></i>
+            </div>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                License Management
+            </h1>
+            <p class="text-gray-600 text-lg">Manage your School Management System license and activation</p>
+        </div>
+
+        <!-- Enhanced Status Cards Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Status Overview Card -->
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-xl overflow-hidden animate-slide-up">
+                <div class="{% if is_licensed %}bg-gradient-to-r from-green-500 to-emerald-600{% elif is_active %}bg-gradient-to-r from-blue-500 to-indigo-600{% else %}bg-gradient-to-r from-red-500 to-pink-600{% endif %} px-8 py-8">
+                    <div class="flex items-center justify-between text-white">
+                        <div class="flex-1">
+                            <div class="flex items-center mb-3">
+                                {% if is_licensed %}
+                                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
+                                        <i data-lucide="check-circle" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold">Licensed Version</h2>
+                                        <p class="text-white/90">Full access activated</p>
+                                    </div>
+                                {% elif is_active %}
+                                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
+                                        <i data-lucide="clock" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold">Demo Version</h2>
+                                        <p class="text-white/90">Trial period active</p>
+                                    </div>
+                                {% else %}
+                                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-4">
+                                        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold">Demo Expired</h2>
+                                        <p class="text-white/90">Activation required</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Progress Bar for Demo -->
+                            {% if not is_licensed %}
+                            <div class="mt-4">
+                                <div class="flex justify-between text-sm text-white/80 mb-2">
+                                    <span>Trial Progress</span>
+                                    <span>{{ days_remaining }}/15 days</span>
+                                </div>
+                                <div class="w-full bg-white/20 rounded-full h-2">
+                                    <div class="{% if days_remaining > 3 %}bg-white{% elif days_remaining > 1 %}bg-yellow-300{% else %}bg-red-300{% endif %} h-2 rounded-full transition-all duration-500" 
+                                         style="width: {% if days_remaining > 0 %}{% widthratio days_remaining 7 100 %}%{% else %}0%{% endif %}"></div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="text-right ml-6">
+                            <div class="text-4xl font-bold mb-1" id="countdown-display">
+                                {% if is_licensed %}∞{% else %}{{ days_remaining }}{% endif %}
+                            </div>
+                            <div class="text-sm text-white/80">
+                                {% if is_licensed %}Unlimited{% else %}<span id="countdown-label">Days Left</span>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Overview -->
+                <div class="p-8">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <i data-lucide="users" class="w-8 h-8 mx-auto mb-2 {% if is_licensed %}text-green-600{% elif is_active %}text-blue-600{% else %}text-gray-400{% endif %}"></i>
+                            <div class="text-sm font-medium text-gray-700">Students</div>
+                            <div class="text-xs text-gray-500">{% if is_licensed or is_active %}Unlimited{% else %}Locked{% endif %}</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <i data-lucide="graduation-cap" class="w-8 h-8 mx-auto mb-2 {% if is_licensed %}text-green-600{% elif is_active %}text-blue-600{% else %}text-gray-400{% endif %}"></i>
+                            <div class="text-sm font-medium text-gray-700">Teachers</div>
+                            <div class="text-xs text-gray-500">{% if is_licensed or is_active %}Unlimited{% else %}Locked{% endif %}</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <i data-lucide="dollar-sign" class="w-8 h-8 mx-auto mb-2 {% if is_licensed %}text-green-600{% elif is_active %}text-blue-600{% else %}text-gray-400{% endif %}"></i>
+                            <div class="text-sm font-medium text-gray-700">Fees</div>
+                            <div class="text-xs text-gray-500">{% if is_licensed or is_active %}Full Access{% else %}Locked{% endif %}</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <i data-lucide="bar-chart" class="w-8 h-8 mx-auto mb-2 {% if is_licensed %}text-green-600{% elif is_active %}text-blue-600{% else %}text-gray-400{% endif %}"></i>
+                            <div class="text-sm font-medium text-gray-700">Reports</div>
+                            <div class="text-xs text-gray-500">{% if is_licensed or is_active %}All Reports{% else %}Locked{% endif %}</div>
+                        </div>
+                    </div>
+                    
+                    {% if not is_licensed %}
+                        <!-- Quick Activation -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                            <h3 class="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                                <i data-lucide="zap" class="w-5 h-5 mr-2"></i>
+                                Quick License Activation
+                            </h3>
+                            
+                            <form id="licenseForm" class="space-y-4">
+                                {% csrf_token %}
+                                <div class="relative">
+                                    <label class="block text-blue-700 font-medium mb-2">
+                                        Enter License Key (SMS-XXXX-XXXX-XXXX)
+                                    </label>
+                                    <div class="relative">
+                                        <input 
+                                            type="text" 
+                                            id="licenseKey"
+                                            placeholder="SMS-FULL-eyJjaWQiOiAiVEVTVCIsICJleHAi..."
+                                            class="w-full px-4 py-4 pr-12 border-2 border-blue-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm bg-white"
+                                            maxlength="200"
+                                        >
+                                        <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                            <i data-lucide="key" class="w-5 h-5 text-blue-400"></i>
+                                        </div>
+                                    </div>
+                                    <div class="text-xs text-blue-600 mt-1">Format: SMS-FULL-{encrypted_data} (enterprise license)</div>
+                                </div>
+                                
+                                <button 
+                                    type="submit" 
+                                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-[1.02] font-semibold text-lg shadow-lg"
+                                    id="activateBtn"
+                                >
+                                    <i data-lucide="unlock" class="w-5 h-5 inline mr-2"></i>
+                                    Activate License Now
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Quick Stats Card -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden animate-slide-up" style="animation-delay: 0.1s">
+                <div class="bg-gradient-to-br from-purple-500 to-pink-600 px-6 py-8 text-white text-center">
+                    <i data-lucide="activity" class="w-12 h-12 mx-auto mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">System Status</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-white/80">Version</span>
+                            <span class="font-semibold">{% if is_licensed %}Pro{% else %}Demo{% endif %}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-white/80">Modules</span>
+                            <span class="font-semibold">{% if is_licensed or is_active %}17/17{% else %}0/17{% endif %}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-white/80">ML Models</span>
+                            <span class="font-semibold">{% if is_licensed or is_active %}26{% else %}0{% endif %}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    {% if is_licensed %}
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="check-circle" class="w-8 h-8 text-green-600"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Fully Licensed</h4>
+                            <p class="text-sm text-gray-600">All features unlocked</p>
+                        </div>
+                    {% elif is_active %}
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="clock" class="w-8 h-8 text-blue-600"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Trial Active</h4>
+                            <p class="text-sm text-gray-600">{{ days_remaining }} days remaining</p>
+                        </div>
+                    {% else %}
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="lock" class="w-8 h-8 text-red-600"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Access Locked</h4>
+                            <p class="text-sm text-gray-600">License required</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detailed Information Cards -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+
+            <!-- Machine Information Card -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden animate-slide-up" style="animation-delay: 0.2s">
+                <div class="bg-gradient-to-r from-gray-700 to-gray-800 px-6 py-4">
+                    <h3 class="text-lg font-semibold text-white flex items-center">
+                        <i data-lucide="monitor" class="w-5 h-5 mr-2"></i>
+                        Machine Information
+                    </h3>
+                </div>
+                
+                <div class="p-6 space-y-4">
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-600">Stable Machine ID</span>
+                            <button onclick="copyToClipboard('{{ machine_id }}')" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="font-mono text-sm text-gray-800 bg-white px-3 py-2 rounded border break-all">{{ machine_id }}</div>
+                        <div class="text-xs text-green-600 mt-1 flex items-center">
+                            <i data-lucide="shield-check" class="w-3 h-3 mr-1"></i>
+                            Hardware-based stable ID (never changes)
+                        </div>
+                    </div>
+                    
+                    {% if is_licensed %}
+                    <div class="bg-green-50 rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-green-600">Active License Key</span>
+                            <button onclick="copyToClipboard('{{ demo_status.license_key }}')" class="text-green-600 hover:text-green-800 transition-colors">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="font-mono text-sm text-green-800 bg-white px-3 py-2 rounded border">{{ demo_status.license_key }}</div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="bg-blue-50 rounded-xl p-4">
+                        <div class="text-sm font-medium text-blue-600 mb-2">System Details</div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Platform</span>
+                                <span class="text-gray-800">Django 5.1.6</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Database</span>
+                                <span class="text-gray-800">SQLite3</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">ML Models</span>
+                                <span class="text-gray-800">26 Available</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- License Details / Help Card -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden animate-slide-up" style="animation-delay: 0.3s">
+                {% if is_licensed %}
+                    <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4">
+                        <h3 class="text-lg font-semibold text-white flex items-center">
+                            <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                            License Details
+                        </h3>
+                    </div>
+                    
+                    <div class="p-6 space-y-4">
+                        <div class="bg-green-50 rounded-xl p-4">
+                            <div class="text-sm font-medium text-green-600 mb-3">Activation Information</div>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Activated On</span>
+                                    <span class="font-medium text-gray-800">{{ demo_status.activated_at|date:"M d, Y" }}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Activated By</span>
+                                    <span class="font-medium text-gray-800">{{ demo_status.activated_by.get_full_name|default:"System" }}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">License Type</span>
+                                    <span class="font-medium text-green-600">Full License</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Expiration</span>
+                                    <span class="font-medium text-green-600">Never</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center pt-4">
+                            <div class="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                                <i data-lucide="shield-check" class="w-4 h-4 mr-2"></i>
+                                Fully Licensed System
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="bg-gradient-to-r from-orange-500 to-red-600 px-6 py-4">
+                        <h3 class="text-lg font-semibold text-white flex items-center">
+                            <i data-lucide="help-circle" class="w-5 h-5 mr-2"></i>
+                            Need Help?
+                        </h3>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
+                                <h4 class="font-semibold text-orange-800 mb-2">How to Purchase License</h4>
+                                <ol class="text-sm text-orange-700 space-y-1">
+                                    <li>1. Contact sales team with your Machine ID</li>
+                                    <li>2. Complete payment process</li>
+                                    <li>3. Receive your unique license key via email</li>
+                                    <li>4. Enter the license key in the activation form</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                                <h4 class="font-semibold text-blue-800 mb-2">Troubleshooting</h4>
+                                <ul class="text-sm text-blue-700 space-y-1">
+                                    <li>• Ensure Python is installed</li>
+                                    <li>• Generate key on the same machine</li>
+                                    <li>• Check license key format: SMS-XXXX-XXXX-XXXX</li>
+                                    <li>• Contact support if issues persist</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button onclick="showPurchaseInfo()" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                    <i data-lucide="shopping-cart" class="w-4 h-4 mr-2"></i>
+                                    Purchase License
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Enhanced Action Buttons -->
+        <div class="text-center space-y-4 animate-fade-in" style="animation-delay: 0.4s">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'dashboard' %}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all transform hover:scale-105 font-semibold shadow-lg">
+                    <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i>
+                    Back to Dashboard
+                </a>
+                
+                {% if not is_licensed %}
+                <button onclick="showPurchaseInfo()" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all transform hover:scale-105 font-semibold shadow-lg">
+                    <i data-lucide="shopping-cart" class="w-5 h-5 mr-2"></i>
+                    Purchase License
+                </button>
+                
+                <button onclick="showLicenseHelp()" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 font-semibold shadow-lg">
+                    <i data-lucide="help-circle" class="w-5 h-5 mr-2"></i>
+                    Get Help
+                </button>
+                {% endif %}
+            </div>
+            
+            {% if is_licensed %}
+            <div class="inline-flex items-center px-6 py-3 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                <i data-lucide="check-circle" class="w-4 h-4 mr-2"></i>
+                System fully activated and ready to use!
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Success/Error Messages -->
+<div id="messageContainer" class="fixed top-4 right-4 z-50"></div>
+
+<!-- Custom Styles for Animations -->
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.animate-pulse-slow {
+    animation: pulse 3s infinite;
+}
+
+/* Loading spinner */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Hover effects */
+.hover-scale:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+/* Progress bar animation */
+.progress-bar {
+    transition: width 0.5s ease-in-out;
+}
+</style>
+
+<script>
+// Countdown timer for demo expiration
+{% if not is_licensed and is_active %}
+const demoEndTime = new Date('{{ demo_status.demo_expires|date:"c" }}').getTime();
+
+function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = demoEndTime - now;
+    
+    if (distance < 0) {
+        document.getElementById('countdown-display').textContent = '00:00:00:00';
+        document.getElementById('countdown-label').textContent = 'Expired';
+        return;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    const formatted = `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    
+    document.getElementById('countdown-display').textContent = formatted;
+    document.getElementById('countdown-label').textContent = 'dd:hh:mm:ss';
+}
+
+// Update countdown every second
+setInterval(updateCountdown, 1000);
+updateCountdown();
+{% endif %}
+
+// Initialize Lucide icons when available
+function initializeLucideIcons() {
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+        console.log('✅ Lucide icons initialized in demo status');
+    } else {
+        // Wait for Lucide to load
+        setTimeout(initializeLucideIcons, 100);
+    }
+}
+
+// Start initialization
+initializeLucideIcons();
+
+// Debug: Check if form exists
+console.log('License form found:', document.getElementById('licenseForm') ? 'Yes' : 'No');
+console.log('License key input found:', document.getElementById('licenseKey') ? 'Yes' : 'No');
+console.log('Activate button found:', document.getElementById('activateBtn') ? 'Yes' : 'No');
+console.log('CSRF token found:', document.querySelector('[name=csrfmiddlewaretoken]') ? 'Yes' : 'No');
+
+// License activation form
+document.getElementById('licenseForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    console.log('🔑 License activation form submitted');
+    
+    const licenseKey = document.getElementById('licenseKey').value.trim();
+    const activateBtn = document.getElementById('activateBtn');
+    
+    console.log('License key entered:', licenseKey);
+    
+    if (!licenseKey) {
+        showMessage('Please enter a license key', 'error');
+        return;
+    }
+    
+    // Validate format
+    const licensePattern = /^SMS-FULL-[A-Za-z0-9_-]+$/;
+    if (!licensePattern.test(licenseKey)) {
+        showMessage('Invalid license key format. Use: SMS-FULL-{encrypted_data}', 'error');
+        return;
+    }
+    
+    // Get CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+    console.log('CSRF token found:', csrfToken ? 'Yes' : 'No');
+    
+    if (!csrfToken) {
+        showMessage('Security token missing. Please refresh the page.', 'error');
+        return;
+    }
+    
+    // Show loading state
+    activateBtn.disabled = true;
+    activateBtn.innerHTML = '<i data-lucide="loader" class="w-5 h-5 inline mr-2 animate-spin"></i>Activating...';
+    
+    try {
+        console.log('Sending activation request...');
+        const response = await fetch('{% url "demo:activate" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                license_key: licenseKey
+            })
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const result = await response.json();
+        console.log('Activation result:', result);
+        
+        if (result.success) {
+            showMessage(result.message || 'License activated successfully!', 'success');
+            setTimeout(() => {
+                console.log('Reloading page...');
+                window.location.reload();
+            }, 2000);
+        } else {
+            showMessage(result.message || 'Activation failed', 'error');
+        }
+        
+    } catch (error) {
+        console.error('Activation error:', error);
+        showMessage(`Network error: ${error.message}`, 'error');
+    } finally {
+        activateBtn.disabled = false;
+        activateBtn.innerHTML = '<i data-lucide="unlock" class="w-5 h-5 inline mr-2"></i>Activate License Now';
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    }
+});
+
+// Format license key input (SMS-FULL format)
+document.getElementById('licenseKey')?.addEventListener('input', function(e) {
+    let value = e.target.value.trim();
+    
+    // Ensure it starts with SMS-FULL-
+    if (value.length > 0 && !value.startsWith('SMS-FULL-')) {
+        if (value.startsWith('SMS-')) {
+            // Convert old format to new format prefix
+            value = 'SMS-FULL-' + value.substring(4);
+        } else if (!value.startsWith('SMS')) {
+            value = 'SMS-FULL-' + value;
+        }
+    }
+    
+    e.target.value = value;
+});
+
+// Show message function
+function showMessage(message, type) {
+    console.log(`📢 Showing message: ${type} - ${message}`);
+    
+    const container = document.getElementById('messageContainer');
+    if (!container) {
+        console.error('Message container not found!');
+        alert(`${type.toUpperCase()}: ${message}`);
+        return;
+    }
+    
+    const messageDiv = document.createElement('div');
+    
+    const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+    
+    messageDiv.className = `${bgColor} text-white px-6 py-3 rounded-lg shadow-lg mb-2 transform transition-all duration-300 translate-x-full`;
+    messageDiv.innerHTML = `
+        <div class="flex items-center">
+            <i data-lucide="${type === 'success' ? 'check-circle' : 'alert-circle'}" class="w-5 h-5 mr-2"></i>
+            ${message}
+        </div>
+    `;
+    
+    container.appendChild(messageDiv);
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+    
+    // Animate in
+    setTimeout(() => {
+        messageDiv.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+        messageDiv.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (container.contains(messageDiv)) {
+                container.removeChild(messageDiv);
+            }
+        }, 300);
+    }, 5000);
+}
+
+// Copy to clipboard function
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        showMessage('Copied to clipboard!', 'success');
+    }).catch(function() {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showMessage('Copied to clipboard!', 'success');
+    });
+}
+
+// Show purchase information
+function showPurchaseInfo() {
+    const purchaseText = `PURCHASE SCHOOL MANAGEMENT SYSTEM LICENSE
+
+💰 License Price: Contact for pricing
+🔒 Secure Payment: Multiple payment options available
+📧 Contact: Upmanyu201@gmail.com
+📞 Phone: +91-9955590919
+📞 Phone: +91-9473089919
+
+📋 What You Need to Provide:
+• Your Stable Machine ID: {{ machine_id }}
+• School/Organization Name
+• Contact Information
+• Preferred Payment Method
+
+🎯 What You'll Receive:
+• Unique license key for this machine
+• Full system activation
+• Technical support
+• Free updates for 1 year
+
+⚠️ Important:
+• License keys are machine-specific and stable
+• Each machine requires a separate license
+• Keys are non-transferable between machines
+• Machine ID is hardware-based and never changes
+
+Click OK to copy your Stable Machine ID for the purchase request...`;
+    
+    if (confirm(purchaseText)) {
+        copyToClipboard('{{ machine_id }}');
+        showMessage('Stable Machine ID copied! Include this in your purchase request.', 'success');
+    }
+}
+
+// Show detailed help
+function showDetailedHelp() {
+    const helpWindow = window.open('', '_blank', 'width=600,height=700,scrollbars=yes,resizable=yes');
+    helpWindow.document.write(`
+        <html>
+        <head>
+            <title>License Activation Guide</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+                .header { background: #3B82F6; color: white; padding: 15px; margin: -20px -20px 20px -20px; }
+                .step { background: #F3F4F6; padding: 15px; margin: 10px 0; border-radius: 8px; }
+                .code { background: #1F2937; color: #10B981; padding: 10px; border-radius: 4px; font-family: monospace; }
+                .warning { background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 10px; margin: 10px 0; }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>🔑 License Activation Guide</h1>
+                <p>Complete step-by-step instructions</p>
+            </div>
+            
+            <div class="step">
+                <h3>Step 1: Generate License Key</h3>
+                <p>1. Open Windows File Explorer</p>
+                <p>2. Navigate to: <code>D:\\Web Applications\\SchoolManagement\\</code></p>
+                <p>3. Find and double-click: <strong>generate_license.bat</strong></p>
+                <p>4. Wait for the license generator to complete</p>
+                <p>5. Copy the generated license key (SMS-XXXX-XXXX-XXXX format)</p>
+            </div>
+            
+            <div class="step">
+                <h3>Step 2: Activate License</h3>
+                <p>1. Return to the License Status page</p>
+                <p>2. Paste the license key in the activation form</p>
+                <p>3. Click "Activate License Now"</p>
+                <p>4. Wait for confirmation message</p>
+            </div>
+            
+            <div class="warning">
+                <h3>⚠️ Important Notes</h3>
+                <ul>
+                    <li>License keys are machine-specific</li>
+                    <li>Each machine needs its own unique license</li>
+                    <li>Keep your license key secure</li>
+                    <li>Python must be installed for license generation</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h3>Troubleshooting</h3>
+                <p><strong>"License key does not match this machine"</strong></p>
+                <p>→ Generate a new license key on this specific machine</p>
+                
+                <p><strong>"Python not found"</strong></p>
+                <p>→ Install Python 3.7+ from python.org</p>
+                
+                <p><strong>"Invalid license key format"</strong></p>
+                <p>→ Ensure format is exactly: SMS-FULL-{encrypted_data}</p>
+            </div>
+            
+            <div class="code">
+                <strong>Your Stable Machine ID:</strong> {{ machine_id }}<br>
+                <strong>Expected License Format:</strong> SMS-FULL-{encrypted_data}<br>
+                <strong>Note:</strong> Machine ID is hardware-based and stable
+            </div>
+            
+            <p style="text-align: center; margin-top: 30px;">
+                <button onclick="window.close()" style="background: #3B82F6; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Close Guide</button>
+            </p>
+        </body>
+        </html>
+    `);
+}
+
+// Show license help (simplified)
+function showLicenseHelp() {
+    showDetailedHelp();
+}
+</script>
+{% endblock %}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frontend-Backend Coordination Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Frontend-Backend Coordination Test</h1>
+    
+    <!-- Backend Data Test -->
+    <div class="test-section">
+        <h2>1. Backend Data Test</h2>
+        <p><strong>Total Students:</strong> {{ total_count }}</p>
+        <p><strong>Backend Status:</strong> 
+            {% if backend_working %}
+                <span class="success">✓ Working</span>
+            {% else %}
+                <span class="error">✗ Not Working</span>
+            {% endif %}
+        </p>
+        
+        <h3>Sample Students:</h3>
+        {% if students %}
+            <ul>
+            {% for student in students %}
+                <li>{{ student.admission_number }} - {{ student.first_name }} {{ student.last_name }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p class="error">No students found!</p>
+        {% endif %}
+    </div>
+    
+    <!-- Template Variables Test -->
+    <div class="test-section">
+        <h2>2. Template Variables Test</h2>
+        <p><strong>Test Message:</strong> {{ test_data.message }}</p>
+        <p><strong>Timestamp:</strong> {{ test_data.timestamp }}</p>
+    </div>
+    
+    <!-- JavaScript API Test -->
+    <div class="test-section">
+        <h2>3. JavaScript API Test</h2>
+        <button onclick="testAPI()">Test API Connection</button>
+        <div id="api-result"></div>
+    </div>
+    
+    <!-- Form Submission Test -->
+    <div class="test-section">
+        <h2>4. Form Submission Test</h2>
+        <form method="GET">
+            <input type="text" name="test_param" placeholder="Enter test value" value="{{ request.GET.test_param }}">
+            <button type="submit">Test Form</button>
+        </form>
+        {% if request.GET.test_param %}
+            <p class="success">✓ Form parameter received: {{ request.GET.test_param }}</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function testAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = '<p class="info">Testing API...</p>';
+            
+            fetch('/students/coordination-api/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        resultDiv.innerHTML = `
+                            <p class="success">✓ API Working</p>
+                            <p>Total Students: ${data.total_students}</p>
+                            <p>Sample Students: ${JSON.stringify(data.sample_students, null, 2)}</p>
+                        `;
+                    } else {
+                        resultDiv.innerHTML = `<p class="error">✗ API Error: ${data.error}</p>`;
+                    }
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = `<p class="error">✗ Network Error: ${error.message}</p>`;
+                });
+        }
+        
+        // Test JavaScript execution
+        console.log('Frontend JavaScript is working');
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded successfully');
+        });
+    </script>
+</body>
+</html>

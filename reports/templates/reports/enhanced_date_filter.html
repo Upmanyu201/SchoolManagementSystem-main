@@ -1,0 +1,285 @@
+<!-- Enhanced Date Filter Component with Payment History -->
+<div x-data="paymentHistoryFilter()" class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-200">
+    <!-- Smart Date Filter Header -->
+    <div class="bg-gradient-to-r from-purple-500 to-indigo-600 p-4 rounded-xl mb-6">
+        <h2 class="text-white text-xl font-bold flex items-center">
+            <i class="fas fa-calendar-alt mr-3"></i>Smart Payment History Filter
+            <span class="ml-3 px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm" x-show="selectedRange">
+                <i class="fas fa-filter mr-1"></i><span x-text="getRangeLabel()"></span>
+            </span>
+        </h2>
+    </div>
+
+    <!-- Quick Date Presets with Live Data -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <!-- Today -->
+        <div @click="setDateRange('today')" 
+             class="cursor-pointer p-4 rounded-xl border-2 transition-all duration-300 hover:scale-105"
+             :class="selectedRange === 'today' ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-green-300'">
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Today</p>
+                    <p class="text-2xl font-bold text-green-600">₹<span x-text="paymentSummary.today.amount"></span></p>
+                </div>
+                <i class="fas fa-calendar-day text-2xl text-green-500"></i>
+            </div>
+            <div class="text-xs text-gray-500">
+                <i class="fas fa-receipt mr-1"></i><span x-text="paymentSummary.today.count"></span> payments
+            </div>
+        </div>
+
+        <!-- This Week -->
+        <div @click="setDateRange('week')" 
+             class="cursor-pointer p-4 rounded-xl border-2 transition-all duration-300 hover:scale-105"
+             :class="selectedRange === 'week' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-blue-300'">
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">This Week</p>
+                    <p class="text-2xl font-bold text-blue-600">₹<span x-text="paymentSummary.week.amount"></span></p>
+                </div>
+                <i class="fas fa-calendar-week text-2xl text-blue-500"></i>
+            </div>
+            <div class="text-xs text-gray-500">
+                <i class="fas fa-receipt mr-1"></i><span x-text="paymentSummary.week.count"></span> payments
+            </div>
+        </div>
+
+        <!-- This Month -->
+        <div @click="setDateRange('month')" 
+             class="cursor-pointer p-4 rounded-xl border-2 transition-all duration-300 hover:scale-105"
+             :class="selectedRange === 'month' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-purple-300'">
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">This Month</p>
+                    <p class="text-2xl font-bold text-purple-600">₹<span x-text="paymentSummary.month.amount"></span></p>
+                </div>
+                <i class="fas fa-calendar text-2xl text-purple-500"></i>
+            </div>
+            <div class="text-xs text-gray-500">
+                <i class="fas fa-receipt mr-1"></i><span x-text="paymentSummary.month.count"></span> payments
+            </div>
+        </div>
+
+        <!-- Custom Range -->
+        <div @click="selectedRange = 'custom'" 
+             class="cursor-pointer p-4 rounded-xl border-2 transition-all duration-300 hover:scale-105"
+             :class="selectedRange === 'custom' ? 'border-orange-500 bg-orange-50' : 'border-gray-200 hover:border-orange-300'">
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Custom Range</p>
+                    <p class="text-lg font-bold text-orange-600">Select Dates</p>
+                </div>
+                <i class="fas fa-search text-2xl text-orange-500"></i>
+            </div>
+            <div class="text-xs text-gray-500">
+                <i class="fas fa-calendar-alt mr-1"></i>Pick date range
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Date Range Inputs -->
+    <div x-show="selectedRange === 'custom'" x-transition class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-orange-50 rounded-xl">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">From Date</label>
+            <input type="date" x-model="customFrom" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">To Date</label>
+            <input type="date" x-model="customTo" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+        </div>
+        <div class="flex items-end">
+            <button @click="applyCustomRange()" 
+                    class="w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
+                <i class="fas fa-search mr-2"></i>Apply Filter
+            </button>
+        </div>
+    </div>
+
+    <!-- Payment Trend Chart -->
+    <div class="mb-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+            <i class="fas fa-chart-line mr-2 text-blue-500"></i>Payment Trend Analysis
+        </h3>
+        <div class="bg-gray-50 rounded-xl p-4">
+            <canvas id="paymentTrendChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <!-- ML Insights Panel -->
+    <div x-show="mlInsights.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <template x-for="insight in mlInsights" :key="insight.type">
+            <div class="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl p-4 border border-indigo-200">
+                <div class="flex items-center mb-2">
+                    <i :class="insight.icon" class="text-indigo-500 mr-2"></i>
+                    <h4 class="font-bold text-indigo-800" x-text="insight.title"></h4>
+                </div>
+                <p class="text-sm text-indigo-700" x-text="insight.message"></p>
+            </div>
+        </template>
+    </div>
+
+    <!-- Success Payment Status Filters -->
+    <div class="flex flex-wrap gap-3">
+        <button @click="filterByStatus('success')" 
+                class="px-4 py-2 rounded-lg transition-all duration-300 flex items-center"
+                :class="paymentStatus === 'success' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-green-100'">
+            <i class="fas fa-check-circle mr-2"></i>Successful Payments
+        </button>
+        <button @click="filterByStatus('pending')" 
+                class="px-4 py-2 rounded-lg transition-all duration-300 flex items-center"
+                :class="paymentStatus === 'pending' ? 'bg-yellow-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-yellow-100'">
+            <i class="fas fa-clock mr-2"></i>Pending Payments
+        </button>
+        <button @click="filterByStatus('failed')" 
+                class="px-4 py-2 rounded-lg transition-all duration-300 flex items-center"
+                :class="paymentStatus === 'failed' ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-red-100'">
+            <i class="fas fa-times-circle mr-2"></i>Failed Payments
+        </button>
+        <button @click="filterByStatus('all')" 
+                class="px-4 py-2 rounded-lg transition-all duration-300 flex items-center"
+                :class="paymentStatus === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-blue-100'">
+            <i class="fas fa-list mr-2"></i>All Payments
+        </button>
+    </div>
+</div>
+
+<script>
+function paymentHistoryFilter() {
+    return {
+        selectedRange: 'month',
+        customFrom: '',
+        customTo: '',
+        paymentStatus: 'all',
+        paymentSummary: {
+            today: { amount: '25,000', count: 12 },
+            week: { amount: '1,50,000', count: 85 },
+            month: { amount: '8,50,000', count: 420 }
+        },
+        mlInsights: [],
+        chartInstance: null,
+
+        init() {
+            this.loadPaymentSummary();
+            this.loadMLInsights();
+            this.initChart();
+        },
+
+        async setDateRange(range) {
+            this.selectedRange = range;
+            await this.loadPaymentData();
+            this.updateChart();
+        },
+
+        async applyCustomRange() {
+            if (this.customFrom && this.customTo) {
+                await this.loadPaymentData();
+                this.updateChart();
+            }
+        },
+
+        async filterByStatus(status) {
+            this.paymentStatus = status;
+            await this.loadPaymentData();
+        },
+
+        getRangeLabel() {
+            const labels = {
+                'today': 'Today\'s Payments',
+                'week': 'This Week',
+                'month': 'This Month',
+                'custom': 'Custom Range'
+            };
+            return labels[this.selectedRange] || 'All Time';
+        },
+
+        async loadPaymentSummary() {
+            try {
+                const response = await fetch('/api/reports/payment-summary/');
+                const data = await response.json();
+                this.paymentSummary = data.summary;
+            } catch (error) {
+                console.error('Failed to load payment summary:', error);
+            }
+        },
+
+        async loadMLInsights() {
+            try {
+                const response = await fetch('/api/reports/ml-insights/');
+                const data = await response.json();
+                this.mlInsights = data.insights || [];
+            } catch (error) {
+                console.error('Failed to load ML insights:', error);
+            }
+        },
+
+        async loadPaymentData() {
+            const params = new URLSearchParams({
+                range: this.selectedRange,
+                status: this.paymentStatus,
+                from: this.customFrom,
+                to: this.customTo
+            });
+
+            // Update URL and trigger HTMX request
+            const url = `${window.location.pathname}?${params.toString()}`;
+            window.history.pushState({}, '', url);
+            
+            // Trigger table update via HTMX
+            htmx.ajax('GET', url, {
+                target: '#payment-table',
+                swap: 'innerHTML'
+            });
+        },
+
+        initChart() {
+            const ctx = document.getElementById('paymentTrendChart').getContext('2d');
+            this.chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Daily Collections',
+                        data: [],
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        },
+
+        async updateChart() {
+            try {
+                const response = await fetch(`/api/reports/payment-trend/?range=${this.selectedRange}`);
+                const data = await response.json();
+                
+                this.chartInstance.data.labels = data.labels;
+                this.chartInstance.data.datasets[0].data = data.values;
+                this.chartInstance.update();
+            } catch (error) {
+                console.error('Failed to update chart:', error);
+            }
+        }
+    }
+}
+</script>

@@ -1,0 +1,1 @@
+{"high_risk_indicators": ["low_attendance", "multiple_fines", "payment_delays"], "optimal_fee_days": [1, 5, 10, 15, 25], "attendance_thresholds": {"high": 0.85, "medium": 0.6, "low": 0.0}}

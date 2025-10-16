@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Promotion</title>
+</head>
+<body>
+    <h1>Test Promotion Page</h1>
+    <p>Current Session: {{ current_session }}</p>
+    <p>Next Session: {{ next_session }}</p>
+    <p>Classes Count: {{ classes|length }}</p>
+    
+    <h2>Classes:</h2>
+    <ul>
+    {% for class in classes %}
+        <li>ID: {{ class.id }}, Name: {{ class.display_name }}</li>
+    {% empty %}
+        <li>No classes found</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!-- Module Access Links Template -->
+{% load permission_tags %}
+
+<div class="sidebar-modules">
+    {% for module_name, config in modules.items %}
+    <div class="module-link-container">
+        <a href="{% url config.url %}" 
+           class="flex items-center px-4 py-3 text-gray-700 hover:bg-{{ config.color }}-50 hover:text-{{ config.color }}-700 rounded-lg transition-all duration-200 group">
+            <i class="{{ config.icon }} mr-3 text-{{ config.color }}-500 group-hover:text-{{ config.color }}-700"></i>
+            <span class="font-medium">{{ config.name }}</span>
+            {% if config.can_edit %}
+                <i class="fas fa-edit ml-auto text-xs text-green-500" title="Edit Access"></i>
+            {% else %}
+                <i class="fas fa-eye ml-auto text-xs text-blue-500" title="View Only"></i>
+            {% endif %}
+        </a>
+    </div>
+    {% empty %}
+    <div class="px-4 py-3 text-gray-500 text-sm">
+        <i class="fas fa-lock mr-2"></i>
+        No modules accessible. Contact administrator.
+    </div>
+    {% endfor %}
+</div>

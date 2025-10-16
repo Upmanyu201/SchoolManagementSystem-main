@@ -1,0 +1,463 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load tz %}
+
+{% block title %}{% trans "Student Fee Preview" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+{% timezone "Asia/Kolkata" %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-chart-line text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                        {% trans "Student Fee Summary" %}
+                    </h1>
+                    <div class="text-gray-600 mt-1 space-y-1">
+                        <p class="flex items-center">
+                            <i class="fas fa-user mr-2 text-green-500"></i>
+                            <strong>{% trans "Student" %}:</strong> <span class="ml-1">{{ student.get_full_display_name }}</span>
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fas fa-school mr-2 text-purple-500"></i>
+                            <strong>{% trans "Class" %}:</strong> <span class="ml-1">{% if student.class_section %}{{ student.class_section.class_name }}{{ student.class_section.section_name }}{% else %}N/A{% endif %}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'student_fees:fee_deposit' %}" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-arrow-left mr-2"></i>{% trans "Return to Fees" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Enhanced Summary Cards -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Fee Overview Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4">
+                <h3 class="text-white text-lg font-bold flex items-center">
+                    <i class="fas fa-calculator mr-2"></i>{% trans "Fee Overview" %}
+                </h3>
+            </div>
+            <div class="p-6 space-y-3">
+                <div class="flex justify-between items-center p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                    <span class="text-gray-700 font-semibold flex items-center">
+                        <i class="fas fa-money-bill-wave mr-2 text-blue-500"></i>{% trans "Applied Fees" %}
+                    </span>
+                    <span class="font-bold text-blue-700 text-lg">₹{{ applied_fees|floatformat:2 }}</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+                    <span class="text-gray-700 font-semibold flex items-center">
+                        <i class="fas fa-history mr-2 text-yellow-500"></i>{% trans "Carry Forward" %}
+                    </span>
+                    <span class="font-bold {% if cf_balance > 0 %}text-red-700{% else %}text-green-700{% endif %} text-lg">₹{{ cf_balance|floatformat:2 }}</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-gradient-to-r from-red-50 to-pink-50 rounded-lg border border-red-200">
+                    <span class="text-gray-700 font-semibold flex items-center">
+                        <i class="fas fa-gavel mr-2 text-red-500"></i>{% trans "Fine Amount" %}
+                    </span>
+                    <span class="font-bold {% if fine_unpaid_amount > 0 %}text-red-700{% else %}text-green-700{% endif %} text-lg">₹{{ fine_unpaid_amount|floatformat:2 }}</span>
+                </div>
+                <hr class="border-gray-200">
+                <div class="flex justify-between items-center p-3 bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg border-2 border-gray-300">
+                    <span class="text-gray-800 font-bold flex items-center">
+                        <i class="fas fa-calculator mr-2 text-gray-600"></i>{% trans "Remaining Due" %}
+                    </span>
+                    <span class="font-bold {% if balance > 0 %}text-red-700{% else %}text-green-700{% endif %} text-xl">₹{{ balance|floatformat:2 }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payment Summary Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-4">
+                <h3 class="text-white text-lg font-bold flex items-center">
+                    <i class="fas fa-coins mr-2"></i>{% trans "Payments Made" %}
+                </h3>
+            </div>
+            <div class="p-6 space-y-3">
+                <div class="flex justify-between items-center p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                    <span class="text-gray-700 font-semibold flex items-center">
+                        <i class="fas fa-check-circle mr-2 text-green-500"></i>{% trans "Fee Payments" %}
+                    </span>
+                    <span class="font-bold text-green-700 text-lg">₹{{ total_paid|floatformat:2 }}</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+                    <span class="text-gray-700 font-semibold flex items-center">
+                        <i class="fas fa-receipt mr-2 text-purple-500"></i>{% trans "Fine Payments" %}
+                    </span>
+                    <span class="font-bold text-purple-700 text-lg">₹{{ fine_paid_amount|floatformat:2 }}</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                    <span class="text-gray-700 font-semibold flex items-center">
+                        <i class="fas fa-percentage mr-2 text-blue-500"></i>{% trans "Total Discount" %}
+                    </span>
+                    <span class="font-bold text-blue-700 text-lg">₹{{ total_discount|floatformat:2 }}</span>
+                </div>
+                <hr class="border-gray-200">
+                <div class="flex justify-between items-center p-3 bg-gradient-to-r from-green-100 to-emerald-200 rounded-lg border-2 border-green-300">
+                    <span class="text-green-800 font-bold flex items-center">
+                        <i class="fas fa-money-check mr-2 text-green-600"></i>{% trans "Total Received" %}
+                    </span>
+                    <span class="font-bold text-green-800 text-xl">₹{{ total_paid|add:fine_paid_amount|floatformat:2 }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Due Amount Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+            <div class="bg-gradient-to-r {% if balance > 0 %}from-orange-500 to-red-600{% else %}from-green-500 to-emerald-600{% endif %} p-4">
+                <h3 class="text-white text-lg font-bold flex items-center">
+                    <i class="fas {% if balance > 0 %}fa-exclamation-triangle{% else %}fa-check-circle{% endif %} mr-2"></i>{% trans "Due Amount" %}
+                </h3>
+            </div>
+            <div class="p-6">
+                <div class="text-center">
+                    <div class="w-24 h-24 bg-gradient-to-r {% if balance > 0 %}from-red-100 to-pink-100{% else %}from-green-100 to-emerald-100{% endif %} rounded-full flex items-center justify-center mx-auto mb-4 border-4 {% if balance > 0 %}border-red-200{% else %}border-green-200{% endif %}">
+                        <i class="fas {% if balance > 0 %}fa-exclamation-triangle text-red-500{% else %}fa-check-circle text-green-500{% endif %} text-3xl"></i>
+                    </div>
+                    <p class="text-gray-600 mb-2 font-semibold">{% trans "Current Due Amount" %}</p>
+                    <p class="text-5xl font-bold {% if balance > 0 %}text-red-700{% else %}text-green-700{% endif %} mb-4">
+                        ₹{{ balance|floatformat:2 }}
+                    </p>
+                    <!-- Debug: Show balance value -->
+                    <p class="text-xs text-gray-400">Debug: balance={{ balance }}</p>
+                    {% if balance > 0 %}
+                    <div class="bg-red-50 border-2 border-red-200 rounded-xl p-4">
+                        <p class="text-red-700 font-bold mb-1">{% trans "Payment Required" %}</p>
+                        <p class="text-red-600 text-sm">{% trans "Please make payment to clear dues" %}</p>
+                    </div>
+                    {% else %}
+                    <div class="bg-green-50 border-2 border-green-200 rounded-xl p-4">
+                        <p class="text-green-700 font-bold mb-1">{% trans "All Cleared" %}</p>
+                        <p class="text-green-600 text-sm">{% trans "No outstanding balance" %}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div id="form-messages" class="fixed top-4 right-4 z-50 space-y-2">
+        {% for message in messages %}
+        <div class="{% if message.tags == 'success' %}bg-green-500{% elif message.tags == 'error' %}bg-red-500{% else %}bg-blue-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in">
+            <div class="flex items-center">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} mr-3"></i>
+                <span class="font-medium">{{ message }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <a href="{% url 'student_fees:fee_deposit' %}?q={{ student.admission_number }}" 
+           class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-center">
+            <i class="fas fa-plus-circle mr-2 text-xl"></i>
+            <div class="font-bold">💳 {% trans "New Payment" %}</div>
+            <div class="text-xs opacity-90">{% trans "Process fee payment" %}</div>
+        </a>
+        {% if deposits and deposits.0.receipt_no %}
+        <a href="{% url 'student_fees:receipt_view' deposits.0.receipt_no %}" target="_blank"
+           class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-center">
+        {% else %}
+        <div class="bg-gray-400 text-white font-bold py-4 px-6 rounded-xl shadow-lg text-center opacity-50 cursor-not-allowed">
+        {% endif %}
+            <i class="fas fa-print mr-2 text-xl"></i>
+            <div class="font-bold">🖨️ {% trans "Print Receipt" %}</div>
+            <div class="text-xs opacity-90">{% trans "Latest payment" %}</div>
+        {% if deposits and deposits.0.receipt_no %}</a>{% else %}</div>{% endif %}
+        <a href="{% url 'students:edit_student' student.id %} " 
+           class="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-center">
+            <i class="fas fa-user-edit mr-2 text-xl"></i>
+            <div class="font-bold">✏️ {% trans "Edit Student" %}</div>
+            <div class="text-xs opacity-90">{% trans "Update details" %}</div>
+        </a>
+    </div>
+
+    <!-- Enhanced Payment History Table -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-700 p-6">
+            <div class="flex items-center justify-between">
+                <h3 class="text-white text-xl font-bold flex items-center">
+                    <i class="fas fa-history mr-3"></i>{% trans "Payment History" %}
+                </h3>
+                <div class="flex items-center space-x-4">
+                    <button id="bulkDeleteBtn" onclick="toggleBulkDelete()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors hidden">
+                        <i class="fas fa-trash mr-2"></i>{% trans "Delete Selected" %}
+                    </button>
+                    <div class="text-white text-sm opacity-90">
+                        {% trans "Total Records" %}: <span class="font-bold">{{ deposits|length }}</span>
+                    </div>
+                    <div class="text-white text-sm opacity-90">
+                        {% trans "Total Paid" %}: <span class="font-bold">₹{{ total_paid|add:fine_paid_amount|floatformat:2 }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead>
+                    <tr class="bg-gradient-to-r from-gray-50 to-gray-100">
+                        <th class="px-6 py-4 text-center">
+                            <input type="checkbox" id="selectAll" onchange="toggleSelectAll()" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                        </th>
+                        <th class="px-6 py-4 text-left">
+                            <i class="fas fa-receipt mr-2 text-blue-500"></i>{% trans "Receipt" %}
+                        </th>
+                        <th class="px-6 py-4 text-left">
+                            <i class="fas fa-tag mr-2 text-green-500"></i>{% trans "Fee Type" %}
+                        </th>
+                        <th class="px-6 py-4 text-right">
+                            <i class="fas fa-money-bill mr-2 text-orange-500"></i>{% trans "Amount" %}
+                        </th>
+                        <th class="px-6 py-4 text-right">
+                            <i class="fas fa-percentage mr-2 text-purple-500"></i>{% trans "Discount" %}
+                        </th>
+                        <th class="px-6 py-4 text-right">
+                            <i class="fas fa-check-circle mr-2 text-teal-500"></i>{% trans "Paid" %}
+                        </th>
+                        <th class="px-6 py-4 text-left">
+                            <i class="fas fa-calendar mr-2 text-red-500"></i>{% trans "Date" %}
+                        </th>
+                        <th class="px-6 py-4 text-center">
+                            <i class="fas fa-cogs mr-2 text-gray-500"></i>{% trans "Actions" %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dep in deposits %}
+                    <tr class="hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 {% cycle 'bg-white' 'bg-gray-50' %}">
+                        <td class="px-6 py-4 text-center">
+                            <input type="checkbox" name="selected_payments" value="{{ dep.id }}" onchange="updateBulkDeleteButton()" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                                <div>
+                                    <p class="font-mono text-sm font-bold text-gray-800">{{ dep.receipt_no }}</p>
+                                    <p class="text-xs text-gray-500">{% trans "Receipt ID" %}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if dep.fees_type %}
+                                {% if dep.fees_type.fee_type == "Carry Forward" %}
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200">
+                                        <i class="fas fa-history mr-1"></i>Carry Forward
+                                    </span>
+                                {% else %}
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
+                                        <i class="fas fa-graduation-cap mr-1"></i>{{ dep.fees_type.fee_group.group_type }} - {{ dep.fees_type.amount_type }}
+                                    </span>
+                                {% endif %}
+                            {% elif "Fine Payment" in dep.note %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">
+                                    <i class="fas fa-gavel mr-1"></i>{{ dep.note|slice:"14:" }}
+                                </span>
+                            {% elif "Fee Payment:" in dep.note %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
+                                    <i class="fas fa-graduation-cap mr-1"></i>{{ dep.note|slice:"13:" }}
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                                    <i class="fas fa-question mr-1"></i>{{ dep.note|default:"Other" }}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-right font-mono text-gray-700">₹{{ dep.amount|floatformat:2 }}</td>
+                        <td class="px-6 py-4 text-right font-mono text-orange-600">₹{{ dep.discount|floatformat:2 }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-green-600">₹{{ dep.paid_amount|floatformat:2 }}</td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm">
+                                <p class="font-semibold text-gray-800">{{ dep.deposit_date|date:"d M Y" }}</p>
+                                <p class="text-gray-500">{{ dep.deposit_date|time:"H:i" }}</p>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if dep.id %}
+                            <div class="flex justify-center gap-2">
+                                {% if dep.receipt_no and dep.receipt_no != '' %}
+                                <a href="{% url 'student_fees:receipt_view' dep.receipt_no %}" target="_blank" 
+                                   class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105" 
+                                   title="{% trans 'Print Receipt' %}">
+                                    <i class="fas fa-print"></i>
+                                </a>
+                                {% else %}
+                                <span class="bg-gray-400 text-white px-3 py-2 rounded-lg opacity-50 cursor-not-allowed" 
+                                      title="{% trans 'No receipt available' %}">
+                                    <i class="fas fa-print"></i>
+                                </span>
+                                {% endif %}
+                                <a href="{% url 'student_fees:edit_deposit' dep.id %}" 
+                                   class="hidden bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105"
+                                   title="{% trans 'Edit Payment' %}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button onclick="confirmDelete('{{ dep.receipt_no }}', '{% url 'student_fees:delete_deposit' dep.id %}', '{{ dep.paid_amount }}')"
+                                        class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105"
+                                        title="{% trans 'Delete Payment' %}">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                            {% else %}
+                            <span class="text-gray-400 italic text-sm">{% trans "Invalid ID" %}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="px-6 py-16 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fas fa-receipt text-4xl text-gray-400"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-500 mb-2">{% trans "No Payment Records" %}</h3>
+                                <p class="text-gray-400 mb-4">{% trans "No payment history found for this student" %}</p>
+                                <a href="{% url 'student_fees:fee_deposit' %}?q={{ student.admission_number }}" 
+                                   class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                                    <i class="fas fa-plus mr-2"></i>{% trans "Make First Payment" %}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endtimezone %}
+
+<script>
+function confirmDelete(receiptNo, deleteUrl, paidAmount) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    modal.innerHTML = `
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 shadow-2xl">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">{% trans "Delete Payment" %}</h3>
+                <p class="text-gray-600 mb-4">{% trans "Are you sure you want to delete this payment?" %}</p>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                    <p class="text-sm text-red-700"><strong>{% trans "Receipt" %}:</strong> ${receiptNo}</p>
+                    <p class="text-sm text-red-700"><strong>{% trans "Amount" %}:</strong> ₹${paidAmount}</p>
+                    <p class="text-xs text-red-600 mt-2">{% trans "This action cannot be undone. The amount will become unpaid." %}</p>
+                </div>
+                <div class="flex gap-4 justify-center">
+                    <button onclick="this.closest('.fixed').remove()" 
+                            class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors">
+                        {% trans "Cancel" %}
+                    </button>
+                    <button onclick="window.location.href='${deleteUrl}'" 
+                            class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition-colors">
+                        {% trans "Delete" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+function toggleSelectAll() {
+    const selectAll = document.getElementById('selectAll');
+    const checkboxes = document.querySelectorAll('input[name="selected_payments"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = selectAll.checked;
+    });
+    updateBulkDeleteButton();
+}
+
+function updateBulkDeleteButton() {
+    const checkboxes = document.querySelectorAll('input[name="selected_payments"]:checked');
+    const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
+    
+    if (checkboxes.length > 0) {
+        bulkDeleteBtn.classList.remove('hidden');
+        bulkDeleteBtn.innerHTML = `<i class="fas fa-trash mr-2"></i>{% trans "Delete Selected" %} (${checkboxes.length})`;
+    } else {
+        bulkDeleteBtn.classList.add('hidden');
+    }
+}
+
+function toggleBulkDelete() {
+    const checkboxes = document.querySelectorAll('input[name="selected_payments"]:checked');
+    if (checkboxes.length === 0) return;
+    
+    const paymentIds = Array.from(checkboxes).map(cb => cb.value);
+    const totalAmount = Array.from(checkboxes).reduce((sum, cb) => {
+        const row = cb.closest('tr');
+        const amountText = row.querySelector('td:nth-child(6)').textContent.replace('₹', '').replace(',', '');
+        return sum + parseFloat(amountText);
+    }, 0);
+    
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    modal.innerHTML = `
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 shadow-2xl">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">{% trans "Delete Multiple Payments" %}</h3>
+                <p class="text-gray-600 mb-4">{% trans "Are you sure you want to delete these payments?" %}</p>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                    <p class="text-sm text-red-700"><strong>{% trans "Selected" %}:</strong> ${paymentIds.length} payments</p>
+                    <p class="text-sm text-red-700"><strong>{% trans "Total Amount" %}:</strong> ₹${totalAmount.toFixed(2)}</p>
+                    <p class="text-xs text-red-600 mt-2">{% trans "This action cannot be undone. All amounts will become unpaid." %}</p>
+                </div>
+                <div class="flex gap-4 justify-center">
+                    <button onclick="this.closest('.fixed').remove()" 
+                            class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors">
+                        {% trans "Cancel" %}
+                    </button>
+                    <button onclick="bulkDeletePayments([${paymentIds.join(',')}])" 
+                            class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition-colors">
+                        {% trans "Delete All" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+function bulkDeletePayments(paymentIds) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '{% url "student_fees:bulk_delete_deposits" %}';
+    
+    const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]')?.value;
+    if (!csrfToken) {
+        alert('Security token missing. Please refresh the page.');
+        return;
+    }
+    
+    form.innerHTML = `
+        <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+        <input type="hidden" name="student_id" value="{{ student.id }}">
+        ${paymentIds.map(id => `<input type="hidden" name="payment_ids" value="${id}">`).join('')}
+    `;
+    
+    document.body.appendChild(form);
+    form.submit();
+    document.querySelector('.fixed').remove();
+}
+</script>
+{% csrf_token %}
+{% endblock %}

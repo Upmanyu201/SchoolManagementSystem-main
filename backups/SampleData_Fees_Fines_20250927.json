@@ -1,0 +1,232 @@
+[
+{
+  "model": "fees.feesgroup",
+  "pk": 101,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "fee_group": "Monthly",
+    "group_type": "Tuition Fee",
+    "fee_type": "Class Based",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 102,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "fee_group": "Monthly",
+    "group_type": "Transport",
+    "fee_type": "Stoppage Based",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 103,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "fee_group": "Annual",
+    "group_type": "Development Fee",
+    "fee_type": "General",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 1001,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "fee_group": 101,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 11A",
+    "amount_type": "October",
+    "amount": "2000.00",
+    "class_name": "Class 11A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 1002,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "fee_group": 101,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 11B",
+    "amount_type": "October",
+    "amount": "2000.00",
+    "class_name": "Class 11B",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 1003,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "fee_group": 101,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 12A",
+    "amount_type": "October",
+    "amount": "2200.00",
+    "class_name": "Class 12A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 1004,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "fee_group": 101,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 12B",
+    "amount_type": "October",
+    "amount": "2200.00",
+    "class_name": "Class 12B",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 1005,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "fee_group": 102,
+    "group_type": "Transport",
+    "fee_type": "Transport - Sahiyara Main",
+    "amount_type": "October",
+    "amount": "700.00",
+    "class_name": null,
+    "related_stoppage": 101
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 1006,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "fee_group": 102,
+    "group_type": "Transport",
+    "fee_type": "Transport - Konsar Chowk",
+    "amount_type": "October",
+    "amount": "650.00",
+    "class_name": null,
+    "related_stoppage": 104
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 1007,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "fee_group": 102,
+    "group_type": "Transport",
+    "fee_type": "Transport - Jaharpur Main",
+    "amount_type": "October",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 107
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 1008,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "fee_group": 103,
+    "group_type": "Development Fee",
+    "fee_type": "Annual Development",
+    "amount_type": "Yearly",
+    "amount": "1500.00",
+    "class_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 101,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "name": "October",
+    "category": "Late Fee",
+    "description": "Late payment of October school fees."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 102,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "name": "November",
+    "category": "Late Fee",
+    "description": "Late payment of November school fees."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 103,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "name": "Uniform Violation",
+    "category": "Discipline",
+    "description": "Not wearing proper school uniform."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 104,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "name": "Library Book Damage",
+    "category": "Damage",
+    "description": "Damage to library books or materials."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 105,
+  "fields": {
+    "created_at": "2025-09-27T10:00:00.000Z",
+    "updated_at": "2025-09-27T10:00:00.000Z",
+    "is_active": true,
+    "name": "Late Arrival",
+    "category": "Discipline",
+    "description": "Repeated late arrival to school."
+  }
+}
+]

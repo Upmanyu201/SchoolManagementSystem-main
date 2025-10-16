@@ -1,0 +1,564 @@
+{% extends 'fines/base_fine.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block fine_content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-orange-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-history text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-800 bg-clip-text text-transparent">
+                        {% trans "Fine History" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "View and manage all applied fines" %}</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <a href="{% url 'fines:add_fine' %}" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-plus mr-2"></i>{% trans "Add Fine" %}
+                </a>
+                <a href="{% url 'fines:fine_types' %}" class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-tags mr-2"></i>{% trans "Fine Types" %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search & Filter Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-200">
+        <div class="bg-gradient-to-r from-orange-500 to-red-600 p-4 rounded-xl mb-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-search mr-3"></i>🔍 {% trans "Search & Filter Fines" %}
+            </h2>
+        </div>
+        
+        <form method="GET" class="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
+            <!-- Search Input -->
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+                    <i class="fas fa-search mr-2 text-orange-500"></i>{% trans "Search" %}
+                </label>
+                <input type="text" name="search" placeholder="{% trans 'Search by student name or admission number' %}"
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:ring-0 transition-all duration-300" 
+                    value="{{ search_query }}">
+            </div>
+
+            <!-- Class Filter -->
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+                    <i class="fas fa-school mr-2 text-blue-500"></i>{% trans "Class" %}
+                </label>
+                <select name="class_filter" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:ring-0 transition-all duration-300">
+                    <option value="">{% trans "All Classes" %}</option>
+                    {% for class in available_classes %}
+                    <option value="{{ class.id }}" {% if class_filter == class.id|stringformat:'s' %}selected{% endif %}>{{ class.name }}-{{ class.section }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {% include 'fines/_fine_filters.html' %}
+
+            <!-- Status Filter -->
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+                    <i class="fas fa-toggle-on mr-2 text-green-500"></i>{% trans "Status" %}
+                </label>
+                <select name="status_filter" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:ring-0 transition-all duration-300">
+                    <option value="">{% trans "All Status" %}</option>
+                    <option value="active" {% if status_filter == 'active' %}selected{% endif %}>{% trans "Active" %}</option>
+                    <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>{% trans "Pending" %}</option>
+                    <option value="paid" {% if status_filter == 'paid' %}selected{% endif %}>{% trans "Paid" %}</option>
+                    <option value="deactivated" {% if status_filter == 'deactivated' %}selected{% endif %}>{% trans "Deactivated" %}</option>
+                </select>
+            </div>
+
+            <!-- Search Button -->
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2">&nbsp;</label>
+                <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-search mr-2"></i>{% trans "Search" %}
+                </button>
+            </div>
+
+            <!-- Clear Button -->
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2">&nbsp;</label>
+                <a href="{% url 'fines:fine_history' %}" class="block w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 text-center">
+                    <i class="fas fa-times mr-2"></i>{% trans "Clear" %}
+                </a>
+            </div>
+        </form>
+
+        <!-- Bulk Actions -->
+        <div class="flex flex-wrap gap-4 justify-center">
+            <button onclick="bulkWaiveFines()" class="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <i class="fas fa-hand-paper mr-2"></i>{% trans "Bulk Waive" %}
+            </button>
+            <button onclick="bulkDeactivateFines()" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <i class="fas fa-ban mr-2"></i>{% trans "Bulk Deactivate" %}
+            </button>
+            <a href="{% url 'fines:export_fines_csv' %}" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <i class="fas fa-download mr-2"></i>{% trans "Export CSV" %}
+            </a>
+        </div>
+    </div>
+
+
+
+    <!-- Fines Table -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-orange-500 to-red-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-table mr-3"></i>📋 {% trans "Fines List" %}
+            </h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-4">
+                            <input type="checkbox" id="selectAll" class="form-checkbox h-5 w-5 text-orange-600">
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-user mr-2 text-blue-500"></i>{% trans "Student" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-tag mr-2 text-purple-500"></i>{% trans "Fine Type" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-rupee-sign mr-2 text-green-500"></i>{% trans "Amount" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-calendar mr-2 text-indigo-500"></i>{% trans "Due Date" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-toggle-on mr-2 text-orange-500"></i>{% trans "Status" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-cogs mr-2 text-red-500"></i>{% trans "Actions" %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for fine in fines %}
+                    <tr class="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300">
+                        <td class="px-6 py-4">
+                            <input type="checkbox" name="selected_fines" value="{{ fine.id }}" class="form-checkbox h-5 w-5 text-orange-600">
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center text-white font-bold mr-3">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-gray-900">
+                                        {% if fine.target_scope == 'Class' and fine.class_section %}
+                                            {{ fine.class_section.class_name }}{{ fine.class_section.section_name }}
+                                        {% elif fine.target_scope == 'All' %}
+                                            All Students
+                                        {% else %}
+                                            Individual Students
+                                        {% endif %}
+                                    </div>
+                                    <div class="text-xs text-gray-500">{{ fine.target_scope }} Fine</div>
+                                    <div class="text-xs text-blue-500">Applied: {{ fine.applied_date|date:"d M Y" }}</div>
+                                    {% if fine.delay_days > 0 %}
+                                        <div class="text-xs text-purple-500">Delay: {{ fine.delay_days }} days</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                <i class="fas fa-tag mr-1"></i>{{ fine.fine_type.name }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-lg font-bold text-green-600">₹{{ fine.amount }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-900">{{ fine.due_date|date:"d M Y" }}</div>
+                            {% if fine.due_date < today %}
+                            <div class="text-xs text-red-500">{% trans "Overdue" %}</div>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if not fine.is_active %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+                                    <i class="fas fa-ban mr-1"></i>{% trans "Deactivated" %}
+                                </span>
+                            {% elif fine.status == 'paid' %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                                    <i class="fas fa-check-circle mr-1"></i>{% trans "Paid" %}
+                                </span>
+                            {% elif fine.status == 'pending' %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                                    <i class="fas fa-clock mr-1"></i>{% trans "Pending" %}
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>{% trans "Active" %}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex space-x-2">
+                                <a href="{% url 'fines:verify_fine_application' fine.id %}" 
+                                   class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105" 
+                                   title="{% trans 'Verify Application' %}">
+                                    <i class="fas fa-search"></i>
+                                </a>
+                                
+                                {% if fine.is_active and fine.status != 'paid' %}
+                                    <button onclick="showWaiveModal('{{ fine.id }}', '{{ fine.target_scope }}', '{{ fine.fine_type.name }}', '{{ fine.amount }}')" 
+                                            class="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105" 
+                                            title="{% trans 'Waive Fine' %}">
+                                        <i class="fas fa-hand-paper"></i>
+                                    </button>
+                                {% endif %}
+                                
+                                {% if fine.is_active %}
+                                    <button onclick="showDeactivateModal('{{ fine.id }}', '{{ fine.target_scope }}', '{{ fine.fine_type.name }}', '{{ fine.amount }}')" 
+                                            class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105" 
+                                            title="{% trans 'Deactivate Fine' %}">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                {% endif %}
+                                
+                                <a href="{% url 'fines:edit_fine' fine.id %}" 
+                                   class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105" 
+                                   title="{% trans 'Edit' %}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                
+                                <button onclick="showDeleteModal('{{ fine.id }}', '{{ fine.target_scope }}', '{{ fine.fine_type.name }}', '{{ fine.amount }}')" 
+                                        class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105" 
+                                        title="{% trans 'Delete' %}">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="px-6 py-12 text-center">
+                            <div class="flex flex-col items-center">
+                                <i class="fas fa-exclamation-triangle text-6xl text-gray-300 mb-4"></i>
+                                <h3 class="text-xl font-bold text-gray-500 mb-2">{% trans "No Fines Found" %}</h3>
+                                <p class="text-gray-400 mb-4">
+                                    {% if search_query or status_filter %}
+                                        {% trans "No fines match your search criteria" %}
+                                    {% else %}
+                                        {% trans "No fines have been applied yet" %}
+                                    {% endif %}
+                                </p>
+                                {% if not search_query and not status_filter %}
+                                <a href="{% url 'fines:add_fine' %}" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                                    <i class="fas fa-plus mr-2"></i>{% trans "Add First Fine" %}
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="bg-white rounded-xl shadow-lg p-6 mt-8 border border-gray-200">
+        <nav class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}&search={{ search_query }}&status_filter={{ status_filter }}&class_filter={{ class_filter }}"
+                   class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center">
+                    <i class="fas fa-chevron-left mr-2"></i>{% trans "Previous" %}
+                </a>
+                {% endif %}
+            </div>
+            
+            <div class="flex items-center gap-2">
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <span class="bg-gradient-to-r from-orange-500 to-red-600 text-white px-4 py-2 rounded-lg font-bold">
+                        {{ num }}
+                    </span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}&search={{ search_query }}&status_filter={{ status_filter }}&class_filter={{ class_filter }}"
+                       class="bg-gray-100 hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-600 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105">
+                        {{ num }}
+                    </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+            <div class="flex items-center gap-2">
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&search={{ search_query }}&status_filter={{ status_filter }}&class_filter={{ class_filter }}"
+                   class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center">
+                    {% trans "Next" %}<i class="fas fa-chevron-right ml-2"></i>
+                </a>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Waive Confirmation Modal -->
+<div id="waiveModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4">
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-hand-paper text-yellow-500 text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">{% trans "Waive Fine" %}</h3>
+            <p class="text-gray-600 mb-2">{% trans "Target:" %} <span id="waiveTargetName" class="font-semibold"></span></p>
+            <p class="text-gray-600 mb-2">{% trans "Fine Type:" %} <span id="waiveFineType" class="font-semibold"></span></p>
+            <p class="text-gray-600 mb-4">{% trans "Amount:" %} <span id="waiveFineAmount" class="font-semibold text-yellow-600"></span></p>
+            
+            <!-- Waiver Reason -->
+            <div class="text-left mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Waiver Reason" %}</label>
+                <textarea id="waiveReason" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent" placeholder="Enter reason for waiving this fine..."></textarea>
+            </div>
+        </div>
+        <div class="flex gap-4">
+            <button onclick="hideWaiveModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-xl transition-all duration-300">
+                <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
+            </button>
+            <button onclick="submitWaiveForm()" class="flex-1 bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300">
+                <i class="fas fa-hand-paper mr-2"></i>{% trans "Waive" %}
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Deactivate Confirmation Modal -->
+<div id="deactivateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4">
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-ban text-red-500 text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">{% trans "Deactivate Fine" %}</h3>
+            <p class="text-gray-600 mb-2">{% trans "Target:" %} <span id="deactivateTargetName" class="font-semibold"></span></p>
+            <p class="text-gray-600 mb-2">{% trans "Fine Type:" %} <span id="deactivateFineType" class="font-semibold"></span></p>
+            <p class="text-gray-600 mb-4">{% trans "Amount:" %} <span id="deactivateFineAmount" class="font-semibold text-red-600"></span></p>
+            <p class="text-sm text-gray-500">{% trans "This will deactivate the fine for all affected students." %}</p>
+        </div>
+        <div class="flex gap-4">
+            <button onclick="hideDeactivateModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-xl transition-all duration-300">
+                <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
+            </button>
+            <form id="deactivateFineForm" method="POST" class="flex-1">
+                {% csrf_token %}
+                <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300">
+                    <i class="fas fa-ban mr-2"></i>{% trans "Deactivate" %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4">
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">{% trans "Delete Fine" %}</h3>
+            <p class="text-gray-600 mb-2">{% trans "Student:" %} <span id="deleteStudentName" class="font-semibold"></span></p>
+            <p class="text-gray-600 mb-2">{% trans "Fine Type:" %} <span id="deleteFineType" class="font-semibold"></span></p>
+            <p class="text-gray-600">{% trans "Amount:" %} <span id="deleteFineAmount" class="font-semibold text-red-600"></span></p>
+        </div>
+        <div class="flex gap-4">
+            <button onclick="hideDeleteModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-xl transition-all duration-300">
+                <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
+            </button>
+            <form id="deleteFineForm" method="POST" class="flex-1">
+                {% csrf_token %}
+                <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300">
+                    <i class="fas fa-trash-alt mr-2"></i>{% trans "Delete" %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Select all functionality
+document.getElementById('selectAll').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('input[name="selected_fines"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+});
+
+// Modal functions
+function showWaiveModal(fineId, targetScope, fineType, amount) {
+    document.getElementById('waiveTargetName').textContent = targetScope;
+    document.getElementById('waiveFineType').textContent = fineType;
+    document.getElementById('waiveFineAmount').textContent = '₹' + amount;
+    document.getElementById('waiveModal').dataset.fineId = fineId;
+    document.getElementById('waiveModal').classList.remove('hidden');
+}
+
+function showDeactivateModal(fineId, targetScope, fineType, amount) {
+    document.getElementById('deactivateTargetName').textContent = targetScope;
+    document.getElementById('deactivateFineType').textContent = fineType;
+    document.getElementById('deactivateFineAmount').textContent = '₹' + amount;
+    document.getElementById('deactivateFineForm').action = `/fines/deactivate/${fineId}/`;
+    document.getElementById('deactivateModal').classList.remove('hidden');
+}
+
+function showDeleteModal(fineId, studentName, fineType, amount) {
+    document.getElementById('deleteStudentName').textContent = studentName;
+    document.getElementById('deleteFineType').textContent = fineType;
+    document.getElementById('deleteFineAmount').textContent = '₹' + amount;
+    document.getElementById('deleteFineForm').action = `/fines/delete/${fineId}/`;
+    document.getElementById('deleteModal').classList.remove('hidden');
+}
+
+function hideWaiveModal() {
+    document.getElementById('waiveModal').classList.add('hidden');
+    document.getElementById('waiveReason').value = '';
+}
+
+function hideDeactivateModal() {
+    document.getElementById('deactivateModal').classList.add('hidden');
+}
+
+function submitWaiveForm() {
+    const fineId = document.getElementById('waiveModal').dataset.fineId;
+    const reason = document.getElementById('waiveReason').value.trim();
+    
+    if (!reason) {
+        alert('{% trans "Please enter a reason for waiving this fine." %}');
+        return;
+    }
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+    formData.append('fine_ids', fineId);
+    formData.append('waiver_reason', reason);
+    
+    // Submit form
+    fetch('{% url "fines:waive_fines" %}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            location.reload();
+        } else {
+            alert('{% trans "Error waiving fine. Please try again." %}');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('{% trans "Error waiving fine. Please try again." %}');
+    });
+    
+    hideWaiveModal();
+}
+
+function hideDeleteModal() {
+    document.getElementById('deleteModal').classList.add('hidden');
+}
+
+// Bulk waive fines
+function bulkWaiveFines() {
+    const selectedFines = Array.from(document.querySelectorAll('input[name="selected_fines"]:checked')).map(cb => cb.value);
+    
+    if (selectedFines.length === 0) {
+        alert('{% trans "Please select at least one fine to waive" %}');
+        return;
+    }
+    
+    // Show waive modal for bulk operation
+    document.getElementById('waiveTargetName').textContent = `${selectedFines.length} selected fines`;
+    document.getElementById('waiveFineType').textContent = 'Multiple';
+    document.getElementById('waiveFineAmount').textContent = 'Various amounts';
+    document.getElementById('waiveModal').dataset.fineId = selectedFines.join(',');
+    document.getElementById('waiveModal').classList.remove('hidden');
+}
+
+// Bulk deactivate fines
+function bulkDeactivateFines() {
+    const selectedFines = Array.from(document.querySelectorAll('input[name="selected_fines"]:checked')).map(cb => cb.value);
+    
+    if (selectedFines.length === 0) {
+        alert('{% trans "Please select at least one fine to deactivate" %}');
+        return;
+    }
+    
+    if (confirm(`{% trans "Are you sure you want to deactivate" %} ${selectedFines.length} {% trans "selected fines?" %}`)) {
+        // Create form data
+        const formData = new FormData();
+        formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+        formData.append('fine_ids', selectedFines.join(','));
+        
+        // Submit form
+        fetch(`/fines/deactivate/${selectedFines[0]}/`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert('{% trans "Error deactivating fines. Please try again." %}');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{% trans "Error deactivating fines. Please try again." %}');
+        });
+    }
+}
+
+// Animate table rows on load
+document.addEventListener('DOMContentLoaded', function() {
+    const tableRows = document.querySelectorAll('tbody tr');
+    tableRows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            row.style.transition = 'all 0.5s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+});
+</script>
+
+{% block extra_css %}
+<style>
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Table enhancements */
+tbody tr:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+</style>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Confirm Delete" %} - {{ object.username }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-red-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-exclamation-triangle text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-red-600 to-pink-800 bg-clip-text text-transparent">
+                        {% trans "Confirm Delete" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">🗑️ {% trans "This action cannot be undone" %}</p>
+                </div>
+            </div>
+            <a href="{% url 'user_management' %}" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to Users" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Confirmation Card -->
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+            <div class="bg-gradient-to-r from-red-500 to-pink-600 p-6">
+                <h2 class="text-white text-xl font-bold flex items-center">
+                    <i class="fas fa-user-times mr-3"></i>{% trans "Delete User Account" %}
+                </h2>
+            </div>
+
+            <div class="p-8">
+                <!-- User Information -->
+                <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-6 border border-red-200 mb-8">
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 bg-gradient-to-r from-red-400 to-pink-500 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-red-800">{{ object.get_full_name|default:object.username }}</h3>
+                            <p class="text-red-600">
+                                <i class="fas fa-at mr-1"></i>{{ object.username }}
+                                {% if object.email %}
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-envelope mr-1"></i>{{ object.email }}
+                                {% endif %}
+                            </p>
+                            {% if object.role %}
+                            <p class="text-red-600 mt-1">
+                                <i class="fas fa-user-tag mr-1"></i>🏷️ {{ object.get_role_display }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning Message -->
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200 mb-8">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
+                            ⚠️
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-yellow-800 mb-2">
+                                🚨 {% trans "Warning: Permanent Action" %}
+                            </h4>
+                            <ul class="text-yellow-700 space-y-2">
+                                <li class="flex items-center">
+                                    <i class="fas fa-times-circle mr-2 text-red-500"></i>
+                                    {% trans "This user account will be permanently deleted" %}
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-times-circle mr-2 text-red-500"></i>
+                                    {% trans "All associated data and permissions will be removed" %}
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-times-circle mr-2 text-red-500"></i>
+                                    {% trans "This action cannot be reversed" %}
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-times-circle mr-2 text-red-500"></i>
+                                    {% trans "The user will lose access to the system immediately" %}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirmation Form -->
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Confirmation Checkbox -->
+                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
+                        <label class="flex items-start cursor-pointer">
+                            <input type="checkbox" id="confirmDelete" required 
+                                   class="mt-1 h-5 w-5 text-red-600 focus:ring-red-500 border-gray-300 rounded">
+                            <div class="ml-3">
+                                <span class="text-gray-800 font-medium">
+                                    {% trans "I understand that this action is permanent and cannot be undone" %}
+                                </span>
+                                <p class="text-gray-600 text-sm mt-1">
+                                    {% trans "Please check this box to confirm you want to delete this user account" %}
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-between items-center pt-6 border-t border-gray-200">
+                        <a href="{% url 'user_management' %}" 
+                           class="btn btn-secondary px-6 py-3">
+                            <i class="fas fa-times mr-2"></i>❌ {% trans "Cancel" %}
+                        </a>
+                        
+                        <button type="submit" id="deleteButton" disabled
+                                class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                            <i class="fas fa-trash-alt mr-2"></i>🗑️ {% trans "Delete User" %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const confirmCheckbox = document.getElementById('confirmDelete');
+    const deleteButton = document.getElementById('deleteButton');
+    
+    // Enable/disable delete button based on checkbox
+    confirmCheckbox.addEventListener('change', function() {
+        deleteButton.disabled = !this.checked;
+        
+        if (this.checked) {
+            deleteButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            deleteButton.classList.add('hover:scale-105');
+        } else {
+            deleteButton.classList.add('opacity-50', 'cursor-not-allowed');
+            deleteButton.classList.remove('hover:scale-105');
+        }
+    });
+    
+    // Add confirmation dialog
+    deleteButton.addEventListener('click', function(e) {
+        if (!confirmCheckbox.checked) {
+            e.preventDefault();
+            return;
+        }
+        
+        const confirmed = confirm(
+            '🚨 {% trans "Final Confirmation" %}\n\n' +
+            '{% trans "Are you absolutely sure you want to delete" %} "{{ object.username }}"?\n\n' +
+            '{% trans "This action is PERMANENT and cannot be undone!" %}'
+        );
+        
+        if (!confirmed) {
+            e.preventDefault();
+            return;
+        }
+        
+        // Show loading state
+        this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>⏳ {% trans "Deleting..." %}';
+        this.disabled = true;
+    });
+    
+    // Add keyboard shortcut (Escape to cancel)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            window.location.href = '{% url "user_management" %}';
+        }
+    });
+});
+</script>
+
+<style>
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Enhanced checkbox styling */
+input[type="checkbox"]:checked {
+    background-color: #dc2626;
+    border-color: #dc2626;
+}
+
+input[type="checkbox"]:focus {
+    ring-color: #dc2626;
+    ring-opacity: 0.5;
+}
+
+/* Button hover effects */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Card hover effects */
+.bg-white {
+    transition: all 0.3s ease;
+}
+
+.bg-white:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+</style>
+{% endblock %}

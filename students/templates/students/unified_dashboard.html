@@ -1,0 +1,1236 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ student.name }} - Student Dashboard{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card {
+  animation: scaleIn 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+.stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+.tab-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-button::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transition: width 0.3s ease;
+}
+
+.tab-button.active::before {
+  width: 100%;
+}
+
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.notification {
+  animation: slideInRight 0.4s ease-out;
+}
+
+.pulse-dot {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+  transition: stroke-dasharray 0.35s;
+  transform-origin: 50% 50%;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
+    <div class="dashboard-container max-w-7xl mx-auto" id="studentDashboard" data-admission="{{ student.admission_number }}">
+        
+        <!-- Notification Container -->
+        <div id="notifications" class="fixed top-20 right-4 z-50 space-y-2"></div>
+        
+        <!-- Back Button -->
+        <div class="mb-6">
+            <button onclick="window.history.back()" class="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl text-gray-700 hover:bg-white hover:shadow-md transition-all duration-200">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back
+            </button>
+        </div>
+        
+        <!-- Student Header Card -->
+        <div class="glass-effect rounded-3xl p-8 mb-8 shadow-2xl border border-white/20">
+            <div class="flex flex-col lg:flex-row items-center justify-between">
+                <div class="flex items-center space-x-6 mb-6 lg:mb-0">
+                    <div class="relative">
+                        <img src="{% if student.student_image and student.student_image.url %}{{ student.student_image.url }}{% else %}/static/images/default-avatar.svg{% endif %}" 
+                             class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg" 
+                             alt="Student Photo">
+                        <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white pulse-dot"></div>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ student.name }}</h1>
+                        <div class="flex items-center space-x-4 text-gray-600">
+                            <span class="flex items-center">
+                                <i class="fas fa-id-badge mr-2 text-blue-500"></i>
+                                {{ student.admission_number }}
+                            </span>
+                            <span class="flex items-center">
+                                <i class="fas fa-graduation-cap mr-2 text-purple-500"></i>
+                                {{ student.class_section.display_name }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-3">
+                    <button class="btn-3d bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300" 
+                            onclick="openPaymentModal()">
+                        <i class="fas fa-credit-card mr-2"></i>Pay Fees
+                    </button>
+                    <button class="btn-3d bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300" 
+                            onclick="dashboard.loadLiveData()" id="refreshBtn">
+                        <i class="fas fa-sync-alt mr-2"></i>Refresh
+                    </button>
+                    <button class="btn-3d bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300" 
+                            onclick="viewTimeline()">
+                        <i class="fas fa-history mr-2"></i>Timeline
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Current Dues Card -->
+            <div class="stat-card card-hover bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl p-6 text-white shadow-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-red-100 text-sm font-medium mb-1">Current Dues</p>
+                        <h3 class="text-2xl font-bold current-dues" data-live="current_dues">₹0.00</h3>
+                        <p class="text-red-100 text-xs mt-1" data-live="due_this_month_label">Due this month: ₹0.00</p>
+                    </div>
+                    <div class="bg-white/20 p-3 rounded-xl">
+                        <i class="fas fa-exclamation-triangle text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Total Balance Card -->
+            <div class="stat-card card-hover bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl p-6 text-white shadow-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-blue-100 text-sm font-medium mb-1">Total Balance</p>
+                        <h3 class="text-2xl font-bold total-balance" data-live="total_balance">₹0.00</h3>
+                        <p class="text-blue-100 text-xs mt-1" data-live="academic_year_label">Academic year: ₹0.00 paid</p>
+                    </div>
+                    <div class="bg-white/20 p-3 rounded-xl">
+                        <i class="fas fa-wallet text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Attendance Card -->
+            <div class="stat-card card-hover bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-6 text-white shadow-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-green-100 text-sm font-medium mb-1">Attendance</p>
+                        <h3 class="text-2xl font-bold" data-live="attendance_percentage">0%</h3>
+                        <p class="text-green-100 text-xs mt-1" data-live="semester_label">This semester: 0/0 days</p>
+                    </div>
+                    <div class="bg-white/20 p-3 rounded-xl">
+                        <svg class="w-8 h-8 progress-ring" viewBox="0 0 36 36">
+                            <path class="progress-ring-circle" stroke="currentColor" stroke-width="3" fill="transparent" 
+                                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
+                                  stroke-dasharray="0, 100" data-live="attendance_circle"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Last Payment Card -->
+            <div class="stat-card card-hover bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl p-6 text-white shadow-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-purple-100 text-sm font-medium mb-1">Last Payment</p>
+                        <h3 class="text-2xl font-bold last-payment" data-live="last_payment_amount">₹0.00</h3>
+                        <p class="text-purple-100 text-xs mt-1" data-live="last_payment_date">No recent transaction</p>
+                    </div>
+                    <div class="bg-white/20 p-3 rounded-xl">
+                        <i class="fas fa-receipt text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Tabs -->
+        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+            <!-- Tab Navigation -->
+            <div class="bg-gradient-to-r from-slate-800 to-slate-900 px-8 py-6">
+                <nav class="flex space-x-1" role="tablist">
+                    <button class="tab-button active px-6 py-3 text-white font-semibold rounded-xl transition-all duration-300 hover:bg-white/10" 
+                            data-tab="overview">
+                        <i class="fas fa-tachometer-alt mr-2"></i>Overview
+                    </button>
+                    <button class="tab-button px-6 py-3 text-white/70 font-semibold rounded-xl transition-all duration-300 hover:bg-white/10 hover:text-white" 
+                            data-tab="fees">
+                        <i class="fas fa-money-bill mr-2"></i>Fees
+                    </button>
+                    <button class="tab-button px-6 py-3 text-white/70 font-semibold rounded-xl transition-all duration-300 hover:bg-white/10 hover:text-white" 
+                            data-tab="attendance">
+                        <i class="fas fa-calendar-check mr-2"></i>Attendance
+                    </button>
+                    <button class="tab-button px-6 py-3 text-white/70 font-semibold rounded-xl transition-all duration-300 hover:bg-white/10 hover:text-white" 
+                            data-tab="results">
+                        <i class="fas fa-chart-line mr-2"></i>Results
+                    </button>
+                    <button class="tab-button px-6 py-3 text-white/70 font-semibold rounded-xl transition-all duration-300 hover:bg-white/10 hover:text-white" 
+                            data-tab="transport">
+                        <i class="fas fa-bus mr-2"></i>Transport
+                    </button>
+                    <button class="tab-button px-6 py-3 text-white/70 font-semibold rounded-xl transition-all duration-300 hover:bg-white/10 hover:text-white" 
+                            data-tab="details">
+                        <i class="fas fa-user-graduate mr-2"></i>Student Details
+                    </button>
+                </nav>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="p-8">
+                <!-- Overview Tab -->
+                <div id="overview-tab" class="tab-content active">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Recent Activities -->
+                        <div class="lg:col-span-2">
+                            <div class="flex items-center mb-6">
+                                <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mr-3">
+                                    <i class="fas fa-clock text-blue-600"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800">Recent Activities</h3>
+                            </div>
+                            <div class="recent-activities space-y-4">
+                                <!-- Loading skeleton -->
+                                <div class="loading-skeleton h-16 rounded-xl"></div>
+                                <div class="loading-skeleton h-16 rounded-xl"></div>
+                                <div class="loading-skeleton h-16 rounded-xl"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Student Information -->
+                        <div>
+                            <div class="flex items-center mb-6">
+                                <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mr-3">
+                                    <i class="fas fa-user-graduate text-blue-600"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800">Student Information</h3>
+                            </div>
+                            <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-6 space-y-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-id-badge text-blue-500 w-5 mr-3"></i>
+                                    <span class="text-gray-600 text-sm">Admission No:</span>
+                                    <span class="ml-auto font-semibold">{{ student.admission_number }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-graduation-cap text-green-500 w-5 mr-3"></i>
+                                    <span class="text-gray-600 text-sm">Class:</span>
+                                    <span class="ml-auto font-semibold">{{ student.class_section.display_name|default:"Not assigned" }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-calendar text-orange-500 w-5 mr-3"></i>
+                                    <span class="text-gray-600 text-sm">Date of Birth:</span>
+                                    <span class="ml-auto font-semibold">{{ student.date_of_birth|date:"d M Y"|default:"N/A" }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-calendar-plus text-purple-500 w-5 mr-3"></i>
+                                    <span class="text-gray-600 text-sm">Admission Date:</span>
+                                    <span class="ml-auto font-semibold">{{ student.date_of_admission|date:"d M Y"|default:"N/A" }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-mobile-alt text-cyan-500 w-5 mr-3"></i>
+                                    <span class="text-gray-600 text-sm">Mobile:</span>
+                                    <span class="ml-auto font-semibold">{{ student.mobile_number|default:"Not provided" }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-envelope text-red-500 w-5 mr-3"></i>
+                                    <span class="text-gray-600 text-sm">Email:</span>
+                                    <span class="ml-auto font-semibold text-sm">{{ student.email|default:"Not provided" }}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-info-circle text-gray-500 w-5 mr-3"></i>
+                                    <span class="text-gray-600 text-sm">Status:</span>
+                                    <span class="ml-auto font-semibold px-2 py-1 rounded-full text-xs {% if student.status == 'ACTIVE' %}bg-green-100 text-green-800{% elif student.status == 'SUSPENDED' %}bg-red-100 text-red-800{% else %}bg-gray-100 text-gray-800{% endif %}">{{ student.get_status_display }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fees Tab -->
+                <div id="fees-tab" class="tab-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Fee Breakdown -->
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-6">
+                            <div class="flex items-center mb-6">
+                                <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center mr-3">
+                                    <i class="fas fa-rupee-sign text-white"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800">Fee Breakdown</h3>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center py-3 border-b border-blue-200">
+                                    <span class="text-gray-600">Current Session Dues:</span>
+                                    <span class="font-bold text-lg dues-amount" data-live="fee_current_dues">₹0.00</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3 border-b border-blue-200">
+                                    <span class="text-gray-600">Carry Forward:</span>
+                                    <span class="font-bold text-lg" data-live="fee_carry_forward">₹0.00</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3 border-b border-blue-200">
+                                    <span class="text-gray-600">Due This Month:</span>
+                                    <span class="font-bold text-lg" data-live="fee_due_month">₹0.00</span>
+                                </div>
+                                <div class="flex justify-between items-center py-3">
+                                    <span class="text-gray-600">Total Outstanding:</span>
+                                    <span class="font-bold text-xl text-red-600" data-live="fee_total_outstanding">₹0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Payment History -->
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl p-6">
+                            <div class="flex items-center mb-6">
+                                <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center mr-3">
+                                    <i class="fas fa-history text-white"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800">Payment History</h3>
+                            </div>
+                            <div class="payment-history space-y-3">
+                                <!-- Payment history will be loaded here -->
+                                <div class="loading-skeleton h-12 rounded-lg"></div>
+                                <div class="loading-skeleton h-12 rounded-lg"></div>
+                                <div class="loading-skeleton h-12 rounded-lg"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Attendance Tab -->
+                <div id="attendance-tab" class="tab-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-6">Attendance Overview</h3>
+                            <div class="attendance-chart">
+                                <!-- Chart will be rendered here -->
+                                <div class="loading-skeleton h-64 rounded-xl"></div>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-blue-50 to-cyan-100 rounded-2xl p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-6">Monthly Breakdown</h3>
+                            <div class="monthly-attendance">
+                                <!-- Monthly data will be loaded here -->
+                                <div class="text-center py-8">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-calendar-alt text-blue-600 text-xl"></i>
+                                    </div>
+                                    <p class="text-gray-600 mb-2">Monthly Attendance</p>
+                                    <div class="text-2xl font-bold text-blue-700" data-live="monthly_attendance">0%</div>
+                                    <div class="text-sm text-gray-500 mt-1" data-live="monthly_details">This month: 0/0 days</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results Tab -->
+                <div id="results-tab" class="tab-content hidden">
+                    <div class="bg-gradient-to-br from-purple-50 to-indigo-100 rounded-2xl p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6">Academic Results</h3>
+                        <div class="results-content">
+                            <!-- Results will be loaded here -->
+                            <div class="loading-skeleton h-96 rounded-xl"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Student Details Tab -->
+                <div id="details-tab" class="tab-content hidden">
+                    {% include 'student_fees/student_detail_card.html' %}
+                </div>
+                
+                <!-- Transport Tab -->
+                <div id="transport-tab" class="tab-content hidden">
+                    <div class="bg-gradient-to-br from-yellow-50 to-orange-100 rounded-2xl p-6">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-yellow-500 rounded-xl flex items-center justify-center mr-3">
+                                <i class="fas fa-bus text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">Transport Information</h3>
+                        </div>
+                        
+                        <div class="transport-info">
+                            {% if student.transport_assignment %}
+                                <!-- Transport Assigned -->
+                                <div class="bg-white rounded-xl p-6 shadow-sm" id="transport-assigned" style="display: none;">
+                                    <div class="flex items-center mb-4">
+                                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                            <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-lg font-bold text-gray-800">Transport Assigned</h4>
+                                            <p class="text-gray-600">You are assigned to a transport route</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="bg-blue-50 rounded-lg p-4">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-route text-blue-500 mr-3"></i>
+                                                <div>
+                                                    <p class="text-sm text-gray-600">Route</p>
+                                                    <p class="font-semibold text-gray-800" data-live="transport_route">Loading...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bg-purple-50 rounded-lg p-4">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-map-marker-alt text-purple-500 mr-3"></i>
+                                                <div>
+                                                    <p class="text-sm text-gray-600">Stoppage</p>
+                                                    <p class="font-semibold text-gray-800" data-live="transport_stoppage">Loading...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bg-green-50 rounded-lg p-4">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-calendar text-green-500 mr-3"></i>
+                                                <div>
+                                                    <p class="text-sm text-gray-600">Assigned Date</p>
+                                                    <p class="font-semibold text-gray-800" data-live="transport_date">Loading...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4" id="transport-times">
+                                        <div class="bg-orange-50 rounded-lg p-4">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-clock text-orange-500 mr-3"></i>
+                                                <div>
+                                                    <p class="text-sm text-gray-600">Pickup Time</p>
+                                                    <p class="font-semibold text-gray-800" data-live="pickup_time">Loading...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bg-indigo-50 rounded-lg p-4">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-clock text-indigo-500 mr-3"></i>
+                                                <div>
+                                                    <p class="text-sm text-gray-600">Drop Time</p>
+                                                    <p class="font-semibold text-gray-800" data-live="drop_time">Loading...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                        <div class="flex items-start">
+                                            <i class="fas fa-info-circle text-yellow-600 mt-1 mr-3"></i>
+                                            <div>
+                                                <h5 class="font-semibold text-yellow-800 mb-1">Transport Guidelines</h5>
+                                                <ul class="text-sm text-yellow-700 space-y-1">
+                                                    <li>• Please be at the stoppage 5 minutes before scheduled time</li>
+                                                    <li>• Carry your student ID card while traveling</li>
+                                                    <li>• Follow all safety instructions from the driver</li>
+                                                    <li>• Contact school office for any transport-related queries</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <!-- No Transport Assigned -->
+                                <div class="bg-white rounded-xl p-8 shadow-sm text-center" id="transport-not-assigned">
+                                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-times-circle text-gray-400 text-2xl"></i>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-gray-800 mb-2">No Transport Assigned</h4>
+                                    <p class="text-gray-600 mb-6">You are not currently assigned to any transport route.</p>
+                                    
+                                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                        <div class="flex items-start">
+                                            <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
+                                            <div class="text-left">
+                                                <h5 class="font-semibold text-blue-800 mb-1">Need Transport?</h5>
+                                                <p class="text-sm text-blue-700">Contact the school office to apply for transport facility. Available routes and stoppages will be provided upon request.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div id="paymentModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full mx-4 transform scale-95 opacity-0 transition-all duration-300" id="paymentModalContent">
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-credit-card text-blue-600 text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800">Process Payment</h3>
+            <p class="text-gray-600 mt-2">Enter payment details below</p>
+        </div>
+        
+        <form id="paymentForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Amount</label>
+                <input type="number" id="paymentAmount" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors" placeholder="Enter amount">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Payment Method</label>
+                <select id="paymentMethod" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors">
+                    <option value="cash">Cash</option>
+                    <option value="card">Card</option>
+                    <option value="online">Online</option>
+                </select>
+            </div>
+            <div class="flex space-x-3 pt-4">
+                <button type="button" onclick="closePaymentModal()" class="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors">
+                    Cancel
+                </button>
+                <button type="submit" class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
+                    Process Payment
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Dashboard JavaScript
+class StudentDashboard {
+    constructor() {
+        this.currentTab = 'overview';
+        this.init();
+    }
+    
+    init() {
+        this.setupTabs();
+        this.loadLiveData();
+        this.loadInitialData();
+        this.setupEventListeners();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            this.loadLiveData();
+        }, 30000);
+    }
+    
+    setupTabs() {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.dataset.tab;
+                this.switchTab(tabId);
+            });
+        });
+    }
+    
+    switchTab(tabId) {
+        // Update button states
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('active');
+            btn.classList.add('text-white/70');
+            btn.classList.remove('text-white');
+        });
+        
+        document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        document.querySelector(`[data-tab="${tabId}"]`).classList.remove('text-white/70');
+        document.querySelector(`[data-tab="${tabId}"]`).classList.add('text-white');
+        
+        // Update content
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.add('hidden');
+            content.classList.remove('active');
+        });
+        
+        const targetContent = document.getElementById(`${tabId}-tab`);
+        if (targetContent) {
+            targetContent.classList.remove('hidden');
+            targetContent.classList.add('active');
+        }
+        
+        this.currentTab = tabId;
+        this.loadTabData(tabId);
+    }
+    
+    loadTabData(tabId) {
+        switch(tabId) {
+            case 'overview':
+                this.loadRecentActivities();
+                break;
+            case 'fees':
+                this.loadPaymentHistory();
+                break;
+            case 'attendance':
+                this.loadAttendanceData();
+                break;
+            case 'results':
+                this.loadResultsData();
+                break;
+            case 'transport':
+                this.loadTransportData();
+                break;
+            case 'details':
+                // Student details are already loaded in template
+                break;
+        }
+    }
+    
+    loadInitialData() {
+        this.loadRecentActivities();
+    }
+    
+    loadLiveData() {
+        const admissionNumber = document.getElementById('studentDashboard').dataset.admission;
+        const refreshBtn = document.getElementById('refreshBtn');
+        
+        // Show loading state
+        if (refreshBtn) {
+            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Loading...';
+            refreshBtn.disabled = true;
+        }
+        
+        fetch(`/students/api/live-dashboard/${admissionNumber}/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.updateDashboardCards(data.data);
+                    this.showNotification('Dashboard updated successfully!', 'success');
+                } else {
+                    console.error('Failed to load live data:', data.error);
+                    this.showNotification('Failed to update dashboard data', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading live data:', error);
+                this.showNotification('Error updating dashboard data', 'error');
+            })
+            .finally(() => {
+                // Reset button state
+                if (refreshBtn) {
+                    refreshBtn.innerHTML = '<i class="fas fa-sync-alt mr-2"></i>Refresh';
+                    refreshBtn.disabled = false;
+                }
+            });
+    }
+    
+    updateDashboardCards(data) {
+        // Update financial data
+        const financial = data.financial;
+        this.updateElement('[data-live="current_dues"]', `₹${this.formatNumber(financial.current_dues)}`);
+        this.updateElement('[data-live="due_this_month_label"]', `Due this month: ₹${this.formatNumber(financial.due_this_month)}`);
+        this.updateElement('[data-live="total_balance"]', `₹${this.formatNumber(financial.total_balance)}`);
+        this.updateElement('[data-live="academic_year_label"]', `Academic year: ₹${this.formatNumber(financial.academic_year_paid)} paid`);
+        
+        // Update attendance data
+        const attendance = data.attendance;
+        this.updateElement('[data-live="attendance_percentage"]', `${attendance.semester_percentage}%`);
+        this.updateElement('[data-live="semester_label"]', `This semester: ${attendance.semester_present}/${attendance.semester_total} days`);
+        
+        // Update monthly attendance
+        this.updateElement('[data-live="monthly_attendance"]', `${attendance.monthly_percentage}%`);
+        this.updateElement('[data-live="monthly_details"]', `This month: ${attendance.monthly_present}/${attendance.monthly_total} days`);
+        
+        // Update attendance circle
+        const circle = document.querySelector('[data-live="attendance_circle"]');
+        if (circle) {
+            circle.setAttribute('stroke-dasharray', `${attendance.semester_percentage}, 100`);
+        }
+        
+        // Update last payment data
+        const payment = data.payment;
+        if (payment.amount > 0) {
+            this.updateElement('[data-live="last_payment_amount"]', `₹${this.formatNumber(payment.amount)}`);
+            this.updateElement('[data-live="last_payment_date"]', `${payment.date} - ${payment.fee_type}`);
+        } else {
+            this.updateElement('[data-live="last_payment_amount"]', '₹0.00');
+            this.updateElement('[data-live="last_payment_date"]', 'No recent transaction');
+        }
+        
+        // Update transport data
+        this.updateTransportInfo(data.transport);
+        
+        // Update fee breakdown in fees tab
+        this.updateElement('[data-live="fee_current_dues"]', `₹${this.formatNumber(financial.current_dues)}`);
+        this.updateElement('[data-live="fee_carry_forward"]', `₹${this.formatNumber(financial.current_dues)}`);
+        this.updateElement('[data-live="fee_due_month"]', `₹${this.formatNumber(financial.due_this_month)}`);
+        this.updateElement('[data-live="fee_total_outstanding"]', `₹${this.formatNumber(financial.total_balance)}`);
+        
+        // Update color for total outstanding
+        const totalElement = document.querySelector('[data-live="fee_total_outstanding"]');
+        if (totalElement) {
+            if (financial.total_balance > 0) {
+                totalElement.className = 'font-bold text-xl text-red-600';
+            } else {
+                totalElement.className = 'font-bold text-xl text-green-600';
+            }
+        }
+    }
+    
+    updateTransportInfo(transport) {
+        const assignedDiv = document.getElementById('transport-assigned');
+        const notAssignedDiv = document.getElementById('transport-not-assigned');
+        
+        if (!assignedDiv || !notAssignedDiv) {
+            console.warn('Transport elements not found in DOM');
+            return;
+        }
+        
+        if (transport.assigned) {
+            assignedDiv.style.display = 'block';
+            notAssignedDiv.style.display = 'none';
+            
+            this.updateElement('[data-live="transport_route"]', transport.route_name);
+            this.updateElement('[data-live="transport_stoppage"]', transport.stoppage_name);
+            this.updateElement('[data-live="transport_date"]', transport.assigned_date);
+            
+            if (transport.pickup_time && transport.pickup_time !== 'Not specified') {
+                this.updateElement('[data-live="pickup_time"]', transport.pickup_time);
+                this.updateElement('[data-live="drop_time"]', transport.drop_time || 'Not specified');
+                const timesDiv = document.getElementById('transport-times');
+                if (timesDiv) timesDiv.style.display = 'grid';
+            } else {
+                const timesDiv = document.getElementById('transport-times');
+                if (timesDiv) timesDiv.style.display = 'none';
+            }
+        } else {
+            assignedDiv.style.display = 'none';
+            notAssignedDiv.style.display = 'block';
+        }
+    }
+    
+    updateElement(selector, value) {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.textContent = value;
+        }
+    }
+    
+    formatNumber(num) {
+        return parseFloat(num).toLocaleString('en-IN', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+    
+    loadRecentActivities() {
+        const container = document.querySelector('.recent-activities');
+        const admissionNumber = document.getElementById('studentDashboard').dataset.admission;
+        
+        // Fetch recent activities using new fee calculation API
+        fetch(`/students/api/fees/${admissionNumber}/history/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.payments && data.payments.length > 0) {
+                    // Show recent payments as activities
+                    const activities = data.payments.slice(0, 3).map(payment => {
+                        const paymentDate = new Date(payment.date);
+                        const timeAgo = this.getTimeAgo(paymentDate);
+                        
+                        return `
+                            <div class="bg-white rounded-xl p-4 border-l-4 border-blue-500 shadow-sm hover:shadow-md transition-shadow">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                        <i class="fas fa-credit-card text-blue-600"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-gray-800">Fee Payment Received</p>
+                                        <p class="text-sm text-gray-600">₹${parseFloat(payment.amount).toLocaleString()} - ${payment.fee_type}</p>
+                                        <p class="text-xs text-gray-500 mt-1">${timeAgo}</p>
+                                        ${payment.receipt_no ? `<p class="text-xs text-blue-500 mt-1">Receipt: ${payment.receipt_no}</p>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    container.innerHTML = activities;
+                } else {
+                    // Show default message if no payments
+                    container.innerHTML = `
+                        <div class="bg-white rounded-xl p-4 border-l-4 border-gray-300 shadow-sm">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-info-circle text-gray-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-semibold text-gray-800">Welcome to Student Dashboard</p>
+                                    <p class="text-sm text-gray-600">Recent activities will appear here</p>
+                                    <p class="text-xs text-gray-500 mt-1">No recent activities</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error loading activities:', error);
+                container.innerHTML = `
+                    <div class="bg-white rounded-xl p-4 border-l-4 border-red-300 shadow-sm">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-exclamation-triangle text-red-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-800">Error Loading Activities</p>
+                                <p class="text-sm text-gray-600">Unable to load recent activities</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+    }
+    
+    loadPaymentHistory() {
+        const container = document.querySelector('.payment-history');
+        if (!container) return;
+        
+        const admissionNumber = document.getElementById('studentDashboard').dataset.admission;
+        
+        // Fetch payment history using new API
+        fetch(`/students/api/fees/${admissionNumber}/history/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.payments && data.payments.length > 0) {
+                    container.innerHTML = data.payments.map(payment => `
+                        <div class="bg-white rounded-lg p-4 flex justify-between items-center hover:shadow-md transition-shadow">
+                            <div>
+                                <p class="font-semibold">${payment.fee_type}</p>
+                                <p class="text-sm text-gray-600">${new Date(payment.date).toLocaleDateString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'short', 
+                                    year: 'numeric'
+                                })}</p>
+                                ${payment.receipt_no ? `<p class="text-xs text-gray-500">Receipt: ${payment.receipt_no}</p>` : ''}
+                                ${payment.transaction_no ? `<p class="text-xs text-gray-500">Txn: ${payment.transaction_no}</p>` : ''}
+                            </div>
+                            <div class="text-right">
+                                <span class="text-green-600 font-bold">₹${parseFloat(payment.amount).toLocaleString()}</span>
+                                ${payment.discount > 0 ? `<p class="text-xs text-orange-500">Discount: ₹${parseFloat(payment.discount).toLocaleString()}</p>` : ''}
+                                <p class="text-xs text-gray-500">${payment.payment_mode}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-receipt text-gray-300 text-4xl mb-4"></i>
+                            <p class="text-gray-500">No payment history found</p>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error loading payment history:', error);
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-exclamation-triangle text-red-300 text-4xl mb-4"></i>
+                        <p class="text-red-500">Error loading payment history</p>
+                    </div>
+                `;
+            });
+    }
+    
+    loadAttendanceData() {
+        const admissionNumber = document.getElementById('studentDashboard').dataset.admission;
+        
+        // Load attendance data from API
+        fetch(`/attendance/api/report/?student_id=${admissionNumber}`)
+            .then(response => response.json())
+            .then(data => {
+                const container = document.querySelector('.attendance-chart');
+                if (container && data.length > 0) {
+                    const studentData = data[0];
+                    container.innerHTML = `
+                        <div class="text-center">
+                            <div class="mb-4">
+                                <div class="text-4xl font-bold text-green-600">${studentData.percentage}%</div>
+                                <div class="text-gray-600">Overall Attendance</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 text-sm">
+                                <div class="bg-green-100 p-3 rounded-lg">
+                                    <div class="font-bold text-green-700">${studentData.present_days}</div>
+                                    <div class="text-gray-600">Present</div>
+                                </div>
+                                <div class="bg-red-100 p-3 rounded-lg">
+                                    <div class="font-bold text-red-700">${studentData.absent_days}</div>
+                                    <div class="text-gray-600">Absent</div>
+                                </div>
+                                <div class="bg-blue-100 p-3 rounded-lg">
+                                    <div class="font-bold text-blue-700">${studentData.total_days}</div>
+                                    <div class="text-gray-600">Total</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = '<div class="text-center py-8"><p class="text-gray-600">No attendance data available</p></div>';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading attendance data:', error);
+                const container = document.querySelector('.attendance-chart');
+                if (container) {
+                    container.innerHTML = '<div class="text-center py-8"><p class="text-gray-600">Error loading attendance data</p></div>';
+                }
+            });
+    }
+    
+    loadResultsData() {
+        const container = document.querySelector('.results-content');
+        if (container) {
+            container.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-line text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Results Coming Soon</h3>
+                    <p class="text-gray-600">Academic results and grade reports will be available here once the examination module is integrated.</p>
+                    <div class="mt-6 bg-purple-50 border border-purple-200 rounded-lg p-4 max-w-md mx-auto">
+                        <div class="flex items-center">
+                            <i class="fas fa-info-circle text-purple-600 mr-3"></i>
+                            <div class="text-left">
+                                <h5 class="font-semibold text-purple-800 mb-1">What's Coming</h5>
+                                <ul class="text-sm text-purple-700 space-y-1">
+                                    <li>• Exam results and grades</li>
+                                    <li>• Subject-wise performance</li>
+                                    <li>• Progress tracking charts</li>
+                                    <li>• Comparative analysis</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    loadTransportData() {
+        const container = document.querySelector('.transport-info');
+        if (!container) return;
+        
+        const admissionNumber = document.getElementById('studentDashboard').dataset.admission;
+        
+        // Fetch transport information
+        fetch(`/api/students/${admissionNumber}/transport/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.transport_info) {
+                    // Transport data is already rendered in template
+                    // This API call can be used for real-time updates if needed
+                    console.log('Transport data loaded:', data.transport_info);
+                } else {
+                    console.log('No transport assignment found');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading transport data:', error);
+            });
+    }
+    
+    setupEventListeners() {
+        // Setup payment form
+        const paymentForm = document.getElementById('paymentForm');
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', this.handlePaymentSubmit.bind(this));
+        }
+    }
+    
+    handlePaymentSubmit(e) {
+        e.preventDefault();
+        const amount = document.getElementById('paymentAmount').value;
+        const method = document.getElementById('paymentMethod').value;
+        
+        if (!amount || amount <= 0) {
+            this.showNotification('Please enter a valid amount', 'error');
+            return;
+        }
+        
+        // Simulate payment processing
+        this.showNotification('Processing payment...', 'info');
+        
+        setTimeout(() => {
+            this.showNotification('Payment processed successfully!', 'success');
+            closePaymentModal();
+            // Update UI with new payment
+            this.updatePaymentUI(amount, method);
+        }, 2000);
+    }
+    
+    updatePaymentUI(amount, method) {
+        // Update current dues
+        const duesElement = document.querySelector('.current-dues');
+        if (duesElement) {
+            const currentDues = parseFloat(duesElement.textContent.replace('₹', '').replace(',', ''));
+            const newDues = Math.max(0, currentDues - parseFloat(amount));
+            duesElement.textContent = `₹${newDues.toLocaleString()}`;
+        }
+        
+        // Refresh payment history if on fees tab
+        if (this.currentTab === 'fees') {
+            this.loadPaymentHistory();
+        }
+    }
+    
+    getTimeAgo(date) {
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+        
+        if (diffInSeconds < 60) return 'Just now';
+        if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+        if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+        if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} days ago`;
+        
+        return date.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+    }
+    
+    showNotification(message, type = 'info') {
+        const container = document.getElementById('notifications');
+        const notification = document.createElement('div');
+        
+        const colors = {
+            success: 'bg-green-500',
+            error: 'bg-red-500',
+            info: 'bg-blue-500',
+            warning: 'bg-yellow-500'
+        };
+        
+        notification.className = `notification ${colors[type]} text-white px-6 py-4 rounded-xl shadow-lg flex items-center space-x-3`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+            <span class="font-medium">${message}</span>
+            <button onclick="this.parentElement.remove()" class="ml-auto">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        
+        container.appendChild(notification);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 5000);
+    }
+}
+
+// Payment Modal Functions
+function openPaymentModal() {
+    const modal = document.getElementById('paymentModal');
+    const content = document.getElementById('paymentModalContent');
+    
+    modal.classList.remove('hidden');
+    
+    setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+    }, 10);
+}
+
+function closePaymentModal() {
+    const modal = document.getElementById('paymentModal');
+    const content = document.getElementById('paymentModalContent');
+    
+    content.classList.remove('scale-100', 'opacity-100');
+    content.classList.add('scale-95', 'opacity-0');
+    
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300);
+}
+
+function viewTimeline() {
+    dashboard.showNotification('Timeline feature coming soon!', 'info');
+}
+
+function refreshFinancialData() {
+    const admissionNumber = document.getElementById('studentDashboard').dataset.admission;
+    
+    dashboard.showNotification('Refreshing financial data...', 'info');
+    
+    fetch(`/students/api/fees/${admissionNumber}/refresh/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            dashboard.showNotification('Financial data refreshed successfully!', 'success');
+            
+            // Update dashboard cards with new data
+            const financialData = data.updated_data.financial_overview;
+            
+            // Update carry forward
+            const carryForwardEl = document.querySelector('[data-carry-forward]');
+            if (carryForwardEl) {
+                carryForwardEl.textContent = `₹${parseFloat(financialData.carry_forward).toLocaleString()}`;
+            }
+            
+            // Update current dues
+            const currentDuesEl = document.querySelector('[data-current-dues]');
+            if (currentDuesEl) {
+                currentDuesEl.textContent = `₹${parseFloat(financialData.current_session_dues).toLocaleString()}`;
+            }
+            
+            // Update fines
+            const finesEl = document.querySelector('[data-fines]');
+            if (finesEl) {
+                finesEl.textContent = `₹${parseFloat(financialData.unpaid_fines).toLocaleString()}`;
+            }
+            
+            // Update total outstanding
+            const totalEl = document.querySelector('[data-total-outstanding]');
+            if (totalEl) {
+                totalEl.textContent = `₹${parseFloat(financialData.total_outstanding).toLocaleString()}`;
+                
+                // Update color based on amount
+                if (financialData.total_outstanding > 0) {
+                    totalEl.className = 'text-4xl font-bold text-red-700 mb-2';
+                } else {
+                    totalEl.className = 'text-4xl font-bold text-green-700 mb-2';
+                }
+            }
+            
+            // Refresh current tab data
+            dashboard.loadTabData(dashboard.currentTab);
+            
+        } else {
+            dashboard.showNotification('Failed to refresh data: ' + data.error, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error refreshing data:', error);
+        dashboard.showNotification('Error refreshing financial data', 'error');
+    });
+}
+
+// Initialize dashboard when DOM is loaded
+let dashboard;
+document.addEventListener('DOMContentLoaded', function() {
+    dashboard = new StudentDashboard();
+});
+</script>
+{% endblock %}

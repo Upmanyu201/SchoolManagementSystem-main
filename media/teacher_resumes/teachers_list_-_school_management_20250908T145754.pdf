@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachers List - School Management</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        :root {
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 80px;
+            --topbar-height: 70px;
+            --footer-height: 50px;
+            
+            /* Modern Color Palette */
+            --primary-color: #1e293b;
+            --secondary-color: #334155;
+            --accent-color: #3b82f6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --gradient-info: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            
+            /* Typography */
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Topbar */
+        .topbar {
+            height: var(--topbar-height);
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            padding: 0 var(--space-6);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--topbar-height));
+            background: linear-gradient(180deg, var(--primary-color) 0%, #0f172a 100%);
+            color: white;
+            position: fixed;
+            top: var(--topbar-height);
+            left: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hide scrollbar for sidebar */
+        .sidebar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sidebar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Content area */
+        .content-wrapper {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--topbar-height);
+            min-height: calc(100vh - var(--topbar-height) - var(--footer-height));
+            padding: var(--space-8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        /* Footer */
+        .footer {
+            height: var(--footer-height);
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 800;
+            font-size: var(--font-size-sm);
+            transition: all 0.3s ease;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Collapsed States */
+        .sidebar-collapsed {
+            width: var(--sidebar-collapsed-width) !important;
+        }
+
+        .content-collapsed {
+            margin-left: var(--sidebar-collapsed-width) !important;
+        }
+
+        .topbar-collapsed {
+            left: var(--sidebar-collapsed-width) !important;
+        }
+
+        .footer-collapsed {
+            left: var(--sidebar-collapsed-width) !important;
+        }
+
+        /* Sidebar Items */
+        .sidebar-text {
+            display: inline;
+            transition: opacity 0.2s ease;
+            margin-left: 10px;
+        }
+
+        .sidebar-collapsed .sidebar-text {
+            opacity: 0;
+            width: 0;
+            display: none;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: var(--space-4) var(--space-4);
+            color: #cbd5e0;
+            border-radius: 12px;
+            margin: var(--space-2) var(--space-4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
+        }
+
+        .menu-item:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2));
+            color: white;
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .menu-item.active {
+            background: var(--gradient-blue);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+            margin-right: var(--space-3);
+            font-size: var(--font-size-lg);
+        }
+
+        .logout-item {
+            margin: var(--space-4) var(--space-4) var(--space-2);
+            padding: var(--space-4) var(--space-4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-danger);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .logout-item:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 1100;
+                width: 250px;
+            }
+
+            .sidebar.show-mobile {
+                transform: translateX(0);
+            }
+
+            .content-wrapper {
+                margin-left: 0;
+            }
+
+            .topbar,
+            .footer {
+                left: 0;
+            }
+
+            .topbar-collapsed,
+            .footer-collapsed {
+                left: 0 !important;
+            }
+        }
+
+        /* Toggle button */
+        #sidebarToggle {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        #sidebarToggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Session badge */
+        .session-badge {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            padding: var(--space-2) var(--space-4);
+            border-radius: 20px;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+        }
+
+        .session-badge::before {
+            content: '🎓';
+            margin-right: var(--space-2);
+        }
+
+        /* Toast message styling */
+        #toastMessage {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+        }
+
+        #toastMessage:not(.hidden) {
+            transform: translateX(0);
+        }
+
+        /* Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .animate-spin { animation: spin 1s linear infinite; }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+        .animate-slide-in { animation: slideIn 0.3s ease-out; }
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+        /* Modern UI Components */
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-3) var(--space-6);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-blue);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            transform: translateY(-1px);
+        }
+
+        /* Message Alert Styling */
+        .message-alert {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .bg-success-500 { background: var(--gradient-success); }
+        .bg-error-500 { background: var(--gradient-danger); }
+        .bg-warning-500 { background: var(--gradient-warning); }
+        .bg-info-500 { background: var(--gradient-info); }
+        .bg-debug-500 { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); }
+    </style>
+
+    
+<style>
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Badge styling */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.badge-info {
+    background: linear-gradient(135deg, #06B6D4, #0891B2);
+    color: white;
+}
+</style>
+
+</head>
+
+<body>
+    
+    <!-- Topbar -->
+    <div class="topbar" id="topbar">
+        <div class="flex items-center space-x-6">
+            <button id="sidebarToggle" class="text-white">
+                <i class="fas fa-bars"></i>
+            </button>
+            <span class="session-badge">
+                Academic Session 2025-2026
+            </span>
+        </div>
+
+        <a href="/dashboard/" class="text-white font-bold text-xl hidden md:block hover:text-blue-200 transition-colors">
+            <i class="fas fa-graduation-cap mr-2"></i> School Management
+        </a>
+
+        <div class="flex items-center space-x-4">
+            <a href="/school_profile/" class="text-white hover:text-blue-200 hidden md:flex items-center transition-all duration-300 hover:scale-105">
+                <i class="fas fa-school mr-2"></i>
+                School Profile
+            </a>
+            <a href="/users/logout/" class="text-white hover:text-red-200 flex items-center transition-all duration-300 hover:scale-105">
+                <i class="fas fa-sign-out-alt mr-2"></i>
+                <span class="hidden md:inline">Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="text-center py-6 border-b border-gray-700">
+            <a href="/dashboard/" class="text-white font-bold text-xl flex items-center justify-center hover:text-blue-200 transition-colors">
+                <i class="fas fa-graduation-cap mr-2"></i>
+                <span class="sidebar-text">School Panel</span>
+            </a>
+        </div>
+        <nav class="flex-1 py-6">
+            <ul class="space-y-2">
+                <li>
+                    <a href="/teachers/" class="menu-item">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span class="sidebar-text">👨‍Manage Teachers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/subjects/" class="menu-item">
+                        <i class="fas fa-book"></i>
+                        <span class="sidebar-text">Manage Subjects</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/students/" class="menu-item">
+                        <i class="fas fa-users"></i>
+                        <span class="sidebar-text">Manage Students</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/transport/" class="menu-item">
+                        <i class="fas fa-bus"></i>
+                        <span class="sidebar-text">Manage Transport</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/student_fees/" class="menu-item">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span class="sidebar-text">Fee Deposit</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/fees/fees_setup/" class="menu-item">
+                        <i class="fas fa-cog"></i>
+                        <span class="sidebar-text">Fee Setup</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/fines/" class="menu-item">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span class="sidebar-text">Fine Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/attendance/manage/" class="menu-item">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span class="sidebar-text">Manage Attendance</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/promotion/promotion-class/" class="menu-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span class="sidebar-text">Promotion Class</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/messaging/" class="menu-item">
+                        <i class="fas fa-comments"></i>
+                        <span class="sidebar-text">Messaging</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/reports/fees-report/" class="menu-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <span class="sidebar-text">Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/backup/" class="menu-item">
+                        <i class="fas fa-database"></i>
+                        <span class="sidebar-text">Backup / Restore</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/users/management/" class="menu-item">
+                        <i class="fas fa-user-cog"></i>
+                        <span class="sidebar-text">Manage Users</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/settings/language/" class="menu-item">
+                        <i class="fas fa-cogs"></i>
+                        <span class="sidebar-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Logout -->
+        <div class="mt-auto p-4">
+            <a href="/users/logout/" class="logout-item">
+                <i class="fas fa-sign-out-alt mr-2"></i>
+                <span class="sidebar-text">Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Django Messages Container -->
+    
+
+    <!-- Toast Message -->
+    <div id="toastMessage" class="fixed right-4 z-[99999] hidden p-4 rounded-xl shadow-2xl text-white font-medium transition-all duration-300 min-w-80" style="top: calc(var(--topbar-height) + 1rem);"></div>
+
+    <!-- Content -->
+    <div class="content-wrapper animate-fade-in" id="content-wrapper">
+        
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-chalkboard-teacher text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-800 bg-clip-text text-transparent">
+                        👨Teachers Management
+                    </h1>
+                    <p class="text-gray-600 mt-1">Manage and view all teacher records</p>
+                </div>
+            </div>
+            <a href="/dashboard/" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-home mr-2"></i>Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    
+
+    <!-- Action Buttons Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-200">
+        <input type="hidden" name="csrfmiddlewaretoken" value="DFOmcJKHq4FHRXA4b917dIkvq4eCk4iFByzKyecHXytNehTAEMwurpQaSmD9zbq7">
+        <div class="flex flex-wrap gap-4 justify-center">
+            
+            <a href="/teachers/add/" class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <i class="fas fa-plus mr-2"></i>Add New Teacher
+            </a>
+            
+            
+            <!-- Export Buttons -->
+            
+            <div class="flex gap-2">
+                <button onclick="exportData('csv')" class="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" title="Export to CSV">
+                    <i class="fas fa-file-csv mr-2"></i>CSV
+                </button>
+                <button onclick="exportData('excel')" class="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" title="Export to Excel">
+                    <i class="fas fa-file-excel mr-2"></i>Excel
+                </button>
+                <button onclick="exportData('pdf')" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" title="Export to PDF">
+                    <i class="fas fa-file-pdf mr-2"></i>PDF
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+
+
+    <!-- Teachers Table -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-orange-500 to-red-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-table mr-3"></i>Teachers List
+            </h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                            <i class="fas fa-user mr-2 text-blue-500"></i>Name
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                            <i class="fas fa-phone mr-2 text-green-500"></i>Mobile
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                            <i class="fas fa-envelope mr-2 text-purple-500"></i>Email
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                            <i class="fas fa-graduation-cap mr-2 text-orange-500"></i>Qualification
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                            <i class="fas fa-calendar mr-2 text-teal-500"></i>Joining Date
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                            <i class="fas fa-cogs mr-2 text-red-500"></i>Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    
+                    <tr class="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-sm shadow-lg mr-3">
+                                    S
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-900 text-lg">Shambhu Jha Sir</div>
+                                    <div class="text-sm text-gray-500">Teacher ID: 1</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-phone mr-2 text-green-500"></i>9525377010
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-envelope mr-2 text-purple-500"></i>9473089919@bh.com
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="badge badge-info">
+                                <i class="fas fa-graduation-cap mr-1"></i>BED
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-gray-700 font-medium">
+                                <i class="fas fa-calendar mr-2 text-teal-500"></i>April 22, 2025
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex gap-2">
+                                
+                                <a href="/teachers/edit/1/"
+                                    class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button onclick="showDeleteModal('Shambhu Jha Sir', '1', '/teachers/delete/1/')"
+                                    class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <tr class="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-sm shadow-lg mr-3">
+                                    S
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-900 text-lg">Sanjay Kumar Thakur</div>
+                                    <div class="text-sm text-gray-500">Teacher ID: 2</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-phone mr-2 text-green-500"></i>9525377123
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-envelope mr-2 text-purple-500"></i>admin@school.in
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="badge badge-info">
+                                <i class="fas fa-graduation-cap mr-1"></i>BED
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-gray-700 font-medium">
+                                <i class="fas fa-calendar mr-2 text-teal-500"></i>April 20, 2025
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex gap-2">
+                                
+                                <a href="/teachers/edit/2/"
+                                    class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button onclick="showDeleteModal('Sanjay Kumar Thakur', '2', '/teachers/delete/2/')"
+                                    class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <tr class="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-sm shadow-lg mr-3">
+                                    S
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-900 text-lg">Samarat Sir</div>
+                                    <div class="text-sm text-gray-500">Teacher ID: 3</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-phone mr-2 text-green-500"></i>9525377123
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-envelope mr-2 text-purple-500"></i>farihi3952@namewok.com
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="badge badge-info">
+                                <i class="fas fa-graduation-cap mr-1"></i>BA
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-gray-700 font-medium">
+                                <i class="fas fa-calendar mr-2 text-teal-500"></i>April 21, 2025
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex gap-2">
+                                
+                                <a href="/teachers/edit/3/"
+                                    class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button onclick="showDeleteModal('Samarat Sir', '3', '/teachers/delete/3/')"
+                                    class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <tr class="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-sm shadow-lg mr-3">
+                                    R
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-900 text-lg">Raja Kumar</div>
+                                    <div class="text-sm text-gray-500">Teacher ID: 4</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-phone mr-2 text-green-500"></i>9525377123
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-envelope mr-2 text-purple-500"></i>9473089@bh.in
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="badge badge-info">
+                                <i class="fas fa-graduation-cap mr-1"></i>BA
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-gray-700 font-medium">
+                                <i class="fas fa-calendar mr-2 text-teal-500"></i>April 20, 2025
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex gap-2">
+                                
+                                <a href="/teachers/edit/4/"
+                                    class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button onclick="showDeleteModal('Raja Kumar', '4', '/teachers/delete/4/')"
+                                    class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <tr class="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-sm shadow-lg mr-3">
+                                    L
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-900 text-lg">lovely kumari</div>
+                                    <div class="text-sm text-gray-500">Teacher ID: 5</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-phone mr-2 text-green-500"></i>9525377010
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-envelope mr-2 text-purple-500"></i>admin@ut.com
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="badge badge-info">
+                                <i class="fas fa-graduation-cap mr-1"></i>BED
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-gray-700 font-medium">
+                                <i class="fas fa-calendar mr-2 text-teal-500"></i>July 22, 2025
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex gap-2">
+                                
+                                <a href="/teachers/edit/5/"
+                                    class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button onclick="showDeleteModal('lovely kumari', '5', '/teachers/delete/5/')"
+                                    class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <tr class="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-sm shadow-lg mr-3">
+                                    P
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-900 text-lg">Prence</div>
+                                    <div class="text-sm text-gray-500">Teacher ID: 6</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-phone mr-2 text-green-500"></i>3456789012
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-envelope mr-2 text-purple-500"></i>paxeyen334@lassora.com
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="badge badge-info">
+                                <i class="fas fa-graduation-cap mr-1"></i>BED
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-gray-700 font-medium">
+                                <i class="fas fa-calendar mr-2 text-teal-500"></i>Aug. 15, 2025
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex gap-2">
+                                
+                                <a href="/teachers/edit/6/"
+                                    class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button onclick="showDeleteModal('Prence', '6', '/teachers/delete/6/')"
+                                    class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <tr class="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-sm shadow-lg mr-3">
+                                    S
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-900 text-lg">Surander Jha</div>
+                                    <div class="text-sm text-gray-500">Teacher ID: 14</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-phone mr-2 text-green-500"></i>7842569536
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center text-gray-700">
+                                <i class="fas fa-envelope mr-2 text-purple-500"></i>surander_jha@gmail.com
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="badge badge-info">
+                                <i class="fas fa-graduation-cap mr-1"></i>PhD
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-gray-700 font-medium">
+                                <i class="fas fa-calendar mr-2 text-teal-500"></i>Sept. 18, 2025
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex gap-2">
+                                
+                                <a href="/teachers/edit/14/"
+                                    class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button onclick="showDeleteModal('Surander Jha', '14', '/teachers/delete/14/')"
+                                    class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4 border border-gray-200">
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Confirm Deletion</h3>
+            <p class="text-gray-600">
+                Are you sure you want to delete teacher <span id="teacherName" class="font-semibold text-red-600"></span>?
+            </p>
+            <p class="text-sm text-gray-500 mt-2">
+                Teacher ID: <span id="teacherId" class="font-semibold"></span>
+            </p>
+        </div>
+        <div class="flex gap-4">
+            <button onclick="hideDeleteModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-xl transition-all duration-300">
+                <i class="fas fa-times mr-2"></i>Cancel
+            </button>
+            <form id="deleteForm" method="POST" class="flex-1">
+                <input type="hidden" name="csrfmiddlewaretoken" value="DFOmcJKHq4FHRXA4b917dIkvq4eCk4iFByzKyecHXytNehTAEMwurpQaSmD9zbq7">
+                <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-trash-alt mr-2"></i>Delete
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showDeleteModal(teacherName, teacherId, deleteUrl) {
+    document.getElementById('teacherName').textContent = teacherName;
+    document.getElementById('teacherId').textContent = teacherId;
+    document.getElementById('deleteForm').action = deleteUrl;
+    document.getElementById('deleteModal').classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+}
+
+function hideDeleteModal() {
+    document.getElementById('deleteModal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+}
+
+// Close modal when clicking outside
+document.getElementById('deleteModal').addEventListener('click', function (e) {
+    if (e.target === this) {
+        hideDeleteModal();
+    }
+});
+
+// Export functionality
+function exportData(format) {
+    console.log('🚀 [TEACHERS EXPORT] Starting export process', {
+        format: format,
+        timestamp: new Date().toISOString(),
+        module: 'teachers'
+    });
+    
+    // Show loading state
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Exporting...';
+    button.disabled = true;
+    
+    // Get CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                     document.querySelector('meta[name=csrf-token]')?.getAttribute('content') ||
+                     getCookie('csrftoken');
+    
+    // Call export API
+    const formData = new FormData();
+    formData.append('module', 'teachers');
+    formData.append('data_type', 'teacher_list');
+    formData.append('format', format);
+    formData.append('filters', JSON.stringify({}));
+    if (csrfToken) {
+        formData.append('csrfmiddlewaretoken', csrfToken);
+    }
+    
+    fetch('/core/api/export/initiate/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success && data.job_id) {
+            showNotification('Export completed! Starting download...', 'success');
+            // Direct download
+            window.location.href = data.file_url;
+        } else {
+            showNotification('Export failed: ' + (data.error || 'Unknown error'), 'error');
+        }
+    })
+    .catch(error => {
+        console.error('💥 [TEACHERS EXPORT] Export error:', error);
+        showNotification('Export failed: ' + error.message, 'error');
+    })
+    .finally(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+    });
+}
+
+// Helper function to get cookie
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function checkExportStatus(requestId, format) {
+    const checkStatus = () => {
+        fetch(`/core/api/export/status/${requestId}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'completed') {
+                window.location.href = `/core/api/export/download/${requestId}/`;
+                showNotification(`${format.toUpperCase()} export completed!`, 'success');
+            } else if (data.status === 'failed') {
+                showNotification('Export failed: ' + (data.error || 'Processing error'), 'error');
+            } else {
+                setTimeout(checkStatus, 2000);
+            }
+        })
+        .catch(error => {
+            showNotification('Failed to check export status', 'error');
+        });
+    };
+    setTimeout(checkStatus, 1000);
+}
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-xl shadow-lg animate-slide-in ${
+        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+    } text-white`;
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <i class="fas ${
+                type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'
+            } mr-3"></i>
+            <span class="font-medium">${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => notification.remove(), 500);
+    }, 5000);
+}
+
+// Auto-hide messages
+document.addEventListener('DOMContentLoaded', function() {
+    const messages = document.getElementById('form-messages');
+    if (messages) {
+        setTimeout(() => {
+            messages.style.opacity = '0';
+            messages.style.transform = 'translateX(100%)';
+            setTimeout(() => messages.remove(), 500);
+        }, 5000);
+    }
+    
+    // Animate table rows on load
+    const tableRows = document.querySelectorAll('tbody tr');
+    tableRows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            row.style.transition = 'all 0.5s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+});
+</script>
+
+
+
+
+<style>
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Badge styling */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.badge-info {
+    background: linear-gradient(135deg, #06B6D4, #0891B2);
+    color: white;
+}
+</style>
+
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer" id="footer">
+        <p class="text-sm flex items-center">
+            © 2025 Gyan Varsha International School
+            <span class="mx-2">•</span>
+            Developed by
+            <a href="https://www.facebook.com/w3ur.team/" target="_blank" class="text-blue-300 hover:text-blue-200 transition-colors ml-1">
+                w3ur.team
+            </a>
+            <span class="mx-2">•</span>
+            Designed by <span class="text-yellow-300 ml-1">URsang</span>
+        </p>
+    </div>
+
+    
+
+    <!-- Base JavaScript -->
+    
+        <script src="/static/js/sidebar.js"></script>
+    
+
+    <!-- Toast Message JavaScript -->
+    <script>
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toastMessage');
+            if (!toast) return;
+            
+            toast.textContent = message;
+            toast.className = `fixed top-20 right-4 z-[99999] p-4 rounded-xl shadow-2xl text-white font-medium transition-all duration-300 min-w-80 ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 
+                type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
+            }`;
+            toast.classList.remove('hidden');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 5000);
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Auto-hide Django messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageAlerts = document.querySelectorAll('.message-alert');
+            messageAlerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateX(100%)';
+                    setTimeout(() => alert.remove(), 300);
+                }, 5000);
+            });
+        });
+
+        // Show Django messages as toast (backup method)
+        
+
+        // Initialize sidebar state
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add active class to current menu item
+            const currentPath = window.location.pathname;
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            menuItems.forEach(item => {
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Animate menu items on load
+            menuItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, index * 50);
+            });
+        });
+    </script>
+
+
+    
+    <!-- Enhanced Form Handler -->
+    <script src="/static/js/enhanced_form_handler.js"></script>
+    
+    <!-- Enhanced Export System -->
+    <script src="/static/js/export-enhanced.js"></script>
+    
+    <!-- Additional JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    
+    
+    <!-- Additional Modern Enhancements -->
+    <script>
+        // Add smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+        
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + D for Dashboard
+            if (e.altKey && e.key === 'd') {
+                e.preventDefault();
+                window.location.href = '/dashboard/';
+            }
+            
+            // Alt + S for Students
+            if (e.altKey && e.key === 's') {
+                e.preventDefault();
+                window.location.href = '/students/';
+            }
+            
+            // Alt + T for Teachers
+            if (e.altKey && e.key === 't') {
+                e.preventDefault();
+                window.location.href = '/teachers/';
+            }
+        });
+    </script>
+</body>
+
+</html>

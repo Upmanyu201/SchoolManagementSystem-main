@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Fine Management" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-exclamation-triangle text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-red-600 to-pink-800 bg-clip-text text-transparent">
+                        {% trans "Fine Management System" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "Manage student fines and penalties" %}</p>
+                </div>
+            </div>
+            <a href="{% url 'dashboard' %}" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-home mr-2"></i>{% trans "Dashboard" %}
+            </a>
+        </div>
+    </div>
+
+
+
+    <!-- Messages -->
+    {% if messages %}
+    <div id="form-messages" class="fixed top-24 right-4 z-50 space-y-2 max-w-md">
+        {% for message in messages %}
+        <div class="{% if message.tags == 'error' %}bg-red-500{% elif message.tags == 'warning' %}bg-yellow-500{% elif message.tags == 'success' %}bg-green-500{% else %}bg-blue-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in message-item">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% elif message.tags == 'success' %}fa-check-circle{% else %}fa-info-circle{% endif %} mr-3"></i>
+                    <span class="font-medium">{{ message }}</span>
+                </div>
+                <button onclick="removeMessage(this)" class="ml-3 text-white hover:text-gray-200 focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Export Notifications -->
+    <div id="export-notifications" class="fixed top-36 right-4 z-50 space-y-2 max-w-md"></div>
+
+    <!-- Quick Actions Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-200">
+        <div class="bg-gradient-to-r from-red-500 to-pink-600 p-4 rounded-xl mb-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-bolt mr-3"></i>{% trans "Quick Actions" %}
+            </h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a href="{% url 'fines:add_fine' %}" class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-center">
+                <i class="fas fa-plus-circle text-2xl mb-2 block"></i>
+                {% trans "Add Fine" %}
+            </a>
+            <a href="{% url 'fines:fine_history' %}" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-center">
+                <i class="fas fa-history text-2xl mb-2 block"></i>
+                {% trans "Fine History" %}
+            </a>
+            <a href="{% url 'fines:fine_types' %}" class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-center">
+                <i class="fas fa-tags text-2xl mb-2 block"></i>
+                {% trans "Fine Types" %}
+            </a>
+            <!-- Upload Fines - Hidden until functionality is implemented -->
+            {% comment %}
+            <a href="{% url 'fines:upload_fines' %}" class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg text-center">
+                <i class="fas fa-upload text-2xl mb-2 block"></i>
+                {% trans "Upload Fines" %}
+            </a>
+            {% endcomment %}
+        </div>
+    </div>
+
+    {% block fine_content %}
+    <!-- Fine-specific content will be inserted here by child templates -->
+    {% endblock %}
+</div>
+
+<script>
+// Message management functions
+function removeMessage(button) {
+    const messageDiv = button.closest('.message-item');
+    if (messageDiv) {
+        messageDiv.style.opacity = '0';
+        messageDiv.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            messageDiv.remove();
+            // Remove container if no messages left
+            const container = document.getElementById('form-messages');
+            if (container && container.children.length === 0) {
+                container.remove();
+            }
+        }, 300);
+    }
+}
+
+// Auto-hide messages with staggered removal
+document.addEventListener('DOMContentLoaded', function() {
+    const messages = document.querySelectorAll('.message-item');
+    messages.forEach((message, index) => {
+        setTimeout(() => {
+            if (message.parentNode) {
+                message.style.opacity = '0';
+                message.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (message.parentNode) {
+                        message.remove();
+                        // Remove container if no messages left
+                        const container = document.getElementById('form-messages');
+                        if (container && container.children.length === 0) {
+                            container.remove();
+                        }
+                    }
+                }, 300);
+            }
+        }, 4000 + (index * 500)); // 4 seconds + staggered delay
+    });
+    
+    // Animate action cards on load
+    const actionCards = document.querySelectorAll('.grid > a');
+    actionCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.5s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});
+</script>
+
+{% block extra_css %}
+<style>
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
+{% endblock %}

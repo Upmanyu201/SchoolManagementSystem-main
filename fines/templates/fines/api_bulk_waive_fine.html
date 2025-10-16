@@ -1,0 +1,382 @@
+{% extends 'fines/base_fine.html' %}
+{% load static %}
+
+{% block fine_content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-xl font-semibold text-gray-800 mb-6">Bulk Waive Fines</h2>
+    
+    <div class="mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <label for="filter-class" class="block text-sm font-medium text-gray-700 mb-1">Class</label>
+                <select id="filter-class" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">All Classes</option>
+                </select>
+            </div>
+            <div>
+                <label for="filter-fine-type" class="block text-sm font-medium text-gray-700 mb-1">Fine Type</label>
+                <select id="filter-fine-type" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">All Fine Types</option>
+                </select>
+            </div>
+            <div>
+                <label for="filter-status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <select id="filter-status" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">All</option>
+                    <option value="unpaid" selected>Unpaid</option>
+                    <option value="paid">Paid</option>
+                </select>
+            </div>
+        </div>
+        <div class="mt-4 flex justify-end">
+            <button id="search-fines" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200">Search</button>
+        </div>
+    </div>
+    
+    <div id="fines-list" class="mb-6 hidden">
+        <h3 class="text-lg font-medium text-gray-800 mb-2">Available Fines</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <input type="checkbox" id="select-all-fines" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Scope</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="fines-table-body" class="bg-white divide-y divide-gray-200">
+                    <!-- Fines will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+        <div id="pagination" class="mt-4 flex justify-between items-center">
+            <div>
+                <span id="pagination-info">Showing 0 of 0 fines</span>
+            </div>
+            <div class="flex space-x-2">
+                <button id="prev-page" class="px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
+                <button id="next-page" class="px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="bulk-waiver-form" class="mb-6 hidden">
+        <h3 class="text-lg font-medium text-gray-800 mb-2">Bulk Waive Selected Fines</h3>
+        <form id="bulk-fine-waiver-form" class="space-y-4">
+            <div>
+                <label for="waived-amount" class="block text-sm font-medium text-gray-700 mb-1">Waived Amount</label>
+                <input type="number" id="waived-amount" name="waived_amount" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" step="0.01" required>
+            </div>
+            
+            <div>
+                <label for="reason" class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
+                <textarea id="reason" name="reason" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required></textarea>
+            </div>
+            
+            <div class="flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-200">Waive Selected Fines</button>
+            </div>
+        </form>
+    </div>
+    
+    <div id="result-message" class="hidden p-4 mb-6 rounded-md"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static 'js/fine-api-client.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterClass = document.getElementById('filter-class');
+        const filterFineType = document.getElementById('filter-fine-type');
+        const filterStatus = document.getElementById('filter-status');
+        const searchButton = document.getElementById('search-fines');
+        const finesList = document.getElementById('fines-list');
+        const finesTableBody = document.getElementById('fines-table-body');
+        const selectAllFines = document.getElementById('select-all-fines');
+        const bulkWaiverForm = document.getElementById('bulk-waiver-form');
+        const resultMessage = document.getElementById('result-message');
+        const paginationInfo = document.getElementById('pagination-info');
+        const prevPageButton = document.getElementById('prev-page');
+        const nextPageButton = document.getElementById('next-page');
+        
+        let currentPage = 1;
+        let totalPages = 1;
+        let selectedFines = new Set();
+        let finesData = [];
+        
+        // Load classes and fine types on page load
+        loadClasses();
+        loadFineTypes();
+        
+        // Search fines
+        searchButton.addEventListener('click', function() {
+            currentPage = 1;
+            loadFines();
+        });
+        
+        // Pagination
+        prevPageButton.addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadFines();
+            }
+        });
+        
+        nextPageButton.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadFines();
+            }
+        });
+        
+        // Select all fines
+        selectAllFines.addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('.fine-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllFines.checked;
+                const fineId = checkbox.getAttribute('data-fine-id');
+                if (selectAllFines.checked) {
+                    selectedFines.add(fineId);
+                } else {
+                    selectedFines.delete(fineId);
+                }
+            });
+            updateBulkWaiverForm();
+        });
+        
+        // Handle bulk waiver form submission
+        document.getElementById('bulk-fine-waiver-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (selectedFines.size === 0) {
+                showMessage('Please select at least one fine to waive', 'error');
+                return;
+            }
+            
+            const waivedAmount = document.getElementById('waived-amount').value;
+            const reason = document.getElementById('reason').value;
+            
+            try {
+                let successCount = 0;
+                let errorCount = 0;
+                
+                for (const fineId of selectedFines) {
+                    try {
+                        const data = {
+                            waived_amount: waivedAmount,
+                            reason: reason
+                        };
+                        
+                        await FineApiClient.waiveFine(fineId, data);
+                        successCount++;
+                    } catch (error) {
+                        console.error(`Error waiving fine ${fineId}:`, error);
+                        errorCount++;
+                    }
+                }
+                
+                if (successCount > 0) {
+                    showMessage(`Successfully waived ${successCount} fines. ${errorCount > 0 ? `Failed to waive ${errorCount} fines.` : ''}`, 'success');
+                    selectedFines.clear();
+                    loadFines();
+                } else {
+                    showMessage('Failed to waive any fines. Please try again.', 'error');
+                }
+            } catch (error) {
+                showMessage(`Error waiving fines: ${error.message}`, 'error');
+            }
+        });
+        
+        // Load classes
+        async function loadClasses() {
+            try {
+                const response = await fetch('/students/ajax/load-classes/');
+                const data = await response.json();
+                
+                filterClass.innerHTML = '<option value="">All Classes</option>';
+                data.classes.forEach(classItem => {
+                    const option = document.createElement('option');
+                    option.value = classItem.id;
+                    option.textContent = classItem.name;
+                    filterClass.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading classes:', error);
+            }
+        }
+        
+        // Load fine types
+        async function loadFineTypes() {
+            try {
+                const fineTypes = await FineApiClient.getFineTypes();
+                
+                filterFineType.innerHTML = '<option value="">All Fine Types</option>';
+                fineTypes.results.forEach(fineType => {
+                    const option = document.createElement('option');
+                    option.value = fineType.id;
+                    option.textContent = fineType.name;
+                    filterFineType.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading fine types:', error);
+            }
+        }
+        
+        // Load fines
+        async function loadFines() {
+            try {
+                const classId = filterClass.value;
+                const fineTypeId = filterFineType.value;
+                const status = filterStatus.value;
+                
+                let url = `/fines/api/fines/?page=${currentPage}`;
+                
+                if (classId) {
+                    url += `&class=${classId}`;
+                }
+                
+                if (fineTypeId) {
+                    url += `&fine_type=${fineTypeId}`;
+                }
+                
+                if (status === 'paid') {
+                    url += '&is_paid=true';
+                } else if (status === 'unpaid') {
+                    url += '&is_paid=false';
+                }
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                finesData = data.results;
+                totalPages = Math.ceil(data.count / 10); // Assuming 10 items per page
+                
+                renderFines(data);
+                updatePagination(data.count);
+                finesList.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error loading fines:', error);
+                showMessage('Error loading fines. Please try again.', 'error');
+            }
+        }
+        
+        // Render fines
+        function renderFines(data) {
+            finesTableBody.innerHTML = '';
+            
+            if (data.results.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="8" class="px-6 py-4 text-center text-gray-500">
+                        No fines found matching the criteria.
+                    </td>
+                `;
+                finesTableBody.appendChild(row);
+                bulkWaiverForm.classList.add('hidden');
+                return;
+            }
+            
+            data.results.forEach(fine => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <input type="checkbox" class="fine-checkbox h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" data-fine-id="${fine.id}" ${selectedFines.has(fine.id.toString()) ? 'checked' : ''}>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${fine.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${fine.fine_type_name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹${fine.amount}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${fine.target_scope}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${fine.due_date}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm ${fine.is_paid ? 'text-green-600' : 'text-yellow-600'} font-medium">${fine.is_paid ? 'Paid' : 'Unpaid'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <button class="view-fine-btn text-blue-600 hover:text-blue-900" data-fine-id="${fine.id}">View</button>
+                    </td>
+                `;
+                finesTableBody.appendChild(row);
+                
+                // Add event listener to checkbox
+                const checkbox = row.querySelector('.fine-checkbox');
+                checkbox.addEventListener('change', function() {
+                    const fineId = this.getAttribute('data-fine-id');
+                    if (this.checked) {
+                        selectedFines.add(fineId);
+                    } else {
+                        selectedFines.delete(fineId);
+                        selectAllFines.checked = false;
+                    }
+                    updateBulkWaiverForm();
+                });
+                
+                // Add event listener to view button
+                const viewButton = row.querySelector('.view-fine-btn');
+                viewButton.addEventListener('click', function() {
+                    const fineId = this.getAttribute('data-fine-id');
+                    window.location.href = `/fines/api-waive-fine/?fine_id=${fineId}`;
+                });
+            });
+            
+            updateBulkWaiverForm();
+        }
+        
+        // Update pagination
+        function updatePagination(totalCount) {
+            paginationInfo.textContent = `Showing ${finesData.length} of ${totalCount} fines`;
+            prevPageButton.disabled = currentPage === 1;
+            nextPageButton.disabled = currentPage === totalPages;
+        }
+        
+        // Update bulk waiver form
+        function updateBulkWaiverForm() {
+            if (selectedFines.size > 0) {
+                bulkWaiverForm.classList.remove('hidden');
+                
+                // Calculate max waived amount (minimum of all selected fines)
+                let maxAmount = Infinity;
+                selectedFines.forEach(fineId => {
+                    const fine = finesData.find(f => f.id.toString() === fineId.toString());
+                    if (fine && fine.amount < maxAmount) {
+                        maxAmount = fine.amount;
+                    }
+                });
+                
+                if (maxAmount !== Infinity) {
+                    document.getElementById('waived-amount').max = maxAmount;
+                    document.getElementById('waived-amount').value = maxAmount;
+                }
+            } else {
+                bulkWaiverForm.classList.add('hidden');
+            }
+        }
+        
+        // Show message
+        function showMessage(message, type) {
+            resultMessage.textContent = message;
+            resultMessage.className = 'p-4 mb-6 rounded-md';
+            
+            if (type === 'success') {
+                resultMessage.classList.add('bg-green-100', 'text-green-800');
+            } else if (type === 'error') {
+                resultMessage.classList.add('bg-red-100', 'text-red-800');
+            } else if (type === 'info') {
+                resultMessage.classList.add('bg-blue-100', 'text-blue-800');
+            }
+            
+            resultMessage.classList.remove('hidden');
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                resultMessage.classList.add('hidden');
+            }, 5000);
+        }
+    });
+</script>
+{% endblock %}

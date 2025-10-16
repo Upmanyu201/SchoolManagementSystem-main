@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Messaging Configuration" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-cog text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                        {% trans "Messaging Configuration" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "Configure basic messaging settings" %}</p>
+                </div>
+            </div>
+            <a href="{% url 'messaging:dashboard' %}" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to Dashboard" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div id="form-messages" class="fixed top-4 right-4 z-50 space-y-2">
+        {% for message in messages %}
+        <div class="{% if message.tags == 'success' %}bg-green-500{% elif message.tags == 'error' %}bg-red-500{% else %}bg-blue-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in">
+            <div class="flex items-center">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} mr-3"></i>
+                <span class="font-medium">{{ message }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Configuration Form Card -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-edit mr-3"></i>{% trans "Basic Configuration" %}
+            </h2>
+        </div>
+        
+        <form method="post" id="configForm" class="p-8">
+            {% csrf_token %}
+            
+            <!-- Basic Configuration -->
+            <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200 mb-8">
+                <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-user mr-3 text-blue-500"></i>{% trans "Basic Configuration" %}
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-signature mr-2 text-green-500"></i>{% trans "Sender Name" %}*
+                        </label>
+                        <input type="text" class="form-input" 
+                               id="sender_name" name="sender_name" 
+                               value="{{ config.sender_name|default:'School Admin' }}" 
+                               placeholder="{% trans 'School Admin' %}" required>
+                        <p class="text-sm text-gray-500 mt-2 flex items-center">
+                            <i class="fas fa-info-circle mr-1 text-blue-400"></i>{% trans "Name that appears in messages" %}
+                        </p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-phone mr-2 text-purple-500"></i>{% trans "Sender Phone Number" %}*
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-mobile-alt text-gray-400"></i>
+                            </div>
+                            <input type="tel" class="form-input pl-10" 
+                                   id="sender_phone" name="sender_phone" 
+                                   value="{{ config.sender_phone|default:'' }}" 
+                                   placeholder="+91XXXXXXXXXX" required>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2 flex items-center">
+                            <i class="fas fa-info-circle mr-1 text-blue-400"></i>{% trans "Phone number used for SMS (with country code)" %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MSG91 SMS Configuration -->
+            <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-6 border border-red-200 mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-sms mr-3 text-red-500"></i>{% trans "MSG91 Configuration" %}
+                        <span class="ml-2 px-2 py-1 bg-red-500 text-white text-xs rounded-full">Primary SMS Provider</span>
+                    </h3>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" id="msg91_enabled" name="msg91_enabled" {% if msg91_config.is_active %}checked{% endif %}>
+                        <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-red-600"></div>
+                    </label>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-key mr-2 text-orange-500"></i>{% trans "Auth Key" %}*
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <input type="password" class="form-input pl-10" 
+                                   id="msg91_auth_key" name="msg91_auth_key" 
+                                   value="{{ msg91_config.auth_key|default:'466878AbS44RRkI68b3cabfP1' }}" 
+                                   placeholder="Enter MSG91 Auth Key">
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2 flex items-center">
+                            <i class="fas fa-info-circle mr-1 text-blue-400"></i>{% trans "Secret token from MSG91 Console Dashboard" %}
+                        </p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-id-card mr-2 text-indigo-500"></i>{% trans "Sender ID" %}
+                        </label>
+                        <input type="text" class="form-input" 
+                               id="msg91_sender_id" name="msg91_sender_id" 
+                               value="{{ msg91_config.sender_id|default:'TXTLCL' }}" 
+                               placeholder="TXTLCL" maxlength="6">
+                        <p class="text-sm text-gray-500 mt-2 flex items-center">
+                            <i class="fas fa-info-circle mr-1 text-blue-400"></i>{% trans "Your MSG91 Sender ID (max 6 characters)" %}
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <div class="flex items-start">
+                        <i class="fas fa-lightbulb text-blue-500 mt-1 mr-3"></i>
+                        <div>
+                            <h4 class="font-semibold text-blue-800 mb-2">{% trans "Get your MSG91 credentials from console.msg91.com" %}</h4>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• {% trans "Login to MSG91 Console Dashboard" %}</li>
+                                <li>• {% trans "Navigate to API section" %}</li>
+                                <li>• {% trans "Copy your Auth Key" %}</li>
+                                <li>• {% trans "Configure your Sender ID" %}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Service Configuration -->
+            <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
+                <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-toggle-on mr-3 text-green-500"></i>{% trans "Service Configuration" %}
+                </h3>
+                
+                <div class="grid grid-cols-1 gap-6">
+                    <div class="bg-white rounded-xl p-6 border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 hover:shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-sms text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 text-lg">{% trans "SMS Messaging" %}</h4>
+                                    <p class="text-sm text-gray-600">{% trans "Send messages via SMS using MSG91" %}</p>
+                                </div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" id="sms_enabled" name="sms_enabled" {% if config.sms_enabled %}checked{% endif %}>
+                                <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="mt-10 text-center">
+                <button type="submit" 
+                        class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-4 px-12 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+                    <i class="fas fa-save mr-3"></i>{% trans "Save Configuration" %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-hide messages
+    const messages = document.getElementById('form-messages');
+    if (messages) {
+        setTimeout(() => {
+            messages.style.opacity = '0';
+            messages.style.transform = 'translateX(100%)';
+            setTimeout(() => messages.remove(), 500);
+        }, 5000);
+    }
+    
+    // Form validation enhancement
+    const form = document.getElementById('configForm');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    form.addEventListener('submit', function() {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>Saving...';
+        submitBtn.disabled = true;
+    });
+});
+</script>
+
+<style>
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-input {
+    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300 bg-white;
+}
+
+.form-input:focus {
+    @apply shadow-lg transform scale-[1.02];
+}
+</style>
+{% endblock %}

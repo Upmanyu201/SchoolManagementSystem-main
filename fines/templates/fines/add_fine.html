@@ -1,0 +1,969 @@
+{% extends 'fines/base_fine.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block fine_content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-red-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-exclamation-triangle text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-red-600 to-pink-800 bg-clip-text text-transparent">
+                        💸 {% trans "Add New Fine" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">📋 {% trans "Apply fines to students for various violations" %}</p>
+                </div>
+            </div>
+            <a href="{% url 'fines:fine_history' %}" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to History" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Fine Form -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-red-500 to-pink-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-edit mr-3"></i>{% trans "Fine Configuration Form" %}
+            </h2>
+        </div>
+        <form method="post" enctype="multipart/form-data" class="p-8">
+            {% csrf_token %}
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Left Column -->
+                <div class="space-y-6">
+                    <!-- Fine Type Section -->
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-tags mr-2 text-red-500"></i>{% trans "Fine Type" %}*
+                        </label>
+                        <select name="fine_type" id="id_fine_type" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-400 focus:ring-0 transition-all duration-300" required>
+                            <option value="">{% trans "Select Fine Type" %}</option>
+                            {% for fine_type in form.fine_type.field.queryset %}
+                            <option value="{{ fine_type.id }}" {% if form.fine_type.value == fine_type.id %}selected{% endif %}>
+                                {{ fine_type.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div id="fine-type-description" class="mt-2 text-sm text-gray-500 italic"></div>
+                    </div>
+
+                    <!-- Amount Configuration -->
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-rupee-sign mr-2 text-green-500"></i>{% trans "Amount Configuration" %}
+                        </label>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-1">
+                                <div class="flex">
+                                    <span class="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-gray-300 bg-gray-50 text-gray-500">₹</span>
+                                    <input type="number" name="amount" id="id_amount" step="0.01" placeholder="{% trans 'Fixed Amount' %}" class="w-full px-4 py-3 border-2 border-gray-200 rounded-r-xl focus:border-red-400 focus:ring-0 transition-all duration-300">
+                                </div>
+                            </div>
+                            <span class="text-gray-400">{% trans "or" %}</span>
+                            <div class="flex-1">
+                                <div class="flex">
+                                    <input type="number" name="dynamic_amount_percent" id="id_dynamic_amount_percent" step="0.01" min="0.01" max="100" placeholder="{% trans 'Percentage' %}" class="w-full px-4 py-3 border-2 border-gray-200 rounded-l-xl focus:border-red-400 focus:ring-0 transition-all duration-300">
+                                    <span class="inline-flex items-center px-3 rounded-r-xl border border-l-0 border-gray-300 bg-gray-50 text-gray-500">%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">{% trans "Enter either fixed amount or percentage (not both). Percentage can be less than 1% (e.g., 0.5 for 0.5%). Amount will be calculated based on selected fee types." %}</p>
+                    </div>
+
+                    <!-- Fee Selection Mode -->
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-layer-group mr-2 text-blue-500"></i>📋 {% trans "Fee Selection Mode" %}
+                        </label>
+                        <div class="grid grid-cols-1 gap-3">
+                            <label class="inline-flex items-center p-3 border-2 rounded-xl hover:bg-blue-50 cursor-pointer transition-all duration-300">
+                                <input type="radio" name="fee_selection_mode" value="group" class="form-radio h-5 w-5 text-blue-600">
+                                <div class="ml-3">
+                                    <span class="block text-sm font-semibold text-gray-700">{% trans "Entire Fee Group" %}</span>
+                                    <span class="block text-xs text-gray-500">{% trans "Apply to all fee types in selected group" %}</span>
+                                </div>
+                            </label>
+                            <label class="inline-flex items-center p-3 border-2 rounded-xl hover:bg-green-50 cursor-pointer transition-all duration-300">
+                                <input type="radio" name="fee_selection_mode" value="multiple" class="form-radio h-5 w-5 text-green-600" checked>
+                                <div class="ml-3">
+                                    <span class="block text-sm font-semibold text-gray-700">{% trans "Multiple Fee Types" %}</span>
+                                    <span class="block text-xs text-gray-500">{% trans "Select specific fee types individually" %}</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Fees Group (for group mode) -->
+                    <div id="fees-group-section" class="form-group hidden">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-layer-group mr-2 text-blue-500"></i>📋 {% trans "Select Fees Group" %}
+                        </label>
+                        <select name="fees_group" id="id_fees_group" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-400 focus:ring-0 transition-all duration-300">
+                            <option value="">{% trans "Select Fees Group" %}</option>
+                            {% for fees_group in form.fees_group.field.queryset %}
+                            <option value="{{ fees_group.id }}" {% if form.fees_group.value == fees_group.id %}selected{% endif %}>
+                                {{ fees_group.fee_group }} - {{ fees_group.group_type }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div id="group-fee-types-preview" class="mt-2 text-sm text-gray-600"></div>
+                    </div>
+
+                    <!-- Multiple Fee Types (for multiple mode) -->
+                    <div id="fees-types-section" class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-list mr-2 text-purple-500"></i>📝 {% trans "Select Fee Types" %}
+                        </label>
+                        <div class="border-2 border-gray-200 rounded-xl p-4 max-h-60 overflow-y-auto">
+                            <div id="fee-types-list" class="space-y-2">
+                                <!-- Fee types will be loaded here -->
+                            </div>
+                        </div>
+                        <div id="selected-fee-types-info" class="mt-2 text-sm text-gray-600"></div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    <!-- Target Scope Section -->
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-bullseye mr-2 text-orange-500"></i>🎯 {% trans "Target Scope" %}*
+                        </label>
+                        <div class="grid grid-cols-1 gap-3">
+                            <label class="inline-flex items-center p-4 border-2 rounded-xl hover:bg-blue-50 cursor-pointer transition-all duration-300 {% if form.target_scope.value == 'Individual' %}border-blue-500 bg-blue-50{% else %}border-gray-300{% endif %}">
+                                <input type="radio" name="target_scope" value="Individual" class="form-radio h-5 w-5 text-blue-600" {% if form.target_scope.value == 'Individual' %}checked{% endif %}>
+                                <div class="ml-4">
+                                    <span class="block text-sm font-semibold text-gray-700">{% trans "Individual Students" %}</span>
+                                    <span class="block text-xs text-gray-500">{% trans "Apply to selected students" %}</span>
+                                </div>
+                            </label>
+                            <label class="inline-flex items-center p-4 border-2 rounded-xl hover:bg-green-50 cursor-pointer transition-all duration-300 {% if form.target_scope.value == 'Class' %}border-green-500 bg-green-50{% else %}border-gray-300{% endif %}">
+                                <input type="radio" name="target_scope" value="Class" class="form-radio h-5 w-5 text-green-600" {% if form.target_scope.value == 'Class' %}checked{% endif %}>
+                                <div class="ml-4">
+                                    <span class="block text-sm font-semibold text-gray-700">{% trans "Entire Class" %}</span>
+                                    <span class="block text-xs text-gray-500">{% trans "Apply to entire class" %}</span>
+                                </div>
+                            </label>
+                            <label class="inline-flex items-center p-4 border-2 rounded-xl hover:bg-purple-50 cursor-pointer transition-all duration-300 {% if form.target_scope.value == 'All' %}border-purple-500 bg-purple-50{% else %}border-gray-300{% endif %}">
+                                <input type="radio" name="target_scope" value="All" class="form-radio h-5 w-5 text-purple-600" {% if form.target_scope.value == 'All' %}checked{% endif %}>
+                                <div class="ml-4">
+                                    <span class="block text-sm font-semibold text-gray-700">🌍 {% trans "All Students" %}</span>
+                                    <span class="block text-xs text-gray-500">{% trans "Apply to all students" %}</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Date Fields -->
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-calendar-alt mr-2 text-indigo-500"></i>📅 {% trans "Due Date" %}*
+                        </label>
+                        <input type="date" name="due_date" id="id_due_date" value="{{ form.due_date.value|default:'' }}" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-400 focus:ring-0 transition-all duration-300">
+                    </div>
+
+                    <!-- Delay Days -->
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-clock mr-2 text-yellow-500"></i>⏰ {% trans "Delay Days" %}
+                        </label>
+                        <input type="number" name="delay_days" id="id_delay_days" value="{{ form.delay_days.value|default:'0' }}" min="0" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-400 focus:ring-0 transition-all duration-300">
+                        <p class="text-xs text-gray-500 mt-1">{% trans "Days after due date when fine will be applied (0 for immediate)" %}</p>
+                        <div id="application-date-preview" class="mt-2 text-sm font-medium text-blue-600"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conditional Fields -->
+            <div id="student-field" class="form-group mt-8 {% if form.target_scope.value != 'Individual' %}hidden{% endif %}">
+                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                    <i class="fas fa-user-check mr-2 text-blue-500"></i>{% trans "Select Students" %}*
+                </label>
+                
+                <!-- Search Bar -->
+                <div class="mb-4">
+                    <div class="relative">
+                        <input type="text" id="student-search" placeholder="{% trans 'Search students by name, admission number, father name, or class...' %}" class="w-full px-4 py-3 pl-10 border-2 border-gray-200 rounded-xl focus:border-red-400 focus:ring-0 transition-all duration-300">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Student Selection -->
+                <div class="border-2 border-gray-200 rounded-xl p-4 max-h-60 overflow-y-auto bg-gray-50">
+                    <div id="student-list" class="space-y-2">
+                        <!-- Students will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Selected Students Display -->
+                <div id="selected-students" class="mt-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                        <i class="fas fa-check-circle mr-2 text-green-500"></i>{% trans "Selected Students" %}:
+                    </label>
+                    <div id="selected-students-list" class="space-y-2">
+                        <!-- Selected students will be shown here -->
+                    </div>
+                </div>
+                
+                <!-- Hidden input for form submission -->
+                <input type="hidden" name="selected_students" id="selected_students_input" value="">
+                
+                <!-- Validation message -->
+                <div id="student-validation-error" class="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm hidden flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    {% trans "Please select at least one student." %}
+                </div>
+            </div>
+
+            <div id="class-field" class="form-group mt-8 {% if form.target_scope.value != 'Class' %}hidden{% endif %}">
+                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                    <i class="fas fa-school mr-2 text-green-500"></i>{% trans "Select Class" %}*
+                </label>
+                <select name="class_section" id="id_class_section" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-400 focus:ring-0 transition-all duration-300">
+                    <option value="">{% trans "Select Class" %}</option>
+                    {% for class in form.class_section.field.queryset %}
+                    <option value="{{ class.id }}" {% if form.class_section.value == class.id %}selected{% endif %}>
+                        {{ class.display_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Reason -->
+            <div class="form-group mt-8">
+                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                    <i class="fas fa-comment-alt mr-2 text-purple-500"></i>{% trans "Reason" %}*
+                    <button type="button" id="auto-fill-reason" class="ml-2 text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
+                        {% trans "Auto-fill" %}
+                    </button>
+                </label>
+                <textarea name="reason" id="id_reason" rows="4" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-400 focus:ring-0 transition-all duration-300" placeholder="{% trans 'Enter the reason for applying this fine...' %}">{{ form.reason.value|default:'' }}</textarea>
+                <div id="reason-suggestions" class="mt-2 text-sm text-gray-500"></div>
+            </div>
+
+            <!-- Notification Channels -->
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                    <i class="fas fa-bell mr-2 text-yellow-500"></i>🔔 {% trans "Notification Channels" %}
+                </label>
+                <div class="grid grid-cols-1 gap-3">
+                    <label class="inline-flex items-center p-3 border-2 rounded-xl hover:bg-blue-50 cursor-pointer transition-all duration-300">
+                        <input type="checkbox" name="channels" value="sms" class="form-checkbox h-5 w-5 text-blue-600" checked>
+                        <span class="ml-3 flex items-center">
+                            <i class="fas fa-sms mr-2 text-blue-500"></i>{% trans "SMS Notification" %}
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex justify-end space-x-4 pt-8 border-t border-gray-200">
+                <a href="{% url 'fines:fine_history' %}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-xl transition-all duration-300 hover:scale-105">
+                    <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
+                </a>
+                <button type="submit" onclick="return validateAndSubmit()" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>{% trans "Apply Fine" %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get DOM elements
+        const targetScopeRadios = document.querySelectorAll('input[name="target_scope"]');
+        const studentField = document.getElementById('student-field');
+        const classField = document.getElementById('class-field');
+        const fineTypeSelect = document.getElementById('id_fine_type');
+        const fineTypeDescription = document.getElementById('fine-type-description');
+        const feesGroupSelect = document.getElementById('id_fees_group');
+        const feeSelectionModeRadios = document.querySelectorAll('input[name="fee_selection_mode"]');
+        const feesGroupSection = document.getElementById('fees-group-section');
+        const feesTypesSection = document.getElementById('fees-types-section');
+        const feeTypesList = document.getElementById('fee-types-list');
+        const selectedFeeTypesInfo = document.getElementById('selected-fee-types-info');
+        const groupFeeTypesPreview = document.getElementById('group-fee-types-preview');
+        const autoFillReasonBtn = document.getElementById('auto-fill-reason');
+        const reasonSuggestions = document.getElementById('reason-suggestions');
+        const dueDateInput = document.getElementById('id_due_date');
+        const delayDaysInput = document.getElementById('id_delay_days');
+        const applicationDatePreview = document.getElementById('application-date-preview');
+        
+        // Store selected fee types
+        let selectedFeeTypes = new Set();
+        let allFeeTypes = [];
+        const classSectionSelect = document.getElementById('id_class_section');
+        const reasonTextarea = document.getElementById('id_reason');
+        const studentSearch = document.getElementById('student-search');
+        const studentList = document.getElementById('student-list');
+        const selectedStudentsList = document.getElementById('selected-students-list');
+        const selectedStudentsInput = document.getElementById('selected_students_input');
+
+        // Store selected students
+        let selectedStudents = new Set();
+
+        // Load fine type descriptions via AJAX
+        let fineTypeDescriptions = {};
+        
+        // Load fine types and descriptions
+        function loadFineTypes() {
+            fetch('{% url "fines:ajax_load_fees_types" %}?fees_group_id=')
+                .then(response => response.json())
+                .then(data => {
+                    // This will be populated when we have fine type data
+                })
+                .catch(error => console.error('Error loading fine types:', error));
+        }
+
+        // Toggle fields based on target scope
+        function toggleFields() {
+            const selectedScope = document.querySelector('input[name="target_scope"]:checked');
+            if (!selectedScope) return;
+            
+            const scope = selectedScope.value;
+            console.log('Target scope changed to:', scope);
+
+            // Hide all conditional fields first
+            studentField.classList.add('hidden');
+            classField.classList.add('hidden');
+
+            // Show appropriate field based on scope
+            if (scope === 'Individual') {
+                studentField.classList.remove('hidden');
+                loadAllStudents();
+            } else if (scope === 'Class') {
+                classField.classList.remove('hidden');
+                loadAllClasses();
+                // Make class_section field required
+                classSectionSelect.required = true;
+            } else {
+                // For 'All' scope, class_section is not required
+                classSectionSelect.required = false;
+            }
+        }
+
+        // Load all students
+        function loadAllStudents() {
+            fetch(`{% url 'fines:ajax_load_students_for_fees_type' %}?fees_type_id=`)
+                .then(response => response.json())
+                .then(data => {
+                    displayStudents(data.students || []);
+                })
+                .catch(error => {
+                    console.error('Error loading students:', error);
+                    studentList.innerHTML = '<p class="text-red-500">Error loading students</p>';
+                });
+        }
+
+        // Display students in the list
+        function displayStudents(students) {
+            studentList.innerHTML = '';
+            
+            if (students.length === 0) {
+                studentList.innerHTML = '<p class="text-gray-500">No students found</p>';
+                return;
+            }
+
+            students.forEach(student => {
+                const studentDiv = document.createElement('div');
+                studentDiv.className = 'flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer';
+                studentDiv.innerHTML = `
+                    <input type="checkbox" id="student-${student.id}" value="${student.id}" class="mr-3">
+                    <label for="student-${student.id}" class="flex-1 cursor-pointer">
+                        <div class="font-medium">${student.name}</div>
+                        <div class="text-sm text-gray-500">
+                            Admission: ${student.admission_number || 'N/A'} | 
+                            Class: ${student.class_name || 'N/A'} | 
+                            Father: ${student.father_name || 'N/A'}
+                        </div>
+                    </label>
+                `;
+                
+                const checkbox = studentDiv.querySelector('input[type="checkbox"]');
+                
+                // Check if this student was previously selected
+                if (selectedStudents.has(student.id)) {
+                    checkbox.checked = true;
+                }
+                
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedStudents.add(student.id);
+                    } else {
+                        selectedStudents.delete(student.id);
+                    }
+                    updateSelectedStudentsDisplay();
+                    
+                    // Hide validation error when students are selected
+                    const validationError = document.getElementById('student-validation-error');
+                    if (validationError && selectedStudents.size > 0) {
+                        validationError.classList.add('hidden');
+                    }
+                });
+                
+                studentList.appendChild(studentDiv);
+            });
+        }
+
+        // Update selected students display
+        function updateSelectedStudentsDisplay() {
+            selectedStudentsList.innerHTML = '';
+            const selectedArray = Array.from(selectedStudents);
+            selectedStudentsInput.value = selectedArray.join(',');
+            
+            if (selectedArray.length === 0) {
+                selectedStudentsList.innerHTML = '<p class="text-gray-500">No students selected</p>';
+                return;
+            }
+
+            selectedArray.forEach(studentId => {
+                // Find student name from the currently displayed students
+                const studentCheckbox = document.getElementById(`student-${studentId}`);
+                let studentName = studentId; // fallback to ID
+                
+                if (studentCheckbox) {
+                    const label = studentCheckbox.nextElementSibling;
+                    if (label) {
+                        const nameDiv = label.querySelector('.font-medium');
+                        if (nameDiv) {
+                            studentName = nameDiv.textContent;
+                        }
+                    }
+                }
+                
+                const studentDiv = document.createElement('div');
+                studentDiv.className = 'flex items-center justify-between p-2 bg-blue-50 rounded';
+                studentDiv.innerHTML = `
+                    <span class="text-sm font-medium">${studentName} (${studentId})</span>
+                    <button type="button" onclick="removeStudent('${studentId}')" 
+                            class="text-red-500 hover:text-red-700 text-sm">Remove</button>
+                `;
+                selectedStudentsList.appendChild(studentDiv);
+            });
+        }
+
+        // Remove student from selection
+        window.removeStudent = function(studentId) {
+            selectedStudents.delete(studentId);
+            const checkbox = document.getElementById(`student-${studentId}`);
+            if (checkbox) checkbox.checked = false;
+            updateSelectedStudentsDisplay();
+        };
+
+        // Search students
+        function searchStudents(searchTerm) {
+            if (searchTerm.length < 2) {
+                loadAllStudents();
+                return;
+            }
+
+            fetch(`{% url 'fines:ajax_search_students' %}?q=${encodeURIComponent(searchTerm)}`)
+                .then(response => response.json())
+                .then(data => {
+                    displayStudents(data.students || []);
+                })
+                .catch(error => {
+                    console.error('Error searching students:', error);
+                    studentList.innerHTML = '<p class="text-red-500">Error searching students</p>';
+                });
+        }
+
+        // Update fine type description and populate reason field
+        function updateFineTypeDescription() {
+            if (!fineTypeSelect) {
+                console.error('Fine type select element not found');
+                return;
+            }
+            
+            const selectedId = fineTypeSelect.value;
+            const selectedOption = fineTypeSelect.options[fineTypeSelect.selectedIndex];
+            
+            if (selectedId && selectedOption) {
+                const description = selectedOption.textContent || 'Fine type selected';
+                if (fineTypeDescription) {
+                    fineTypeDescription.textContent = `Selected: ${description}`;
+                }
+                
+                // Populate reason field with fine type description if it's empty
+                if (reasonTextarea && (!reasonTextarea.value || reasonTextarea.value.trim() === '')) {
+                    reasonTextarea.value = `Fine for ${description.toLowerCase()}`;
+                }
+            } else {
+                if (fineTypeDescription) {
+                    fineTypeDescription.textContent = '';
+                }
+            }
+        }
+
+        // Toggle fee selection mode
+        function toggleFeeSelectionMode() {
+            const selectedMode = document.querySelector('input[name="fee_selection_mode"]:checked')?.value;
+            
+            if (selectedMode === 'group') {
+                feesGroupSection.classList.remove('hidden');
+                feesTypesSection.classList.add('hidden');
+                loadAllFeeTypes(); // Load for group preview
+            } else {
+                feesGroupSection.classList.add('hidden');
+                feesTypesSection.classList.remove('hidden');
+                loadAllFeeTypes();
+            }
+        }
+        
+        // Load all fee types for selection
+        function loadAllFeeTypes() {
+            if (!feeTypesList) {
+                console.warn('Fee types list element not found, skipping load');
+                return;
+            }
+            
+            // Get CSRF token
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            // Load all fee types without group filter
+            fetch('/fees/api/types/', {
+                method: 'GET',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Loaded fee types from API:', data);
+                    // Handle both array and paginated response
+                    const feeTypes = Array.isArray(data) ? data : (data.results || []);
+                    allFeeTypes = feeTypes.map(ft => ({
+                        id: ft.id,
+                        display_format: ft.display_format || `${ft.fee_group_name || 'Fee'} | ${ft.amount_type || 'Amount'} | ₹${ft.amount}`,
+                        amount: ft.amount,
+                        description: ft.description || `${ft.fee_group_name || 'Fee'} - ${ft.amount_type || 'Amount'}`
+                    }));
+                    displayFeeTypes();
+                })
+                .catch(error => {
+                    console.error('Error loading fee types:', error);
+                    if (feeTypesList) {
+                        feeTypesList.innerHTML = '<p class="text-red-500">Error loading fee types. Please refresh the page.</p>';
+                    }
+                });
+        }
+        
+        // Display fee types for selection
+        function displayFeeTypes() {
+            feeTypesList.innerHTML = '';
+            
+            if (allFeeTypes.length === 0) {
+                feeTypesList.innerHTML = '<p class="text-gray-500">No fee types available</p>';
+                return;
+            }
+            
+            allFeeTypes.forEach(feeType => {
+                const feeTypeDiv = document.createElement('div');
+                feeTypeDiv.className = 'flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer';
+                feeTypeDiv.innerHTML = `
+                    <input type="checkbox" id="fee-type-${feeType.id}" value="${feeType.id}" class="mr-3 fee-type-checkbox">
+                    <label for="fee-type-${feeType.id}" class="flex-1 cursor-pointer">
+                        <div class="font-medium">${feeType.display_format}</div>
+                        <div class="text-sm text-gray-500">
+                            Amount: ₹${feeType.amount} | ${feeType.description || ''}
+                        </div>
+                    </label>
+                `;
+                
+                const checkbox = feeTypeDiv.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedFeeTypes.add(parseInt(this.value));
+                    } else {
+                        selectedFeeTypes.delete(parseInt(this.value));
+                    }
+                    updateSelectedFeeTypesInfo();
+                    updateReasonSuggestions();
+                });
+                
+                feeTypesList.appendChild(feeTypeDiv);
+            });
+        }
+        
+        // Update selected fee types info
+        function updateSelectedFeeTypesInfo() {
+            const selectedCount = selectedFeeTypes.size;
+            if (selectedCount === 0) {
+                selectedFeeTypesInfo.textContent = 'No fee types selected';
+            } else {
+                const totalAmount = Array.from(selectedFeeTypes).reduce((sum, id) => {
+                    const feeType = allFeeTypes.find(ft => ft.id === id);
+                    return sum + (feeType ? parseFloat(feeType.amount) : 0);
+                }, 0);
+                selectedFeeTypesInfo.textContent = `${selectedCount} fee type(s) selected (Total: ₹${totalAmount.toFixed(2)})`;
+            }
+        }
+        
+        // Update fees group preview
+        function updateFeesGroupPreview() {
+            const groupId = feesGroupSelect.value;
+            if (!groupId) {
+                groupFeeTypesPreview.textContent = '';
+                return;
+            }
+            
+            fetch(`{% url 'fines:ajax_get_fee_types_for_group' %}?fees_group_id=${groupId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.fee_types && data.fee_types.length > 0) {
+                        const totalAmount = data.fee_types.reduce((sum, ft) => sum + parseFloat(ft.amount), 0);
+                        groupFeeTypesPreview.innerHTML = `
+                            <strong>${data.fee_types.length} fee types included:</strong><br>
+                            ${data.fee_types.map(ft => `• ${ft.name} (₹${ft.amount})`).join('<br>')}<br>
+                            <strong>Total Amount: ₹${totalAmount.toFixed(2)}</strong>
+                        `;
+                    } else {
+                        groupFeeTypesPreview.textContent = 'No fee types in this group';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading group fee types:', error);
+                    groupFeeTypesPreview.textContent = 'Error loading fee types';
+                });
+        }
+
+        // Load all classes
+        function loadAllClasses() {
+            fetch(`{% url 'fines:ajax_load_classes_for_fees_type' %}?fees_type_id=`)
+                .then(response => response.json())
+                .then(data => {
+                    classSectionSelect.innerHTML = '<option value="">Select Class</option>';
+                    
+                    if (data.classes && data.classes.length > 0) {
+                        data.classes.forEach(cls => {
+                            const option = document.createElement('option');
+                            option.value = cls.id;
+                            option.textContent = cls.name;
+                            classSectionSelect.appendChild(option);
+                        });
+                    } else {
+                        classSectionSelect.innerHTML = '<option value="">No classes available</option>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading classes:', error);
+                    classSectionSelect.innerHTML = '<option value="">Error loading classes</option>';
+                });
+        }
+
+        // Auto-fill reason based on selected fee types
+        function updateReasonSuggestions() {
+            const selectedMode = document.querySelector('input[name="fee_selection_mode"]:checked')?.value;
+            let suggestions = [];
+            
+            if (selectedMode === 'group' && feesGroupSelect.value) {
+                const groupText = feesGroupSelect.options[feesGroupSelect.selectedIndex]?.text;
+                suggestions.push(`Fine for unpaid ${groupText} fees`);
+            } else if (selectedMode === 'multiple' && selectedFeeTypes.size > 0) {
+                const selectedFeeTypeNames = Array.from(selectedFeeTypes).map(id => {
+                    const feeType = allFeeTypes.find(ft => ft.id === id);
+                    return feeType ? feeType.display_format : '';
+                }).filter(name => name);
+                
+                if (selectedFeeTypeNames.length > 0) {
+                    suggestions.push(`Fine for unpaid fees: ${selectedFeeTypeNames.join(', ')}`);
+                }
+            }
+            
+            if (suggestions.length > 0) {
+                reasonSuggestions.innerHTML = `<strong>Suggestions:</strong> ${suggestions.join(' | ')}`;
+            } else {
+                reasonSuggestions.textContent = '';
+            }
+        }
+        
+        // Auto-fill reason
+        function autoFillReason() {
+            const selectedMode = document.querySelector('input[name="fee_selection_mode"]:checked')?.value;
+            let reasonText = '';
+            
+            if (selectedMode === 'group' && feesGroupSelect.value) {
+                const groupText = feesGroupSelect.options[feesGroupSelect.selectedIndex]?.text;
+                reasonText = `Fine applied for unpaid ${groupText} fees. Students are required to clear their dues to avoid further penalties.`;
+            } else if (selectedMode === 'multiple' && selectedFeeTypes.size > 0) {
+                const selectedFeeTypeNames = Array.from(selectedFeeTypes).map(id => {
+                    const feeType = allFeeTypes.find(ft => ft.id === id);
+                    return feeType ? feeType.display_format : '';
+                }).filter(name => name);
+                
+                if (selectedFeeTypeNames.length > 0) {
+                    reasonText = `Fine applied for unpaid fees: ${selectedFeeTypeNames.join(', ')}. Students must clear these dues to avoid additional charges.`;
+                }
+            }
+            
+            if (reasonText) {
+                reasonTextarea.value = reasonText;
+            }
+        }
+        
+        // Update application date preview
+        function updateApplicationDatePreview() {
+            const dueDate = dueDateInput.value;
+            const delayDays = parseInt(delayDaysInput.value) || 0;
+            
+            if (dueDate) {
+                const applicationDate = new Date(dueDate);
+                applicationDate.setDate(applicationDate.getDate() + delayDays);
+                
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = applicationDate.toLocaleDateString('en-US', options);
+                
+                if (delayDays === 0) {
+                    applicationDatePreview.textContent = `Fine will be applied immediately on ${formattedDate}`;
+                } else {
+                    applicationDatePreview.textContent = `Fine will be applied on ${formattedDate} (${delayDays} days after due date)`;
+                }
+            } else {
+                applicationDatePreview.textContent = '';
+            }
+        }
+
+        // Set default due date to 20th of current month
+        function setDefaultDueDate() {
+            const dueDateInput = document.getElementById('id_due_date');
+            if (!dueDateInput.value) {
+                const today = new Date();
+                const currentMonth = today.getMonth();
+                const currentYear = today.getFullYear();
+                const defaultDate = new Date(currentYear, currentMonth, 20);
+                dueDateInput.value = defaultDate.toISOString().split('T')[0];
+            }
+        }
+
+        // Initialize
+        setDefaultDueDate();
+        toggleFields();
+        updateFineTypeDescription();
+        toggleFeeSelectionMode();
+        updateApplicationDatePreview();
+        
+        // Load data after DOM is ready
+        setTimeout(() => {
+            loadAllFeeTypes();
+            if (document.querySelector('input[name="target_scope"]:checked')?.value === 'Individual') {
+                loadAllStudents();
+            }
+        }, 100);
+
+        // Event listeners
+        targetScopeRadios.forEach(radio => {
+            radio.addEventListener('change', toggleFields);
+        });
+        
+        feeSelectionModeRadios.forEach(radio => {
+            radio.addEventListener('change', toggleFeeSelectionMode);
+        });
+
+        fineTypeSelect.addEventListener('change', updateFineTypeDescription);
+        
+        feesGroupSelect.addEventListener('change', function() {
+            updateFeesGroupPreview();
+            updateReasonSuggestions();
+        });
+        
+        autoFillReasonBtn.addEventListener('click', autoFillReason);
+        
+        dueDateInput.addEventListener('change', updateApplicationDatePreview);
+        delayDaysInput.addEventListener('input', updateApplicationDatePreview);
+        
+        // Student search functionality
+        let searchTimeout;
+        if (studentSearch) {
+            studentSearch.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    searchStudents(this.value);
+                }, 300);
+            });
+        }
+        
+        // Real-time amount validation
+        const amountInput = document.getElementById('id_amount');
+        const percentInput = document.getElementById('id_dynamic_amount_percent');
+        
+        function validateAmountFields() {
+            const fixedAmount = amountInput.value;
+            const percentAmount = percentInput.value;
+            
+            // Clear previous validation styles
+            amountInput.classList.remove('border-red-500', 'border-green-500');
+            percentInput.classList.remove('border-red-500', 'border-green-500');
+            
+            if (fixedAmount && percentAmount) {
+                // Both filled - show error
+                amountInput.classList.add('border-red-500');
+                percentInput.classList.add('border-red-500');
+            } else if (fixedAmount) {
+                // Fixed amount filled
+                const amount = parseFloat(fixedAmount);
+                if (amount > 0) {
+                    amountInput.classList.add('border-green-500');
+                } else {
+                    amountInput.classList.add('border-red-500');
+                }
+            } else if (percentAmount) {
+                // Percentage filled
+                const percent = parseFloat(percentAmount);
+                if (percent > 0 && percent <= 100) {
+                    percentInput.classList.add('border-green-500');
+                } else {
+                    percentInput.classList.add('border-red-500');
+                }
+            }
+        }
+        
+        if (amountInput) {
+            amountInput.addEventListener('input', validateAmountFields);
+            amountInput.addEventListener('blur', validateAmountFields);
+        }
+        
+        if (percentInput) {
+            percentInput.addEventListener('input', validateAmountFields);
+            percentInput.addEventListener('blur', validateAmountFields);
+        }
+
+        // Validation function for submit button
+        window.validateAndSubmit = function() {
+            const selectedScope = document.querySelector('input[name="target_scope"]:checked');
+            
+            if (!selectedScope) {
+                alert('Please select a target scope.');
+                return false;
+            }
+            
+            // Validate amount configuration
+            const fixedAmount = document.getElementById('id_amount').value;
+            const percentageAmount = document.getElementById('id_dynamic_amount_percent').value;
+            
+            if (!fixedAmount && !percentageAmount) {
+                alert('Please specify either a fixed amount or a percentage.');
+                document.getElementById('id_amount').focus();
+                return false;
+            }
+            
+            if (fixedAmount && percentageAmount) {
+                alert('Please specify either a fixed amount OR a percentage, not both.');
+                document.getElementById('id_amount').focus();
+                return false;
+            }
+            
+            if (percentageAmount) {
+                const percent = parseFloat(percentageAmount);
+                if (percent <= 0) {
+                    alert('Percentage must be greater than 0%.');
+                    document.getElementById('id_dynamic_amount_percent').focus();
+                    return false;
+                }
+                if (percent > 100) {
+                    alert('Percentage cannot exceed 100%.');
+                    document.getElementById('id_dynamic_amount_percent').focus();
+                    return false;
+                }
+            }
+            
+            if (fixedAmount) {
+                const amount = parseFloat(fixedAmount);
+                if (amount <= 0) {
+                    alert('Amount must be greater than 0.');
+                    document.getElementById('id_amount').focus();
+                    return false;
+                }
+            }
+            
+            console.log('Validating form with scope:', selectedScope.value);
+            
+            // Validate fee selection
+            const selectedMode = document.querySelector('input[name="fee_selection_mode"]:checked')?.value;
+            if (selectedMode === 'group' && !feesGroupSelect.value) {
+                alert('Please select a fees group.');
+                return false;
+            } else if (selectedMode === 'multiple' && selectedFeeTypes.size === 0) {
+                alert('Please select at least one fee type.');
+                return false;
+            }
+            
+            // Clean up any existing hidden inputs first
+            const existingHiddenInputs = document.querySelectorAll('input[name="fees_types"]');
+            existingHiddenInputs.forEach(input => input.remove());
+            
+            // Set hidden inputs for form submission
+            if (selectedMode === 'multiple') {
+                // Create hidden inputs for selected fee types
+                const selectedArray = Array.from(selectedFeeTypes);
+                selectedArray.forEach(feeTypeId => {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'fees_types';
+                    hiddenInput.value = feeTypeId;
+                    document.querySelector('form').appendChild(hiddenInput);
+                });
+            }
+            
+            if (selectedScope.value === 'Individual') {
+                const selectedArray = Array.from(selectedStudents);
+                selectedStudentsInput.value = selectedArray.join(',');
+                
+                if (selectedStudents.size === 0) {
+                    alert('Please select at least one student.');
+                    return false;
+                }
+            } else if (selectedScope.value === 'Class') {
+                const classSectionValue = classSectionSelect.value;
+                console.log('Class section value:', classSectionValue);
+                
+                if (!classSectionValue) {
+                    alert('Please select a class section.');
+                    classSectionSelect.focus();
+                    return false;
+                }
+            }
+            
+            return true;
+        };
+        
+        // Load fee types on page load
+        fetch('{% url "fines:ajax_load_fees_types" %}?fees_group_id=')
+            .then(response => response.json())
+            .then(data => {
+                allFeeTypes = data.fees_types || [];
+                displayFeeTypes();
+            })
+            .catch(error => console.error('Error loading initial fee types:', error));
+    });
+    
+    // Additional helper functions
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        }).format(amount);
+    }
+</script>
+{% endblock %}
+{% endblock %}

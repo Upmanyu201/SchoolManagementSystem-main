@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Verify Fine Application{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-6">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 mb-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold mb-2">
+                        <i class="fas fa-search-dollar mr-3"></i>
+                        Fine Application Verification
+                    </h1>
+                    <p class="text-blue-100">Verify that fines were applied correctly to intended students</p>
+                </div>
+                <a href="{% url 'fines:fine_history' %}" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Fines
+                </a>
+            </div>
+        </div>
+
+        {% if verification %}
+        <!-- Verification Results -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Fine Details -->
+                <div class="bg-gray-50 rounded-xl p-4">
+                    <h3 class="font-semibold text-gray-800 mb-3">Fine Details</h3>
+                    <div class="space-y-2 text-sm">
+                        <div><span class="font-medium">Type:</span> {{ verification.fine_type }}</div>
+                        <div><span class="font-medium">Scope:</span> {{ verification.target_scope }}</div>
+                        <div><span class="font-medium">Intended Class:</span> {{ verification.intended_class }}</div>
+                    </div>
+                </div>
+
+                <!-- Application Status -->
+                <div class="bg-gray-50 rounded-xl p-4">
+                    <h3 class="font-semibold text-gray-800 mb-3">Application Status</h3>
+                    <div class="space-y-2 text-sm">
+                        <div><span class="font-medium">Students Affected:</span> {{ verification.students_affected }}</div>
+                        <div class="flex items-center">
+                            <span class="font-medium mr-2">Status:</span>
+                            {% if verification.is_correct %}
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                                    <i class="fas fa-check mr-1"></i>Correct
+                                </span>
+                            {% else %}
+                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>Issues Found
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-gray-50 rounded-xl p-4">
+                    <h3 class="font-semibold text-gray-800 mb-3">Actions</h3>
+                    {% if not verification.is_correct %}
+                        <form method="post" action="{% url 'fines:fix_fine_application' verification.fine_id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-tools mr-2"></i>Fix Application
+                            </button>
+                        </form>
+                    {% else %}
+                        <div class="text-green-600 text-center">
+                            <i class="fas fa-check-circle text-2xl mb-2"></i>
+                            <p class="text-sm">No issues found</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Class Breakdown -->
+            <div class="border-t pt-6">
+                <h3 class="text-lg font-semibold mb-4">Class Distribution</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {% for class_name, count in verification.class_breakdown.items %}
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">{{ class_name }}</span>
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm">
+                                {{ count }} student{{ count|pluralize }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Issues Found -->
+            {% if verification.issues_found %}
+            <div class="border-t pt-6 mt-6">
+                <h3 class="text-lg font-semibold mb-4 text-red-600">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Issues Found
+                </h3>
+                <div class="space-y-3">
+                    {% for issue in verification.issues_found %}
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-circle text-red-500 mt-1 mr-3"></i>
+                            <p class="text-red-800">{{ issue }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

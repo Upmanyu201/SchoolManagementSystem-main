@@ -1,0 +1,12 @@
+/* बटन्स के बीच स्पेसिंग के लिए */
+.space-x-2 > * + * {
+    margin-left: 0.5rem;
+}
+
+/* कन्फर्मेशन डायलॉग स्टाइल */
+.confirm-dialog {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

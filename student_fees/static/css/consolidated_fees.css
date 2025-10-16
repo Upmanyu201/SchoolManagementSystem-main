@@ -1,0 +1,241 @@
+/* Consolidated Student Fees CSS - Merged from fees.css and student_fees.css */
+
+/* Animation keyframes */
+@keyframes slide-in {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Utility classes */
+.animate-slide-in { animation: slide-in 0.3s ease-out; }
+.animate-fade-in { animation: fade-in 0.5s ease-out; }
+.animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+/* Form styling */
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    box-shadow: inset 2px 2px 5px #e2e8f0, inset -2px -2px 5px #ffffff;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #ffffff;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+    transform: scale(1.02);
+}
+
+/* Button styling */
+.btn {
+    transition: all 0.3s ease;
+    transform: scale(1);
+    font-weight: 600;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+}
+
+/* Fee container and table */
+.fee-container {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+}
+
+.fee-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.fee-table th {
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    text-align: left;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.fee-table td {
+    padding: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Fee row styling */
+.fee-row {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.fee-row:hover {
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.05), rgba(99, 102, 241, 0.05));
+}
+
+.fee-row.selected {
+    background: linear-gradient(90deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
+    border-left: 4px solid #10b981;
+}
+
+/* Student card styling */
+.student-card {
+    transition: all 0.3s ease;
+}
+
+.student-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Checkbox styling */
+.fee-checkbox {
+    transform: scale(1.2);
+    transition: all 0.2s ease;
+}
+
+.fee-checkbox:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+/* Payment summary cards */
+.payment-summary-card {
+    transition: all 0.3s ease;
+}
+
+.payment-summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading states */
+.loading-container {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Alert messages */
+.alert {
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background-color: #d1fae5;
+    border-color: #a7f3d0;
+    color: #065f46;
+}
+
+.alert-error {
+    background-color: #fee2e2;
+    border-color: #fecaca;
+    color: #991b1b;
+}
+
+.alert-info {
+    background-color: #dbeafe;
+    border-color: #bfdbfe;
+    color: #1e40af;
+}
+
+/* Modal styling */
+.modal-backdrop {
+    backdrop-filter: blur(4px);
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .fee-table th, .fee-table td {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+    
+    .student-card {
+        margin-bottom: 1rem;
+    }
+    
+    .fee-row td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .payment-summary-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .student-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #e5e7eb;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .form-input, .form-select, .form-textarea {
+        background-color: #374151;
+        border-color: #4b5563;
+        color: #f9fafb;
+    }
+    
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+        border-color: #60a5fa;
+    }
+}

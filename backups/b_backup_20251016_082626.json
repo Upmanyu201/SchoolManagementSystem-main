@@ -1,0 +1,838 @@
+[
+{
+  "model": "school_profile.schoolprofile",
+  "pk": 1,
+  "fields": {
+    "school_name": "S.V. International School",
+    "principal_name": "Chandan Kumar",
+    "address": "Muradpur, Dumra, Sitamarhi",
+    "email": "s.v.international@gmail.com",
+    "mobile": "9631869223",
+    "registration_number": "SV/International/",
+    "website": null,
+    "logo": "school_logos/humming-bird-1935665_1920_OHkBElp.png",
+    "academic_calendar": "",
+    "start_date": "2025-04-01",
+    "end_date": "2026-04-01",
+    "academic_session_start_month": 4
+  }
+},
+{
+  "model": "teachers.teacher",
+  "pk": 1,
+  "fields": {
+    "name": "Permesh Singh",
+    "mobile": "7862453285",
+    "email": "Permesh@gmail.com",
+    "qualification": "BeD",
+    "joining_date": "2024-08-02",
+    "photo": "teacher_photos/humming-bird-1935665_1920.png",
+    "resume": "teacher_resumes/store.pdf",
+    "joining_letter": "teacher_letters/store.pdf"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 1,
+  "fields": {
+    "class_name": "Class 1",
+    "section_name": "A",
+    "room_number": "R-1A",
+    "created_at": "2025-10-14T16:21:00.723Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 2,
+  "fields": {
+    "class_name": "Class 2",
+    "section_name": "A",
+    "room_number": "R-2A",
+    "created_at": "2025-10-14T16:21:18.818Z"
+  }
+},
+{
+  "model": "subjects.classsection",
+  "pk": 3,
+  "fields": {
+    "class_name": "Class 3",
+    "section_name": "A",
+    "room_number": "R-3A",
+    "created_at": "2025-10-16T07:39:34.563Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 1,
+  "fields": {
+    "name": "English",
+    "created_at": "2025-10-16T07:39:44.742Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 1,
+  "fields": {
+    "class_section": 1,
+    "subject": 1,
+    "teacher": 1,
+    "created_at": "2025-10-16T07:39:57.458Z"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-10-14T16:23:00.861Z",
+    "updated_at": "2025-10-16T05:17:02.007Z",
+    "admission_number": "10518",
+    "first_name": "Upmanyu",
+    "last_name": "Mukund",
+    "father_name": "Rajnish Kumar",
+    "mother_name": "Baby Devi",
+    "date_of_birth": "2009-12-05",
+    "date_of_admission": "2025-10-14",
+    "aadhaar_number": "147852369548",
+    "pen_number": "87412654789",
+    "class_section": 1,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "Simra, Dumra, Sitamarhi",
+    "mobile_number": "8745954865",
+    "email": "permesh@gmail.com",
+    "blood_group": "UNKN",
+    "student_image": "",
+    "aadhar_card": "",
+    "transfer_certificate": "",
+    "due_amount": "0.00",
+    "status": "ACTIVE",
+    "status_reason": "",
+    "status_changed_date": "2025-10-16T06:16:37.357Z",
+    "status_changed_by": "Superuser"
+  }
+},
+{
+  "model": "students.student",
+  "pk": 3,
+  "fields": {
+    "created_at": "2025-10-16T07:42:20.818Z",
+    "updated_at": "2025-10-16T07:42:20.818Z",
+    "admission_number": "SV0001",
+    "first_name": "Sachin",
+    "last_name": "Singh",
+    "father_name": "Shivam Sigh",
+    "mother_name": "Shivani Singh",
+    "date_of_birth": "2016-10-17",
+    "date_of_admission": "2025-10-16",
+    "aadhaar_number": null,
+    "pen_number": null,
+    "class_section": 1,
+    "gender": "Male",
+    "religion": "Hindu",
+    "caste_category": "General",
+    "address": "Bajar, Simra, Dumra, Sitamarhi",
+    "mobile_number": "7546257385",
+    "email": "sachinsing@gmail.com",
+    "blood_group": "UNKN",
+    "student_image": "",
+    "aadhar_card": "",
+    "transfer_certificate": "",
+    "due_amount": "0.00",
+    "status": "ACTIVE",
+    "status_reason": null,
+    "status_changed_date": null,
+    "status_changed_by": null
+  }
+},
+{
+  "model": "transport.route",
+  "pk": 1,
+  "fields": {
+    "name": "Simra"
+  }
+},
+{
+  "model": "transport.route",
+  "pk": 2,
+  "fields": {
+    "name": "Mohanpur"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 1,
+  "fields": {
+    "route": 2,
+    "name": "Main Bajar"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 2,
+  "fields": {
+    "route": 1,
+    "name": "Powerhouse"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 3,
+  "fields": {
+    "route": 1,
+    "name": "Bajar"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 1,
+  "fields": {
+    "student": 2,
+    "route": 1,
+    "stoppage": 2,
+    "assigned_date": "2025-10-14"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 2,
+  "fields": {
+    "student": 1,
+    "route": 1,
+    "stoppage": 2,
+    "assigned_date": "2025-10-14"
+  }
+},
+{
+  "model": "transport.transportassignment",
+  "pk": 3,
+  "fields": {
+    "student": 3,
+    "route": 1,
+    "stoppage": 3,
+    "assigned_date": "2025-10-16"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 1,
+  "fields": {
+    "student": 1,
+    "amount": "5000.00",
+    "discount": "0.00",
+    "paid_amount": "500.00",
+    "receipt_no": "REC-3288",
+    "deposit_date": "2025-10-14T17:54:16.887Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": "Fee Payment: Transport - August"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 2,
+  "fields": {
+    "student": 1,
+    "amount": "5000.00",
+    "discount": "0.00",
+    "paid_amount": "500.00",
+    "receipt_no": "REC-3288",
+    "deposit_date": "2025-10-14T17:54:16.887Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": "Fee Payment: Transport - September"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 3,
+  "fields": {
+    "student": 1,
+    "amount": "5000.00",
+    "discount": "0.00",
+    "paid_amount": "3500.00",
+    "receipt_no": "REC-3288",
+    "deposit_date": "2025-10-14T17:54:16.887Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": "Fee Payment: Transport - November"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 4,
+  "fields": {
+    "student": 1,
+    "amount": "5000.00",
+    "discount": "0.00",
+    "paid_amount": "4500.00",
+    "receipt_no": "REC-3288",
+    "deposit_date": "2025-10-14T17:54:16.887Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": "Fee Payment: Transport - October"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 5,
+  "fields": {
+    "student": 1,
+    "amount": "5000.00",
+    "discount": "0.00",
+    "paid_amount": "1500.00",
+    "receipt_no": "REC-3288",
+    "deposit_date": "2025-10-14T17:54:16.887Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": "Fee Payment: Transport - December"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 6,
+  "fields": {
+    "student": 1,
+    "amount": "5000.00",
+    "discount": "0.00",
+    "paid_amount": "400.00",
+    "receipt_no": "REC-7515",
+    "deposit_date": "2025-10-14T17:55:32.117Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": "Fee Payment: Transport - August"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 7,
+  "fields": {
+    "student": 3,
+    "amount": "10000.00",
+    "discount": "0.00",
+    "paid_amount": "10000.00",
+    "receipt_no": "REC-5860",
+    "deposit_date": "2025-10-16T07:48:56.346Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": "Fee Payment: Tuition Fee - August"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 8,
+  "fields": {
+    "student": 3,
+    "amount": "10000.00",
+    "discount": "0.00",
+    "paid_amount": "5000.00",
+    "receipt_no": "REC-5860",
+    "deposit_date": "2025-10-16T07:48:56.346Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": "Fee Payment: Tuition Fee - September"
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-10-14T17:07:58.425Z",
+    "updated_at": "2025-10-14T17:07:58.425Z",
+    "fee_group": "Monthly",
+    "group_type": "Tuition Fee",
+    "fee_type": "Class Based",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 2,
+  "fields": {
+    "created_at": "2025-10-14T17:08:10.574Z",
+    "updated_at": "2025-10-14T17:08:10.574Z",
+    "fee_group": "Monthly",
+    "group_type": "Transport",
+    "fee_type": "Stoppage Based",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-10-14T17:08:43.726Z",
+    "updated_at": "2025-10-14T17:08:43.726Z",
+    "fee_group": 2,
+    "amount": "5000.00",
+    "amount_type": "August",
+    "context_type": "stoppage_based",
+    "context_data": {
+      "months": [
+        "August"
+      ],
+      "stoppages": [
+        "Main Bajar"
+      ]
+    },
+    "month_name": "August",
+    "class_name": null,
+    "stoppage_name": "Main Bajar",
+    "related_stoppage": 1
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 2,
+  "fields": {
+    "created_at": "2025-10-14T17:08:43.739Z",
+    "updated_at": "2025-10-14T17:08:43.739Z",
+    "fee_group": 2,
+    "amount": "5000.00",
+    "amount_type": "August",
+    "context_type": "stoppage_based",
+    "context_data": {
+      "months": [
+        "August"
+      ],
+      "stoppages": [
+        "Powerhouse"
+      ]
+    },
+    "month_name": "August",
+    "class_name": null,
+    "stoppage_name": "Powerhouse",
+    "related_stoppage": 2
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 3,
+  "fields": {
+    "created_at": "2025-10-14T17:08:43.746Z",
+    "updated_at": "2025-10-14T17:08:43.746Z",
+    "fee_group": 2,
+    "amount": "5000.00",
+    "amount_type": "September",
+    "context_type": "stoppage_based",
+    "context_data": {
+      "months": [
+        "September"
+      ],
+      "stoppages": [
+        "Main Bajar"
+      ]
+    },
+    "month_name": "September",
+    "class_name": null,
+    "stoppage_name": "Main Bajar",
+    "related_stoppage": 1
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 4,
+  "fields": {
+    "created_at": "2025-10-14T17:08:43.753Z",
+    "updated_at": "2025-10-14T17:08:43.753Z",
+    "fee_group": 2,
+    "amount": "5000.00",
+    "amount_type": "September",
+    "context_type": "stoppage_based",
+    "context_data": {
+      "months": [
+        "September"
+      ],
+      "stoppages": [
+        "Powerhouse"
+      ]
+    },
+    "month_name": "September",
+    "class_name": null,
+    "stoppage_name": "Powerhouse",
+    "related_stoppage": 2
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 5,
+  "fields": {
+    "created_at": "2025-10-14T17:08:43.759Z",
+    "updated_at": "2025-10-14T17:08:43.759Z",
+    "fee_group": 2,
+    "amount": "5000.00",
+    "amount_type": "October",
+    "context_type": "stoppage_based",
+    "context_data": {
+      "months": [
+        "October"
+      ],
+      "stoppages": [
+        "Main Bajar"
+      ]
+    },
+    "month_name": "October",
+    "class_name": null,
+    "stoppage_name": "Main Bajar",
+    "related_stoppage": 1
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 6,
+  "fields": {
+    "created_at": "2025-10-14T17:08:43.766Z",
+    "updated_at": "2025-10-14T17:08:43.766Z",
+    "fee_group": 2,
+    "amount": "5000.00",
+    "amount_type": "October",
+    "context_type": "stoppage_based",
+    "context_data": {
+      "months": [
+        "October"
+      ],
+      "stoppages": [
+        "Powerhouse"
+      ]
+    },
+    "month_name": "October",
+    "class_name": null,
+    "stoppage_name": "Powerhouse",
+    "related_stoppage": 2
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 7,
+  "fields": {
+    "created_at": "2025-10-14T17:08:43.774Z",
+    "updated_at": "2025-10-14T17:08:43.774Z",
+    "fee_group": 2,
+    "amount": "5000.00",
+    "amount_type": "November",
+    "context_type": "stoppage_based",
+    "context_data": {
+      "months": [
+        "November"
+      ],
+      "stoppages": [
+        "Main Bajar"
+      ]
+    },
+    "month_name": "November",
+    "class_name": null,
+    "stoppage_name": "Main Bajar",
+    "related_stoppage": 1
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 8,
+  "fields": {
+    "created_at": "2025-10-14T17:08:43.781Z",
+    "updated_at": "2025-10-14T17:08:43.781Z",
+    "fee_group": 2,
+    "amount": "5000.00",
+    "amount_type": "November",
+    "context_type": "stoppage_based",
+    "context_data": {
+      "months": [
+        "November"
+      ],
+      "stoppages": [
+        "Powerhouse"
+      ]
+    },
+    "month_name": "November",
+    "class_name": null,
+    "stoppage_name": "Powerhouse",
+    "related_stoppage": 2
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 9,
+  "fields": {
+    "created_at": "2025-10-14T17:08:43.788Z",
+    "updated_at": "2025-10-14T17:08:43.788Z",
+    "fee_group": 2,
+    "amount": "5000.00",
+    "amount_type": "December",
+    "context_type": "stoppage_based",
+    "context_data": {
+      "months": [
+        "December"
+      ],
+      "stoppages": [
+        "Main Bajar"
+      ]
+    },
+    "month_name": "December",
+    "class_name": null,
+    "stoppage_name": "Main Bajar",
+    "related_stoppage": 1
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 10,
+  "fields": {
+    "created_at": "2025-10-14T17:08:43.795Z",
+    "updated_at": "2025-10-14T17:08:43.795Z",
+    "fee_group": 2,
+    "amount": "5000.00",
+    "amount_type": "December",
+    "context_type": "stoppage_based",
+    "context_data": {
+      "months": [
+        "December"
+      ],
+      "stoppages": [
+        "Powerhouse"
+      ]
+    },
+    "month_name": "December",
+    "class_name": null,
+    "stoppage_name": "Powerhouse",
+    "related_stoppage": 2
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 11,
+  "fields": {
+    "created_at": "2025-10-16T07:48:14.009Z",
+    "updated_at": "2025-10-16T07:48:14.009Z",
+    "fee_group": 1,
+    "amount": "10000.00",
+    "amount_type": "August",
+    "context_type": "class_based",
+    "context_data": {
+      "months": [
+        "August"
+      ],
+      "classes": [
+        "Class 1A"
+      ]
+    },
+    "month_name": "August",
+    "class_name": "Class 1A",
+    "stoppage_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 12,
+  "fields": {
+    "created_at": "2025-10-16T07:48:14.018Z",
+    "updated_at": "2025-10-16T07:48:14.018Z",
+    "fee_group": 1,
+    "amount": "10000.00",
+    "amount_type": "August",
+    "context_type": "class_based",
+    "context_data": {
+      "months": [
+        "August"
+      ],
+      "classes": [
+        "Class 2A"
+      ]
+    },
+    "month_name": "August",
+    "class_name": "Class 2A",
+    "stoppage_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 13,
+  "fields": {
+    "created_at": "2025-10-16T07:48:14.023Z",
+    "updated_at": "2025-10-16T07:48:14.023Z",
+    "fee_group": 1,
+    "amount": "10000.00",
+    "amount_type": "August",
+    "context_type": "class_based",
+    "context_data": {
+      "months": [
+        "August"
+      ],
+      "classes": [
+        "Class 3A"
+      ]
+    },
+    "month_name": "August",
+    "class_name": "Class 3A",
+    "stoppage_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 14,
+  "fields": {
+    "created_at": "2025-10-16T07:48:14.028Z",
+    "updated_at": "2025-10-16T07:48:14.028Z",
+    "fee_group": 1,
+    "amount": "10000.00",
+    "amount_type": "September",
+    "context_type": "class_based",
+    "context_data": {
+      "months": [
+        "September"
+      ],
+      "classes": [
+        "Class 1A"
+      ]
+    },
+    "month_name": "September",
+    "class_name": "Class 1A",
+    "stoppage_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 15,
+  "fields": {
+    "created_at": "2025-10-16T07:48:14.033Z",
+    "updated_at": "2025-10-16T07:48:14.033Z",
+    "fee_group": 1,
+    "amount": "10000.00",
+    "amount_type": "September",
+    "context_type": "class_based",
+    "context_data": {
+      "months": [
+        "September"
+      ],
+      "classes": [
+        "Class 2A"
+      ]
+    },
+    "month_name": "September",
+    "class_name": "Class 2A",
+    "stoppage_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 16,
+  "fields": {
+    "created_at": "2025-10-16T07:48:14.037Z",
+    "updated_at": "2025-10-16T07:48:14.037Z",
+    "fee_group": 1,
+    "amount": "10000.00",
+    "amount_type": "September",
+    "context_type": "class_based",
+    "context_data": {
+      "months": [
+        "September"
+      ],
+      "classes": [
+        "Class 3A"
+      ]
+    },
+    "month_name": "September",
+    "class_name": "Class 3A",
+    "stoppage_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 17,
+  "fields": {
+    "created_at": "2025-10-16T07:48:14.042Z",
+    "updated_at": "2025-10-16T07:48:14.042Z",
+    "fee_group": 1,
+    "amount": "10000.00",
+    "amount_type": "October",
+    "context_type": "class_based",
+    "context_data": {
+      "months": [
+        "October"
+      ],
+      "classes": [
+        "Class 1A"
+      ]
+    },
+    "month_name": "October",
+    "class_name": "Class 1A",
+    "stoppage_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 18,
+  "fields": {
+    "created_at": "2025-10-16T07:48:14.046Z",
+    "updated_at": "2025-10-16T07:48:14.046Z",
+    "fee_group": 1,
+    "amount": "10000.00",
+    "amount_type": "October",
+    "context_type": "class_based",
+    "context_data": {
+      "months": [
+        "October"
+      ],
+      "classes": [
+        "Class 2A"
+      ]
+    },
+    "month_name": "October",
+    "class_name": "Class 2A",
+    "stoppage_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 19,
+  "fields": {
+    "created_at": "2025-10-16T07:48:14.050Z",
+    "updated_at": "2025-10-16T07:48:14.050Z",
+    "fee_group": 1,
+    "amount": "10000.00",
+    "amount_type": "October",
+    "context_type": "class_based",
+    "context_data": {
+      "months": [
+        "October"
+      ],
+      "classes": [
+        "Class 3A"
+      ]
+    },
+    "month_name": "October",
+    "class_name": "Class 3A",
+    "stoppage_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 1,
+  "fields": {
+    "created_at": "2025-10-15T03:54:02.599Z",
+    "updated_at": "2025-10-15T03:54:02.599Z",
+    "name": "Liberary FIne",
+    "category": "Library",
+    "description": "Damage the liberary book.",
+    "is_active": true,
+    "created_by": 1
+  }
+}

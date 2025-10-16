@@ -1,0 +1,1126 @@
+[
+{
+  "model": "fees.feesgroup",
+  "pk": 2,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-15T07:26:28.494Z",
+    "is_active": true,
+    "fee_group": "Monthly",
+    "group_type": "Tuition Fee",
+    "fee_type": "Class Based",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 4,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "fee_group": "Monthly",
+    "group_type": "Transport",
+    "fee_type": "Stoppage Based",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 19,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "fee_group": "Quarterly",
+    "group_type": "Exam Fees",
+    "fee_type": "General",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 20,
+  "fields": {
+    "created_at": "2025-08-04T20:57:43.267Z",
+    "updated_at": "2025-08-04T20:57:43.267Z",
+    "is_active": true,
+    "fee_group": "One Time",
+    "group_type": "Admission Fees",
+    "fee_type": "General",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feesgroup",
+  "pk": 23,
+  "fields": {
+    "created_at": "2025-08-16T13:03:39.897Z",
+    "updated_at": "2025-08-17T04:24:51.912Z",
+    "is_active": true,
+    "fee_group": "One Time",
+    "group_type": "Exam Fees",
+    "fee_type": "Class Based",
+    "related_class_section": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 279,
+  "fields": {
+    "created_at": "2025-09-03T08:02:26.755Z",
+    "updated_at": "2025-09-03T08:02:26.755Z",
+    "is_active": true,
+    "fee_group": 2,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 10A",
+    "amount_type": "August",
+    "amount": "1800.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 280,
+  "fields": {
+    "created_at": "2025-09-03T08:02:26.758Z",
+    "updated_at": "2025-09-03T08:02:26.758Z",
+    "is_active": true,
+    "fee_group": 2,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 10A",
+    "amount_type": "September",
+    "amount": "1800.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 281,
+  "fields": {
+    "created_at": "2025-09-03T08:02:26.759Z",
+    "updated_at": "2025-09-03T08:02:26.759Z",
+    "is_active": true,
+    "fee_group": 2,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 10A",
+    "amount_type": "October",
+    "amount": "1800.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 282,
+  "fields": {
+    "created_at": "2025-09-03T08:02:26.760Z",
+    "updated_at": "2025-09-03T08:02:26.760Z",
+    "is_active": true,
+    "fee_group": 2,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 10A",
+    "amount_type": "November",
+    "amount": "1800.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 283,
+  "fields": {
+    "created_at": "2025-09-03T08:02:26.761Z",
+    "updated_at": "2025-09-03T08:02:26.761Z",
+    "is_active": true,
+    "fee_group": 2,
+    "group_type": "Tuition Fee",
+    "fee_type": "Class 10A",
+    "amount_type": "December",
+    "amount": "1800.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 284,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.255Z",
+    "updated_at": "2025-09-03T08:34:14.255Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Simra",
+    "amount_type": "August",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 19
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 285,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.258Z",
+    "updated_at": "2025-09-03T08:34:14.258Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Partapur",
+    "amount_type": "August",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 20
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 286,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.261Z",
+    "updated_at": "2025-09-03T08:34:14.261Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Simra",
+    "amount_type": "September",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 19
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 287,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.263Z",
+    "updated_at": "2025-09-03T08:34:14.263Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Partapur",
+    "amount_type": "September",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 20
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 288,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.265Z",
+    "updated_at": "2025-09-03T08:34:14.265Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Simra",
+    "amount_type": "October",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 19
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 289,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.267Z",
+    "updated_at": "2025-09-03T08:34:14.267Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Partapur",
+    "amount_type": "October",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 20
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 290,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.270Z",
+    "updated_at": "2025-09-03T08:34:14.270Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Simra",
+    "amount_type": "November",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 19
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 291,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.272Z",
+    "updated_at": "2025-09-03T08:34:14.272Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Partapur",
+    "amount_type": "November",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 20
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 292,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.274Z",
+    "updated_at": "2025-09-03T08:34:14.274Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Simra",
+    "amount_type": "December",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 19
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 293,
+  "fields": {
+    "created_at": "2025-09-03T08:34:14.276Z",
+    "updated_at": "2025-09-03T08:34:14.276Z",
+    "is_active": true,
+    "fee_group": 4,
+    "group_type": "Transport",
+    "fee_type": "Transport - Partapur",
+    "amount_type": "December",
+    "amount": "600.00",
+    "class_name": null,
+    "related_stoppage": 20
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 294,
+  "fields": {
+    "created_at": "2025-09-03T08:36:22.250Z",
+    "updated_at": "2025-09-03T08:36:22.250Z",
+    "is_active": true,
+    "fee_group": 19,
+    "group_type": "Exam Fees",
+    "fee_type": "Half Yearly Exam",
+    "amount_type": " Quarterly",
+    "amount": "30.00",
+    "class_name": null,
+    "related_stoppage": null
+  }
+},
+{
+  "model": "fees.feestype",
+  "pk": 295,
+  "fields": {
+    "created_at": "2025-09-03T08:36:56.579Z",
+    "updated_at": "2025-09-03T08:36:56.579Z",
+    "is_active": true,
+    "fee_group": 23,
+    "group_type": "Exam Fees",
+    "fee_type": "Class 10A",
+    "amount_type": "One TIme",
+    "amount": "100.00",
+    "class_name": "Class 10A",
+    "related_stoppage": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 157,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1000.00",
+    "discount": "0.00",
+    "paid_amount": "1000.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.912Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 158,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "21.00",
+    "discount": "0.00",
+    "paid_amount": "21.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.912Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": "Fine Payment: Late Fees Fine - September"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 159,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "200.00",
+    "discount": "0.00",
+    "paid_amount": "200.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.913Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 160,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "700.00",
+    "discount": "0.00",
+    "paid_amount": "700.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.913Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 161,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1000.00",
+    "discount": "0.00",
+    "paid_amount": "1000.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.913Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 162,
+  "fields": {
+    "student": 103,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "700.00",
+    "discount": "0.00",
+    "paid_amount": "700.00",
+    "receipt_no": "REC-0001",
+    "deposit_date": "2025-08-30T15:57:03.913Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 163,
+  "fields": {
+    "student": 108,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "700.00",
+    "discount": "0.00",
+    "paid_amount": "700.00",
+    "receipt_no": "REC-0002",
+    "deposit_date": "2025-08-31T06:51:24.684Z",
+    "payment_mode": "Online",
+    "transaction_no": "14729789963",
+    "payment_source": "SBI",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 164,
+  "fields": {
+    "student": 108,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1000.00",
+    "discount": "0.00",
+    "paid_amount": "1000.00",
+    "receipt_no": "REC-0002",
+    "deposit_date": "2025-08-31T06:51:24.684Z",
+    "payment_mode": "Online",
+    "transaction_no": "14729789963",
+    "payment_source": "SBI",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 165,
+  "fields": {
+    "student": 11,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "800.00",
+    "discount": "0.00",
+    "paid_amount": "800.00",
+    "receipt_no": "REC-0003",
+    "deposit_date": "2025-09-01T08:19:13.198Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 166,
+  "fields": {
+    "student": 11,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "200.00",
+    "discount": "0.00",
+    "paid_amount": "200.00",
+    "receipt_no": "REC-0003",
+    "deposit_date": "2025-09-01T08:19:13.198Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 168,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1800.00",
+    "discount": "0.00",
+    "paid_amount": "1800.00",
+    "receipt_no": "REC-0004",
+    "deposit_date": "2025-09-03T07:08:48.495Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 169,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1800.00",
+    "discount": "0.00",
+    "paid_amount": "1800.00",
+    "receipt_no": "REC-0005",
+    "deposit_date": "2025-09-03T07:23:17.195Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 170,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "1800.00",
+    "discount": "50.00",
+    "paid_amount": "1750.00",
+    "receipt_no": "REC-0006",
+    "deposit_date": "2025-09-03T07:25:49.041Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 171,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 279,
+    "amount": "1800.00",
+    "discount": "0.00",
+    "paid_amount": "1800.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 172,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 280,
+    "amount": "1800.00",
+    "discount": "0.00",
+    "paid_amount": "1800.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 173,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 294,
+    "amount": "30.00",
+    "discount": "0.00",
+    "paid_amount": "30.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 174,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 295,
+    "amount": "100.00",
+    "discount": "0.00",
+    "paid_amount": "100.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 175,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 285,
+    "amount": "600.00",
+    "discount": "0.00",
+    "paid_amount": "600.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 176,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "20.00",
+    "discount": "0.00",
+    "paid_amount": "20.00",
+    "receipt_no": "REC-0007",
+    "deposit_date": "2025-09-03T09:30:14.083Z",
+    "payment_mode": "Online",
+    "transaction_no": "654789",
+    "payment_source": "UPA",
+    "note": "Fine Payment: August"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 177,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 281,
+    "amount": "1800.00",
+    "discount": "0.00",
+    "paid_amount": "1800.00",
+    "receipt_no": "REC-0008",
+    "deposit_date": "2025-09-03T12:29:12.794Z",
+    "payment_mode": "UPI",
+    "transaction_no": "654789",
+    "payment_source": "BHIM",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 178,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": 289,
+    "amount": "600.00",
+    "discount": "0.00",
+    "paid_amount": "600.00",
+    "receipt_no": "REC-0008",
+    "deposit_date": "2025-09-03T12:29:12.794Z",
+    "payment_mode": "UPI",
+    "transaction_no": "654789",
+    "payment_source": "BHIM",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 179,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "100.00",
+    "discount": "0.00",
+    "paid_amount": "100.00",
+    "receipt_no": "REC-0009",
+    "deposit_date": "2025-09-03T12:40:41.760Z",
+    "payment_mode": "Cash",
+    "transaction_no": "TEST-001",
+    "payment_source": "Office",
+    "note": "Carry Forward Payment"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 180,
+  "fields": {
+    "student": 112,
+    "fees_group": null,
+    "fees_type": null,
+    "amount": "100.00",
+    "discount": "0.00",
+    "paid_amount": "100.00",
+    "receipt_no": "REC-0010",
+    "deposit_date": "2025-09-03T12:41:15.162Z",
+    "payment_mode": "Cash",
+    "transaction_no": "TEST-001",
+    "payment_source": "Office",
+    "note": "Carry Forward Payment"
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 181,
+  "fields": {
+    "student": 37,
+    "fees_group": null,
+    "fees_type": 291,
+    "amount": "600.00",
+    "discount": "0.00",
+    "paid_amount": "600.00",
+    "receipt_no": "REC-0011",
+    "deposit_date": "2025-09-03T12:46:53.756Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "student_fees.feedeposit",
+  "pk": 182,
+  "fields": {
+    "student": 37,
+    "fees_group": null,
+    "fees_type": 293,
+    "amount": "600.00",
+    "discount": "0.00",
+    "paid_amount": "600.00",
+    "receipt_no": "REC-0011",
+    "deposit_date": "2025-09-03T12:46:53.756Z",
+    "payment_mode": "Cash",
+    "transaction_no": "",
+    "payment_source": "",
+    "note": null
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 8,
+  "fields": {
+    "created_at": "2025-08-05T15:34:47.265Z",
+    "updated_at": "2025-08-05T15:34:47.265Z",
+    "is_active": true,
+    "name": "August",
+    "category": "Late Fee",
+    "description": "Late august fees payment."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 9,
+  "fields": {
+    "created_at": "2025-08-05T15:35:44.257Z",
+    "updated_at": "2025-08-05T15:35:44.257Z",
+    "is_active": true,
+    "name": "September",
+    "category": "Late Fee",
+    "description": "Late fees payment."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 10,
+  "fields": {
+    "created_at": "2025-08-05T15:36:18.992Z",
+    "updated_at": "2025-08-05T15:36:18.992Z",
+    "is_active": true,
+    "name": "Banch",
+    "category": "Damage",
+    "description": "Broke banch and desk of class."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 11,
+  "fields": {
+    "created_at": "2025-08-05T15:36:56.930Z",
+    "updated_at": "2025-08-05T15:36:56.930Z",
+    "is_active": true,
+    "name": "Fighting",
+    "category": "Discipline",
+    "description": "Given feital wound to his classmate."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 12,
+  "fields": {
+    "created_at": "2025-08-07T13:42:26.500Z",
+    "updated_at": "2025-08-07T13:42:26.500Z",
+    "is_active": true,
+    "name": "June",
+    "category": "Late Fee",
+    "description": "Late payment of June school fees."
+  }
+},
+{
+  "model": "fines.finetype",
+  "pk": 14,
+  "fields": {
+    "created_at": "2025-08-13T02:00:05.455Z",
+    "updated_at": "2025-08-13T02:00:05.455Z",
+    "is_active": true,
+    "name": "Test Fine",
+    "category": "Other",
+    "description": "Test fine for testing"
+  }
+},
+{
+  "model": "fines.fine",
+  "pk": 1000,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.049Z",
+    "updated_at": "2025-09-01T11:48:05.049Z",
+    "is_active": true,
+    "class_section": 1,
+    "fine_type": 9,
+    "fees_type": null,
+    "amount": "50.00",
+    "dynamic_amount_percent": null,
+    "reason": "Late fees payment.",
+    "due_date": "2025-09-20",
+    "applied_date": "2025-09-01T11:48:05.049Z",
+    "auto_generated": false,
+    "target_scope": "Class",
+    "created_by": 15
+  }
+},
+{
+  "model": "fines.fine",
+  "pk": 1001,
+  "fields": {
+    "created_at": "2025-09-03T08:20:07.538Z",
+    "updated_at": "2025-09-03T08:20:07.538Z",
+    "is_active": true,
+    "class_section": 1,
+    "fine_type": 8,
+    "fees_type": 279,
+    "amount": "20.00",
+    "dynamic_amount_percent": null,
+    "reason": "Late august fees payment.",
+    "due_date": "2025-08-29",
+    "applied_date": "2025-09-03T08:20:07.538Z",
+    "auto_generated": false,
+    "target_scope": "Class",
+    "created_by": 15
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 147,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 70,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 148,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 74,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 149,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 79,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 150,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 85,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 151,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 87,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 152,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 91,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 153,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 92,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 154,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 94,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 155,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 96,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 156,
+  "fields": {
+    "created_at": "2025-09-01T11:48:05.063Z",
+    "updated_at": "2025-09-01T11:48:05.063Z",
+    "is_active": true,
+    "fine": 1000,
+    "student": 98,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 157,
+  "fields": {
+    "created_at": "2025-09-03T08:20:07.551Z",
+    "updated_at": "2025-09-03T08:20:07.551Z",
+    "is_active": true,
+    "fine": 1001,
+    "student": 12,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 158,
+  "fields": {
+    "created_at": "2025-09-03T08:20:07.551Z",
+    "updated_at": "2025-09-03T08:20:07.551Z",
+    "is_active": true,
+    "fine": 1001,
+    "student": 37,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 159,
+  "fields": {
+    "created_at": "2025-09-03T08:20:07.551Z",
+    "updated_at": "2025-09-03T08:20:07.551Z",
+    "is_active": true,
+    "fine": 1001,
+    "student": 108,
+    "is_paid": false,
+    "payment_date": null
+  }
+},
+{
+  "model": "fines.finestudent",
+  "pk": 160,
+  "fields": {
+    "created_at": "2025-09-03T08:20:07.551Z",
+    "updated_at": "2025-09-03T09:30:14.081Z",
+    "is_active": true,
+    "fine": 1001,
+    "student": 112,
+    "is_paid": true,
+    "payment_date": "2025-09-03"
+  }
+},
+{
+  "model": "fines.fineauditlog",
+  "pk": 12,
+  "fields": {
+    "created_at": "2025-09-01T11:48:13.556Z",
+    "updated_at": "2025-09-01T11:48:13.556Z",
+    "is_active": true,
+    "fine": 1000,
+    "action": "Created",
+    "user": 15,
+    "timestamp": "2025-09-01T11:48:13.556Z",
+    "details": {
+      "target_scope": "Class",
+      "class_group": "Nursary",
+      "student_count": 10,
+      "sms_sent_count": 10
+    }
+  }
+},
+{
+  "model": "fines.fineauditlog",
+  "pk": 13,
+  "fields": {
+    "created_at": "2025-09-03T08:20:11.822Z",
+    "updated_at": "2025-09-03T08:20:11.822Z",
+    "is_active": true,
+    "fine": 1001,
+    "action": "Created",
+    "user": 15,
+    "timestamp": "2025-09-03T08:20:11.822Z",
+    "details": {
+      "target_scope": "Class",
+      "class_section": "Class 10A",
+      "student_count": 4,
+      "sms_sent_count": 4
+    }
+  }
+}
+]

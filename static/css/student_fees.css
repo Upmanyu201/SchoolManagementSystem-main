@@ -1,0 +1,139 @@
+/* Student Fees Animations and Styles */
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Student Card Hover Effects */
+.student-card {
+    transition: all 0.3s ease;
+}
+
+.student-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Button Animations */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Form Input Focus Effects */
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Loading Animation */
+.loading-container {
+    background: linear-gradient(45deg, #f8fafc, #e2e8f0);
+}
+
+/* Fee Row Hover Effects */
+.fee-row {
+    transition: all 0.2s ease;
+}
+
+.fee-row:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(99, 102, 241, 0.05));
+}
+
+/* Checkbox Animations */
+.fee-checkbox {
+    transition: all 0.2s ease;
+}
+
+.fee-checkbox:checked {
+    transform: scale(1.1);
+}
+
+/* Modal Backdrop Blur */
+#paymentConfirmModal {
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+
+/* Responsive Animations */
+@media (max-width: 768px) {
+    .student-card:hover {
+        transform: none;
+    }
+    
+    .btn:hover {
+        transform: none;
+    }
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

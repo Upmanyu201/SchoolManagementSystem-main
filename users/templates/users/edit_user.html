@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit User - {{ target_user.get_full_name|default:target_user.username }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-100 p-4">
+    <div class="max-w-6xl mx-auto space-y-6">
+        <div class="bg-white rounded-2xl shadow-xl p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-user-edit text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Edit User</h1>
+                        <p class="text-gray-600">{{ target_user.get_full_name|default:target_user.username }}</p>
+                    </div>
+                </div>
+                <a href="{% url 'users:user_management' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Users
+                </a>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-6">Profile Information</h2>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="profile">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                        <input type="text" name="first_name" value="{{ target_user.first_name }}" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                        <input type="text" name="last_name" value="{{ target_user.last_name }}" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" name="email" value="{{ target_user.email }}" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Mobile</label>
+                        <input type="text" name="mobile" value="{{ target_user.mobile }}" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                        <select name="role" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                            <option value="student" {% if target_user.role == 'student' %}selected{% endif %}>Student</option>
+                            <option value="teacher" {% if target_user.role == 'teacher' %}selected{% endif %}>Teacher</option>
+                            <option value="admin" {% if target_user.role == 'admin' %}selected{% endif %}>Admin</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" name="is_active" id="is_active" {% if target_user.is_active %}checked{% endif %}
+                               class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="is_active" class="ml-2 block text-sm text-gray-700">Active User</label>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg">
+                        <i class="fas fa-save mr-2"></i>Update Profile
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl p-6 mt-6 border border-red-200">
+            <h2 class="text-xl font-bold text-red-700 mb-6 flex items-center">
+                <i class="fas fa-key mr-2"></i>Change Password
+            </h2>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="password">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+                        <div class="relative">
+                            <input type="password" value="********" readonly disabled 
+                                   id="current_password_display"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed text-gray-600">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                                <i class="fas fa-eye-slash text-gray-400"></i> 
+                            </div>
+                        </div>
+                        <p class="mt-1 text-xs text-red-500">
+                            (Secured placeholder: The current password cannot be displayed in cleartext.)
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <label for="new_password_edit" class="block text-sm font-medium text-gray-700 mb-2">Change Password With</label>
+                        <div class="relative">
+                            <input type="password" name="new_password" id="new_password_edit" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 pr-10">
+                            <button type="button" 
+                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-gray-500 hover:text-indigo-600 transition-colors"
+                                    onclick="togglePasswordVisibility('new_password_edit', this)">
+                                <i class="fas fa-eye-slash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg">
+                        <i class="fas fa-key mr-2"></i>Update Password
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        {% if request.user.is_superuser %}
+        <div class="bg-white rounded-2xl shadow-xl p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-800">Current Module Permissions</h2>
+                <a href="{% url 'users:module_access' %}?user={{ target_user.id }}" 
+                   class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center gap-2">
+                    <i class="fas fa-shield-alt"></i>
+                    Update Permissions
+                </a>
+            </div>
+            
+            {% if user_permissions %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+                    <h3 class="font-bold text-blue-800 mb-3 flex items-center">
+                        <i class="fas fa-user-graduate mr-2"></i>Students
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">View</span>
+                            {% if user_permissions.students_view %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Edit</span>
+                            {% if user_permissions.students_edit %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
+                    <h3 class="font-bold text-green-800 mb-3 flex items-center">
+                        <i class="fas fa-chalkboard-teacher mr-2"></i>Teachers
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">View</span>
+                            {% if user_permissions.teachers_view %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Edit</span>
+                            {% if user_permissions.teachers_edit %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-4 border border-indigo-200">
+                    <h3 class="font-bold text-indigo-800 mb-3 flex items-center">
+                        <i class="fas fa-book mr-2"></i>Subjects
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">View</span>
+                            {% if user_permissions.subjects_view %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Edit</span>
+                            {% if user_permissions.subjects_edit %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-4 border border-yellow-200">
+                    <h3 class="font-bold text-yellow-800 mb-3 flex items-center">
+                        <i class="fas fa-money-bill-wave mr-2"></i>Fees
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">View</span>
+                            {% if user_permissions.fees_view %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Edit</span>
+                            {% if user_permissions.fees_edit %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl p-4 border border-teal-200">
+                    <h3 class="font-bold text-teal-800 mb-3 flex items-center">
+                        <i class="fas fa-receipt mr-2"></i>Payments
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">View</span>
+                            {% if user_permissions.payments_view %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Edit</span>
+                            {% if user_permissions.payments_edit %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl p-4 border border-pink-200">
+                    <h3 class="font-bold text-pink-800 mb-3 flex items-center">
+                        <i class="fas fa-clipboard-check mr-2"></i>Attendance
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">View</span>
+                            {% if user_permissions.attendance_view %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Edit</span>
+                            {% if user_permissions.attendance_edit %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 border border-orange-200">
+                    <h3 class="font-bold text-orange-800 mb-3 flex items-center">
+                        <i class="fas fa-bus mr-2"></i>Transport
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">View</span>
+                            {% if user_permissions.transport_view %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Edit</span>
+                            {% if user_permissions.transport_edit %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
+                    <h3 class="font-bold text-purple-800 mb-3 flex items-center">
+                        <i class="fas fa-chart-line mr-2"></i>Reports
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">View</span>
+                            {% if user_permissions.reports_view %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Edit</span>
+                            {% if user_permissions.reports_edit %}<i class="fas fa-check-circle text-green-500"></i>{% else %}<i class="fas fa-times-circle text-gray-400"></i>{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center py-12">
+                <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-shield-alt text-3xl text-gray-400"></i>
+                </div>
+                <p class="text-gray-500 text-lg font-medium">No permissions assigned</p>
+                <p class="text-gray-400 text-sm mb-4">This user has no module permissions configured</p>
+                <a href="{% url 'users:module_access' %}?user={{ target_user.id }}" 
+                   class="inline-flex items-center gap-2 bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-xl transition-all">
+                    <i class="fas fa-plus"></i>
+                    Assign Permissions
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Global function to toggle password visibility
+    function togglePasswordVisibility(fieldId, buttonElement) {
+        const field = document.getElementById(fieldId);
+        const icon = buttonElement.querySelector('i');
+
+        if (field.type === 'password') {
+            field.type = 'text';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        } else {
+            field.type = 'password';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        }
+    }
+</script>
+{% endblock %}
+{% endblock %}

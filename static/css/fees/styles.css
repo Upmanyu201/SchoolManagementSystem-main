@@ -1,0 +1,16 @@
+/* Fees Group और Fees Type के Description फ़ील्ड को छोटा करने के लिए */
+input[type="text"], textarea {
+    width: 100%; /* पूरी चौड़ाई लेने के लिए */
+    padding: 0.5rem; /* इनर पैडिंग */
+    border: 1px solid #ccc; /* बॉर्डर */
+    border-radius: 0.375rem; /* गोल कोने */
+    background-color: #f3f4f6; /* हल्का ग्रे बैकग्राउंड */
+    color: #000; /* टेक्स्ट का कलर काला */
+    font-size: 1rem; /* फ़ॉन्ट साइज़ */
+}
+
+/* Description फ़ील्ड की ऊंचाई को नियंत्रित करने के लिए */
+textarea {
+    height: 80px; /* ऊंचाई (आप इसे अपनी आवश्यकता के अनुसार बदल सकते हैं) */
+    resize: vertical; /* उपयोगकर्ता ऊंचाई को एडजस्ट कर सकता है */
+}

@@ -1,0 +1,358 @@
+/* Student Dashboard Styles */
+.student-dashboard {
+    padding: 20px;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+.student-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007bff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.student-header-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 15px;
+}
+
+.student-header-card .card-body {
+    padding: 30px;
+}
+
+.quick-actions .btn {
+    margin: 5px;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.quick-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Financial Summary Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.card.bg-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+}
+
+.card.bg-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+}
+
+.card.bg-success {
+    background: linear-gradient(135deg, #28a745, #1e7e34) !important;
+}
+
+.card.bg-info {
+    background: linear-gradient(135deg, #17a2b8, #117a8b) !important;
+}
+
+/* Tab Navigation */
+.tab-nav {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border-radius: 15px 15px 0 0;
+    padding: 15px 20px;
+}
+
+.tab-btn {
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.8);
+    padding: 12px 20px;
+    margin-right: 10px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.tab-btn:hover {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.tab-btn.active {
+    background: white;
+    color: #007bff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.tab-btn i {
+    margin-right: 8px;
+}
+
+/* Tab Content */
+.tab-content {
+    padding: 30px;
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Activity Items */
+.recent-activities {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-left: 4px solid #007bff;
+    margin-bottom: 15px;
+    background: white;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.activity-item i {
+    margin-right: 15px;
+    width: 20px;
+    font-size: 18px;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-description {
+    margin: 0;
+    font-weight: 500;
+    color: #333;
+}
+
+.activity-date {
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+/* Quick Info */
+.quick-info {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.quick-info p {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.quick-info p:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* Fee Breakdown */
+.card-header {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-bottom: 1px solid #dee2e6;
+    border-radius: 15px 15px 0 0 !important;
+    font-weight: 600;
+}
+
+/* Timeline Styles */
+.timeline-item {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 0;
+    top: 5px;
+}
+
+.timeline-content {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Modal Enhancements */
+.modal-content {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border-radius: 15px 15px 0 0;
+    border-bottom: none;
+}
+
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.modal-footer {
+    border-top: 1px solid #eee;
+    padding: 20px 30px;
+}
+
+/* Form Enhancements */
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .student-dashboard {
+        padding: 10px;
+    }
+    
+    .student-header-card .card-body {
+        padding: 20px;
+    }
+    
+    .quick-actions {
+        text-align: center;
+        margin-top: 15px;
+    }
+    
+    .tab-nav {
+        padding: 10px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .tab-btn {
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+    
+    .tab-content {
+        padding: 15px;
+    }
+    
+    .student-avatar {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Success/Error States */
+.alert {
+    border: none;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    color: #721c24;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+    color: #0c5460;
+}
+
+/* Utility Classes */
+.text-gradient {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.shadow-soft {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+}
+
+.border-radius-lg {
+    border-radius: 15px !important;
+}
+
+.border-radius-xl {
+    border-radius: 20px !important;
+}

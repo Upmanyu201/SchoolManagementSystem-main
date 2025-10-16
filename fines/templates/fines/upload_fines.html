@@ -1,0 +1,275 @@
+{% extends 'fines/base_fine.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block fine_content %}
+<!-- Header Card -->
+<div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-purple-200">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center">
+            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                <i class="fas fa-upload text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-800 bg-clip-text text-transparent">
+                    📤 {% trans "Upload Fines" %}
+                </h1>
+                <p class="text-gray-600 mt-1">{% trans "Bulk upload fines using CSV file" %}</p>
+            </div>
+        </div>
+        <a href="{% url 'fines:fine_history' %}" 
+           class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+            <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to History" %}
+        </a>
+    </div>
+</div>
+
+<!-- Upload Form Card -->
+<div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+    <div class="bg-gradient-to-r from-purple-500 to-indigo-600 p-6">
+        <h2 class="text-white text-xl font-bold flex items-center">
+            <i class="fas fa-cloud-upload-alt mr-3"></i>{% trans "File Upload Form" %}
+        </h2>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="p-8">
+        {% csrf_token %}
+        
+        <!-- File Upload Section -->
+        <div class="mb-8">
+            <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-8 border-2 border-dashed border-purple-300 text-center hover:border-purple-500 transition-all duration-300 hover:shadow-lg">
+                <div class="mb-6">
+                    <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">📤 {% trans "Upload CSV File" %}</h3>
+                    <p class="text-gray-600">{% trans "Select a CSV file containing fine data" %}</p>
+                </div>
+                
+                <input type="file" name="file" id="file-upload" accept=".csv" required
+                    class="hidden" onchange="updateFileName(this)">
+                <label for="file-upload" 
+                    class="cursor-pointer inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-file-upload mr-3 text-xl"></i>{% trans "Choose File" %}
+                </label>
+                
+                <div id="file-name" class="mt-4 text-lg font-medium text-gray-700"></div>
+            </div>
+        </div>
+
+        <!-- CSV Format Information -->
+        <div class="bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-xl p-6 mb-6">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-info-circle text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-blue-800">
+                    📋 {% trans "CSV Format Requirements" %}
+                </h3>
+            </div>
+            <div class="text-blue-700">
+                <p class="mb-4 font-semibold">{% trans "Your CSV file should contain the following columns" %}:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-id-badge mr-2 text-blue-500"></i>
+                            <strong>admission_number</strong>
+                        </div>
+                        <p class="text-sm text-gray-600">{% trans "Student's admission number" %}</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-tag mr-2 text-purple-500"></i>
+                            <strong>fine_type</strong>
+                        </div>
+                        <p class="text-sm text-gray-600">{% trans "Name of the fine type (must exist in system)" %}</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-rupee-sign mr-2 text-green-500"></i>
+                            <strong>amount</strong>
+                        </div>
+                        <p class="text-sm text-gray-600">{% trans "Fine amount (e.g., 100.50)" %}</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-comment-alt mr-2 text-orange-500"></i>
+                            <strong>reason</strong>
+                        </div>
+                        <p class="text-sm text-gray-600">{% trans "Reason for the fine" %}</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-blue-200 md:col-span-2">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-calendar-alt mr-2 text-indigo-500"></i>
+                            <strong>due_date</strong>
+                        </div>
+                        <p class="text-sm text-gray-600">{% trans "Due date in YYYY-MM-DD format" %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sample CSV Download -->
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mr-4">
+                        <i class="fas fa-download text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-green-800 mb-1">
+                            📥 {% trans "Sample CSV Template" %}
+                        </h3>
+                        <p class="text-green-700">{% trans "Download a sample CSV file to see the correct format" %}</p>
+                    </div>
+                </div>
+                <a href="{% url 'fines:download_sample_csv' %}" 
+                   class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-file-csv mr-2"></i>{% trans "Download Sample" %}
+                </a>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <div class="flex justify-center space-x-4">
+                <a href="{% url 'fines:fine_history' %}" 
+                   class="btn btn-secondary px-8 py-4 rounded-2xl transition-all duration-300 hover:scale-105">
+                    <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
+                </a>
+                <button type="submit" id="upload-btn"
+                        class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold py-4 px-12 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                    <i class="fas fa-upload mr-3"></i>{% trans "Upload Fines" %}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+</div>
+
+<script>
+// Enhanced file upload functionality
+function updateFileName(input) {
+    const fileNameDiv = document.getElementById('file-name');
+    const uploadBtn = document.getElementById('upload-btn');
+    
+    if (input.files && input.files[0]) {
+        const fileName = input.files[0].name;
+        const fileSize = (input.files[0].size / 1024 / 1024).toFixed(2); // Size in MB
+        
+        // Validate file type
+        if (!fileName.toLowerCase().endsWith('.csv')) {
+            fileNameDiv.innerHTML = `
+                <div class="flex items-center justify-center space-x-2 text-red-600">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span class="font-medium">{% trans "Please select a CSV file" %}</span>
+                </div>
+            `;
+            uploadBtn.disabled = true;
+            return;
+        }
+        
+        fileNameDiv.innerHTML = `
+            <div class="bg-white rounded-xl p-4 border-2 border-green-200 inline-block">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-file-csv text-white"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="font-bold text-gray-800">${fileName}</div>
+                        <div class="text-sm text-gray-500">${fileSize} MB • {% trans "Ready to upload" %}</div>
+                    </div>
+                    <div class="text-green-600">
+                        <i class="fas fa-check-circle text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        `;
+        uploadBtn.disabled = false;
+    } else {
+        fileNameDiv.innerHTML = '';
+        uploadBtn.disabled = true;
+    }
+}
+
+// Initialize and enhance form
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadBtn = document.getElementById('upload-btn');
+    const form = document.querySelector('form');
+    
+    // Initialize upload button state
+    uploadBtn.disabled = true;
+    
+    // Form submission enhancement
+    form.addEventListener('submit', function() {
+        uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>{% trans "Uploading..." %}';
+        uploadBtn.disabled = true;
+    });
+    
+    // Drag and drop functionality
+    const dropZone = document.querySelector('.border-dashed');
+    
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight(e) {
+        dropZone.classList.add('border-purple-500', 'bg-purple-100');
+    }
+    
+    function unhighlight(e) {
+        dropZone.classList.remove('border-purple-500', 'bg-purple-100');
+    }
+    
+    dropZone.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        
+        if (files.length > 0) {
+            document.getElementById('file-upload').files = files;
+            updateFileName(document.getElementById('file-upload'));
+        }
+    }
+});
+</script>
+
+{% block extra_css %}
+<style>
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Drag and drop enhancements */
+.border-dashed:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* File upload button animation */
+label[for="file-upload"]:hover {
+    box-shadow: 0 8px 20px rgba(147, 51, 234, 0.3);
+}
+</style>
+{% endblock %}
+{% endblock %}

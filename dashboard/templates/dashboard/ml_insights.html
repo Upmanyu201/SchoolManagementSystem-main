@@ -1,0 +1,417 @@
+{% extends 'base.html' %}
+
+{% block title %}ML Insights{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-8">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-brain text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-800 bg-clip-text text-transparent">
+                                ML Insights Dashboard
+                            </h1>
+                            <p class="text-gray-600 mt-1">AI-powered analytics for all 17 modules</p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <span class="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            Local ML • Zero API Costs
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {% if not ml_available %}
+            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-6 py-4 rounded-xl mb-8">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-3 text-xl"></i>
+                    <div>
+                        <p class="font-medium">{{ error }}</p>
+                        <p class="text-sm mt-1">Install ML dependencies: <code class="bg-yellow-200 px-2 py-1 rounded">pip install scikit-learn numpy</code></p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+
+            <!-- ML Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-cogs text-purple-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800">{{ ml_insights.models_active }}</h3>
+                            <p class="text-gray-600">Active Models</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-chart-line text-blue-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800">{{ ml_insights.predictions_made }}</h3>
+                            <p class="text-gray-600">Predictions Made</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-bullseye text-green-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800">{{ ml_insights.accuracy_rate }}</h3>
+                            <p class="text-gray-600">Accuracy Rate</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-exclamation-triangle text-red-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800">{{ high_risk_students|length }}</h3>
+                            <p class="text-gray-600">High Risk Students</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- High Risk Students with Risk Context -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
+                <div class="bg-gradient-to-r from-red-500 to-pink-600 p-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-white text-xl font-bold flex items-center">
+                            <i class="fas fa-exclamation-triangle mr-3"></i>
+                            High Risk Students ({{ high_risk_students|length }})
+                        </h2>
+                        <div class="text-white text-sm bg-red-600 px-3 py-1 rounded-full">
+                            AI Risk Assessment
+                        </div>
+                    </div>
+                    <p class="text-red-100 mt-2 text-sm">
+                        Students identified as at-risk based on multiple factors: attendance, fee payments, academic performance, and behavioral patterns
+                    </p>
+                </div>
+                
+                <!-- Risk Categories Explanation -->
+                <div class="bg-red-50 border-b border-red-200 p-4">
+                    <h3 class="font-semibold text-red-800 mb-3">Risk Factors Analyzed:</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar-times text-red-500 mr-2"></i>
+                            <span class="text-red-700">Low Attendance (&lt;75%)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-money-bill-wave text-red-500 mr-2"></i>
+                            <span class="text-red-700">Fee Payment Delays</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-chart-line-down text-red-500 mr-2"></i>
+                            <span class="text-red-700">Declining Grades</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-user-times text-red-500 mr-2"></i>
+                            <span class="text-red-700">Behavioral Issues</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    {% if data_available and high_risk_students %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {% for student in high_risk_students %}
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-user text-red-500"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-800">{{ student.name }}</div>
+                                        <div class="text-xs text-gray-500">{{ student.class }} - {{ student.admission_number }}</div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm font-bold text-red-600">{{ student.confidence }}%</div>
+                                    <div class="text-xs text-red-500">Risk Score</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Risk Breakdown -->
+                            <div class="space-y-2 text-xs">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Attendance:</span>
+                                    <span class="{% if student.attendance_rate == 'No Data' %}text-gray-500{% elif student.attendance_rate < 75 %}text-red-600{% elif student.attendance_rate < 85 %}text-yellow-600{% else %}text-green-600{% endif %} font-medium">
+                                        {% if student.attendance_rate == 'No Data' %}No Data{% else %}{{ student.attendance_rate }}%{% endif %}
+                                    </span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Fee Status:</span>
+                                    <span class="{% if student.fee_status == 'No Payment Data' %}text-gray-500{% elif student.fee_status == 'Overdue' %}text-red-600{% elif student.fee_status == 'Pending' %}text-yellow-600{% else %}text-green-600{% endif %} font-medium">
+                                        {{ student.fee_status }}
+                                    </span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Performance:</span>
+                                    <span class="{% if student.performance_trend == 'High' %}text-red-600{% elif student.performance_trend == 'Medium' %}text-yellow-600{% else %}text-green-600{% endif %} font-medium">
+                                        {{ student.performance_trend }} Risk
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Recommended Actions -->
+                            <div class="mt-3 pt-3 border-t border-red-200">
+                                <div class="text-xs font-medium text-red-700 mb-1">Recommended Actions:</div>
+                                <div class="flex flex-wrap gap-1">
+                                    {% for action in student.recommended_actions %}
+                                    <span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs">
+                                        {{ action }}
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Summary Actions -->
+                    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800 mb-2 flex items-center">
+                            <i class="fas fa-lightbulb mr-2"></i>
+                            Immediate Actions Required
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            <div class="text-yellow-700">
+                                <strong>{{ high_risk_students|length }}</strong> students need immediate attention
+                            </div>
+                            <div class="text-yellow-700">
+                                <strong>Parent meetings</strong> recommended for top 5 cases
+                            </div>
+                            <div class="text-yellow-700">
+                                <strong>Academic support</strong> programs should be initiated
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% elif data_available and not high_risk_students %}
+                    <div class="text-center py-8">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Great News!</h3>
+                        <p class="text-gray-600">No high-risk students identified at this time.</p>
+                        <p class="text-sm text-gray-500 mt-2">All students are performing within acceptable parameters.</p>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-8">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-database text-gray-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">No Data Available</h3>
+                        <p class="text-gray-600">No student data found for ML analysis.</p>
+                        <p class="text-sm text-gray-500 mt-2">Add students and their attendance/fee records to enable AI predictions.</p>
+                        <div class="mt-4">
+                            <a href="/students/add/" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                                <i class="fas fa-plus mr-2"></i>
+                                Add Students
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Fee Optimization -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
+                <div class="bg-gradient-to-r from-green-500 to-teal-600 p-6">
+                    <h2 class="text-white text-xl font-bold flex items-center">
+                        <i class="fas fa-coins mr-3"></i>
+                        Optimal Fee Collection Days
+                    </h2>
+                </div>
+                <div class="p-6">
+                    {% if fee_optimization.data_available %}
+                    <div class="flex flex-wrap gap-3 mb-4">
+                        {% for day in fee_optimization.optimal_collection_days %}
+                        <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full font-medium">
+                            {{ day }}{% if day == 1 %}st{% elif day == 2 %}nd{% elif day == 3 %}rd{% else %}th{% endif %}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    <p class="text-green-700 font-medium">Expected Improvement: {{ fee_optimization.expected_improvement }}</p>
+                    <p class="text-gray-600 text-sm mt-2">Based on payment patterns analysis</p>
+                    {% else %}
+                    <div class="text-center py-8">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-chart-line text-gray-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">No Payment Data</h3>
+                        <p class="text-gray-600">{{ fee_optimization.message|default:"No fee payment records found for analysis." }}</p>
+                        <p class="text-sm text-gray-500 mt-2">Process some fee payments to enable optimization insights.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Module Insights Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Attendance Analysis -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-chart-bar mr-2 text-blue-500"></i>
+                        Attendance Analysis
+                    </h3>
+                    {% if attendance_analysis.data_available %}
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Current Rate:</span>
+                            <span class="font-medium">{{ attendance_analysis.current_rate }}%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Trend:</span>
+                            <span class="font-medium text-{% if attendance_analysis.trend == 'Improving' %}green{% elif attendance_analysis.trend == 'Declining' %}red{% else %}blue{% endif %}-600">
+                                {{ attendance_analysis.trend }}
+                            </span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Predicted:</span>
+                            <span class="font-medium">{{ attendance_analysis.predicted_next_week }}%</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-calendar-times text-gray-400 text-2xl mb-2"></i>
+                        <p class="text-gray-600 text-sm">{{ attendance_analysis.message|default:"No attendance data" }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Teacher Performance -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-chalkboard-teacher mr-2 text-green-500"></i>
+                        Teacher Performance
+                    </h3>
+                    {% if teacher_analysis.data_available %}
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Score:</span>
+                            <span class="font-medium">{{ teacher_analysis.performance_score }}/100</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Category:</span>
+                            <span class="font-medium text-green-600">{{ teacher_analysis.category }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Teachers:</span>
+                            <span class="font-medium">{{ teacher_analysis.teacher_count }}</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-user-times text-gray-400 text-2xl mb-2"></i>
+                        <p class="text-gray-600 text-sm">{{ teacher_analysis.message|default:"No teacher data" }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Transport Optimization -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-bus mr-2 text-yellow-500"></i>
+                        Transport Optimization
+                    </h3>
+                    {% if transport_optimization.data_available %}
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Routes:</span>
+                            <span class="font-medium">{{ transport_optimization.optimized_routes }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Cost Savings:</span>
+                            <span class="font-medium text-green-600">{{ transport_optimization.cost_savings }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Efficiency:</span>
+                            <span class="font-medium">{{ transport_optimization.efficiency_improvement }}</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-route text-gray-400 text-2xl mb-2"></i>
+                        <p class="text-gray-600 text-sm">{{ transport_optimization.message|default:"No transport data" }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Messaging Optimization -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-sms mr-2 text-purple-500"></i>
+                        Messaging Optimization
+                    </h3>
+                    {% if messaging_optimization.data_available %}
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Best Times:</span>
+                            <span class="font-medium">{{ messaging_optimization.best_send_times|join:", " }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Response Rate:</span>
+                            <span class="font-medium text-green-600">{{ messaging_optimization.expected_response_rate }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Messages:</span>
+                            <span class="font-medium">{{ messaging_optimization.message_count }}</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-comment-slash text-gray-400 text-2xl mb-2"></i>
+                        <p class="text-gray-600 text-sm">{{ messaging_optimization.message|default:"No messaging data" }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% endif %}
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-cog mr-2 text-blue-500"></i>
+                        Setup ML Models
+                    </h4>
+                    <p class="text-gray-600 mb-4">Initialize ML system with your data</p>
+                    <code class="text-sm bg-gray-100 px-3 py-2 rounded-lg block">python manage.py fix_ml_models</code>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-brain mr-2 text-green-500"></i>
+                        Train Models
+                    </h4>
+                    <p class="text-gray-600 mb-4">Train with existing student data</p>
+                    <code class="text-sm bg-gray-100 px-3 py-2 rounded-lg block">python manage.py train_ml_models</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1229 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load permission_tags %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header Card -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-bus text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                                {% trans "Transport Management" %}
+                            </h1>
+                            <p class="text-gray-600 mt-1">{% trans "Manage routes, stoppages, and student assignments" %}</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <!-- Export Buttons -->
+                        {% if user|can_access_module:'transport' %}
+                        <div class="flex gap-2">
+                            <button onclick="exportData('csv')" class="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" title="Export to CSV">
+                                <i class="fas fa-file-csv mr-2"></i>CSV
+                            </button>
+                            <button onclick="exportData('excel')" class="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" title="Export to Excel">
+                                <i class="fas fa-file-excel mr-2"></i>Excel
+                            </button>
+                            <button onclick="exportData('pdf')" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" title="Export to PDF">
+                                <i class="fas fa-file-pdf mr-2"></i>PDF
+                            </button>
+                        </div>
+                        {% endif %}
+                        <a href="{% url 'dashboard' %}" 
+                           class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                            <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to Dashboard" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+            <div id="form-messages" class="fixed top-24 right-4 z-50 space-y-2 max-w-md">
+                {% for message in messages %}
+                <div class="{% if message.tags == 'success' %}bg-green-500{% elif message.tags == 'error' %}bg-red-500{% elif message.tags == 'warning' %}bg-yellow-500{% else %}bg-blue-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in message-item" data-message-id="{{ forloop.counter }}">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} mr-3"></i>
+                            <span class="font-medium">{{ message }}</span>
+                        </div>
+                        <button onclick="removeMessage(this)" class="ml-3 text-white hover:text-gray-200 font-bold">
+                            ×
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-gradient-to-r from-cyan-500 to-teal-600 rounded-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-cyan-100 text-sm font-medium">{% trans "Transport Assignments" %}</p>
+                            <p class="text-3xl font-bold">{{ total_assignments|default:0 }}</p>
+                            <p class="text-cyan-200 text-xs mt-1">{{ assigned_stoppages_count|default:0 }} {% trans "assigned stoppages" %}</p>
+                        </div>
+                        <i class="fas fa-users text-4xl text-cyan-200"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-emerald-100 text-sm font-medium">{% trans "Active Routes" %}</p>
+                            <p class="text-3xl font-bold">{{ routes|length }}</p>
+                            <p class="text-emerald-200 text-xs mt-1">{{ total_stoppages|default:0 }} {% trans "total stoppages" %}</p>
+                        </div>
+                        <i class="fas fa-route text-4xl text-emerald-200"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-violet-500 to-fuchsia-600 rounded-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-violet-100 text-sm font-medium">{% trans "Total Stoppages" %}</p>
+                            <p class="text-3xl font-bold">{{ total_stoppages|default:0 }}</p>
+                            <p class="text-violet-200 text-xs mt-1">{{ active_routes_count|default:0 }} {% trans "across routes" %}</p>
+                        </div>
+                        <i class="fas fa-map-marker-alt text-4xl text-violet-200"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-amber-100 text-sm font-medium">{% trans "Total Students" %}</p>
+                            <p class="text-3xl font-bold">{{ students|length }}</p>
+                            <p class="text-amber-200 text-xs mt-1">{{ assigned_students_count|default:0 }} {% trans "with transport" %}</p>
+                        </div>
+                        <i class="fas fa-graduation-cap text-4xl text-amber-200"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <!-- Transport Assignments Card -->
+                <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+                    <div class="bg-gradient-to-r from-sky-500 to-cyan-600 p-6">
+                        <h2 class="text-white text-xl font-bold flex items-center">
+                            <i class="fas fa-user-plus mr-3"></i>{% trans "Transport Assignments" %}
+                        </h2>
+                    </div>
+
+                    <div class="p-8">
+                        {% if user|can_edit_module:'transport' %}
+                        <!-- Assignment Mode Toggle -->
+                        <div class="mb-6">
+                            <div class="flex bg-gray-100 rounded-xl p-1">
+                                <button type="button" id="singleModeBtn" onclick="toggleAssignmentMode('single')" 
+                                        class="flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+                                    <i class="fas fa-user mr-2"></i>{% trans "Single Student" %}
+                                </button>
+                                <button type="button" id="bulkModeBtn" onclick="toggleAssignmentMode('bulk')" 
+                                        class="flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 text-gray-600 hover:text-gray-800">
+                                    <i class="fas fa-users mr-2"></i>{% trans "Multiple Students" %}
+                                </button>
+                            </div>
+                        </div>
+
+                        <form method="POST" id="assignmentForm" class="space-y-6" onsubmit="return validateAssignmentForm()">
+                            {% csrf_token %}
+                            <input type="hidden" id="assignmentMode" name="assignment_mode" value="single">
+                            <input type="hidden" name="edit_assignment_id" id="editAssignmentId" value="">
+
+                            <!-- Search Student -->
+                            <div class="form-group">
+                                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-search mr-2 text-blue-500"></i>{% trans "Search Students" %}
+                                </label>
+                                <div class="relative">
+                                    <input type="text" id="studentSearch" placeholder="{% trans 'Type to search students...' %}"
+                                        class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300"
+                                        autocomplete="off" onkeyup="searchStudents(this.value)">
+                                    <div id="studentSearchResults"
+                                        class="hidden absolute z-10 w-full mt-1 bg-white text-gray-800 rounded-xl shadow-lg border border-gray-200 max-h-60 overflow-auto">
+                                    </div>
+                                    <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                        <i class="fas fa-search text-gray-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Single Student Mode -->
+                            <div id="singleStudentMode" class="form-group">
+                                <label for="student_id" class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-user mr-2 text-green-500"></i>{% trans "Select Student" %}*
+                                </label>
+                                <select name="student" id="student_id" required
+                                    class="form-select w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300">
+                                    <option value="">{% trans "Select Student" %}</option>
+                                    {% for student in students %}
+                                    <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }} - {{ student.admission_number }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Multiple Students Mode -->
+                            <div id="multipleStudentsMode" class="form-group hidden">
+                                <!-- Address-based filtering -->
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+                                        <i class="fas fa-map-marker-alt mr-2 text-blue-500"></i>{% trans "Filter by Address/Area" %}
+                                    </label>
+                                    <input type="text" id="addressFilter" placeholder="{% trans 'Type area name to filter students (e.g., Main Road, City Center)' %}"
+                                        class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300"
+                                        autocomplete="off" onkeyup="filterStudentsByAddress(this.value)">
+                                    <div class="mt-2 flex justify-between items-center">
+                                        <div class="text-sm text-gray-600">
+                                            <i class="fas fa-info-circle mr-1"></i>{% trans "Tip: Filter students by their address to assign transport routes more efficiently" %}
+                                        </div>
+                                        <button type="button" onclick="suggestRoutesForArea()" class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-lg hover:bg-blue-200 transition-colors">
+                                            <i class="fas fa-lightbulb mr-1"></i>{% trans "Suggest Routes" %}
+                                        </button>
+                                    </div>
+                                    <div id="routeSuggestions" class="mt-3 hidden"></div>
+                                </div>
+                                
+                                <label class="block text-gray-700 font-semibold mb-3 flex items-center justify-between">
+                                    <span><i class="fas fa-users mr-2 text-green-500"></i>{% trans "Select Multiple Students" %}*</span>
+                                    <div class="flex gap-2">
+                                        <button type="button" onclick="selectAllVisibleStudents()" class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                                            {% trans "Select Visible" %}
+                                        </button>
+                                        <button type="button" onclick="clearAllStudents()" class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">
+                                            {% trans "Clear All" %}
+                                        </button>
+                                    </div>
+                                </label>
+                                <div class="max-h-48 overflow-y-auto border-2 border-gray-200 rounded-xl p-4 space-y-2" id="studentsList">
+                                    {% for student in students %}
+                                    <label class="student-item flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors" data-address="{{ student.address|lower }}">
+                                        <input type="checkbox" name="students" value="{{ student.id }}" class="mr-3 h-4 w-4 text-blue-600 rounded">
+                                        <div class="flex items-center w-full">
+                                            <div class="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold mr-3">
+                                                {{ student.first_name|first }}{{ student.last_name|first }}
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="font-medium text-gray-900">{{ student.get_full_display_name }}</div>
+                                                <div class="text-xs text-gray-500">{{ student.class_section.display_name|default:"No Class" }} - {{ student.admission_number }}</div>
+                                                <div class="text-xs text-blue-600 mt-1">
+                                                    <i class="fas fa-map-marker-alt mr-1"></i>{{ student.address|truncatechars:40 }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                                <div class="mt-2 text-sm text-gray-600">
+                                    <span id="selectedCount">0</span> {% trans "students selected" %}
+                                </div>
+                            </div>
+
+                            <!-- Stoppage Selection -->
+                            <div class="form-group">
+                                <label for="id_stoppage" class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-map-marker-alt mr-2 text-purple-500"></i>{% trans "Select Stoppage" %}*
+                                </label>
+                                <select name="stoppage" id="id_stoppage" required
+                                    class="form-select w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300">
+                                    <option value="">{% trans "Select Stoppage" %}</option>
+                                    {% for stoppage in stoppages %}
+                                    <option value="{{ stoppage.id }}">{{ stoppage.name }} ({{ stoppage.route.name }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="flex gap-3">
+                                <button type="submit" name="assignment_submit" value="true" id="assignmentSubmitBtn"
+                                    class="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                    <i class="fas fa-plus mr-2" id="assignmentSubmitIcon"></i>
+                                    <span id="submitBtnText">{% trans "Assign Transport" %}</span>
+                                </button>
+                                <button type="button" onclick="cancelAssignmentEdit()" id="assignmentCancelBtn" style="display: none;"
+                                    class="px-6 py-4 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition-colors">
+                                    <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
+                                </button>
+                            </div>
+                        </form>
+                        {% elif user|can_access_module:'transport' %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-eye text-gray-400 text-4xl mb-4"></i>
+                            <p class="text-gray-600">{% trans "View-only access - Contact admin for edit permissions" %}</p>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-lock text-gray-400 text-4xl mb-4"></i>
+                            <p class="text-gray-600">{% trans "You don't have permission to access transport" %}</p>
+                        </div>
+                        {% endif %}
+
+                        <!-- Recent Assignments -->
+                        <div class="mt-8">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="font-bold text-gray-800 flex items-center">
+                                    <i class="fas fa-history mr-2 text-blue-500"></i>{% trans "Recent Assignments" %}
+                                </h4>
+                                {% if user|can_access_module:'transport' %}
+                                <a href="{% url 'transport_assignments_list' %}"
+                                    class="text-sm bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-3 py-1 rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-300">
+                                    {% trans "View All" %} →
+                                </a>
+                                {% endif %}
+                            </div>
+                                
+                            {% if assignments %}
+                            <div class="space-y-3">
+                                {% for assignment in assignments %}
+                                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <div class="font-medium text-gray-800">{{ assignment.student.get_full_display_name }}</div>
+                                            <div class="text-sm text-gray-600 mt-1">
+                                                <span class="font-medium">{{ assignment.route.name }}</span> → 
+                                                <span class="font-medium">{{ assignment.stoppage.name }}</span>
+                                                <span class="text-xs text-gray-500 block mt-1">
+                                                    {% trans "Assigned on" %} {{ assignment.assigned_date|date:"M d, Y" }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            {% if user|can_edit_module:'transport' %}
+                                            <button onclick="editAssignment({{ assignment.id }}, '{{ assignment.student.id }}', '{{ assignment.stoppage.id }}')"
+                                                class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm">
+                                                <i class="fas fa-edit mr-1"></i>{% trans "Edit" %}
+                                            </button>
+                                            <form method="POST" action="{% url 'delete_assignment' assignment.id %}" style="display: inline;" onsubmit="return confirmDelete('assignment', '{{ assignment.student.get_full_display_name|escapejs }}')">
+                                                {% csrf_token %}
+                                                <button type="submit" class="px-2 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm">
+                                                    <i class="fas fa-trash mr-1"></i>{% trans "Delete" %}
+                                                </button>
+                                            </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="mt-3 text-center">
+                                <small class="text-gray-500">{% trans "Showing latest 5 assignments" %}</small>
+                            </div>
+                            {% else %}
+                            <div class="p-4 bg-gray-50 rounded-lg border border-gray-200 text-center text-gray-500">
+                                <i class="fas fa-inbox text-2xl mb-2"></i>
+                                <p>{% trans "No recent assignments" %}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Routes Management Card -->
+                <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+                    <div class="bg-gradient-to-r from-emerald-500 to-teal-600 p-6">
+                        <h2 class="text-white text-xl font-bold flex items-center">
+                            <i class="fas fa-route mr-3"></i>{% trans "Manage Routes" %}
+                        </h2>
+                    </div>
+
+                    <div class="p-8">
+                        {% if user|can_edit_module:'transport' %}
+                        <form method="POST" class="space-y-6" id="routeForm" onsubmit="return validateRouteForm()">
+                            {% csrf_token %}
+                            <input type="hidden" name="route_submit" value="1">
+                            <input type="hidden" name="edit_route_id" id="editRouteId" value="{{ edit_route_id|default:'' }}">
+                            
+                            <div class="form-group">
+                                <label for="{{ route_form.name.id_for_label }}" class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-route mr-2 text-green-500"></i>{% trans "Route Name" %}*
+                                </label>
+                                {{ route_form.name }}
+                                {% if route_form.name.errors %}
+                                    <div class="text-red-500 text-sm mt-1">
+                                        {{ route_form.name.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="flex gap-3">
+                                <button type="submit" id="routeSubmitBtn"
+                                    class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                    <i class="fas fa-plus mr-2" id="routeSubmitIcon"></i>
+                                    <span id="routeSubmitText">{% trans "Add Route" %}</span>
+                                </button>
+                                <button type="button" onclick="cancelRouteEdit()" id="routeCancelBtn" style="display: none;"
+                                    class="px-6 py-4 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition-colors">
+                                    <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
+                                </button>
+                            </div>
+                        </form>
+                        {% elif user|can_access_module:'transport' %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-eye text-gray-400 text-4xl mb-4"></i>
+                            <p class="text-gray-600">{% trans "View-only access - Contact admin for edit permissions" %}</p>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-lock text-gray-400 text-4xl mb-4"></i>
+                            <p class="text-gray-600">{% trans "You don't have permission to access transport" %}</p>
+                        </div>
+                        {% endif %}
+
+                        <!-- Available Routes -->
+                        <div class="mt-8">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="font-bold text-gray-800 flex items-center">
+                                    <i class="fas fa-list mr-2 text-green-500"></i>{% trans "Available Routes" %}
+                                </h4>
+                                {% if user|can_access_module:'transport' %}
+                                <a href="{% url 'all_routes' %}"
+                                    class="text-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1 rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-300">
+                                    {% trans "View All" %} →
+                                </a>
+                                {% endif %}
+                            </div>
+                            
+                            {% if routes %}
+                            <div class="space-y-3">
+                                {% for route in routes %}
+                                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <div class="font-medium text-gray-800">{{ route.name }}</div>
+                                            {% if route.description %}
+                                            <div class="text-sm text-gray-600 mt-1">{{ route.description|truncatechars:50 }}</div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="flex gap-2">
+                                            {% if user|can_edit_module:'transport' %}
+                                            <button onclick="editRoute({{ route.id }}, '{{ route.name|escapejs }}', '{{ route.description|escapejs }}')"
+                                                class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm">
+                                                <i class="fas fa-edit mr-1"></i>{% trans "Edit" %}
+                                            </button>
+                                            <form method="POST" action="{% url 'delete_route' route.id %}" style="display: inline;" onsubmit="return confirmDelete('route', '{{ route.name|escapejs }}')">
+                                                {% csrf_token %}
+                                                <button type="submit" class="px-2 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm">
+                                                    <i class="fas fa-trash mr-1"></i>{% trans "Delete" %}
+                                                </button>
+                                            </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="mt-3 text-center">
+                                <small class="text-gray-500">{% trans "Showing latest 5 routes" %}</small>
+                            </div>
+                            {% else %}
+                            <div class="p-4 bg-gray-50 rounded-lg border border-gray-200 text-center text-gray-500">
+                                <i class="fas fa-inbox text-2xl mb-2"></i>
+                                <p>{% trans "No routes available" %}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stoppages Management Card -->
+                <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+                    <div class="bg-gradient-to-r from-violet-500 to-purple-600 p-6">
+                        <h2 class="text-white text-xl font-bold flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3"></i>{% trans "Manage Stoppages" %}
+                        </h2>
+                    </div>
+
+                    <div class="p-8">
+                        {% if user|can_edit_module:'transport' %}
+                        <form method="POST" class="space-y-6" id="stoppageForm" onsubmit="return validateStoppageForm()">
+                            {% csrf_token %}
+                            <input type="hidden" name="stoppage_submit" value="1">
+                            <input type="hidden" name="edit_stoppage_id" id="editStoppageId" value="{{ edit_stoppage_id|default:'' }}">
+
+                            <div class="form-group">
+                                <label for="{{ stoppage_form.route.id_for_label }}" class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-route mr-2 text-purple-500"></i>{% trans "Select Route" %}*
+                                </label>
+                                {{ stoppage_form.route }}
+                                {% if stoppage_form.route.errors %}
+                                    <div class="text-red-500 text-sm mt-1">
+                                        {{ stoppage_form.route.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ stoppage_form.name.id_for_label }}" class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-map-marker-alt mr-2 text-purple-500"></i>{% trans "Stoppage Name" %}*
+                                </label>
+                                {{ stoppage_form.name }}
+                                {% if stoppage_form.name.errors %}
+                                    <div class="text-red-500 text-sm mt-1">
+                                        {{ stoppage_form.name.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="flex gap-3">
+                                <button type="submit" id="stoppageSubmitBtn"
+                                    class="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                    <i class="fas fa-plus mr-2" id="stoppageSubmitIcon"></i>
+                                    <span id="stoppageSubmitText">{% trans "Add Stoppage" %}</span>
+                                </button>
+                                <button type="button" onclick="cancelStoppageEdit()" id="stoppageCancelBtn" style="display: none;"
+                                    class="px-6 py-4 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition-colors">
+                                    <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
+                                </button>
+                            </div>
+                        </form>
+                        {% elif user|can_access_module:'transport' %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-eye text-gray-400 text-4xl mb-4"></i>
+                            <p class="text-gray-600">{% trans "View-only access - Contact admin for edit permissions" %}</p>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-lock text-gray-400 text-4xl mb-4"></i>
+                            <p class="text-gray-600">{% trans "You don't have permission to access transport" %}</p>
+                        </div>
+                        {% endif %}
+
+                        <!-- Available Stoppages -->
+                        <div class="mt-8">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="font-bold text-gray-800 flex items-center">
+                                    <i class="fas fa-list mr-2 text-purple-500"></i>{% trans "Available Stoppages" %}
+                                </h4>
+                                {% if user|can_access_module:'transport' %}
+                                <a href="{% url 'all_stoppages' %}"
+                                    class="text-sm bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-3 py-1 rounded-lg hover:from-purple-600 hover:to-indigo-700 transition-all duration-300">
+                                    {% trans "View All" %} →
+                                </a>
+                                {% endif %}
+                            </div>
+                                
+                            {% if stoppages %}
+                            <div class="space-y-3">
+                                {% for stoppage in stoppages %}
+                                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <div class="font-medium text-gray-800">{{ stoppage.name }}</div>
+                                            <div class="text-sm text-gray-600 mt-1">
+                                                <span class="font-medium">{% trans "Route:" %}</span> {{ stoppage.route.name }}
+                                                {% if stoppage.time %}
+                                                <span class="block"><span class="font-medium">{% trans "Time:" %}</span> {{ stoppage.time }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            {% if user|can_edit_module:'transport' %}
+                                            <button onclick="editStoppage({{ stoppage.id }}, '{{ stoppage.name|escapejs }}', {{ stoppage.route.id }}, '{{ stoppage.time|default:'' }}')"
+                                                class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm">
+                                                <i class="fas fa-edit mr-1"></i>{% trans "Edit" %}
+                                            </button>
+                                            <form method="POST" action="{% url 'delete_stoppage' stoppage.id %}" style="display: inline;" onsubmit="return confirmDelete('stoppage', '{{ stoppage.name|escapejs }}')">
+                                                {% csrf_token %}
+                                                <button type="submit" class="px-2 py-1 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm">
+                                                    <i class="fas fa-trash mr-1"></i>{% trans "Delete" %}
+                                                </button>
+                                            </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="mt-3 text-center">
+                                <small class="text-gray-500">{% trans "Showing latest 5 stoppages" %}</small>
+                            </div>
+                            {% else %}
+                            <div class="p-4 bg-gray-50 rounded-lg border border-gray-200 text-center text-gray-500">
+                                <i class="fas fa-inbox text-2xl mb-2"></i>
+                                <p>{% trans "No stoppages available" %}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Transport Management JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize form handlers
+    initializeFormHandlers();
+    
+    // Auto-hide messages with staggered removal
+    const messageItems = document.querySelectorAll('.message-item');
+    messageItems.forEach((item, index) => {
+        setTimeout(() => {
+            if (item.parentNode) {
+                removeMessage(item.querySelector('button'));
+            }
+        }, 4000 + (index * 500));
+    });
+    
+    // Update selected count for multiple students
+    const checkboxes = document.querySelectorAll('input[name="students"]');
+    const selectedCount = document.getElementById('selectedCount');
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelectedCount);
+    });
+    
+    function updateSelectedCount() {
+        const checked = document.querySelectorAll('input[name="students"]:checked').length;
+        if (selectedCount) selectedCount.textContent = checked;
+    }
+});
+
+// Assignment mode toggle
+function toggleAssignmentMode(mode) {
+    const singleMode = document.getElementById('singleStudentMode');
+    const multipleMode = document.getElementById('multipleStudentsMode');
+    const singleBtn = document.getElementById('singleModeBtn');
+    const bulkBtn = document.getElementById('bulkModeBtn');
+    const assignmentMode = document.getElementById('assignmentMode');
+    
+    if (mode === 'single') {
+        singleMode.classList.remove('hidden');
+        multipleMode.classList.add('hidden');
+        singleBtn.className = 'flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 bg-gradient-to-r from-blue-500 to-indigo-600 text-white';
+        bulkBtn.className = 'flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 text-gray-600 hover:text-gray-800';
+        assignmentMode.value = 'single';
+    } else {
+        singleMode.classList.add('hidden');
+        multipleMode.classList.remove('hidden');
+        bulkBtn.className = 'flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 bg-gradient-to-r from-blue-500 to-indigo-600 text-white';
+        singleBtn.className = 'flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 text-gray-600 hover:text-gray-800';
+        assignmentMode.value = 'bulk';
+    }
+}
+
+// Select/Clear all students
+function selectAllStudents() {
+    const checkboxes = document.querySelectorAll('input[name="students"]');
+    checkboxes.forEach(cb => cb.checked = true);
+    document.getElementById('selectedCount').textContent = checkboxes.length;
+}
+
+// Select only visible students (after filtering)
+function selectAllVisibleStudents() {
+    const visibleCheckboxes = document.querySelectorAll('.student-item:not(.hidden) input[name="students"]');
+    visibleCheckboxes.forEach(cb => cb.checked = true);
+    updateSelectedCount();
+}
+
+function clearAllStudents() {
+    const checkboxes = document.querySelectorAll('input[name="students"]');
+    checkboxes.forEach(cb => cb.checked = false);
+    document.getElementById('selectedCount').textContent = '0';
+}
+
+// Filter students by address
+function filterStudentsByAddress(query) {
+    const studentItems = document.querySelectorAll('.student-item');
+    const searchTerm = query.toLowerCase().trim();
+    let visibleCount = 0;
+    
+    studentItems.forEach(item => {
+        const address = item.getAttribute('data-address') || '';
+        const studentName = item.querySelector('.font-medium').textContent.toLowerCase();
+        
+        // Search in both address and name for better UX
+        const matches = address.includes(searchTerm) || studentName.includes(searchTerm);
+        
+        if (searchTerm === '' || matches) {
+            item.classList.remove('hidden');
+            visibleCount++;
+        } else {
+            item.classList.add('hidden');
+            // Uncheck hidden students
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            if (checkbox.checked) {
+                checkbox.checked = false;
+            }
+        }
+    });
+    
+    // Update UI feedback
+    updateAddressFilterFeedback(visibleCount, studentItems.length, searchTerm);
+    updateSelectedCount();
+}
+
+// Update filter feedback
+function updateAddressFilterFeedback(visible, total, searchTerm) {
+    let feedbackDiv = document.getElementById('addressFilterFeedback');
+    
+    if (!feedbackDiv) {
+        feedbackDiv = document.createElement('div');
+        feedbackDiv.id = 'addressFilterFeedback';
+        feedbackDiv.className = 'mt-2 text-sm';
+        document.getElementById('addressFilter').parentNode.appendChild(feedbackDiv);
+    }
+    
+    if (searchTerm) {
+        if (visible === 0) {
+            feedbackDiv.innerHTML = '<span class="text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>No students found matching "' + searchTerm + '"</span>';
+        } else {
+            feedbackDiv.innerHTML = '<span class="text-green-600"><i class="fas fa-check-circle mr-1"></i>Showing ' + visible + ' of ' + total + ' students</span>';
+        }
+    } else {
+        feedbackDiv.innerHTML = '<span class="text-gray-600"><i class="fas fa-users mr-1"></i>Showing all ' + total + ' students</span>';
+    }
+}
+
+// Suggest routes based on address
+function suggestRoutesForArea() {
+    const addressQuery = document.getElementById('addressFilter').value.trim();
+    
+    if (!addressQuery) {
+        alert('Please enter an address or area name first');
+        document.getElementById('addressFilter').focus();
+        return;
+    }
+    
+    const suggestionsDiv = document.getElementById('routeSuggestions');
+    suggestionsDiv.innerHTML = '<div class="text-center py-2"><i class="fas fa-spinner fa-spin mr-2"></i>Analyzing routes...</div>';
+    suggestionsDiv.classList.remove('hidden');
+    
+    fetch(`/transport/api/suggest-routes/?address=${encodeURIComponent(addressQuery)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                displayRouteSuggestions(data);
+            } else {
+                suggestionsDiv.innerHTML = `<div class="text-red-600 text-sm p-2 bg-red-50 rounded">${data.error}</div>`;
+            }
+        })
+        .catch(error => {
+            suggestionsDiv.innerHTML = '<div class="text-red-600 text-sm p-2 bg-red-50 rounded">Failed to get suggestions</div>';
+        });
+}
+
+// Display route suggestions
+function displayRouteSuggestions(data) {
+    const suggestionsDiv = document.getElementById('routeSuggestions');
+    
+    if (data.route_suggestions.length === 0) {
+        suggestionsDiv.innerHTML = `<div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3"><div class="text-yellow-800 text-sm">No existing routes found for "${data.address_query}" area. Consider creating a new route.</div></div>`;
+        return;
+    }
+    
+    let html = `<div class="bg-green-50 border border-green-200 rounded-lg p-3"><div class="text-green-800 text-sm mb-3">Found ${data.total_students_in_area} students in "${data.address_query}" area</div><div class="space-y-2">`;
+    
+    data.route_suggestions.forEach(suggestion => {
+        html += `<div class="bg-white border border-green-200 rounded p-2"><div class="flex justify-between items-center"><div><div class="font-medium text-green-800">${suggestion.route_name}</div><div class="text-xs text-green-600">${suggestion.student_count} students</div></div><button type="button" onclick="selectSuggestedRoute('${suggestion.route_id}')" class="text-xs bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700">Use Route</button></div></div>`;
+    });
+    
+    html += '</div></div>';
+    suggestionsDiv.innerHTML = html;
+}
+
+// Select suggested route
+function selectSuggestedRoute(routeId) {
+    fetch(`/transport/api/route/${routeId}/stoppages/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const stoppageSelect = document.getElementById('id_stoppage');
+                while (stoppageSelect.children.length > 1) {
+                    stoppageSelect.removeChild(stoppageSelect.lastChild);
+                }
+                data.stoppages.forEach(stoppage => {
+                    const option = document.createElement('option');
+                    option.value = stoppage.id;
+                    option.textContent = `${stoppage.name} (${data.route_name})`;
+                    stoppageSelect.appendChild(option);
+                });
+                showNotification('Route stoppages loaded successfully', 'success');
+            }
+        });
+}
+
+// Form validation
+function validateAssignmentForm() {
+    const mode = document.getElementById('assignmentMode').value;
+    const stoppage = document.getElementById('id_stoppage').value;
+    
+    if (!stoppage) {
+        alert('{% trans "Please select a stoppage" %}');
+        document.getElementById('id_stoppage').focus();
+        return false;
+    }
+    
+    if (mode === 'single') {
+        const student = document.getElementById('student_id').value;
+        if (!student) {
+            alert('{% trans "Please select a student" %}');
+            document.getElementById('student_id').focus();
+            return false;
+        }
+        
+        // Validate assignment via API (optional - for real-time validation)
+        // This could be implemented for better UX
+    } else {
+        const selected = document.querySelectorAll('input[name="students"]:checked');
+        if (selected.length === 0) {
+            alert('{% trans "Please select at least one student" %}');
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+function validateRouteForm() {
+    const nameField = document.querySelector('#routeForm input[name="name"]');
+    
+    if (!nameField) {
+        alert('{% trans "Form error. Please refresh the page and try again." %}');
+        return false;
+    }
+    
+    const name = nameField.value.trim();
+    
+    if (!name) {
+        alert('{% trans "Please enter a route name" %}');
+        nameField.focus();
+        return false;
+    }
+    
+    if (name.length < 2) {
+        alert('{% trans "Route name must be at least 2 characters long" %}');
+        nameField.focus();
+        return false;
+    }
+    
+    return true;
+}
+
+function validateStoppageForm() {
+    const routeField = document.querySelector('#stoppageForm select[name="route"]');
+    const nameField = document.querySelector('#stoppageForm input[name="name"]');
+    
+    if (!routeField || !routeField.value) {
+        alert('{% trans "Please select a route" %}');
+        return false;
+    }
+    if (!nameField || !nameField.value.trim()) {
+        alert('{% trans "Please enter a stoppage name" %}');
+        return false;
+    }
+    return true;
+}
+
+// Edit functions
+function editAssignment(id, studentId, stoppageId) {
+    document.getElementById('editAssignmentId').value = id;
+    document.getElementById('student_id').value = studentId;
+    document.getElementById('id_stoppage').value = stoppageId;
+    document.getElementById('submitBtnText').textContent = '{% trans "Update Assignment" %}';
+    document.getElementById('assignmentSubmitIcon').className = 'fas fa-save mr-2';
+    document.getElementById('assignmentCancelBtn').style.display = 'block';
+}
+
+function editRoute(id, name, description) {
+    document.getElementById('editRouteId').value = id;
+    
+    const nameField = document.querySelector('#routeForm input[name="name"]');
+    if (nameField) {
+        nameField.value = name;
+        nameField.focus();
+    }
+    
+    document.getElementById('routeSubmitText').textContent = '{% trans "Update Route" %}';
+    document.getElementById('routeSubmitIcon').className = 'fas fa-save mr-2';
+    document.getElementById('routeCancelBtn').style.display = 'block';
+}
+
+function editStoppage(id, name, routeId, time) {
+    document.getElementById('editStoppageId').value = id;
+    
+    const nameField = document.querySelector('#stoppageForm input[name="name"]');
+    const routeField = document.querySelector('#stoppageForm select[name="route"]');
+    
+    if (nameField) nameField.value = name;
+    if (routeField) routeField.value = routeId;
+    
+    document.getElementById('stoppageSubmitText').textContent = '{% trans "Update Stoppage" %}';
+    document.getElementById('stoppageSubmitIcon').className = 'fas fa-save mr-2';
+    document.getElementById('stoppageCancelBtn').style.display = 'block';
+}
+
+// Cancel edit functions
+function cancelAssignmentEdit() {
+    document.getElementById('editAssignmentId').value = '';
+    document.getElementById('student_id').value = '';
+    document.getElementById('id_stoppage').value = '';
+    document.getElementById('submitBtnText').textContent = '{% trans "Assign Transport" %}';
+    document.getElementById('assignmentSubmitIcon').className = 'fas fa-plus mr-2';
+    document.getElementById('assignmentCancelBtn').style.display = 'none';
+}
+
+function cancelRouteEdit() {
+    document.getElementById('editRouteId').value = '';
+    
+    const nameField = document.querySelector('#routeForm input[name="name"]');
+    if (nameField) {
+        nameField.value = '';
+    }
+    
+    document.getElementById('routeSubmitText').textContent = '{% trans "Add Route" %}';
+    document.getElementById('routeSubmitIcon').className = 'fas fa-plus mr-2';
+    document.getElementById('routeCancelBtn').style.display = 'none';
+}
+
+function cancelStoppageEdit() {
+    document.getElementById('editStoppageId').value = '';
+    
+    const nameField = document.querySelector('#stoppageForm input[name="name"]');
+    const routeField = document.querySelector('#stoppageForm select[name="route"]');
+    
+    if (nameField) nameField.value = '';
+    if (routeField) routeField.value = '';
+    
+    document.getElementById('stoppageSubmitText').textContent = '{% trans "Add Stoppage" %}';
+    document.getElementById('stoppageSubmitIcon').className = 'fas fa-plus mr-2';
+    document.getElementById('stoppageCancelBtn').style.display = 'none';
+}
+
+// Initialize form handlers
+function initializeFormHandlers() {
+    // Add loading states to form submissions
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function() {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+                submitBtn.disabled = true;
+                
+                // Re-enable after 5 seconds as fallback
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 5000);
+            }
+        });
+    });
+    
+    // Initialize student search
+    initializeStudentSearch();
+}
+
+// Student search functionality
+let searchTimeout;
+function searchStudents(query) {
+    clearTimeout(searchTimeout);
+    
+    const resultsDiv = document.getElementById('studentSearchResults');
+    
+    if (query.length < 2) {
+        resultsDiv.classList.add('hidden');
+        return;
+    }
+    
+    searchTimeout = setTimeout(() => {
+        fetch(`/transport/api/search-students/?q=${encodeURIComponent(query)}&limit=10`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displaySearchResults(data.results);
+                } else {
+                    console.error('Search failed:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Search error:', error);
+            });
+    }, 300);
+}
+
+function displaySearchResults(results) {
+    const resultsDiv = document.getElementById('studentSearchResults');
+    
+    if (results.length === 0) {
+        resultsDiv.innerHTML = '<div class="p-3 text-gray-500 text-center">No students found</div>';
+        resultsDiv.classList.remove('hidden');
+        return;
+    }
+    
+    let html = '';
+    results.forEach(student => {
+        html += `
+            <div class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0" 
+                 onclick="selectSearchedStudent(${student.id}, '${student.name}', '${student.admission_number}')">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold mr-3">
+                        ${student.avatar_initials}
+                    </div>
+                    <div>
+                        <div class="font-medium text-gray-900">${student.name}</div>
+                        <div class="text-xs text-gray-500">${student.class_name} - ${student.admission_number}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    resultsDiv.innerHTML = html;
+    resultsDiv.classList.remove('hidden');
+}
+
+function selectSearchedStudent(studentId, studentName, admissionNumber) {
+    // Set the student in the dropdown
+    const studentSelect = document.getElementById('student_id');
+    if (studentSelect) {
+        studentSelect.value = studentId;
+    }
+    
+    // Update search input
+    const searchInput = document.getElementById('studentSearch');
+    if (searchInput) {
+        searchInput.value = `${studentName} - ${admissionNumber}`;
+    }
+    
+    // Hide results
+    document.getElementById('studentSearchResults').classList.add('hidden');
+}
+
+function initializeStudentSearch() {
+    // Hide search results when clicking outside
+    document.addEventListener('click', function(event) {
+        const searchContainer = document.getElementById('studentSearch').parentElement;
+        if (!searchContainer.contains(event.target)) {
+            document.getElementById('studentSearchResults').classList.add('hidden');
+        }
+    });
+}
+
+// Export functionality
+function exportData(format) {
+    console.log('🚀 [TRANSPORT EXPORT] Starting export process', {
+        format: format,
+        timestamp: new Date().toISOString(),
+        module: 'transport'
+    });
+    
+    // Show loading state
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Exporting...';
+    button.disabled = true;
+    
+    // Prepare export data
+    const exportData = {
+        module: 'transport',
+        data_type: 'transport_list',
+        format: format,
+        filters: {}
+    };
+    
+    // Call export API
+    const formData = new FormData();
+    formData.append('module', exportData.module);
+    formData.append('data_type', exportData.data_type);
+    formData.append('format', exportData.format);
+    formData.append('filters', JSON.stringify(exportData.filters));
+    formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+    
+    fetch('/core/api/export/initiate/', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message || 'Export feature coming soon', 'success');
+        } else {
+            showNotification('Export failed: ' + (data.error || 'Unknown error'), 'error');
+        }
+    })
+    .catch(error => {
+        console.error('💥 [TRANSPORT EXPORT] Export error:', error);
+        showNotification('Export failed: Network error', 'error');
+    })
+    .finally(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+    });
+}
+
+function checkExportStatus(requestId, format) {
+    const checkStatus = () => {
+        fetch(`/core/api/export/status/${requestId}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'completed') {
+                window.location.href = `/core/api/export/download/${requestId}/`;
+                showNotification(`${format.toUpperCase()} export completed!`, 'success');
+            } else if (data.status === 'failed') {
+                showNotification('Export failed: ' + (data.error || 'Processing error'), 'error');
+            } else {
+                setTimeout(checkStatus, 2000);
+            }
+        })
+        .catch(error => {
+            showNotification('Failed to check export status', 'error');
+        });
+    };
+    setTimeout(checkStatus, 1000);
+}
+
+// Message handling functions
+function removeMessage(button) {
+    const messageItem = button.closest('.message-item');
+    messageItem.style.opacity = '0';
+    messageItem.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+        messageItem.remove();
+        const container = document.getElementById('form-messages');
+        if (container && container.children.length === 0) {
+            container.remove();
+        }
+    }, 300);
+}
+
+function showNotification(message, type) {
+    // Remove existing export notifications to prevent overlap
+    const existingNotifications = document.querySelectorAll('.export-notification');
+    existingNotifications.forEach(n => n.remove());
+    
+    const notification = document.createElement('div');
+    notification.className = `export-notification fixed top-36 right-4 z-50 p-4 rounded-xl shadow-lg animate-slide-in max-w-md ${
+        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+    } text-white`;
+    notification.innerHTML = `
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <i class="fas ${
+                    type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'
+                } mr-3"></i>
+                <span class="font-medium">${message}</span>
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-3 text-white hover:text-gray-200 font-bold">
+                ×
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (notification.parentNode) notification.remove();
+            }, 300);
+        }
+    }, 4000);
+}
+
+// Confirm delete
+function confirmDelete(type, name) {
+    const messages = {
+        'route': 'Are you sure you want to delete this route?',
+        'stoppage': 'Are you sure you want to delete this stoppage?',
+        'assignment': 'Are you sure you want to remove this transport assignment?'
+    };
+    
+    const message = messages[type] || 'Are you sure you want to delete this item?';
+    return confirm(`${message}\n\nItem: ${name}\n\nThis action cannot be undone.`);
+}
+
+
+</script>
+
+<style>
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+/* Enhanced form styling */
+.form-input, .form-select, .form-textarea {
+    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-0 transition-all duration-300 bg-white;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    @apply shadow-lg transform scale-[1.02];
+}
+
+/* Button hover effects */
+.btn {
+    @apply transition-all duration-300 transform hover:scale-105;
+}
+
+/* Scrollbar styling */
+.max-h-48::-webkit-scrollbar {
+    width: 6px;
+}
+
+.max-h-48::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 3px;
+}
+
+.max-h-48::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+}
+
+.max-h-48::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1280px) {
+    .xl\:grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .md\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .sm\:grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/transport_management.js' %}"></script>
+{% endblock %}

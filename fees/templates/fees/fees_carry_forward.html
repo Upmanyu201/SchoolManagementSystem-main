@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-forward text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-orange-800 bg-clip-text text-transparent">
+                        📋 {% trans "Fees Carry Forward" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "Manage student due amounts for next session" %}</p>
+                </div>
+            </div>
+            <a href="{% url 'fees:fees_setup' %}" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to Setup" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="mb-6">
+        {% for message in messages %}
+        <div class="bg-green-50 border-2 border-green-200 rounded-2xl p-6">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                    <i class="fas fa-check-circle text-white"></i>
+                </div>
+                <div>
+                    <h3 class="text-green-800 font-bold text-lg">{% trans "Success" %}</h3>
+                    <p class="text-green-600">{{ message }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Search & Filter Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-200">
+        <div class="bg-gradient-to-r from-yellow-500 to-orange-600 p-4 rounded-xl mb-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-search mr-3"></i>{% trans "Search Students" %}
+            </h2>
+        </div>
+        
+        <form method="GET" class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+                    <i class="fas fa-school mr-2 text-yellow-500"></i>{% trans "Select Class" %}
+                </label>
+                <select name="class_id" class="form-select w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-400 focus:ring-0 transition-all duration-300">
+                    <option value="">{% trans "-- All Classes --" %}</option>
+                    {% for class in classes %}
+                    <option value="{{ class.id }}" {% if selected_class == class.id|stringformat:'s' %}selected{% endif %}>
+                        {{ class.class_name }}-{{ class.section_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+                    <i class="fas fa-list mr-2 text-orange-500"></i>{% trans "Show" %}
+                </label>
+                <select name="page_size" class="form-select w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-yellow-400 focus:ring-0 transition-all duration-300">
+                    <option value="20" {% if page_size == 20 %}selected{% endif %}>20</option>
+                    <option value="50" {% if page_size == 50 %}selected{% endif %}>50</option>
+                    <option value="100" {% if page_size == 100 %}selected{% endif %}>100</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2">&nbsp;</label>
+                <button type="submit" class="w-full bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-search mr-2"></i>{% trans "Search" %}
+                </button>
+            </div>
+
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2">&nbsp;</label>
+                <a href="{% url 'fees:fees_carry_forward' %}" class="block w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 text-center">
+                    <i class="fas fa-times mr-2"></i>{% trans "Clear" %}
+                </a>
+            </div>
+        </form>
+    </div>
+
+    {% if students %}
+    <!-- Students Table -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-yellow-500 to-orange-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-table mr-3"></i>{% trans "Students Due Amounts" %}
+            </h2>
+        </div>
+        
+        <!-- Page Size Control -->
+        <div class="bg-gray-50 p-4 border-b">
+            <form method="get" class="flex items-center justify-between">
+                <input type="hidden" name="class_id" value="{{ selected_class|default:'' }}">
+                
+                <div class="flex items-center gap-4">
+                    <span class="text-gray-700 font-semibold flex items-center">
+                        <i class="fas fa-list mr-2 text-blue-500"></i>{% trans "Show" %}
+                    </span>
+                    <select name="page_size" onchange="this.form.submit()" class="border-2 border-gray-200 rounded-lg px-3 py-2 focus:border-blue-400 transition-colors">
+                        <option value="20" {% if page_size == 20 %}selected{% endif %}>20</option>
+                        <option value="50" {% if page_size == 50 %}selected{% endif %}>50</option>
+                        <option value="100" {% if page_size == 100 %}selected{% endif %}>100</option>
+                    </select>
+                    <span class="text-gray-700 font-semibold">{% trans "per page" %}</span>
+                </div>
+                <div class="text-sm text-gray-600">
+                    {% if students %}
+                        {% trans "Showing" %} {{ students.start_index }}-{{ students.end_index }} {% trans "of" %} {{ students.paginator.count }} {% trans "students" %}
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+        
+        <form method="POST" class="p-6">
+            {% csrf_token %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                                <i class="fas fa-user mr-2 text-blue-500"></i>{% trans "Name" %}
+                            </th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                                <i class="fas fa-male mr-2 text-purple-500"></i>{% trans "Father's Name" %}
+                            </th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                                <i class="fas fa-phone mr-2 text-green-500"></i>{% trans "Mobile" %}
+                            </th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                                <i class="fas fa-school mr-2 text-orange-500"></i>{% trans "Class" %}
+                            </th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                                <i class="fas fa-id-badge mr-2 text-teal-500"></i>{% trans "Admission No" %}
+                            </th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 uppercase tracking-wider">
+                                <i class="fas fa-rupee-sign mr-2 text-red-500"></i>{% trans "Due Amount" %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr class="hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 transition-all duration-300">
+                            <td class="px-6 py-4">
+                                <div class="font-bold text-gray-900">{{ student.first_name }} {{ student.last_name }}</div>
+                            </td>
+                            <td class="px-6 py-4 text-gray-700">{{ student.father_name|default:"-" }}</td>
+                            <td class="px-6 py-4 text-gray-700">{{ student.mobile_number|default:"-" }}</td>
+                            <td class="px-6 py-4">
+                                <span class="badge badge-primary">
+                                    {% if student.class_section %}
+                                        {{ student.class_section.class_name }}-{{ student.class_section.section_name }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="font-mono text-sm bg-gray-100 px-3 py-1 rounded-lg">{{ student.admission_number }}</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
+                                    <input type="number" name="due_amount_{{ student.id }}" 
+                                           class="w-32 pl-8 pr-4 py-2 border-2 border-gray-200 rounded-xl focus:border-yellow-400 focus:ring-0 transition-all duration-300" 
+                                           value="{{ student.due_amount|default:'0.00' }}" 
+                                           onchange="validateAndSetToZero(this)"
+                                           step="0.01">
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <button type="submit" class="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-save mr-2"></i>{% trans "Save Due Amounts" %}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Pagination -->
+    {% if students.has_other_pages %}
+    <div class="bg-white rounded-xl shadow-lg p-6 mt-8 border border-gray-200">
+        <nav class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                {% if students.has_previous %}
+                <a href="?class_id={{ selected_class|default:'' }}&page={{ students.previous_page_number }}&page_size={{ page_size }}"
+                   class="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center">
+                    <i class="fas fa-chevron-left mr-2"></i>{% trans "Previous" %}
+                </a>
+                {% endif %}
+            </div>
+            
+            <div class="flex items-center gap-2">
+                {% for num in students.paginator.page_range %}
+                    {% if students.number == num %}
+                    <span class="bg-gradient-to-r from-yellow-500 to-orange-600 text-white px-4 py-2 rounded-lg font-bold">
+                        {{ num }}
+                    </span>
+                    {% elif num > students.number|add:'-3' and num < students.number|add:'3' %}
+                    <a href="?class_id={{ selected_class|default:'' }}&page={{ num }}&page_size={{ page_size }}"
+                       class="bg-gray-100 hover:bg-gradient-to-r hover:from-yellow-500 hover:to-orange-600 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105">
+                        {{ num }}
+                    </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+            <div class="flex items-center gap-2">
+                {% if students.has_next %}
+                <a href="?class_id={{ selected_class|default:'' }}&page={{ students.next_page_number }}&page_size={{ page_size }}"
+                   class="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center">
+                    {% trans "Next" %}<i class="fas fa-chevron-right ml-2"></i>
+                </a>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+    {% endif %}
+
+
+    {% else %}
+    <!-- Empty State -->
+    <div class="bg-white rounded-2xl shadow-xl p-12 text-center border border-gray-200">
+        <div class="flex flex-col items-center">
+            <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-xl font-bold text-gray-500 mb-2">{% trans "No Students Found" %}</h3>
+            <p class="text-gray-400 mb-4">{% trans "Search for a class to view students and manage due amounts" %}</p>
+            
+            <!-- Debug Info -->
+            <div class="bg-gray-100 p-4 rounded-lg text-left text-sm">
+                <p><strong>Debug Info:</strong></p>
+                <p>Students queryset: {{ students|length }}</p>
+                <p>Selected class: {{ selected_class|default:'None' }}</p>
+                <p>Available classes: {{ classes|length }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function validateAndSetToZero(inputElement) {
+    let value = inputElement.value;
+    if (isNaN(parseFloat(value)) || !isFinite(value)) {
+        inputElement.value = '0.00';
+    } else {
+        inputElement.value = parseFloat(value).toFixed(2);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate table rows on load
+    const tableRows = document.querySelectorAll('tbody tr');
+    tableRows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            row.style.transition = 'all 0.5s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+});
+</script>
+
+{% block extra_css %}
+<style>
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-input, .form-select {
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    box-shadow: inset 2px 2px 5px #e2e8f0, inset -2px -2px 5px #ffffff;
+}
+
+.form-input:focus, .form-select:focus {
+    background: #ffffff;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.badge-primary {
+    background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+    color: white;
+}
+</style>
+{% endblock %}
+{% endblock %}

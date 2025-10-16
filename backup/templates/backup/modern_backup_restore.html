@@ -1,0 +1,1124 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header Card -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200 animate-fade-in">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-6 animate-pulse-slow">
+                            <i class="fas fa-database text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                                {% trans "Backup & Restore System" %}
+                            </h1>
+                            <p class="text-gray-600 mt-2 text-lg">{% trans "Enterprise-grade data protection with 2025 security standards" %}</p>
+                            <div class="flex items-center mt-2 space-x-4">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <i class="fas fa-shield-alt mr-1"></i>{% trans "Secure" %}
+                                </span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <i class="fas fa-clock mr-1"></i>{% trans "Real-time" %}
+                                </span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                    <i class="fas fa-cloud mr-1"></i>{% trans "Cloud Ready" %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button id="createBackupBtn" 
+                                class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl font-semibold">
+                            <i class="fas fa-plus mr-3"></i>{% trans "Create Backup" %}
+                        </button>
+                        <button id="restoreUploadBtn" 
+                                class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-8 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl font-semibold">
+                            <i class="fas fa-upload mr-3"></i>{% trans "Restore Data" %}
+                        </button>
+                        <button onclick="location.reload()" 
+                                class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+            <div id="messages-container" class="fixed top-4 right-4 z-50 space-y-2">
+                {% for message in messages %}
+                <div class="{% if message.tags == 'success' %}bg-green-500{% elif message.tags == 'error' %}bg-red-500{% else %}bg-blue-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in max-w-md">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} mr-3"></i>
+                            <span class="font-medium">{{ message }}</span>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Progress Indicator -->
+            <div id="progressIndicator" class="hidden bg-gradient-to-r from-blue-100 to-indigo-100 border-2 border-blue-300 rounded-2xl p-6 mb-8 animate-fade-in">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-4"></div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-blue-800" id="progressTitle">{% trans "Processing..." %}</h3>
+                            <p class="text-blue-600" id="progressMessage">{% trans "Please wait while we process your request" %}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-blue-800" id="progressPercent">0%</div>
+                        <div class="text-sm text-blue-600">{% trans "Complete" %}</div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="bg-blue-200 rounded-full h-3">
+                        <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.1s">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-green-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-database text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">{% trans "Total Backups" %}</p>
+                            <p class="text-2xl font-bold text-gray-900" id="totalBackups">-</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.2s">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-clock text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">{% trans "Last Backup" %}</p>
+                            <p class="text-lg font-semibold text-gray-900" id="lastBackup">-</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.3s">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-purple-400 to-purple-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-hdd text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">{% trans "Storage Used" %}</p>
+                            <p class="text-lg font-semibold text-gray-900" id="storageUsed">-</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.4s">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-orange-400 to-orange-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-shield-alt text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">{% trans "Security Level" %}</p>
+                            <p class="text-lg font-semibold text-green-600">{% trans "High" %}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Backup History -->
+                <div class="lg:col-span-2 bg-white rounded-2xl shadow-xl border border-gray-200 animate-fade-in-up" style="animation-delay: 0.5s">
+                    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 rounded-t-2xl">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-2xl font-bold text-white flex items-center">
+                                <i class="fas fa-history mr-3"></i>{% trans "Backup History" %}
+                            </h2>
+                            <div class="flex space-x-2">
+                                <button onclick="backupManager.loadBackupHistory()" 
+                                        class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition-all duration-300">
+                                    <i class="fas fa-refresh mr-2"></i>{% trans "Refresh" %}
+                                </button>
+                                <button onclick="backupManager.exportHistory()" 
+                                        class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition-all duration-300">
+                                    <i class="fas fa-download mr-2"></i>{% trans "Export" %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div id="backupHistoryContainer" class="space-y-4">
+                            <div class="flex justify-center py-12">
+                                <div class="text-center">
+                                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                                    <p class="text-gray-600">{% trans "Loading backup history..." %}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div id="paginationContainer" class="hidden mt-6 flex items-center justify-between">
+                            <div class="text-sm text-gray-600">
+                                {% trans "Showing" %} <span id="showingFrom">1</span> {% trans "to" %} <span id="showingTo">10</span> {% trans "of" %} <span id="totalItems">0</span> {% trans "backups" %}
+                            </div>
+                            <div class="flex space-x-2">
+                                <button id="prevPage" class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50">
+                                    <i class="fas fa-chevron-left mr-1"></i>{% trans "Previous" %}
+                                </button>
+                                <button id="nextPage" class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50">
+                                    {% trans "Next" %}<i class="fas fa-chevron-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Panel -->
+                <div class="space-y-6">
+                    <!-- System Status -->
+                    <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200 animate-fade-in-up" style="animation-delay: 0.6s">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-heartbeat mr-2 text-red-500"></i>{% trans "System Status" %}
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">{% trans "Database" %}</span>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <i class="fas fa-circle mr-1 text-green-500"></i>{% trans "Online" %}
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">{% trans "Storage" %}</span>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <i class="fas fa-circle mr-1 text-green-500"></i>{% trans "Available" %}
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">{% trans "Backup Service" %}</span>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <i class="fas fa-circle mr-1 text-green-500"></i>{% trans "Running" %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200 animate-fade-in-up" style="animation-delay: 0.7s">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-bolt mr-2 text-yellow-500"></i>{% trans "Quick Actions" %}
+                        </h3>
+                        <div class="space-y-3">
+                            <button onclick="backupManager.quickBackup('students')" 
+                                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300">
+                                <div class="flex items-center">
+                                    <i class="fas fa-user-graduate text-blue-500 mr-3"></i>
+                                    <div>
+                                        <p class="font-medium text-gray-800">{% trans "Backup Students" %}</p>
+                                        <p class="text-sm text-gray-600">{% trans "Student records only" %}</p>
+                                    </div>
+                                </div>
+                            </button>
+                            
+                            <button onclick="backupManager.quickBackup('financial')" 
+                                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-green-300 hover:bg-green-50 transition-all duration-300">
+                                <div class="flex items-center">
+                                    <i class="fas fa-dollar-sign text-green-500 mr-3"></i>
+                                    <div>
+                                        <p class="font-medium text-gray-800">{% trans "Backup Financial" %}</p>
+                                        <p class="text-sm text-gray-600">{% trans "Fees and payments" %}</p>
+                                    </div>
+                                </div>
+                            </button>
+                            
+                            <button onclick="backupManager.quickBackup('teachers')" 
+                                    class="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition-all duration-300">
+                                <div class="flex items-center">
+                                    <i class="fas fa-chalkboard-teacher text-purple-500 mr-3"></i>
+                                    <div>
+                                        <p class="font-medium text-gray-800">{% trans "Backup Teachers" %}</p>
+                                        <p class="text-sm text-gray-600">{% trans "Staff and subjects" %}</p>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200 animate-fade-in-up" style="animation-delay: 0.8s">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-clock mr-2 text-indigo-500"></i>{% trans "Recent Activity" %}
+                        </h3>
+                        <div id="recentActivity" class="space-y-3">
+                            <div class="text-center py-4">
+                                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-500 mx-auto mb-2"></div>
+                                <p class="text-sm text-gray-600">{% trans "Loading..." %}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Backup Modal -->
+<div id="createBackupModal" class="modal">
+    <div class="modal-content animate-modal-in">
+        <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-6 rounded-t-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="text-2xl font-bold text-white flex items-center">
+                    <i class="fas fa-plus mr-3"></i>{% trans "Create New Backup" %}
+                </h3>
+                <button onclick="backupManager.hideModal('createBackupModal')" class="text-white hover:text-gray-200 transition-colors">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <form onsubmit="event.preventDefault(); backupManager.createBackup();" class="p-8">
+            <div class="space-y-6">
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                        <i class="fas fa-layer-group mr-2 text-blue-500"></i>{% trans "Backup Type" %}*
+                    </label>
+                    <select id="backupType" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300 bg-white">
+                        <option value="full">{% trans "Full System Backup" %} - {% trans "Complete database" %}</option>
+                        <option value="students">{% trans "Students Data Only" %} - {% trans "Student records and fees" %}</option>
+                        <option value="financial">{% trans "Financial Records Only" %} - {% trans "Fees, payments, and fines" %}</option>
+                        <option value="teachers">{% trans "Teachers & Subjects Only" %} - {% trans "Staff and academic data" %}</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                        <i class="fas fa-tag mr-2 text-green-500"></i>{% trans "Custom Name" %} ({% trans "Optional" %})
+                    </label>
+                    <input type="text" id="backupName" placeholder="{% trans 'e.g., monthly_backup, semester_end' %}" 
+                           class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300 bg-white">
+                    <p class="text-sm text-gray-500 mt-2">{% trans "Leave empty for automatic naming with timestamp" %}</p>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-info-circle text-blue-500 mr-3 mt-1"></i>
+                        <div>
+                            <h4 class="font-semibold text-blue-800">{% trans "Backup Information" %}</h4>
+                            <ul class="text-sm text-blue-700 mt-2 space-y-1">
+                                <li>• {% trans "Backups are encrypted and compressed" %}</li>
+                                <li>• {% trans "Process typically takes 1-5 minutes" %}</li>
+                                <li>• {% trans "You can continue working during backup" %}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-end space-x-4 mt-8">
+                <button type="button" onclick="backupManager.hideModal('createBackupModal')" 
+                        class="px-6 py-3 text-gray-600 border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 font-semibold">
+                    {% trans "Cancel" %}
+                </button>
+                <button type="submit" 
+                        class="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl transition-all duration-300 transform hover:scale-105 font-semibold">
+                    <i class="fas fa-save mr-2"></i>{% trans "Create Backup" %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Restore Upload Modal -->
+<div id="restoreUploadModal" class="modal">
+    <div class="modal-content animate-modal-in max-w-2xl">
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 rounded-t-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="text-2xl font-bold text-white flex items-center">
+                    <i class="fas fa-upload mr-3"></i>{% trans "Restore from File" %}
+                </h3>
+                <button onclick="backupManager.hideModal('restoreUploadModal')" class="text-white hover:text-gray-200 transition-colors">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <form onsubmit="event.preventDefault(); backupManager.restoreFromUpload();" class="p-8">
+            <div class="space-y-6">
+                <!-- File Upload Section -->
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                        <i class="fas fa-file-upload mr-2 text-blue-500"></i>{% trans "Select Backup File" %}*
+                    </label>
+                    <div class="relative border-2 border-dashed border-gray-300 rounded-xl p-8 hover:border-blue-400 transition-colors bg-gray-50 hover:bg-blue-50">
+                        <input type="file" id="backupFileInput" name="backup_file" accept=".json" 
+                               class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-cloud-upload-alt text-3xl text-blue-500"></i>
+                            </div>
+                            <p class="text-lg font-medium text-gray-700 mb-2">{% trans "Click to select or drag & drop" %}</p>
+                            <p class="text-sm text-gray-500">{% trans "JSON files only (max 100MB)" %}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- File Info Display -->
+                <div id="fileInfo" class="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-4 hidden">
+                    <!-- File info will be displayed here -->
+                </div>
+                
+                <!-- Restore Mode Selection -->
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                        <i class="fas fa-cogs mr-2 text-purple-500"></i>{% trans "Restore Mode" %}*
+                    </label>
+                    <div class="space-y-3">
+                        <div class="border-2 border-green-200 rounded-xl p-4 bg-green-50">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="restore_mode" value="merge" checked class="mr-3 text-green-600">
+                                <div>
+                                    <div class="font-semibold text-green-800 flex items-center">
+                                        <i class="fas fa-shield-alt mr-2"></i>{% trans "Merge (Recommended)" %}
+                                    </div>
+                                    <p class="text-sm text-green-700">{% trans "Update existing records and add new ones safely" %}</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="border-2 border-red-200 rounded-xl p-4 bg-red-50">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="restore_mode" value="replace" class="mr-3 text-red-600">
+                                <div>
+                                    <div class="font-semibold text-red-800 flex items-center">
+                                        <i class="fas fa-exclamation-triangle mr-2"></i>{% trans "Replace (DANGEROUS)" %}
+                                    </div>
+                                    <p class="text-sm text-red-700">{% trans "Delete ALL existing data and replace with backup" %}</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning Section -->
+                <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-xl p-6">
+                    <div class="flex items-start">
+                        <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="fas fa-info-circle text-amber-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-amber-800 text-lg mb-2">{% trans "Important Information" %}</h4>
+                            <ul class="text-sm text-amber-700 space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-600 mr-2 mt-0.5 flex-shrink-0"></i>
+                                    <span>{% trans "Merge mode preserves your existing data" %}</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-exclamation-triangle text-red-600 mr-2 mt-0.5 flex-shrink-0"></i>
+                                    <span>{% trans "Replace mode will permanently delete all current data" %}</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-shield-alt text-blue-600 mr-2 mt-0.5 flex-shrink-0"></i>
+                                    <span>{% trans "Always create a backup before restoring" %}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
+                <button type="button" onclick="backupManager.hideModal('restoreUploadModal')" 
+                        class="px-8 py-3 text-gray-600 border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 font-semibold">
+                    <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
+                </button>
+                <button type="submit" 
+                        class="px-10 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl transition-all duration-300 transform hover:scale-105 font-semibold shadow-lg">
+                    <i class="fas fa-upload mr-2"></i>{% trans "Start Restore" %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- CSRF Token -->
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Modern Animations */
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes modal-in {
+    from { opacity: 0; transform: scale(0.9) translateY(-20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes pulse-slow {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.animate-fade-in { animation: fade-in 0.6s ease-out; }
+.animate-fade-in-up { animation: fade-in-up 0.6s ease-out; }
+.animate-slide-in { animation: slide-in 0.3s ease-out; }
+.animate-modal-in { animation: modal-in 0.3s ease-out; }
+.animate-pulse-slow { animation: pulse-slow 3s ease-in-out infinite; }
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 1rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Form Enhancements */
+.form-group input:focus, .form-group select:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+/* Hover Effects */
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress Bar Animation */
+.progress-bar-animated {
+    background: linear-gradient(45deg, 
+        rgba(255,255,255,0.2) 25%, 
+        transparent 25%, 
+        transparent 50%, 
+        rgba(255,255,255,0.2) 50%, 
+        rgba(255,255,255,0.2) 75%, 
+        transparent 75%);
+    background-size: 1rem 1rem;
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+    0% { background-position: 1rem 0; }
+    100% { background-position: 0 0; }
+}
+
+/* Custom Scrollbar */
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 1rem;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/backup.js' %}"></script>
+<script>
+// Enhanced Backup Manager with Modern Features
+class ModernBackupManager {
+    constructor() {
+        this.currentPage = 1;
+        this.itemsPerPage = 10;
+        this.totalItems = 0;
+        this.isLoading = false;
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.loadBackupHistory();
+        this.loadStatistics();
+        this.loadRecentActivity();
+        this.setupFileUpload();
+        this.startAutoRefresh();
+    }
+
+    setupEventListeners() {
+        // Modal triggers
+        document.getElementById('createBackupBtn')?.addEventListener('click', () => {
+            this.showModal('createBackupModal');
+        });
+
+        document.getElementById('restoreUploadBtn')?.addEventListener('click', () => {
+            this.showModal('restoreUploadModal');
+        });
+
+        // Pagination
+        document.getElementById('prevPage')?.addEventListener('click', () => {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+                this.loadBackupHistory();
+            }
+        });
+
+        document.getElementById('nextPage')?.addEventListener('click', () => {
+            const maxPage = Math.ceil(this.totalItems / this.itemsPerPage);
+            if (this.currentPage < maxPage) {
+                this.currentPage++;
+                this.loadBackupHistory();
+            }
+        });
+
+        // Auto-hide messages
+        setTimeout(() => {
+            const messages = document.getElementById('messages-container');
+            if (messages) {
+                messages.style.opacity = '0';
+                messages.style.transform = 'translateX(100%)';
+                setTimeout(() => messages.remove(), 500);
+            }
+        }, 5000);
+    }
+
+    setupFileUpload() {
+        const fileInput = document.getElementById('backupFileInput');
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                const fileInfo = document.getElementById('fileInfo');
+                
+                if (file && fileInfo) {
+                    const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+                    fileInfo.innerHTML = `
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-file-alt text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-800">${file.name}</p>
+                                <p class="text-sm text-gray-600">Size: ${sizeInMB} MB • Type: ${file.type || 'Unknown'}</p>
+                                <div class="mt-2">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                        </div>
+                    `;
+                    fileInfo.classList.remove('hidden');
+                }
+            });
+        }
+    }
+
+    showModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    hideModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    showProgress(title, message) {
+        const indicator = document.getElementById('progressIndicator');
+        const titleEl = document.getElementById('progressTitle');
+        const messageEl = document.getElementById('progressMessage');
+        
+        if (indicator && titleEl && messageEl) {
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            indicator.classList.remove('hidden');
+        }
+    }
+
+    hideProgress() {
+        const indicator = document.getElementById('progressIndicator');
+        if (indicator) {
+            indicator.classList.add('hidden');
+        }
+    }
+
+    updateProgress(percent) {
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        
+        if (progressBar && progressPercent) {
+            progressBar.style.width = percent + '%';
+            progressPercent.textContent = percent + '%';
+            
+            if (percent > 0) {
+                progressBar.classList.add('progress-bar-animated');
+            }
+        }
+    }
+
+    async createBackup() {
+        const backupType = document.getElementById('backupType')?.value || 'full';
+        const backupName = document.getElementById('backupName')?.value || '';
+
+        this.showProgress('Creating Backup', 'Preparing backup process...');
+        this.updateProgress(10);
+
+        try {
+            const response = await fetch('/backup/api/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({
+                    backup_type: backupType,
+                    backup_name: backupName
+                })
+            });
+
+            this.updateProgress(50);
+
+            const result = await response.json();
+            
+            this.updateProgress(100);
+
+            if (result.status === 'success') {
+                this.hideModal('createBackupModal');
+                this.showNotification('Backup created successfully!', 'success');
+                this.loadBackupHistory();
+                this.loadStatistics();
+            } else {
+                throw new Error(result.message || 'Backup creation failed');
+            }
+        } catch (error) {
+            console.error('Backup creation error:', error);
+            this.showNotification('Failed to create backup: ' + error.message, 'error');
+        } finally {
+            this.hideProgress();
+        }
+    }
+
+    async restoreFromUpload() {
+        const fileInput = document.getElementById('backupFileInput');
+        const restoreMode = document.getElementById('restoreMode')?.value || 'merge';
+
+        if (!fileInput?.files[0]) {
+            this.showNotification('Please select a backup file', 'error');
+            return;
+        }
+
+        this.showProgress('Restoring Data', 'Uploading and processing backup file...');
+        this.updateProgress(10);
+
+        try {
+            const formData = new FormData();
+            formData.append('backup_file', fileInput.files[0]);
+            formData.append('restore_mode', restoreMode);
+            formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+            this.updateProgress(30);
+
+            const response = await fetch('/backup/api/restore/upload/', {
+                method: 'POST',
+                body: formData
+            });
+
+            this.updateProgress(70);
+
+            const result = await response.json();
+            
+            this.updateProgress(100);
+
+            if (result.status === 'success') {
+                this.hideModal('restoreUploadModal');
+                const stats = result.data.result;
+                this.showNotification(
+                    `Restore completed! Created: ${stats.created}, Updated: ${stats.updated}`, 
+                    'success'
+                );
+                this.loadBackupHistory();
+                this.loadStatistics();
+            } else {
+                throw new Error(result.message || 'Restore failed');
+            }
+        } catch (error) {
+            console.error('Restore error:', error);
+            this.showNotification('Failed to restore: ' + error.message, 'error');
+        } finally {
+            this.hideProgress();
+        }
+    }
+
+    async restoreFromHistory(backupId) {
+        if (!confirm('Are you sure you want to restore from this backup? This will modify your current data.')) {
+            return;
+        }
+
+        this.showProgress('Restoring Data', 'Processing backup from history...');
+        this.updateProgress(20);
+
+        try {
+            const response = await fetch(`/backup/api/restore/history/${backupId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSrfToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({
+                    restore_mode: 'merge'
+                })
+            });
+
+            this.updateProgress(80);
+
+            const result = await response.json();
+            
+            this.updateProgress(100);
+
+            if (result.status === 'success') {
+                const stats = result.data.result;
+                this.showNotification(
+                    `Restore completed! Created: ${stats.created}, Updated: ${stats.updated}`, 
+                    'success'
+                );
+                this.loadBackupHistory();
+            } else {
+                throw new Error(result.message || 'Restore failed');
+            }
+        } catch (error) {
+            console.error('Restore error:', error);
+            this.showNotification('Failed to restore: ' + error.message, 'error');
+        } finally {
+            this.hideProgress();
+        }
+    }
+
+    async quickBackup(type) {
+        this.showProgress('Quick Backup', `Creating ${type} backup...`);
+        this.updateProgress(20);
+
+        try {
+            const response = await fetch('/backup/api/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({
+                    backup_type: type,
+                    backup_name: `quick_${type}_${new Date().getTime()}`
+                })
+            });
+
+            this.updateProgress(80);
+
+            const result = await response.json();
+            
+            this.updateProgress(100);
+
+            if (result.status === 'success') {
+                this.showNotification(`${type} backup created successfully!`, 'success');
+                this.loadBackupHistory();
+                this.loadStatistics();
+            } else {
+                throw new Error(result.message || 'Quick backup failed');
+            }
+        } catch (error) {
+            console.error('Quick backup error:', error);
+            this.showNotification('Failed to create quick backup: ' + error.message, 'error');
+        } finally {
+            this.hideProgress();
+        }
+    }
+
+    async loadBackupHistory() {
+        if (this.isLoading) return;
+        this.isLoading = true;
+
+        try {
+            const response = await fetch(`/backup/api/history/?page=${this.currentPage}&limit=${this.itemsPerPage}`);
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                this.renderBackupHistory(result.data.backups);
+                this.updatePagination(result.data.pagination);
+                this.totalItems = result.data.pagination.total;
+            }
+        } catch (error) {
+            console.error('Failed to load backup history:', error);
+            this.showNotification('Failed to load backup history', 'error');
+        } finally {
+            this.isLoading = false;
+        }
+    }
+
+    renderBackupHistory(backups) {
+        const container = document.getElementById('backupHistoryContainer');
+        if (!container) return;
+
+        if (backups.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-12">
+                    <i class="fas fa-database text-6xl text-gray-300 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-600 mb-2">No Backups Found</h3>
+                    <p class="text-gray-500">Create your first backup to get started</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = backups.map(backup => `
+            <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 hover-lift">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-${backup.operation_type === 'backup' ? 'download' : 'upload'} text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">${backup.file_name}</h4>
+                            <p class="text-sm text-gray-600">
+                                ${new Date(backup.date).toLocaleString()} • 
+                                <span class="capitalize">${backup.operation_type}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        ${backup.operation_type === 'backup' ? `
+                            <button onclick="backupManager.restoreFromHistory(${backup.id})" 
+                                    class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium">
+                                <i class="fas fa-undo mr-1"></i>Restore
+                            </button>
+                        ` : ''}
+                        <button onclick="backupManager.downloadBackup(${backup.id})" 
+                                class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors text-sm font-medium">
+                            <i class="fas fa-download mr-1"></i>Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    updatePagination(pagination) {
+        const container = document.getElementById('paginationContainer');
+        const showingFrom = document.getElementById('showingFrom');
+        const showingTo = document.getElementById('showingTo');
+        const totalItems = document.getElementById('totalItems');
+        const prevBtn = document.getElementById('prevPage');
+        const nextBtn = document.getElementById('nextPage');
+
+        if (container && pagination.total > 0) {
+            container.classList.remove('hidden');
+            
+            if (showingFrom) showingFrom.textContent = ((pagination.page - 1) * pagination.limit) + 1;
+            if (showingTo) showingTo.textContent = Math.min(pagination.page * pagination.limit, pagination.total);
+            if (totalItems) totalItems.textContent = pagination.total;
+            
+            if (prevBtn) prevBtn.disabled = pagination.page <= 1;
+            if (nextBtn) nextBtn.disabled = !pagination.has_next;
+        } else if (container) {
+            container.classList.add('hidden');
+        }
+    }
+
+    async loadStatistics() {
+        try {
+            // Mock statistics - replace with actual API call
+            const stats = {
+                totalBackups: 15,
+                lastBackup: '2 hours ago',
+                storageUsed: '2.4 GB'
+            };
+
+            document.getElementById('totalBackups').textContent = stats.totalBackups;
+            document.getElementById('lastBackup').textContent = stats.lastBackup;
+            document.getElementById('storageUsed').textContent = stats.storageUsed;
+        } catch (error) {
+            console.error('Failed to load statistics:', error);
+        }
+    }
+
+    async loadRecentActivity() {
+        try {
+            const container = document.getElementById('recentActivity');
+            if (!container) return;
+
+            // Mock recent activity - replace with actual API call
+            const activities = [
+                { type: 'backup', message: 'Full backup completed', time: '2 hours ago', icon: 'download', color: 'green' },
+                { type: 'restore', message: 'Student data restored', time: '1 day ago', icon: 'upload', color: 'blue' },
+                { type: 'backup', message: 'Financial backup created', time: '2 days ago', icon: 'download', color: 'green' }
+            ];
+
+            container.innerHTML = activities.map(activity => `
+                <div class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50">
+                    <div class="w-8 h-8 bg-${activity.color}-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-${activity.icon} text-${activity.color}-600 text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-800">${activity.message}</p>
+                        <p class="text-xs text-gray-500">${activity.time}</p>
+                    </div>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Failed to load recent activity:', error);
+        }
+    }
+
+    startAutoRefresh() {
+        // Refresh data every 30 seconds
+        setInterval(() => {
+            if (!this.isLoading) {
+                this.loadStatistics();
+                this.loadRecentActivity();
+            }
+        }, 30000);
+    }
+
+    showNotification(message, type = 'info') {
+        const container = document.getElementById('messages-container') || document.body;
+        const notification = document.createElement('div');
+        
+        const colors = {
+            success: 'bg-green-500',
+            error: 'bg-red-500',
+            info: 'bg-blue-500',
+            warning: 'bg-yellow-500'
+        };
+
+        const icons = {
+            success: 'fa-check-circle',
+            error: 'fa-exclamation-circle',
+            info: 'fa-info-circle',
+            warning: 'fa-exclamation-triangle'
+        };
+
+        notification.className = `${colors[type]} text-white p-4 rounded-xl shadow-lg animate-slide-in max-w-md mb-2`;
+        notification.innerHTML = `
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas ${icons[type]} mr-3"></i>
+                    <span class="font-medium">${message}</span>
+                </div>
+                <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+
+        if (!document.getElementById('messages-container')) {
+            notification.style.position = 'fixed';
+            notification.style.top = '1rem';
+            notification.style.right = '1rem';
+            notification.style.zIndex = '1000';
+        }
+
+        container.appendChild(notification);
+
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }
+        }, 5000);
+    }
+
+    async downloadBackup(backupId) {
+        try {
+            window.open(`/backup/api/download/${backupId}/`, '_blank');
+        } catch (error) {
+            console.error('Download error:', error);
+            this.showNotification('Failed to download backup', 'error');
+        }
+    }
+
+    async exportHistory() {
+        try {
+            window.open('/backup/api/export/history/', '_blank');
+            this.showNotification('Export started', 'success');
+        } catch (error) {
+            console.error('Export error:', error);
+            this.showNotification('Failed to export history', 'error');
+        }
+    }
+}
+
+// Initialize the backup manager
+const backupManager = new ModernBackupManager();
+
+// Global functions for backward compatibility
+window.backupManager = backupManager;
+</script>
+{% endblock %}

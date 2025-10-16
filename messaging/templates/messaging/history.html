@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load i18n %}
+
+{% block title %}{% trans "Message History" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-purple-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-history text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-800 bg-clip-text text-transparent">
+                        📅 {% trans "Message History" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "View all sent messages and their status" %}</p>
+                </div>
+            </div>
+            <a href="{% url 'messaging:dashboard' %}" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to Dashboard" %}
+            </a>
+        </div>
+    </div>
+        
+    <!-- Messages -->
+    {% if messages %}
+    <div id="form-messages" class="fixed top-4 right-4 z-50 space-y-2">
+        {% for message in messages %}
+        <div class="{% if message.tags == 'success' %}bg-green-500{% elif message.tags == 'error' %}bg-red-500{% elif message.tags == 'warning' %}bg-yellow-500{% else %}bg-blue-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in">
+            <div class="flex items-center">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} mr-3"></i>
+                <span class="font-medium">{{ message }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if message_logs %}
+    <!-- Filters -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-gray-200">
+        <form method="GET" class="flex flex-wrap gap-4 items-end">
+            <div class="flex-1 min-w-48">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Source Module</label>
+                <select name="source" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                    <option value="all" {% if not current_source_filter or current_source_filter == 'all' %}selected{% endif %}>All Modules</option>
+                    {% for value, label in source_modules %}
+                    <option value="{{ value }}" {% if current_source_filter == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="flex-1 min-w-48">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                    <option value="all" {% if not current_status_filter or current_status_filter == 'all' %}selected{% endif %}>All Status</option>
+                    {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if current_status_filter == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <button type="submit" class="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-2 rounded-lg hover:from-purple-600 hover:to-pink-700 transition-all">
+                    <i class="fas fa-filter mr-2"></i>Filter
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Message History Table -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-purple-500 to-pink-600 p-6">
+            <div class="flex justify-between items-center">
+                <h2 class="text-white text-xl font-bold flex items-center">
+                    <i class="fas fa-table mr-3"></i>📋 {% trans "Message History" %} (All Modules)
+                </h2>
+                <div class="text-white text-sm">
+                    <i class="fas fa-envelope mr-1"></i>{{ message_logs.count }} messages
+                </div>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-calendar-alt mr-2 text-blue-500"></i>{% trans "Date & Time" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-cube mr-2 text-green-500"></i>{% trans "Source" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-tag mr-2 text-blue-500"></i>{% trans "Type" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-users mr-2 text-purple-500"></i>{% trans "Recipients" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-eye mr-2 text-orange-500"></i>{% trans "Message Preview" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-info-circle mr-2 text-indigo-500"></i>{% trans "Status" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-chart-bar mr-2 text-teal-500"></i>{% trans "Success Rate" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-cogs mr-2 text-red-500"></i>{% trans "Actions" %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for msg in message_logs %}
+                    <tr class="hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 transition-all duration-300">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-bold text-gray-900">{{ msg.created_at|date:"M d, Y" }}</div>
+                            <div class="text-xs text-gray-500">{{ msg.created_at|date:"H:i" }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full 
+                                {% if msg.source_module == 'student_fees' %}bg-green-100 text-green-800
+                                {% elif msg.source_module == 'reports' %}bg-blue-100 text-blue-800
+                                {% elif msg.source_module == 'attendance' %}bg-yellow-100 text-yellow-800
+                                {% elif msg.source_module == 'transport' %}bg-purple-100 text-purple-800
+                                {% elif msg.source_module == 'fines' %}bg-red-100 text-red-800
+                                {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                {% if msg.source_module == 'student_fees' %}
+                                    <i class="fas fa-money-bill mr-1"></i>💰 Fees
+                                {% elif msg.source_module == 'reports' %}
+                                    <i class="fas fa-chart-bar mr-1"></i>📊 Reports
+                                {% elif msg.source_module == 'attendance' %}
+                                    <i class="fas fa-calendar-check mr-1"></i>📅 Attendance
+                                {% elif msg.source_module == 'transport' %}
+                                    <i class="fas fa-bus mr-1"></i>🚌 Transport
+                                {% elif msg.source_module == 'fines' %}
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>⚠️ Fines
+                                {% else %}
+                                    <i class="fas fa-comments mr-1"></i>💬 Messaging
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full {% if msg.message_type == 'WHATSAPP' %}bg-green-100 text-green-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+                                {% if msg.message_type == 'WHATSAPP' %}
+                                    <i class="fab fa-whatsapp mr-1"></i>💬 WhatsApp
+                                {% else %}
+                                    <i class="fas fa-sms mr-1"></i>📱 SMS
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div>
+                                <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full bg-purple-100 text-purple-800">
+                                    <i class="fas fa-users mr-1"></i>{{ msg.get_recipient_type_display }}
+                                </span>
+                                {% if msg.class_section_filter %}
+                                <div class="text-xs text-gray-500 mt-1 flex items-center">
+                                    <i class="fas fa-school mr-1"></i>Class: {{ msg.class_section_filter.class_name }}-{{ msg.class_section_filter.section_name }}
+                                </div>
+                                {% endif %}
+                                <div class="text-xs text-gray-500 mt-1 flex items-center">
+                                    <i class="fas fa-user mr-1"></i>By: {{ msg.sender.get_full_name|default:msg.sender.username }}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="max-w-xs">
+                                <div class="text-sm text-gray-900 truncate font-medium">{{ msg.message_content|truncatechars:50 }}</div>
+                                <div class="text-xs text-gray-500 mt-1">📝 {% trans "Message preview" %}</div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full {% if msg.status == 'SENT' %}bg-green-100 text-green-800{% elif msg.status == 'FAILED' %}bg-red-100 text-red-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                {% if msg.status == 'SENT' %}
+                                    <i class="fas fa-check-circle mr-1"></i>✅
+                                {% elif msg.status == 'FAILED' %}
+                                    <i class="fas fa-times-circle mr-1"></i>❌
+                                {% else %}
+                                    <i class="fas fa-clock mr-1"></i>⏳
+                                {% endif %}
+                                {{ msg.status }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="w-20 bg-gray-200 rounded-full h-3 mr-3">
+                                    {% widthratio msg.successful_sends msg.total_recipients 100 as success_percentage %}
+                                    <div class="bg-gradient-to-r from-green-500 to-emerald-600 h-3 rounded-full transition-all duration-300" style="width: {{ success_percentage }}%"></div>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-gray-900">{{ msg.successful_sends }}/{{ msg.total_recipients }}</div>
+                                    <div class="text-xs text-gray-500">{{ success_percentage }}% ✅</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{% url 'messaging:details' msg.id %}" 
+                               class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 transform hover:scale-105">
+                                <i class="fas fa-eye mr-1"></i>{% trans "View Details" %}
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="bg-white rounded-2xl shadow-xl p-12 text-center border border-gray-200">
+        <div class="w-24 h-24 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-inbox text-4xl text-purple-500"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-4">📥 {% trans "No messages found" %}</h3>
+        <p class="text-gray-600 mb-8 text-lg">{% trans "No messages match your current filters. Try adjusting the filters or send messages from other modules." %}</p>
+        <div class="flex justify-center space-x-4">
+            <a href="{% url 'messaging:dashboard' %}" 
+               class="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg inline-flex items-center">
+                <i class="fas fa-paper-plane mr-2"></i>{% trans "Send Messages" %}
+            </a>
+            <a href="?" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 inline-flex items-center">
+                <i class="fas fa-filter mr-2"></i>{% trans "Clear Filters" %}
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Table row hover effects */
+tbody tr:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Auto-hide messages
+document.addEventListener('DOMContentLoaded', function() {
+    const messages = document.getElementById('form-messages');
+    if (messages) {
+        setTimeout(() => {
+            messages.style.opacity = '0';
+            messages.style.transform = 'translateX(100%)';
+            setTimeout(() => messages.remove(), 500);
+        }, 5000);
+    }
+    
+    // Animate table rows on load
+    const tableRows = document.querySelectorAll('tbody tr');
+    tableRows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            row.style.transition = 'all 0.5s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+});
+</script>
+{% endblock %}

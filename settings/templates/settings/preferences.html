@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Preferences{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                    <i class="fas fa-user-cog text-blue-500 mr-3"></i>
+                    User Preferences
+                </h1>
+                <p class="text-gray-600">Customize your personal settings and preferences</p>
+            </div>
+
+            <!-- Preferences Form -->
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Theme</label>
+                            {{ form.theme }}
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                            {{ form.language }}
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
+                            {{ form.timezone }}
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Date Format</label>
+                            {{ form.date_format }}
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            {{ form.email_notifications }}
+                            <label class="ml-2 text-sm text-gray-700">Email Notifications</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            {{ form.sms_notifications }}
+                            <label class="ml-2 text-sm text-gray-700">SMS Notifications</label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            {{ form.dashboard_widgets }}
+                            <label class="ml-2 text-sm text-gray-700">Show Dashboard Widgets</label>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-4 pt-6 border-t">
+                        <a href="{% url 'settings:dashboard' %}" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                            Cancel
+                        </a>
+                        <button type="submit" class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            Save Preferences
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,910 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-red-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-money-bill-wave text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-pink-600 to-red-800 bg-clip-text text-transparent">
+                        {% trans "Add Fees Type" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "Create specific fee types for your fee groups" %}</p>
+                </div>
+            </div>
+            <a href="{% url 'fees:fees_setup' %}" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to Setup" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Messages Display -->
+    {% if messages %}
+    <div class="mb-6">
+        {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} animate-slide-in">
+            <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} mr-2"></i>
+            {{ message }}
+            <button onclick="this.parentElement.remove()" class="float-right font-bold hover:text-gray-300">×</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Form Card -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+                <div class="bg-gradient-to-r from-pink-500 to-red-600 p-6">
+                    <h2 class="text-white text-xl font-bold flex items-center">
+                        <i class="fas fa-edit mr-3"></i>{% trans "Fee Type Information" %}
+                    </h2>
+                </div>
+                <form method="POST" id="feeTypeForm" class="p-8 space-y-6" action="{% url 'fees:add_fees_type' %}">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-layer-group mr-2 text-purple-500"></i>{% trans "Fee Group" %}*
+                        </label>
+                        <div class="relative">
+                            <select name="fee_group" id="fee_group" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-0 transition-all duration-300" onchange="updateGroupDetails(this.value)">
+                                <option value="">-- Select Fee Group --</option>
+                                {% for group in fee_groups %}
+                                <option value="{{ group.id }}" 
+                                        data-group-type="{{ group.group_type }}" 
+                                        data-fee-type="{{ group.fee_type }}"
+                                        {% if form.fee_group.value == group.id %}selected{% endif %}>
+                                    {{ group.fee_group }} - {{ group.group_type }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% if form.fee_group.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {{ form.fee_group.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-info-circle mr-2 text-blue-500"></i>{% trans "Group Type & Fee Type" %}
+                        </label>
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                            <p class="text-blue-700 text-sm">
+                                <i class="fas fa-lightbulb mr-2"></i>
+                                {% trans "Group Type and Fee Type will be automatically set based on your selected Fee Group above." %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Fields -->
+                    <div class="form-group hidden" id="custom_fee_name_wrapper">
+                        <label class="form-label">
+                            <i class="fas fa-edit mr-2 text-orange-500"></i>{% trans "Enter Fee Name" %}*
+                        </label>
+                        <input type="text" name="custom_fee_name" class="form-input"
+                               placeholder="e.g. Admission Fee" value="{{ preserved_values.custom_fee_name|default:'' }}">
+                    </div>
+
+                    <div class="form-group hidden" id="class_name_wrapper">
+                        <label class="form-label">
+                            <i class="fas fa-school mr-2 text-indigo-500"></i>{% trans "Select Classes" %}*
+                        </label>
+                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                            <div class="mb-3">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="select_all_classes" class="mr-2">
+                                    <span class="font-semibold text-blue-600">{% trans "Select All Classes" %}</span>
+                                </label>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="classes_grid">
+                                {% for class_section in class_sections %}
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-blue-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_classes" value="{{ class_section.display_name }}" class="mr-2 class-checkbox">
+                                    <span class="text-sm font-medium">{{ class_section.display_name }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group hidden" id="stoppage_wrapper">
+                        <label class="form-label">
+                            <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>{% trans "Select Stoppages" %}*
+                        </label>
+                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                            <div class="mb-3">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="select_all_stoppages" class="mr-2">
+                                    <span class="font-semibold text-green-600">{% trans "Select All Stoppages" %}</span>
+                                </label>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="stoppages_grid">
+                                {% for stop in stoppages %}
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-green-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_stoppages" value="{{ stop.id }}" class="mr-2 stoppage-checkbox">
+                                    <span class="text-sm font-medium">{{ stop.name }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group hidden" id="monthly_wrapper">
+                        <label class="form-label">
+                            <i class="fas fa-calendar-alt mr-2 text-purple-500"></i>{% trans "Select Months" %}*
+                        </label>
+                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                            <div class="mb-3">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="select_all_months" class="mr-2">
+                                    <span class="font-semibold text-purple-600">{% trans "Select All Months" %}</span>
+                                </label>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="months_grid">
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="January" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">📅 January</span>
+                                </label>
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="February" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">💝 February</span>
+                                </label>
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="March" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">🌸 March</span>
+                                </label>
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="April" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">🌷 April</span>
+                                </label>
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="May" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">🌺 May</span>
+                                </label>
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="June" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">☀️ June</span>
+                                </label>
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="July" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">🌧️ July</span>
+                                </label>
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="August" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">🎆 August</span>
+                                </label>
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="September" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">🍂 September</span>
+                                </label>
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="October" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">🎃 October</span>
+                                </label>
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="November" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">🦃 November</span>
+                                </label>
+                                <label class="flex items-center bg-white p-3 rounded-lg border hover:bg-purple-50 cursor-pointer">
+                                    <input type="checkbox" name="selected_months" value="December" class="mr-2 month-checkbox">
+                                    <span class="text-sm font-medium">🎄 December</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="form-group">
+                            <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                <i class="fas fa-tag mr-2 text-teal-500"></i>{% trans "Amount Type" %}*
+                            </label>
+                            <input type="text" name="amount_type" id="amount_type_input" 
+                                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-0 transition-all duration-300"
+                                   placeholder="e.g., Jan25, Mar25, Quarterly, Year2025"
+                                   value="{{ form.amount_type.value|default:'' }}" required>
+                            {% if form.amount_type.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {{ form.amount_type.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                            <p class="text-sm text-gray-500 mt-1">{% trans "Enter the billing identifier (e.g., Jan25, Mar25, Quarterly)" %}</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                <i class="fas fa-rupee-sign mr-2 text-yellow-500"></i>{% trans "Amount" %} (₹)*
+                            </label>
+                            <input type="number" name="amount" id="amount_input" 
+                                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-0 transition-all duration-300"
+                                   placeholder="Enter amount in rupees"
+                                   step="0.01" min="0" 
+                                   value="{{ form.amount.value|default:'' }}" required>
+                            {% if form.amount.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {{ form.amount.errors|join:", " }}
+                                </div>
+                            {% endif %}
+                            <p class="text-sm text-gray-500 mt-1">{% trans "Enter the fee amount in rupees" %}</p>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div id="preview_section" class="hidden bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                        <h3 class="text-lg font-bold text-blue-800 mb-4 flex items-center">
+                            <i class="fas fa-eye mr-2"></i>{% trans "Preview: Fee Types to be Created" %}
+                        </h3>
+                        <div id="preview_content" class="space-y-2">
+                            <!-- Dynamic preview content will be inserted here -->
+                        </div>
+                        <p class="text-sm text-blue-600 mt-3">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            {% trans "Format: Group Type | Month/Context | Class/Stoppage | Amount Type | Amount" %}
+                        </p>
+                    </div>
+
+                    <div class="flex gap-4 pt-6">
+                        <button type="submit" id="saveBtn" name="submit" value="save" class="flex-1 bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-600 hover:to-red-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                            <i class="fas fa-save mr-2"></i>{% trans "Save Fees Type" %}
+                        </button>
+                        <a href="{% url 'fees:fees_setup' %}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 text-center">
+                            <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Help & Guidelines -->
+        <div class="space-y-6">
+            <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-4 rounded-xl mb-6">
+                    <h3 class="text-white text-lg font-bold flex items-center">
+                        <i class="fas fa-magic mr-3"></i>✨ {% trans "Auto-Fill Feature" %}
+                    </h3>
+                </div>
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 mb-6">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-info-circle text-green-500 text-xl mt-1"></i>
+                        <div>
+                            <p class="font-bold text-green-800 mb-2">🎯 {% trans "Smart Auto-Fill" %}</p>
+                            <p class="text-green-600 text-sm mb-2">{% trans "When you select a Fee Group, the Group Type and Fee Type fields will automatically fill with the details from the selected group." %}</p>
+                            <p class="text-green-600 text-sm">{% trans "This saves time and ensures consistency with your existing fee group settings." %}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-yellow-500 to-orange-600 p-4 rounded-xl mb-6">
+                    <h3 class="text-white text-lg font-bold flex items-center">
+                        <i class="fas fa-lightbulb mr-3"></i>{% trans "Fee Type Guide" %}
+                    </h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-xl border border-purple-200">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-globe text-purple-500 text-xl mt-1"></i>
+                            <div>
+                                <p class="font-bold text-purple-800 mb-1">🎯 {% trans "General Fees" %}</p>
+                                <p class="text-purple-600 text-sm">{% trans "Apply to all students regardless of class" %}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-4 rounded-xl border border-blue-200">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-school text-blue-500 text-xl mt-1"></i>
+                            <div>
+                                <p class="font-bold text-blue-800 mb-1">{% trans "Class Based" %}</p>
+                                <p class="text-blue-600 text-sm">{% trans "Different amounts for different classes" %}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-bus text-green-500 text-xl mt-1"></i>
+                            <div>
+                                <p class="font-bold text-green-800 mb-1">{% trans "Stoppage Based" %}</p>
+                                <p class="text-green-600 text-sm">{% trans "Transport fees based on pickup location" %}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-xl border border-purple-200">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-calendar-alt text-purple-500 text-xl mt-1"></i>
+                            <div>
+                                <p class="font-bold text-purple-800 mb-1">📅 {% trans "Monthly Fees" %}</p>
+                                <p class="text-purple-600 text-sm">{% trans "Select multiple months for recurring monthly fees" %}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4 rounded-xl mb-6">
+                    <h3 class="text-white text-lg font-bold flex items-center">
+                        <i class="fas fa-calendar mr-3"></i>{% trans "Amount Type Examples" %}
+                    </h3>
+                </div>
+                <div class="space-y-3">
+                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-xl border border-gray-200">
+                        <p class="font-bold text-gray-800 mb-1">📅 {% trans "Monthly" %}</p>
+                        <p class="text-gray-600 text-sm">Jan25, Feb25, Mar25...</p>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-xl border border-gray-200">
+                        <p class="font-bold text-gray-800 mb-1">{% trans "Annual" %}</p>
+                        <p class="text-gray-600 text-sm">Academic2025, Year2025</p>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-4 rounded-xl border border-gray-200">
+                        <p class="font-bold text-gray-800 mb-1">🎯 {% trans "One-time" %}</p>
+                        <p class="text-gray-600 text-sm">Admission, Registration</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                <div class="bg-gradient-to-r from-cyan-500 to-blue-600 p-4 rounded-xl mb-6">
+                    <h3 class="text-white text-lg font-bold flex items-center">
+                        <i class="fas fa-bolt mr-3"></i>{% trans "Quick Actions" %}
+                    </h3>
+                </div>
+                <div class="space-y-3">
+                    <a href="{% url 'fees:fees_setup' %}" class="block w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 text-center">
+                        <i class="fas fa-list mr-2"></i>{% trans "View All Fees" %}
+                    </a>
+                    <a href="{% url 'fees:add_fees_group' %}" class="block w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 text-center">
+                        <i class="fas fa-plus mr-2"></i>{% trans "Add Fee Group" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Enhanced updateGroupDetails function - make it globally available
+window.updateGroupDetails = function(groupId) {
+    if (!groupId) {
+        hideAllDynamicFields();
+        return;
+    }
+    
+    // Make AJAX call to get context information
+    fetch('/fees/api/fee-group-context/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: `fee_group_id=${groupId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateFormBasedOnContext(data.context);
+        } else {
+            console.error('Error:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Network error:', error);
+    });
+};
+
+// Also create a regular function declaration for compatibility
+function updateGroupDetails(groupId) {
+    return window.updateGroupDetails(groupId);
+}
+
+function updateFormBasedOnContext(context) {
+    // Hide all dynamic fields first
+    hideAllDynamicFields();
+    
+    // Show relevant fields based on context
+    if (context.requires_months) {
+        const monthlyWrapper = document.getElementById('monthly_wrapper');
+        if (monthlyWrapper) monthlyWrapper.classList.remove('hidden');
+    }
+    
+    if (context.requires_classes) {
+        const classWrapper = document.getElementById('class_name_wrapper');
+        if (classWrapper) classWrapper.classList.remove('hidden');
+    }
+    
+    if (context.requires_stoppages) {
+        const stoppageWrapper = document.getElementById('stoppage_wrapper');
+        if (stoppageWrapper) stoppageWrapper.classList.remove('hidden');
+    }
+    
+    if (context.requires_custom_name) {
+        const customWrapper = document.getElementById('custom_fee_name_wrapper');
+        if (customWrapper) customWrapper.classList.remove('hidden');
+    }
+    
+    // Update preview when context changes
+    updatePreview();
+}
+
+function hideAllDynamicFields() {
+    const dynamicFields = [
+        'monthly_wrapper',
+        'class_name_wrapper', 
+        'stoppage_wrapper',
+        'custom_fee_name_wrapper'
+    ];
+    
+    dynamicFields.forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        if (element) {
+            element.classList.add('hidden');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Preserve form values if there are errors
+    const preservedGroupId = "{{ preserved_values.fee_group|default:'' }}";
+    if (preservedGroupId) {
+        document.getElementById('fee_group').value = preservedGroupId;
+        updateGroupDetails(preservedGroupId);
+    }
+    
+    const preservedAmountType = "{{ preserved_values.amount_type|default:'' }}";
+    if (preservedAmountType) {
+        document.getElementById('amount_type_input').value = preservedAmountType;
+    }
+    
+    // Preserve checkbox selections
+    const preservedClasses = "{{ preserved_values.selected_classes|join:',' }}";
+    if (preservedClasses) {
+        preservedClasses.split(',').forEach(className => {
+            const checkbox = document.querySelector(`input[name="selected_classes"][value="${className.trim()}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
+    
+    const preservedStoppages = "{{ preserved_values.selected_stoppages|join:',' }}";
+    if (preservedStoppages) {
+        preservedStoppages.split(',').forEach(stoppageId => {
+            const checkbox = document.querySelector(`input[name="selected_stoppages"][value="${stoppageId.trim()}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
+    
+    const preservedMonths = "{{ preserved_values.selected_months|join:',' }}";
+    if (preservedMonths) {
+        preservedMonths.split(',').forEach(month => {
+            const checkbox = document.querySelector(`input[name="selected_months"][value="${month.trim()}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+    }
+    
+    // Auto-hide messages
+    const messages = document.querySelectorAll('.alert');
+    messages.forEach(message => {
+        setTimeout(() => {
+            message.style.opacity = '0';
+            message.style.transform = 'translateX(100%)';
+            setTimeout(() => message.remove(), 500);
+        }, 5000);
+    });
+    
+    // Enhanced form validation
+    const form = document.getElementById('feeTypeForm');
+    const submitBtn = document.getElementById('saveBtn');
+    
+    if (form && submitBtn) {
+        form.addEventListener('submit', function(e) {
+            if (!validateDynamicForm()) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating Fee Types...';
+            submitBtn.disabled = true;
+            
+            return true;
+        });
+    }
+});
+
+function validateDynamicForm() {
+    const feeGroup = document.getElementById('fee_group').value;
+    const amount = document.getElementById('amount_input').value;
+    const amountType = document.getElementById('amount_type_input').value.trim();
+    
+    if (!feeGroup) {
+        showValidationError('Please select a fee group.');
+        return false;
+    }
+    
+    if (!amount || parseFloat(amount) <= 0) {
+        showValidationError('Please enter a valid amount greater than 0.');
+        return false;
+    }
+    
+    if (!amountType) {
+        showValidationError('Please enter an amount type (e.g., Jan25, Quarterly).');
+        return false;
+    }
+    
+    // Context-specific validation
+    if (document.getElementById('monthly_wrapper') && !document.getElementById('monthly_wrapper').classList.contains('hidden')) {
+        const selectedMonths = document.querySelectorAll('input[name="selected_months"]:checked');
+        if (selectedMonths.length === 0) {
+            showValidationError('Please select at least one month.');
+            return false;
+        }
+    }
+    
+    if (document.getElementById('class_name_wrapper') && !document.getElementById('class_name_wrapper').classList.contains('hidden')) {
+        const selectedClasses = document.querySelectorAll('input[name="selected_classes"]:checked');
+        if (selectedClasses.length === 0) {
+            showValidationError('Please select at least one class.');
+            return false;
+        }
+    }
+    
+    if (document.getElementById('stoppage_wrapper') && !document.getElementById('stoppage_wrapper').classList.contains('hidden')) {
+        const selectedStoppages = document.querySelectorAll('input[name="selected_stoppages"]:checked');
+        if (selectedStoppages.length === 0) {
+            showValidationError('Please select at least one stoppage.');
+            return false;
+        }
+    }
+    
+    if (document.getElementById('custom_fee_name_wrapper') && !document.getElementById('custom_fee_name_wrapper').classList.contains('hidden')) {
+        const customName = document.querySelector('input[name="custom_fee_name"]').value.trim();
+        if (!customName) {
+            showValidationError('Please enter a fee name.');
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+function showValidationError(message) {
+    // Create and show error message with animation
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'alert alert-danger animate-slide-in';
+    errorDiv.innerHTML = `
+        <i class="fas fa-exclamation-circle mr-2"></i>
+        ${message}
+        <button onclick="this.parentElement.remove()" class="float-right font-bold hover:text-gray-300">×</button>
+    `;
+    
+    const container = document.querySelector('.animate-fade-in');
+    container.insertBefore(errorDiv, container.firstChild);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (errorDiv.parentElement) {
+            errorDiv.remove();
+        }
+    }, 5000);
+}
+
+// Real-time preview functionality
+function updatePreview() {
+    const feeGroupSelect = document.getElementById('fee_group');
+    const amountInput = document.getElementById('amount_input');
+    const amountTypeInput = document.getElementById('amount_type_input');
+    const previewSection = document.getElementById('preview_section');
+    const previewContent = document.getElementById('preview_content');
+    
+    if (!feeGroupSelect.value || !amountInput.value || !amountTypeInput.value) {
+        previewSection.classList.add('hidden');
+        return;
+    }
+    
+    const selectedOption = feeGroupSelect.options[feeGroupSelect.selectedIndex];
+    const groupType = selectedOption.getAttribute('data-group-type') || 'General';
+    const amount = amountInput.value;
+    const amountType = amountTypeInput.value;
+    
+    let previewItems = [];
+    
+    // Check for selected months
+    const selectedMonths = Array.from(document.querySelectorAll('input[name="selected_months"]:checked'))
+        .map(cb => cb.value);
+    
+    // Check for selected classes
+    const selectedClasses = Array.from(document.querySelectorAll('input[name="selected_classes"]:checked'))
+        .map(cb => cb.value);
+    
+    // Check for selected stoppages
+    const selectedStoppages = Array.from(document.querySelectorAll('input[name="selected_stoppages"]:checked'))
+        .map(cb => cb.closest('label').textContent.trim());
+    
+    // Generate preview based on selections
+    if (selectedMonths.length > 0) {
+        selectedMonths.forEach(month => {
+            if (selectedClasses.length > 0) {
+                selectedClasses.forEach(className => {
+                    previewItems.push(`${groupType} | ${month} | ${className} | ${month} | ${amount}`);
+                });
+            } else if (selectedStoppages.length > 0) {
+                selectedStoppages.forEach(stoppage => {
+                    previewItems.push(`${groupType} | ${month} | ${stoppage} | ${month} | ${amount}`);
+                });
+            } else {
+                previewItems.push(`${groupType} | ${month} | General | ${month} | ${amount}`);
+            }
+        });
+    } else if (selectedClasses.length > 0) {
+        selectedClasses.forEach(className => {
+            previewItems.push(`${groupType} | General | ${className} | ${amountType} | ${amount}`);
+        });
+    } else if (selectedStoppages.length > 0) {
+        selectedStoppages.forEach(stoppage => {
+            previewItems.push(`${groupType} | General | ${stoppage} | ${amountType} | ${amount}`);
+        });
+    } else {
+        previewItems.push(`${groupType} | General | General | ${amountType} | ${amount}`);
+    }
+    
+    // Update preview content
+    if (previewItems.length > 0) {
+        previewContent.innerHTML = previewItems.map(item => 
+            `<div class="bg-white p-3 rounded-lg border border-blue-200 font-mono text-sm">
+                <i class="fas fa-arrow-right text-blue-500 mr-2"></i>${item}
+            </div>`
+        ).join('');
+        previewSection.classList.remove('hidden');
+    } else {
+        previewSection.classList.add('hidden');
+    }
+}
+
+// Add event listeners for real-time preview
+function setupPreviewListeners() {
+    const inputIds = [
+        'fee_group',
+        'amount_input', 
+        'amount_type_input'
+    ];
+    
+    inputIds.forEach(inputId => {
+        const element = document.getElementById(inputId);
+        if (element) {
+            element.addEventListener('input', updatePreview);
+            element.addEventListener('change', updatePreview);
+        }
+    });
+    
+    // Add listeners for checkboxes
+    document.addEventListener('change', function(e) {
+        if (e.target.matches('input[name="selected_months"], input[name="selected_classes"], input[name="selected_stoppages"]')) {
+            updatePreview();
+        }
+    });
+    
+    // Add focus effects
+    const formElements = document.querySelectorAll('input, select');
+    formElements.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('ring-2', 'ring-pink-300');
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.classList.remove('ring-2', 'ring-pink-300');
+        });
+    });
+    
+    // Handle select all classes
+    const selectAllClasses = document.getElementById('select_all_classes');
+    const classCheckboxes = document.querySelectorAll('.class-checkbox');
+    
+    if (selectAllClasses) {
+        selectAllClasses.addEventListener('change', function() {
+            classCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            updateFeeTypeFromClasses();
+        });
+    }
+    
+    // Update fee type when individual classes are selected
+    classCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateFeeTypeFromClasses);
+    });
+    
+    // Function to update fee type based on selected classes
+    function updateFeeTypeFromClasses() {
+        const selectedClasses = Array.from(document.querySelectorAll('input[name="selected_classes"]:checked'))
+            .map(cb => cb.value);
+        
+        const feeTypeDisplayField = document.getElementById('fee_type_display');
+        const feeTypeField = document.getElementById('fee_type');
+        
+        if (selectedClasses.length > 0 && feeTypeDisplayField && feeTypeField) {
+            const classesText = selectedClasses.join(', ');
+            feeTypeDisplayField.value = classesText;
+            feeTypeField.value = classesText;
+        } else if (feeTypeDisplayField && feeTypeField) {
+            // Reset to original fee type if no classes selected
+            const selectedOption = document.querySelector('#fee_group option:checked');
+            if (selectedOption) {
+                const originalFeeType = selectedOption.getAttribute('data-fee-type');
+                feeTypeDisplayField.value = originalFeeType;
+                feeTypeField.value = originalFeeType;
+            }
+        }
+    }
+    
+    // Handle select all stoppages
+    const selectAllStoppages = document.getElementById('select_all_stoppages');
+    const stoppageCheckboxes = document.querySelectorAll('.stoppage-checkbox');
+    
+    if (selectAllStoppages) {
+        selectAllStoppages.addEventListener('change', function() {
+            stoppageCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            updateFeeTypeFromStoppages();
+        });
+    }
+    
+    // Update fee type when individual stoppages are selected
+    stoppageCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateFeeTypeFromStoppages);
+    });
+    
+    // Function to update fee type based on selected stoppages
+    function updateFeeTypeFromStoppages() {
+        const selectedStoppages = Array.from(document.querySelectorAll('input[name="selected_stoppages"]:checked'))
+            .map(cb => cb.closest('label').textContent.trim());
+        
+        const feeTypeDisplayField = document.getElementById('fee_type_display');
+        const feeTypeField = document.getElementById('fee_type');
+        
+        if (selectedStoppages.length > 0 && feeTypeDisplayField && feeTypeField) {
+            const stoppagesText = selectedStoppages.join(', ');
+            feeTypeDisplayField.value = stoppagesText;
+            feeTypeField.value = stoppagesText;
+        } else if (feeTypeDisplayField && feeTypeField) {
+            // Reset to original fee type if no stoppages selected
+            const selectedOption = document.querySelector('#fee_group option:checked');
+            if (selectedOption) {
+                const originalFeeType = selectedOption.getAttribute('data-fee-type');
+                feeTypeDisplayField.value = originalFeeType;
+                feeTypeField.value = originalFeeType;
+            }
+        }
+    }
+    
+    // Handle select all months
+    const selectAllMonths = document.getElementById('select_all_months');
+    const monthCheckboxes = document.querySelectorAll('.month-checkbox');
+    
+    if (selectAllMonths) {
+        selectAllMonths.addEventListener('change', function() {
+            monthCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            updateAmountTypeFromMonths();
+        });
+    }
+    
+    // Update amount type when individual months are selected
+    monthCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateAmountTypeFromMonths);
+    });
+    
+    // Function to update amount type based on selected months
+    function updateAmountTypeFromMonths() {
+        const selectedMonths = Array.from(document.querySelectorAll('input[name="selected_months"]:checked'))
+            .map(cb => cb.value);
+        
+        const amountTypeInput = document.getElementById('amount_type_input');
+        if (amountTypeInput && selectedMonths.length > 0) {
+            amountTypeInput.value = selectedMonths.join(', ');
+        } else if (amountTypeInput) {
+            amountTypeInput.value = '';
+        }
+    }
+    
+
+    
+}
+
+// Setup preview listeners after DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    setupPreviewListeners();
+});
+</script>
+
+{% block extra_css %}
+<style>
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Enhanced form styling */
+input, select {
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    box-shadow: inset 2px 2px 5px #e2e8f0, inset -2px -2px 5px #ffffff;
+}
+
+input:focus, select:focus {
+    background: #ffffff;
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.15);
+    transform: scale(1.02);
+}
+
+/* Button hover effects */
+button, a {
+    transition: all 0.3s ease;
+}
+
+button:hover, a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Dynamic field styling */
+.form-group.hidden {
+    display: none;
+}
+
+.form-label {
+    @apply block text-gray-700 font-semibold mb-3;
+}
+
+.form-input, .form-select {
+    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-0 transition-all duration-300;
+}
+
+/* Auto-fill animations */
+@keyframes magicFill {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); color: #10b981; }
+    100% { transform: scale(1); }
+}
+
+.animate-magic {
+    animation: magicFill 0.6s ease-in-out;
+}
+
+/* Success indicators */
+#group_type_auto_filled, #fee_type_auto_filled {
+    animation: fadeInScale 0.5s ease-in-out;
+}
+
+@keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Magic icons */
+#group_type_magic_icon, #fee_type_magic_icon {
+    animation: sparkle 1.5s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0.6; transform: rotate(0deg); }
+    50% { opacity: 1; transform: rotate(180deg); }
+}
+</style>
+{% endblock %}
+{% endblock %}

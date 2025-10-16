@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Student Promotion" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-green-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-graduation-cap text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-800 bg-clip-text text-transparent">
+                        {% trans "Student Promotion Management" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "Promote students to next academic session" %}</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <a href="{% url 'promotion:promote_students' %}" 
+                   class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-2 px-4 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-plus mr-2"></i>{% trans "Promote Students" %}
+                </a>
+                <a href="{% url 'dashboard' %}" 
+                   class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                    <i class="fas fa-arrow-left mr-2"></i>{% trans "Back" %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Session Selection Card -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 mb-8">
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-calendar-alt mr-3"></i>📅 {% trans "Academic Session Selection" %}
+            </h2>
+        </div>
+        <div class="p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                        <i class="fas fa-clock mr-2 text-blue-500"></i>{% trans "Current Session" %}
+                    </label>
+                    <div class="relative">
+                        <input type="text" class="form-input bg-blue-50 border-blue-200" 
+                               value="{{ current_session }}" readonly>
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-blue-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                        <i class="fas fa-arrow-right mr-2 text-green-500"></i>{% trans "New Session" %}
+                    </label>
+                    <div class="relative">
+                        <input type="text" class="form-input bg-green-50 border-green-200" 
+                               value="{{ next_session }}" readonly>
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <i class="fas fa-check text-green-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-center">
+                <button class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-check-circle mr-2"></i>{% trans "Confirm Session" %}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Class Selection Card -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 mb-8">
+        <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-school mr-3"></i>{% trans "Class Selection for Promotion" %}
+            </h2>
+        </div>
+        <div class="p-8">
+            <form method="post" id="attendanceForm">
+                {% csrf_token %}
+                <!-- Other form fields -->
+            </form>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Class Filter -->
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                        <i class="fas fa-school mr-2 text-blue-500"></i>{% trans "Class" %}
+                    </label>
+                    <select id="classFilter" class="form-select">
+                        <option value="">{% trans "All Classes" %}</option>
+                        {% for class in classes %}
+                        <option value="{{ class.id }}">{{ class.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Section Filter -->
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                        <i class="fas fa-layer-group mr-2 text-purple-500"></i>{% trans "Section" %}
+                    </label>
+                    <select id="sectionFilter" class="form-select">
+                        <option value="">{% trans "All Sections" %}</option>
+                        {% for section in sections %}
+                        <option value="{{ section.id }}">{{ section.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Load Button -->
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3">&nbsp;</label>
+                    <button id="loadClassesBtn"
+                            class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-download mr-2"></i>{% trans "Load Classes" %}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Selected Classes -->
+            <div id="selectedClassesContainer" class="hidden">
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                    <h4 class="font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-check-circle mr-2 text-green-500"></i>📝 {% trans "Selected Classes" %}:
+                    </h4>
+                    <div id="selectedClassesList" class="flex flex-wrap gap-3 mb-6">
+                        <!-- JavaScript will populate this -->
+                    </div>
+                    <div class="text-center">
+                        <button id="proceedToStudentsBtn"
+                                class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hidden">
+                            <i class="fas fa-users mr-2"></i>{% trans "Load Students" %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Student List Table -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-purple-500 to-indigo-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-users mr-3"></i>{% trans "Students List" %}
+            </h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-4">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-purple-600 select-all">
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-id-badge mr-2 text-blue-500"></i>{% trans "Admission No." %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-user mr-2 text-green-500"></i>{% trans "Student Name" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-male mr-2 text-indigo-500"></i>{% trans "Father's Name" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-school mr-2 text-orange-500"></i>{% trans "Current Class" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-arrow-right mr-2 text-purple-500"></i>{% trans "New Class" %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="studentsTbody" class="bg-white divide-y divide-gray-200">
+                    <!-- Dynamic data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mt-8 border border-gray-200">
+        <div class="flex justify-center space-x-4">
+            <button type="submit" form="attendanceForm" name="save_draft"
+                    class="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <i class="fas fa-save mr-2"></i>{% trans "Save Draft" %}
+            </button>
+            <button type="submit" form="attendanceForm" name="promote"
+                    class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-12 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                <i class="fas fa-graduation-cap mr-2"></i>{% trans "Promote Students" %}
+            </button>
+        </div>
+    </div>
+</div>
+
+
+{% include 'promotion/_student_row_template.html' %}
+
+{% block extra_css %}
+<style>
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Enhanced form styling */
+.form-input, .form-select, .form-textarea {
+    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-400 focus:ring-0 transition-all duration-300 bg-white;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    @apply shadow-lg transform scale-[1.02];
+}
+
+/* Table row hover effects */
+tbody tr:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/promote_students.js' %}"></script>
+<script>
+// Animate table rows on load
+document.addEventListener('DOMContentLoaded', function() {
+    const tableRows = document.querySelectorAll('tbody tr');
+    tableRows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            row.style.transition = 'all 0.5s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+});
+</script>
+{% endblock %}
+{% endblock %}

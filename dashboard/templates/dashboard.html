@@ -1,0 +1,775 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Dashboard - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50" x-data="dashboard()">
+    <!-- Header -->
+    <div class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Good morning, {{ user.get_full_name|default:user.username }}!</h1>
+                    <p class="text-gray-600">Here's what's happening at your school today</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button @click="refreshDashboard()" data-refresh-btn class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100" title="Refresh Dashboard">
+                        <i class="fas fa-sync-alt text-xl"></i>
+                    </button>
+                    <button class="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-bell text-xl"></i>
+                    </button>
+                    <div class="text-sm text-gray-500">
+                        <div x-text="currentTime"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Students -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Students</p>
+                        <p class="text-3xl font-bold text-gray-900" data-stat="total-students">{{ total_students|default:0 }}</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center text-sm">
+                    <span class="text-green-600 font-medium">+{{ new_admissions|default:0 }}</span>
+                    <span class="text-gray-600 ml-2">new this month</span>
+                </div>
+            </div>
+
+            <!-- Teachers -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Teachers</p>
+                        <p class="text-3xl font-bold text-gray-900" data-stat="total-teachers">{{ total_teachers|default:0 }}</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chalkboard-teacher text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center text-sm">
+                    <span class="text-gray-600">All teachers</span>
+                </div>
+            </div>
+
+            <!-- Revenue -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Monthly Revenue</p>
+                        <p class="text-3xl font-bold text-gray-900" x-show="!hideRevenue" data-stat="monthly-revenue">₹{{ monthly_revenue|default:0|floatformat:0 }}</p>
+                        <p class="text-3xl font-bold text-gray-400" x-show="hideRevenue">••••••</p>
+                    </div>
+                    <div class="flex flex-col items-center space-y-2">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-rupee-sign text-yellow-600 text-xl"></i>
+                        </div>
+                        <button @click="hideRevenue = !hideRevenue" class="text-xs text-gray-500 hover:text-gray-700">
+                            <i class="fas" :class="hideRevenue ? 'fa-eye' : 'fa-eye-slash'"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center text-sm">
+                    <span class="text-blue-600 font-medium">Total: ₹{{ total_fees_collected|default:0|floatformat:0 }}</span>
+                </div>
+            </div>
+
+            <!-- Attendance -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Today's Attendance</p>
+                        <p class="text-3xl font-bold text-gray-900" data-stat="attendance-rate">{{ today_attendance_rate|default:0 }}%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-check text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-purple-600 h-2 rounded-full" :style="`width: {{ today_attendance_rate|default:0 }}%`"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Fee Overview Section -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-money-bill-wave text-green-500 mr-2"></i>Fee Overview
+                        </h3>
+                        <button @click="refreshDashboard()" class="text-sm text-gray-500 hover:text-gray-700 transition-colors">
+                            <i class="fas fa-sync-alt mr-1"></i>Refresh
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Total Fees Collected -->
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-green-700">Total Collected</p>
+                                    <p class="text-2xl font-bold text-green-900" data-fee="total-collected">₹{{ total_fees_collected|default:0|floatformat:0 }}</p>
+                                </div>
+                                <i class="fas fa-coins text-green-500 text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Monthly Revenue -->
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-blue-700">This Month</p>
+                                    <p class="text-2xl font-bold text-blue-900" data-fee="monthly-revenue">₹{{ monthly_revenue|default:0|floatformat:0 }}</p>
+                                </div>
+                                <i class="fas fa-calendar-alt text-blue-500 text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Pending Fees -->
+                        <div class="bg-gradient-to-r from-yellow-50 to-orange-50 p-4 rounded-lg border border-yellow-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-yellow-700">Pending Fees</p>
+                                    <p class="text-lg font-bold text-yellow-900" data-fee="pending-count">{{ pending_fees_count|default:0 }} Students</p>
+                                </div>
+                                <i class="fas fa-clock text-yellow-500 text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Overdue Fees -->
+                        <div class="bg-gradient-to-r from-red-50 to-pink-50 p-4 rounded-lg border border-red-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-red-700">Overdue</p>
+                                    <p class="text-lg font-bold text-red-900" data-fee="overdue-count">{{ overdue_fees_count|default:0 }} Students</p>
+                                </div>
+                                <i class="fas fa-exclamation-triangle text-red-500 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Fines Overview -->
+                    <div class="hidden mt-6 pt-6 border-t border-gray-200">
+                        <h4 class="hidden text-md font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-gavel text-purple-500 mr-2"></i>Fines Overview
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <!-- Total Fines -->
+                            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-medium text-purple-700">Total Fines</p>
+                                        <p class="text-xl font-bold text-purple-900" data-fine="total-amount">₹{{ total_fines_amount|default:0|floatformat:0 }}</p>
+                                    </div>
+                                    <i class="fas fa-balance-scale text-purple-500"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Collected Fines -->
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-medium text-green-700">Collected</p>
+                                        <p class="text-xl font-bold text-green-900" data-fine="collected-amount">₹{{ total_collected_fines|default:0|floatformat:0 }}</p>
+                                    </div>
+                                    <i class="fas fa-check-circle text-green-500"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Pending Fines -->
+                            <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-medium text-orange-700">Pending</p>
+                                        <p class="text-xl font-bold text-orange-900" data-fine="pending-count">{{ pending_fines_count|default:0 }} Students</p>
+                                    </div>
+                                    <i class="fas fa-hourglass-half text-orange-500"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- Overdue Fines -->
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-medium text-red-700">Overdue</p>
+                                        <p class="text-xl font-bold text-red-900" data-fine="overdue-count">{{ overdue_fines_count|default:0 }} Students</p>
+                                    </div>
+                                    <i class="fas fa-exclamation-triangle text-red-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <a href="/students/add/" class="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-user-plus text-2xl text-blue-600 mb-2"></i>
+                            <span class="text-sm font-medium text-gray-700">Add Student</span>
+                        </a>
+                        <a href="/student_fees/deposit/" class="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-green-300 hover:bg-green-50 transition-colors">
+                            <i class="fas fa-money-bill-wave text-2xl text-green-600 mb-2"></i>
+                            <span class="text-sm font-medium text-gray-700">Collect Fee</span>
+                        </a>
+                        <a href="/attendance/" class="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition-colors">
+                            <i class="fas fa-clipboard-check text-2xl text-purple-600 mb-2"></i>
+                            <span class="text-sm font-medium text-gray-700">Attendance</span>
+                        </a>
+                        <a href="/reports/" class="flex flex-col items-center p-4 rounded-lg border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors">
+                            <i class="fas fa-chart-bar text-2xl text-orange-600 mb-2"></i>
+                            <span class="text-sm font-medium text-gray-700">Reports</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Birthday Card -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-birthday-cake text-pink-500 mr-2"></i>🎂 Student Birthdays
+                        </h3>
+                    </div>
+                    
+                    <!-- Today's Birthdays -->
+                    {% if today_birthdays and today_birthdays != '[]' %}
+                    <div class="mb-6">
+                        <div class="bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl p-4 text-white">
+                            <h4 class="text-lg font-bold mb-3">🎉 Happy Birthday Today! 🎉</h4>
+                            {% for student in today_birthdays %}
+                            <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-2">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-semibold">{{ student.name }}</p>
+                                        <p class="text-sm opacity-90">{{ student.class }}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-sm font-medium">Age: {{ student.age }}</p>
+                                        <div class="text-2xl">🎂</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- This Week's Birthdays -->
+                    <div class="mb-4">
+                        <h4 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-calendar-week text-blue-500 mr-2"></i>This Week
+                        </h4>
+                        {% if week_birthdays and week_birthdays != '[]' %}
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
+                            {% for student in week_birthdays %}
+                            <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                        {{ student.name|slice:":2" }}
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-800">{{ student.name }}</p>
+                                        <p class="text-sm text-gray-600">{{ student.class }}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-gray-800">{{ student.date }}</p>
+                                    <p class="text-xs text-gray-500">{{ student.daysLeft }} days</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4 text-gray-500">
+                            <i class="fas fa-calendar-times text-2xl mb-2"></i>
+                            <p>No birthdays this week</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- This Month's Birthdays -->
+                    <div>
+                        <h4 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-calendar-alt text-green-500 mr-2"></i>This Month
+                        </h4>
+                        {% if month_birthdays and month_birthdays != '[]' %}
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
+                            {% for student in month_birthdays %}
+                            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                        {{ student.name|slice:":2" }}
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-800">{{ student.name }}</p>
+                                        <p class="text-sm text-gray-600">{{ student.class }}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-gray-800">{{ student.date }}</p>
+                                    <p class="text-xs text-gray-500">{{ student.daysLeft }} days</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4 text-gray-500">
+                            <i class="fas fa-calendar-times text-2xl mb-2"></i>
+                            <p>No birthdays this month</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-8">
+                <!-- Enhanced Alerts -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-bell text-orange-500 mr-2"></i>System Alerts
+                        </h3>
+                        <span class="text-xs text-gray-500" id="alerts-count">{{ alerts|length|default:0 }} active</span>
+                    </div>
+                    <div class="space-y-3 max-h-80 overflow-y-auto" id="alerts-container">
+                        {% if alerts %}
+                            {% for alert in alerts %}
+                            <div class="alert-item flex items-start space-x-3 p-3 rounded-lg border transition-all hover:shadow-sm {% if alert.type == 'error' %}bg-red-50 border-red-200{% elif alert.type == 'warning' %}bg-yellow-50 border-yellow-200{% elif alert.type == 'info' %}bg-blue-50 border-blue-200{% else %}bg-gray-50 border-gray-200{% endif %}">
+                                <div class="flex-shrink-0 mt-0.5">
+                                    {% if alert.type == 'error' %}
+                                        <i class="fas fa-exclamation-triangle text-red-500"></i>
+                                    {% elif alert.type == 'warning' %}
+                                        <i class="fas fa-exclamation-circle text-yellow-500"></i>
+                                    {% elif alert.type == 'info' %}
+                                        <i class="fas fa-info-circle text-blue-500"></i>
+                                    {% else %}
+                                        <i class="fas fa-bell text-gray-500"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-sm font-medium {% if alert.type == 'error' %}text-red-800{% elif alert.type == 'warning' %}text-yellow-800{% elif alert.type == 'info' %}text-blue-800{% else %}text-gray-800{% endif %}">
+                                            {{ alert.title }}
+                                        </p>
+                                        {% if alert.count %}
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {% if alert.type == 'error' %}bg-red-100 text-red-800{% elif alert.type == 'warning' %}bg-yellow-100 text-yellow-800{% elif alert.type == 'info' %}bg-blue-100 text-blue-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                                            {{ alert.count }}
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                    <p class="text-xs mt-1 {% if alert.type == 'error' %}text-red-600{% elif alert.type == 'warning' %}text-yellow-600{% elif alert.type == 'info' %}text-blue-600{% else %}text-gray-600{% endif %}">
+                                        {{ alert.message }}
+                                    </p>
+                                    {% if alert.details %}
+                                    <div class="mt-2 p-2 bg-gray-50 rounded text-xs text-gray-700 border-l-2 {% if alert.type == 'error' %}border-red-300{% elif alert.type == 'warning' %}border-yellow-300{% elif alert.type == 'info' %}border-blue-300{% else %}border-gray-300{% endif %}">
+                                        <strong>Details:</strong> {{ alert.details|truncatechars:150 }}
+                                    </div>
+                                    {% endif %}
+                                    {% if alert.recommendation %}
+                                    <div class="mt-2 p-2 bg-blue-50 rounded text-xs text-blue-700 border-l-2 border-blue-300">
+                                        <strong><i class="fas fa-lightbulb mr-1"></i>AI Recommendation:</strong> {{ alert.recommendation|truncatechars:120 }}
+                                    </div>
+                                    {% endif %}
+                                    {% if alert.module %}
+                                    <div class="flex items-center justify-between mt-2">
+                                        <span class="inline-flex items-center px-2 py-1 rounded text-xs bg-gray-100 text-gray-600">
+                                            <i class="fas fa-tag mr-1"></i>{{ alert.module|title }}
+                                        </span>
+                                        {% if alert.action_url %}
+                                        <a href="{{ alert.action_url }}" class="text-xs text-blue-600 hover:text-blue-800 font-medium">
+                                            Take Action <i class="fas fa-arrow-right ml-1"></i>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                            <i class="fas fa-check-circle text-green-500 mt-0.5"></i>
+                            <div>
+                                <p class="text-sm font-medium text-green-800">All Systems Normal</p>
+                                <p class="text-xs text-green-600">No alerts at this time - everything looks good!</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Classes</span>
+                            <span class="text-sm font-semibold text-gray-900" data-stat="total-classes">{{ total_classes|default:0 }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Subjects</span>
+                            <span class="text-sm font-semibold text-gray-900" data-stat="total-subjects">{{ total_subjects|default:0 }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Pending Fees</span>
+                            <span class="text-sm font-semibold text-red-600" data-stat="pending-fees">{{ pending_fees_count|default:0 }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Monthly Attendance</span>
+                            <span class="text-sm font-semibold text-green-600" data-stat="monthly-attendance">{{ avg_attendance|default:0 }}%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module Access -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Modules</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="/students/" class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-users text-blue-600 mr-3"></i>
+                            <span class="text-sm font-medium text-gray-700">Students</span>
+                        </a>
+                        <a href="/teachers/" class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-chalkboard-teacher text-green-600 mr-3"></i>
+                            <span class="text-sm font-medium text-gray-700">Teachers</span>
+                        </a>
+                        <a href="/student_fees/" class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-money-bill-wave text-yellow-600 mr-3"></i>
+                            <span class="text-sm font-medium text-gray-700">Fees</span>
+                        </a>
+                        <a href="/transport/" class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-bus text-purple-600 mr-3"></i>
+                            <span class="text-sm font-medium text-gray-700">Transport</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function dashboard() {
+    return {
+        hideRevenue: false,
+        currentTime: '',
+        
+        init() {
+            this.updateTime();
+            setInterval(() => this.updateTime(), 1000);
+            
+            // Auto-refresh dashboard every 2 minutes
+            setInterval(() => {
+                this.refreshDashboard();
+            }, 120000); // 2 minutes
+            
+            // Check for updates every 10 seconds for faster response
+            setInterval(() => {
+                this.checkForUpdates();
+            }, 10000);
+            
+            // Listen for payment events from other tabs/windows
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'payment_completed') {
+                    this.refreshDashboard();
+                    localStorage.removeItem('payment_completed');
+                }
+            });
+        },
+        
+        updateTime() {
+            const now = new Date();
+            this.currentTime = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        },
+        
+        async refreshDashboard() {
+            try {
+                // Show loading indicator
+                const refreshBtn = document.querySelector('[data-refresh-btn]');
+                if (refreshBtn) {
+                    refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xl"></i>';
+                }
+                
+                const response = await fetch('/dashboard/api/stats/');
+                const data = await response.json();
+                if (data.success) {
+                    this.updateDashboardValues(data.data);
+                    
+                    // Show success indicator briefly
+                    if (refreshBtn) {
+                        refreshBtn.innerHTML = '<i class="fas fa-check text-green-500 text-xl"></i>';
+                        setTimeout(() => {
+                            refreshBtn.innerHTML = '<i class="fas fa-sync-alt text-xl"></i>';
+                        }, 1000);
+                    }
+                }
+            } catch (error) {
+                console.error('Dashboard refresh failed:', error);
+                const refreshBtn = document.querySelector('[data-refresh-btn]');
+                if (refreshBtn) {
+                    refreshBtn.innerHTML = '<i class="fas fa-exclamation-triangle text-red-500 text-xl"></i>';
+                    setTimeout(() => {
+                        refreshBtn.innerHTML = '<i class="fas fa-sync-alt text-xl"></i>';
+                    }, 2000);
+                }
+            }
+        },
+        
+        async checkForUpdates() {
+            try {
+                const response = await fetch('/dashboard/api/check-updates/');
+                const data = await response.json();
+                if (data.success && data.has_updates) {
+                    this.refreshDashboard();
+                    this.showUpdateNotification();
+                }
+            } catch (error) {
+                console.error('Update check failed:', error);
+            }
+        },
+        
+        showUpdateNotification() {
+            // Remove existing notifications
+            document.querySelectorAll('.update-notification').forEach(el => el.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = 'update-notification fixed top-24 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-slide-in';
+            notification.innerHTML = '<i class="fas fa-sync-alt mr-2"></i>Dashboard updated with latest data';
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        },
+        
+        updateDashboardValues(data) {
+            const stats = data.basic_stats;
+            const feeData = data.fee_data;
+            const finesData = data.fines_data;
+            const attendanceData = data.attendance_data;
+            const feeOverview = data.fee_overview || {};
+            const alerts = data.alerts || [];
+            
+            // Update main stats
+            this.updateElement('[data-stat="total-students"]', stats.total_students);
+            this.updateElement('[data-stat="total-teachers"]', stats.total_teachers);
+            this.updateElement('[data-stat="monthly-revenue"]', '₹' + feeData.monthly_revenue.toLocaleString());
+            this.updateElement('[data-stat="attendance-rate"]', attendanceData.today_attendance_rate + '%');
+            
+            // Update Quick Stats
+            this.updateElement('[data-stat="total-classes"]', stats.total_classes);
+            this.updateElement('[data-stat="total-subjects"]', stats.total_subjects);
+            this.updateElement('[data-stat="pending-fees"]', feeData.pending_fees_count);
+            this.updateElement('[data-stat="monthly-attendance"]', attendanceData.monthly_average + '%');
+            
+            // Update Fee Overview
+            this.updateElement('[data-fee="total-collected"]', '₹' + (feeData.total_fees_collected || 0).toLocaleString());
+            this.updateElement('[data-fee="monthly-revenue"]', '₹' + (feeData.monthly_revenue || 0).toLocaleString());
+            this.updateElement('[data-fee="pending-count"]', (feeData.pending_fees_count || 0) + ' Students');
+            this.updateElement('[data-fee="overdue-count"]', (feeData.overdue_fees_count || 0) + ' Students');
+            
+            // Update Fines Overview
+            this.updateElement('[data-fine="total-amount"]', '₹' + (finesData.total_amount || 0).toLocaleString());
+            this.updateElement('[data-fine="collected-amount"]', '₹' + (finesData.total_collected_fines || 0).toLocaleString());
+            this.updateElement('[data-fine="pending-count"]', (finesData.pending_count || 0) + ' Students');
+            this.updateElement('[data-fine="overdue-count"]', (finesData.overdue_count || 0) + ' Students');
+            
+            // Update Alerts
+            this.updateAlerts(alerts);
+        },
+        
+        updateAlerts(alerts) {
+            const alertsContainer = document.getElementById('alerts-container');
+            const alertsCount = document.getElementById('alerts-count');
+            
+            if (!alertsContainer) return;
+            
+            // Update count
+            if (alertsCount) {
+                alertsCount.textContent = `${alerts.length} active`;
+            }
+            
+            // Clear existing alerts
+            alertsContainer.innerHTML = '';
+            
+            if (alerts.length === 0) {
+                alertsContainer.innerHTML = `
+                    <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                        <i class="fas fa-check-circle text-green-500 mt-0.5"></i>
+                        <div>
+                            <p class="text-sm font-medium text-green-800">All Systems Normal</p>
+                            <p class="text-xs text-green-600">No alerts at this time - everything looks good!</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Add new alerts
+            alerts.forEach(alert => {
+                const alertElement = this.createAlertElement(alert);
+                alertsContainer.appendChild(alertElement);
+            });
+        },
+        
+        createAlertElement(alert) {
+            const div = document.createElement('div');
+            const typeClasses = {
+                'error': 'bg-red-50 border-red-200',
+                'warning': 'bg-yellow-50 border-yellow-200',
+                'info': 'bg-blue-50 border-blue-200'
+            };
+            const iconClasses = {
+                'error': 'fas fa-exclamation-triangle text-red-500',
+                'warning': 'fas fa-exclamation-circle text-yellow-500',
+                'info': 'fas fa-info-circle text-blue-500'
+            };
+            const textClasses = {
+                'error': 'text-red-800',
+                'warning': 'text-yellow-800',
+                'info': 'text-blue-800'
+            };
+            const badgeClasses = {
+                'error': 'bg-red-100 text-red-800',
+                'warning': 'bg-yellow-100 text-yellow-800',
+                'info': 'bg-blue-100 text-blue-800'
+            };
+            
+            div.className = `alert-item flex items-start space-x-3 p-3 rounded-lg border transition-all hover:shadow-sm ${typeClasses[alert.type] || 'bg-gray-50 border-gray-200'}`;
+            
+            const borderColor = alert.type === 'error' ? 'border-red-300' : alert.type === 'warning' ? 'border-yellow-300' : alert.type === 'info' ? 'border-blue-300' : 'border-gray-300';
+            
+            div.innerHTML = `
+                <div class="flex-shrink-0 mt-0.5">
+                    <i class="${iconClasses[alert.type] || 'fas fa-bell text-gray-500'}"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                        <p class="text-sm font-medium ${textClasses[alert.type] || 'text-gray-800'}">
+                            ${alert.title}
+                        </p>
+                        ${alert.count ? `
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${badgeClasses[alert.type] || 'bg-gray-100 text-gray-800'}">
+                                ${alert.count}
+                            </span>
+                        ` : ''}
+                    </div>
+                    <p class="text-xs mt-1 ${alert.type === 'error' ? 'text-red-600' : alert.type === 'warning' ? 'text-yellow-600' : alert.type === 'info' ? 'text-blue-600' : 'text-gray-600'}">
+                        ${alert.message}
+                    </p>
+                    ${alert.details ? `
+                        <div class="mt-2 p-2 bg-gray-50 rounded text-xs text-gray-700 border-l-2 ${borderColor}">
+                            <strong>Details:</strong> ${alert.details.length > 150 ? alert.details.substring(0, 150) + '...' : alert.details}
+                        </div>
+                    ` : ''}
+                    ${alert.recommendation ? `
+                        <div class="mt-2 p-2 bg-blue-50 rounded text-xs text-blue-700 border-l-2 border-blue-300">
+                            <strong><i class="fas fa-lightbulb mr-1"></i>AI Recommendation:</strong> ${alert.recommendation.length > 120 ? alert.recommendation.substring(0, 120) + '...' : alert.recommendation}
+                        </div>
+                    ` : ''}
+                    ${alert.ml_confidence ? `
+                        <div class="mt-2 flex items-center justify-between">
+                            <span class="text-xs text-gray-500">
+                                <i class="fas fa-brain mr-1"></i>AI Confidence: ${(alert.ml_confidence * 100).toFixed(0)}%
+                            </span>
+                        </div>
+                    ` : ''}
+                    ${alert.module ? `
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="inline-flex items-center px-2 py-1 rounded text-xs bg-gray-100 text-gray-600">
+                                <i class="fas fa-tag mr-1"></i>${alert.module.charAt(0).toUpperCase() + alert.module.slice(1)}
+                            </span>
+                            ${alert.action_url ? `
+                                <a href="${alert.action_url}" class="text-xs text-blue-600 hover:text-blue-800 font-medium">
+                                    Take Action <i class="fas fa-arrow-right ml-1"></i>
+                                </a>
+                            ` : ''}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            return div;
+        },
+        
+        updateElement(selector, value) {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.textContent = value;
+                element.classList.add('animate-pulse');
+                setTimeout(() => element.classList.remove('animate-pulse'), 1000);
+            }
+        }
+    }
+}
+
+// Make dashboard refresh available globally
+window.refreshDashboard = function() {
+    if (window.dashboardInstance && typeof window.dashboardInstance.refreshDashboard === 'function') {
+        window.dashboardInstance.refreshDashboard();
+    }
+};
+
+// Store dashboard instance globally
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof dashboard === 'function') {
+        window.dashboardInstance = dashboard();
+        window.dashboardInstance.init();
+    }
+});
+
+
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+.update-notification {
+    transition: all 0.3s ease;
+}
+</style>
+{% endblock %}

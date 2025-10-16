@@ -1,0 +1,24 @@
+{% comment %} Fee Group/Type Filters for Fine History {% endcomment %}
+{% load i18n %}
+<div class="form-group">
+    <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+        <i class="fas fa-layer-group mr-2 text-indigo-500"></i>{% trans "Fee Group" %}
+    </label>
+    <select name="fee_group_filter" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-400 focus:ring-0 transition-all duration-300">
+        <option value="">{% trans "All Groups" %}</option>
+        {% for group in fee_groups %}
+        <option value="{{ group.id }}" {% if fee_group_filter == group.id|stringformat:'s' %}selected{% endif %}>{{ group.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+<div class="form-group">
+    <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+        <i class="fas fa-list-alt mr-2 text-purple-500"></i>{% trans "Fee Type" %}
+    </label>
+    <select name="fee_type_filter" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-400 focus:ring-0 transition-all duration-300">
+        <option value="">{% trans "All Types" %}</option>
+        {% for type in fee_types %}
+        <option value="{{ type.id }}" {% if fee_type_filter == type.id|stringformat:'s' %}selected{% endif %}>{{ type.display_format }}</option>
+        {% endfor %}
+    </select>
+</div>

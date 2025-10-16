@@ -1,0 +1,75 @@
+/* Hide export buttons from specified templates */
+
+/* Hide export buttons in teacher list */
+.teachers-template .export-buttons,
+.teachers-template [data-export],
+.teachers-template button[onclick*="exportData"] {
+    display: none !important;
+}
+
+/* Hide export buttons in students list */
+.students-template .export-buttons,
+.students-template [data-export],
+.students-template button[onclick*="exportData"] {
+    display: none !important;
+}
+
+/* Hide export buttons in transport management */
+.transport-template .export-buttons,
+.transport-template [data-export],
+.transport-template button[onclick*="exportData"] {
+    display: none !important;
+}
+
+/* Hide export buttons in fee deposit */
+.deposit-template .export-buttons,
+.deposit-template [data-export],
+.deposit-template button[onclick*="exportData"] {
+    display: none !important;
+}
+
+/* Hide export buttons in fees setup */
+.fees-setup-template .export-buttons,
+.fees-setup-template [data-export],
+.fees-setup-template button[onclick*="exportData"] {
+    display: none !important;
+}
+
+/* Hide export buttons in fine history */
+.fine-history-template .export-buttons,
+.fine-history-template [data-export],
+.fine-history-template button[onclick*="exportData"],
+.fine-history-template a[href*="export"] {
+    display: none !important;
+}
+
+/* Hide export buttons in attendance management */
+.attendance-template .export-buttons,
+.attendance-template [data-export],
+.attendance-template button[onclick*="exportData"] {
+    display: none !important;
+}
+
+/* Generic hide for any export-related elements */
+body.hide-exports .export-buttons,
+body.hide-exports [data-export],
+body.hide-exports button[onclick*="exportData"],
+body.hide-exports a[href*="export"],
+body.hide-exports button[title*="Export"],
+body.hide-exports button[title*="CSV"],
+body.hide-exports button[title*="Excel"],
+body.hide-exports button[title*="PDF"] {
+    display: none !important;
+}
+
+/* Explicitly show export buttons on backup and reports pages */
+.backup-template .export-buttons,
+.backup-template [data-export],
+.backup-template button[onclick*="exportData"],
+.backup-template a[href*="export"],
+.reports-template .export-buttons,
+.reports-template [data-export],
+.reports-template button[onclick*="exportData"],
+.reports-template a[href*="export"] {
+    display: block !important;
+}

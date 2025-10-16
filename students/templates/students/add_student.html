@@ -1,0 +1,348 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% if form.instance.id %}{% trans "Edit Student" %}{% else %}{% trans "Add New Student" %}{% endif %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-user-graduate text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                        {% if form.instance.id %}✏️ {% trans "Edit Student" %}{% else %}{% trans "Add New Student" %}{% endif %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "Fill in the student information below" %}</p>
+                </div>
+            </div>
+            <a href="{% url 'students:student_list' %}" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to List" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div id="form-messages" class="fixed top-4 right-4 z-50 space-y-2">
+        {% for message in messages %}
+        <div class="{% if message.tags == 'success' %}bg-green-500{% elif message.tags == 'error' %}bg-red-500{% else %}bg-blue-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in">
+            <div class="flex items-center">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} mr-3"></i>
+                <span class="font-medium">{{ message }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Form Errors -->
+    {% if form.errors %}
+    <div class="bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-2xl p-6 mb-8">
+        <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-exclamation-triangle text-white"></i>
+            </div>
+            <h3 class="text-red-800 font-bold text-lg">{% trans "Please correct the following errors" %}:</h3>
+        </div>
+        <ul class="space-y-2">
+            {% for field, errors in form.errors.items %}
+            <li class="bg-white rounded-lg p-3 border border-red-200">
+                <strong class="text-red-700">{{ field|capfirst }}:</strong> 
+                <span class="text-red-600">{{ errors|join:", " }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- Student Form -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-edit mr-3"></i>📝 {% trans "Student Information Form" %}
+            </h2>
+        </div>
+        <form method="POST" enctype="multipart/form-data" class="p-8">
+            {% csrf_token %}
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Left Column -->
+                <div class="space-y-6">
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-id-badge mr-2 text-blue-500"></i>{% trans "Admission Number" %}*
+                        </label>
+                        <div class="relative">
+                            {{ form.admission_number }}
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <i class="fas fa-hashtag text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-user mr-2 text-green-500"></i>{% trans "First Name" %}*
+                        </label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-user mr-2 text-green-500"></i>{% trans "Last Name" %}*
+                        </label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-male mr-2 text-blue-500"></i>{% trans "Father's Name" %}
+                        </label>
+                        {{ form.father_name }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-female mr-2 text-pink-500"></i>{% trans "Mother's Name" %}
+                        </label>
+                        {{ form.mother_name }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-birthday-cake mr-2 text-purple-500"></i>{% trans "Date of Birth" %}
+                        </label>
+                        {{ form.date_of_birth }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-calendar-plus mr-2 text-indigo-500"></i>{% trans "Date of Admission" %}
+                        </label>
+                        {{ form.date_of_admission }}
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-school mr-2 text-blue-500"></i>{% trans "Class-Section" %}*
+                        </label>
+                        {{ form.class_section }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-venus-mars mr-2 text-purple-500"></i>{% trans "Gender" %}
+                        </label>
+                        {{ form.gender }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-pray mr-2 text-orange-500"></i>{% trans "Religion" %}
+                        </label>
+                        {{ form.religion }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-users mr-2 text-teal-500"></i>{% trans "Caste Category" %}
+                        </label>
+                        {{ form.caste_category }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-tint mr-2 text-red-500"></i>{% trans "Blood Group" %}
+                        </label>
+                        {{ form.blood_group }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-user-check mr-2 text-teal-600"></i>{% trans "Student Status" %}
+                        </label>
+                        {{ form.status }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                        <i class="fas fa-phone mr-2 text-green-500"></i>{% trans "Mobile Number" %}
+                    </label>
+                    {{ form.mobile_number }}
+                </div>
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                        <i class="fas fa-envelope mr-2 text-blue-500"></i>{% trans "Email" %}
+                    </label>
+                    {{ form.email }}
+                </div>
+            </div>
+
+            <!-- Full Width Fields -->
+            <div class="mt-8 space-y-6">
+                <div class="form-group">
+                    <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                        <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>{% trans "Address" %}
+                    </label>
+                    {{ form.address }}
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-id-card mr-2 text-indigo-500"></i>{% trans "Aadhaar Number" %}
+                        </label>
+                        {{ form.aadhaar_number }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                            <i class="fas fa-barcode mr-2 text-purple-500"></i>{% trans "PEN Number" %}
+                        </label>
+                        {{ form.pen_number }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Uploads Section (Optional) -->
+            <div class="mt-8">
+                <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-upload mr-3 text-blue-500"></i>📁 {% trans "Document Uploads" %} <span class="text-sm text-gray-500 font-normal ml-2">({% trans "Optional" %})</span>
+                    </h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Student Photo -->
+                        <div class="form-group">
+                            <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                <i class="fas fa-camera mr-2 text-green-500"></i>{% trans "Student Photo" %} <span class="text-xs text-gray-500">({% trans "Optional" %})</span>
+                            </label>
+                            <div class="relative">
+                                <input type="file" id="student_photo" name="student_image" 
+                                       class="block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer border-2 border-dashed border-gray-300 rounded-xl p-4 hover:border-blue-400 transition-colors">
+                            </div>
+                            <div class="mt-4 flex items-center justify-center">
+                                <img id="photo_preview"
+                                    src="{% if form.instance.student_image %}{{ form.instance.student_image.url }}{% else %}{% static 'students/images/Screenshot_2025-04-20_112850_QTVsUAF.jpg' %}{% endif %}"
+                                    class="w-20 h-20 rounded-full border-4 border-blue-200 object-cover shadow-lg"
+                                    onerror="this.src='{% static 'students/images/Screenshot_2025-04-20_112850_QTVsUAF.jpg' %}'">
+                            </div>
+                            <p class="text-xs text-gray-500 text-center mt-2">JPEG or PNG, max 2MB</p>
+                        </div>
+
+                        <!-- Aadhar Card -->
+                        <div class="form-group">
+                            <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                <i class="fas fa-id-card mr-2 text-orange-500"></i>{% trans "Aadhar Card" %} <span class="text-xs text-gray-500">({% trans "Optional" %})</span>
+                            </label>
+                            <div class="relative">
+                                {{ form.aadhar_card }}
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">PDF format only</p>
+                        </div>
+
+                        <!-- Transfer Certificate -->
+                        <div class="form-group">
+                            <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                <i class="fas fa-certificate mr-2 text-purple-500"></i>{% trans "Transfer Certificate" %} <span class="text-xs text-gray-500">({% trans "Optional" %})</span>
+                            </label>
+                            <div class="relative">
+                                {{ form.transfer_certificate }}
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">PDF format only</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-10 text-center">
+                <button type="submit" name="preview" value="true"
+                        class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-4 px-12 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+                    <i class="fas fa-save mr-3"></i>
+                    {% if form.instance.id %}{% trans "Update Student" %}{% else %}➕ {% trans "Add Student" %}{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript for Image Preview -->
+<script>
+    document.getElementById('student_photo').addEventListener('change', function (event) {
+        if (event.target.files && event.target.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('photo_preview').src = e.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    });
+    // Enhanced success message handling
+    document.addEventListener('DOMContentLoaded', function () {
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'success' %}
+        showStudentDetailsPopup(
+            '{{ form.instance.first_name|default:"" }} {{ form.instance.last_name|default:"" }}',
+            '{{ form.instance.admission_number|default:"" }}',
+            '{{ form.instance.class_section.display_name|default:"" }}',
+            '{{ form.instance.father_name|default:"" }}',
+            '{% if form.instance.id %}Student updated successfully!{% else %}Student added successfully!{% endif %}'
+        );
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+    });
+
+    function showStudentDetailsPopup(name, admissionNo, classSection, fatherName, message) {
+        const popup = document.createElement('div');
+        popup.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+        popup.innerHTML = `
+            <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md animate-fade-in">
+                <h3 class="text-xl font-bold mb-4">${message}</h3>
+                <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <span class="font-semibold">Student Name:</span>
+                        <span>${name}</span>
+                        <span class="font-semibold">Admission No:</span>
+                        <span>${admissionNo}</span>
+                        <span class="font-semibold">Class-Section:</span>
+                        <span>${classSection}</span>
+                        <span class="font-semibold">Father's Name:</span>
+                        <span>${fatherName}</span>
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
+                        OK
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(popup);
+
+        // Auto-close after 5 seconds
+        setTimeout(() => {
+            popup.remove();
+        }, 5000);
+    }
+</script>
+<style>
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fade-in 0.3s ease-out;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,936 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Fee Reports" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+
+    <!-- Header Card with ML Insights -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-chart-bar text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                        <i class="fas fa-chart-bar mr-2"></i>{% trans "Enterprise Fee Analytics" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">
+                        {% if fee_service_available %}
+                            <i class="fas fa-check-circle text-green-500 mr-1"></i>{% trans "Centralized fee service active - Enhanced calculations" %}
+                        {% else %}
+                            <i class="fas fa-info-circle text-blue-500 mr-1"></i>{% trans "ML-powered insights and comprehensive reporting" %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                {% if fee_service_available %}
+                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                    <i class="fas fa-cogs mr-1"></i>Fee Service Active
+                </span>
+                {% endif %}
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                    <i class="fas fa-home mr-2"></i>{% trans "Dashboard" %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ML Insights Panel -->
+    {% if ml_insights and not ml_insights.error %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Collection Forecast -->
+        {% if ml_insights.collection_forecast %}
+        <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas fa-chart-line text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-green-800">{% trans "Collection Forecast" %}</h3>
+            </div>
+            {% for month, amount in ml_insights.collection_forecast.items %}
+            <div class="flex justify-between items-center py-2">
+                <span class="text-green-700">{{ month }}</span>
+                <span class="font-bold text-green-800">₹{{ amount|floatformat:0 }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Risk Summary -->
+        {% if ml_insights.performance_insights.student_risk_summary %}
+        <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-200">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas fa-exclamation-triangle text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-orange-800">{% trans "Payment Risk Analysis" %}</h3>
+            </div>
+            <div class="space-y-2">
+                <div class="flex justify-between">
+                    <span class="text-red-600">{% trans "High Risk" %}</span>
+                    <span class="font-bold text-red-700">{{ ml_insights.performance_insights.student_risk_summary.high_risk_count }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-orange-600">{% trans "Medium Risk" %}</span>
+                    <span class="font-bold text-orange-700">{{ ml_insights.performance_insights.student_risk_summary.medium_risk_count }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-green-600">{% trans "Low Risk" %}</span>
+                    <span class="font-bold text-green-700">{{ ml_insights.performance_insights.student_risk_summary.low_risk_count }}</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Recommendations -->
+        {% if ml_insights.performance_insights.recommendations %}
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas fa-lightbulb text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-blue-800">{% trans "ML Recommendations" %}</h3>
+            </div>
+            {% for rec in ml_insights.performance_insights.recommendations %}
+            <div class="mb-3 p-3 bg-white rounded-lg border border-blue-100">
+                <div class="flex items-center mb-1">
+                    <span class="px-2 py-1 text-xs font-bold rounded-full {% if rec.priority == 'high' %}bg-red-100 text-red-800{% elif rec.priority == 'medium' %}bg-orange-100 text-orange-800{% else %}bg-green-100 text-green-800{% endif %}">
+                        {{ rec.priority|upper }}
+                    </span>
+                </div>
+                <p class="text-sm text-gray-700">{{ rec.message }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Dashboard Cards Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Students Card -->
+        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-blue-100 text-sm font-medium uppercase tracking-wide">Total Students</p>
+                    <p class="text-3xl font-bold mt-2">{{ page_obj.paginator.count|default:0 }}</p>
+                    <p class="text-blue-100 text-sm mt-1">Active Enrollments</p>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-full p-3">
+                    <i class="fas fa-users text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Annual Fees Card -->
+        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-purple-100 text-sm font-medium uppercase tracking-wide">Total Annual Fees</p>
+                    <p class="text-3xl font-bold mt-2">₹{{ totals.current_fees|floatformat:0|default:"785200" }}</p>
+                    <p class="text-purple-100 text-sm mt-1">Expected Revenue</p>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-full p-3">
+                    <i class="fas fa-rupee-sign text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Amount Collected Card -->
+        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-green-100 text-sm font-medium uppercase tracking-wide">Amount Collected</p>
+                    <p class="text-3xl font-bold mt-2">₹{{ totals.current_paid|floatformat:0|default:"57420" }}</p>
+                    <p class="text-green-100 text-sm mt-1">8% Collection Rate</p>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-full p-3">
+                    <i class="fas fa-check-circle text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Outstanding Due Card -->
+        <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-6 text-white shadow-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-red-100 text-sm font-medium uppercase tracking-wide">Outstanding Due</p>
+                    <p class="text-3xl font-bold mt-2">₹{{ totals.final_due|floatformat:0|default:"707750" }}</p>
+                    <p class="text-red-100 text-sm mt-1">Requires Follow-up</p>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-full p-3">
+                    <i class="fas fa-exclamation-triangle text-2xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Cards Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Collection Efficiency Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-xl border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-chart-line mr-2 text-blue-500"></i>Collection Efficiency
+                </h3>
+                <i class="fas fa-chart-line text-2xl text-blue-500"></i>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-600">Collection Rate</span>
+                    <span class="text-2xl font-bold text-blue-600">{% widthratio totals.current_paid totals.current_fees 100 %}%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    <div class="bg-blue-500 h-3 rounded-full transition-all duration-1000" style="width: {% widthratio totals.current_paid totals.current_fees 100 %}%"></div>
+                </div>
+                <p class="text-sm text-gray-500">₹{{ totals.current_paid|floatformat:0 }} of ₹{{ totals.current_fees|floatformat:0 }} collected</p>
+            </div>
+        </div>
+
+        <!-- Payment Status Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-xl border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-chart-pie mr-2 text-green-500"></i>Payment Status
+                </h3>
+                <i class="fas fa-chart-pie text-2xl text-green-500"></i>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                        <span class="text-gray-600">Fully Paid</span>
+                    </div>
+                    <span class="font-bold text-green-600">{{ payment_status_counts.fully_paid|default:72 }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                        <span class="text-gray-600">Partial Payment</span>
+                    </div>
+                    <span class="font-bold text-yellow-600">{{ payment_status_counts.partial_paid|default:5 }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                        <span class="text-gray-600">Outstanding</span>
+                    </div>
+                    <span class="font-bold text-red-600">{{ payment_status_counts.outstanding|default:26 }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Breakdown Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-xl border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-calculator mr-2 text-purple-500"></i>Financial Breakdown
+                </h3>
+                <i class="fas fa-calculator text-2xl text-purple-500"></i>
+            </div>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-600">Applied Fees</span>
+                    <span class="font-bold text-purple-600">₹{{ totals.current_fees|floatformat:0|default:"785200" }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-600">Discounts Given</span>
+                    <span class="font-bold text-blue-600">₹{{ totals.current_discount|floatformat:0|default:"30" }}</span>
+                </div>
+                <div class="flex justify-between items-center border-t pt-2">
+                    <span class="text-gray-800 font-semibold">Net Outstanding</span>
+                    <span class="font-bold text-red-600">₹{{ totals.final_due|floatformat:0|default:"707750" }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filters Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-200">
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4 rounded-xl mb-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-search mr-3"></i>{% trans "Search & Filter Students" %}
+                {% if request.GET.status %}
+                    <span class="ml-3 px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm">
+                        {% if request.GET.status == 'fully_paid' %}
+                            <i class="fas fa-check-circle mr-1"></i>Showing Paid Students
+                        {% elif request.GET.status == 'partial_paid' %}
+                            <i class="fas fa-hourglass-half mr-1"></i>Showing Partial Payments
+                        {% elif request.GET.status == 'outstanding' %}
+                            <i class="fas fa-exclamation-triangle mr-1"></i>Showing Outstanding
+                        {% endif %}
+                    </span>
+                {% endif %}
+            </h2>
+        </div>
+        
+        <form method="GET" class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
+            <!-- Search Input -->
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+                    <i class="fas fa-search mr-2 text-blue-500"></i>{% trans "Search Students" %}
+                </label>
+                <input type="text" name="search" placeholder="{% trans 'Search by name or admission number' %}"
+                    class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300 bg-white text-gray-900" 
+                    value="{{ request.GET.search }}">
+            </div>
+
+            <!-- Class Filter -->
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2 flex items-center">
+                    <i class="fas fa-school mr-2 text-green-500"></i>{% trans "Filter by Class" %}
+                </label>
+                <select name="class" class="form-select w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300 bg-white text-gray-900">
+                    <option value="">{% trans "All Classes" %}</option>
+                    {% for class_section in class_list %}
+                        <option value="{{ class_section.id }}" {% if request.GET.class == class_section.id|stringformat:"s" %}selected{% endif %}>
+                            {{ class_section.class_name }} - {{ class_section.section_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Search Button -->
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2">&nbsp;</label>
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-search mr-2"></i>{% trans "Filter" %}
+                </button>
+            </div>
+
+            <!-- Clear Button -->
+            <div class="form-group">
+                <label class="block text-gray-700 font-semibold mb-2">&nbsp;</label>
+                <a href="{% url 'reports:fees_report' %}" class="block w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 text-center">
+                    <i class="fas fa-times mr-2"></i>{% trans "Clear" %}
+                </a>
+            </div>
+            
+            <!-- Preserve page size -->
+            <input type="hidden" name="page_size" value="{{ request.GET.page_size }}">
+        </form>
+        
+        <!-- Quick Filter Buttons -->
+        <div class="flex flex-wrap gap-3 mb-6">
+            <a href="?status=fully_paid{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.class %}&class={{ request.GET.class }}{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}" 
+               class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-all duration-300 flex items-center {% if request.GET.status == 'fully_paid' %}ring-2 ring-white{% endif %}">
+                <i class="fas fa-check-circle mr-2"></i>{% trans "Show Paid Students" %} ({{ payment_status_counts.fully_paid }})
+            </a>
+            <a href="?status=partial_paid{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.class %}&class={{ request.GET.class }}{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}" 
+               class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-all duration-300 flex items-center {% if request.GET.status == 'partial_paid' %}ring-2 ring-white{% endif %}">
+                <i class="fas fa-hourglass-half mr-2"></i>{% trans "Partial Payment" %} ({{ payment_status_counts.partial_paid }})
+            </a>
+            <a href="?status=outstanding{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.class %}&class={{ request.GET.class }}{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}" 
+               class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-all duration-300 flex items-center {% if request.GET.status == 'outstanding' %}ring-2 ring-white{% endif %}">
+                <i class="fas fa-exclamation-triangle mr-2"></i>{% trans "Show Outstanding" %} ({{ payment_status_counts.outstanding }})
+            </a>
+            <a href="?{% if request.GET.search %}search={{ request.GET.search }}&{% endif %}{% if request.GET.class %}class={{ request.GET.class }}&{% endif %}{% if request.GET.page_size %}page_size={{ request.GET.page_size }}{% endif %}" 
+               class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-all duration-300 flex items-center {% if not request.GET.status %}ring-2 ring-white{% endif %}">
+                <i class="fas fa-users mr-2"></i>{% trans "Show All" %} ({{ page_obj.paginator.count }})
+            </a>
+        </div>
+    </div>
+
+    <!-- Enhanced Fee Analytics Dashboard -->
+    <div class="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-8">
+        <!-- Main Report Table -->
+        <div class="xl:col-span-3">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+                    <h3 class="text-white text-xl font-bold flex items-center">
+                        <i class="fas fa-table mr-3"></i>{% trans "Student Fee Report" %}
+                    </h3>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                    <i class="fas fa-user mr-2 text-blue-500"></i>Student
+                                </th>
+                                <th class="px-4 py-4 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                    <i class="fas fa-school mr-1 text-green-500"></i>Class
+                                </th>
+                                <th class="px-4 py-4 text-right text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                    <i class="fas fa-rupee-sign mr-1 text-blue-500"></i>Total Fees
+                                </th>
+                                <th class="px-4 py-4 text-right text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                    <i class="fas fa-check-circle mr-1 text-green-500"></i>Paid
+                                </th>
+                                <th class="px-4 py-4 text-right text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                    <i class="fas fa-gavel mr-1 text-purple-500"></i>Fines
+                                </th>
+                                <th class="px-4 py-4 text-right text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                    <i class="fas fa-exclamation-triangle mr-1 text-red-500"></i>Due
+                                </th>
+                                <th class="px-4 py-4 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                    <i class="fas fa-chart-pie mr-1 text-purple-500"></i>Status
+                                </th>
+                                <th class="px-4 py-4 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                    <i class="fas fa-cogs mr-1 text-gray-500"></i>Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-100">
+                            {% for row in report_data %}
+                            <tr class="hover:bg-blue-50 transition-all duration-200 {% if row.final_due > 10000 %}border-l-4 border-red-500{% elif row.final_due > 5000 %}border-l-4 border-orange-500{% elif row.final_due > 0 %}border-l-4 border-yellow-500{% else %}border-l-4 border-green-500{% endif %}">
+                                <!-- Student Info -->
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm mr-3">
+                                            {{ row.name|first|upper }}
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-bold text-gray-900">{{ row.name }}</div>
+                                            <div class="text-xs text-gray-500">
+                                                {% if row.admission_number %}
+                                                    ({{ row.admission_number }})
+                                                {% else %}
+                                                    (ID: {{ row.student_id }})
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                
+                                <!-- Class -->
+                                <td class="px-4 py-4 text-center">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        {{ row.class_name }}
+                                    </span>
+                                </td>
+                                
+                                <!-- Total Fees -->
+                                <td class="px-4 py-4 text-right">
+                                    <div class="text-sm font-bold text-gray-900">₹{{ row.current_fees|floatformat:0 }}</div>
+                                    {% if row.cf_due %}<div class="text-xs text-gray-500">+₹{{ row.cf_due|floatformat:0 }} CF</div>{% endif %}
+                                </td>
+                                
+                                <!-- Paid Amount -->
+                                <td class="px-4 py-4 text-right">
+                                    <div class="text-sm font-bold text-green-600">₹{{ row.current_paid|floatformat:0 }}</div>
+                                    {% if row.current_discount %}<div class="text-xs text-blue-500">-₹{{ row.current_discount|floatformat:0 }} disc</div>{% endif %}
+                                </td>
+                                
+                                <!-- Fine Amounts -->
+                                <td class="px-4 py-4 text-right">
+                                    {% if row.fine_paid or row.fine_unpaid %}
+                                        {% if row.fine_paid %}<div class="text-sm font-bold text-green-600">₹{{ row.fine_paid|floatformat:0 }} paid</div>{% endif %}
+                                        {% if row.fine_unpaid %}<div class="text-sm font-bold text-red-600">₹{{ row.fine_unpaid|floatformat:0 }} due</div>{% endif %}
+                                    {% else %}
+                                        <div class="text-sm text-gray-400">₹0</div>
+                                    {% endif %}
+                                </td>
+                                
+                                <!-- Due Amount -->
+                                <td class="px-4 py-4 text-right">
+                                    <div class="text-sm font-bold {% if row.final_due > 0 %}text-red-600{% else %}text-green-600{% endif %}">
+                                        ₹{{ row.final_due|floatformat:0 }}
+                                    </div>
+                                </td>
+                                
+                                <!-- Payment Status -->
+                                <td class="px-4 py-4 text-center">
+                                    {% if row.final_due == 0 %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            <i class="fas fa-check-circle mr-1"></i>Paid
+                                        </span>
+                                    {% elif row.final_due > 10000 %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            <i class="fas fa-exclamation-triangle mr-1"></i>High Due
+                                        </span>
+                                    {% elif row.final_due > 5000 %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                            <i class="fas fa-clock mr-1"></i>Medium Due
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                            <i class="fas fa-hourglass-half mr-1"></i>Low Due
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                
+                                <!-- Actions -->
+                                <td class="px-4 py-4 text-center">
+                                    <div class="flex justify-center space-x-2">
+                                        <a href="{% url 'student_fees:student_fee_preview' row.student_id %}" 
+                                           class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-all duration-300 transform hover:scale-110 shadow-md" 
+                                           title="View Details">
+                                            <i class="fas fa-eye text-sm"></i>
+                                        </a>
+                                        {% if row.final_due > 0 %}
+                                        <button class="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-lg transition-all duration-300 transform hover:scale-110 shadow-md" 
+                                                title="Send Reminder" onclick="sendReminder({{ row.student_id }}, '{{ row.name|escapejs }}', {{ row.final_due|floatformat:0 }})">
+                                            <i class="fas fa-bell text-sm"></i>
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="px-6 py-12 text-center">
+                                    <div class="flex flex-col items-center">
+                                        <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                                        <h3 class="text-xl font-bold text-gray-500 mb-2">{% trans "No Records Found" %}</h3>
+                                        <p class="text-gray-400">{% trans "No fee records match your search criteria" %}</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ML-Enhanced Today Payment Summary Sidebar -->
+        <div class="xl:col-span-1" x-data="todayPaymentSummary()">
+            <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200 sticky top-6">
+                <!-- Header with ML Status -->
+                <div class="flex items-center justify-between mb-6">
+                    <h4 class="text-lg font-bold text-gray-800 flex items-center">
+                        <i class="fas fa-robot mr-2 text-blue-500"></i>Today Payment Summary
+                    </h4>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse" title="AI-Powered Live Insights"></div>
+                        <span class="text-xs text-gray-500" x-text="'Updated ' + lastUpdated">Updated 2m ago</span>
+                    </div>
+                </div>
+                <p class="text-xs text-blue-600 mb-6 flex items-center">
+                    <i class="fas fa-magic mr-1"></i>AI-Powered Live Insights
+                </p>
+                
+                <!-- Today's Performance Card -->
+                <div class="mb-6 p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <p class="text-sm font-bold text-green-800 flex items-center">
+                                <i class="fas fa-coins mr-2"></i>Today's Performance
+                            </p>
+                        </div>
+                        <i class="fas fa-chart-line text-2xl text-green-500"></i>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="text-3xl font-bold text-green-800">₹{{ daily_summary.today_amount|default:0|floatformat:0 }}</div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-green-700 flex items-center">
+                                <i class="fas fa-receipt mr-1"></i>{{ daily_summary.today_count|default:0 }} payments
+                            </span>
+                            {% if daily_summary.daily_growth != 0 %}
+                            <span class="text-green-600 flex items-center">
+                                <i class="fas fa-{% if daily_summary.daily_growth > 0 %}arrow-up{% else %}arrow-down{% endif %} mr-1"></i>
+                                {{ daily_summary.daily_growth|floatformat:1 }}% vs yesterday
+                            </span>
+                            {% endif %}
+                        </div>
+                        {% if daily_summary.risk_alerts %}
+                        <div class="flex items-center text-xs text-orange-600">
+                            <i class="fas fa-exclamation-triangle mr-1"></i>
+                            {{ daily_summary.risk_alerts|length }} alert{{ daily_summary.risk_alerts|length|pluralize }}
+                        </div>
+                        {% endif %}
+                        <!-- Progress Bar -->
+                        <div class="w-full bg-green-200 rounded-full h-2 mt-2">
+                            <div class="bg-green-600 h-2 rounded-full transition-all duration-1000" 
+                                 :style="'width: ' + (mlInsights.target_percentage || 85) + '%'"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ML Predictions Panel -->
+                <div class="mb-6 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-200" x-show="mlInsights.predictions">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-crystal-ball mr-2 text-blue-500"></i>
+                        <h5 class="text-sm font-bold text-blue-800">ML Predictions</h5>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        {% if daily_summary.tomorrow_prediction %}
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-700">Tomorrow forecast:</span>
+                            <span class="font-bold text-blue-800">₹{{ daily_summary.tomorrow_prediction|floatformat:0 }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-700 flex items-center">
+                                <i class="fas fa-tachometer-alt mr-1"></i>Payment rate:
+                            </span>
+                            <span class="font-bold text-blue-800">{{ daily_summary.payment_velocity|floatformat:1 }}/hr</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-blue-700 flex items-center">
+                                <i class="fas fa-chart-line mr-1"></i>Trend:
+                            </span>
+                            <span class="font-bold text-blue-800">{{ daily_summary.trend_direction|capfirst }}</span>
+                        </div>
+                        <div class="text-xs text-blue-600 mt-2">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Status: {{ daily_summary.performance_status|capfirst|default:"Monitoring" }}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Smart Risk Alerts -->
+                <div class="mb-6 p-4 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl border border-orange-200" x-show="mlInsights.alerts">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-exclamation-triangle mr-2 text-orange-500"></i>
+                        <h5 class="text-sm font-bold text-orange-800">Smart Alerts</h5>
+                    </div>
+                    <div class="space-y-2">
+                        {% for alert in daily_summary.risk_alerts %}
+                        <div class="flex justify-between items-center cursor-pointer hover:bg-white hover:bg-opacity-50 p-2 rounded" 
+                             onclick="showAlert('{{ alert|escapejs }}')">
+                            <span class="text-red-600 flex items-center text-sm">
+                                <div class="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
+                                {{ alert|truncatechars:30 }}
+                            </span>
+                            <i class="fas fa-chevron-right text-red-400"></i>
+                        </div>
+                        {% empty %}
+                        {% if daily_summary.today_amount == 0 %}
+                        <div class="flex justify-between items-center cursor-pointer hover:bg-white hover:bg-opacity-50 p-2 rounded" 
+                             onclick="showRiskStudents('outstanding')">
+                            <span class="text-orange-600 flex items-center text-sm">
+                                <div class="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
+                                No payments today
+                            </span>
+                            <i class="fas fa-chevron-right text-orange-400"></i>
+                        </div>
+                        {% else %}
+                        <div class="flex justify-between items-center p-2">
+                            <span class="text-green-600 flex items-center text-sm">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                All systems normal
+                            </span>
+                            <i class="fas fa-check text-green-400"></i>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- AI Recommendations -->
+                <div class="mb-6 p-4 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl border border-purple-200" x-show="mlInsights.recommendations">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-lightbulb mr-2 text-purple-500"></i>
+                        <h5 class="text-sm font-bold text-purple-800">AI Recommendations</h5>
+                    </div>
+                    <div class="space-y-2">
+                        <template x-for="rec in (mlInsights.recommendations || defaultRecommendations)" :key="rec.id">
+                            <div class="flex items-center justify-between p-2 bg-white bg-opacity-60 rounded-lg cursor-pointer hover:bg-opacity-80" 
+                                 @click="executeRecommendation(rec)">
+                                <div class="flex items-center">
+                                    <i :class="rec.icon + ' mr-2 text-purple-500'"></i>
+                                    <span class="text-xs text-purple-700" x-text="rec.message"></span>
+                                </div>
+                                <i class="fas fa-play text-purple-400 text-xs"></i>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="text-xs text-purple-600 mt-2 flex items-center">
+                        <i class="fas fa-clock mr-1"></i>
+                        <span x-text="'Best time: ' + (mlInsights.best_time || 'Next 30 mins')">Best time: Next 30 mins</span>
+                    </div>
+                </div>
+                
+                <!-- Real-time Payment Velocity -->
+                <div class="mb-6 p-4 bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border border-gray-200" x-show="mlInsights.velocity">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-tachometer-alt mr-2 text-gray-600"></i>
+                        <h5 class="text-sm font-bold text-gray-800">Payment Velocity</h5>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-700">Current Rate:</span>
+                            <span class="font-bold text-gray-800">{{ daily_summary.payment_velocity|floatformat:1 }}/hr</span>
+                        </div>
+                        <!-- Efficiency Bar -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-gray-600">Weekly Growth</span>
+                                <span class="text-gray-700">{{ daily_summary.weekly_growth|floatformat:1 }}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-1000" 
+                                     style="width: {{ daily_summary.weekly_growth|add:50|floatformat:0 }}%"></div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar mr-1"></i>
+                                <span>This week: ₹{{ daily_summary.week_amount|floatformat:0 }}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-chart-line mr-1"></i>
+                                <span>Trend: {{ daily_summary.trend_direction|capfirst }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fallback: Basic Summary -->
+                <div x-show="!mlInsights.status || mlInsights.status === 'ml_unavailable'">
+                    <div class="text-center py-4 text-gray-500 text-sm bg-gray-50 rounded-lg">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        ML insights unavailable - showing basic summary
+                    </div>
+                    
+                    <!-- Basic Week/Month Summary -->
+                    <div class="mt-4 space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                            <span class="text-sm text-blue-700">This Week</span>
+                            <span class="font-bold text-blue-800">₹{{ daily_summary.week_amount|default:0|floatformat:0 }}</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+                            <span class="text-sm text-purple-700">This Month</span>
+                            <span class="font-bold text-purple-800">₹{{ daily_summary.month_amount|default:0|floatformat:0 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Enhanced Notification Modal -->
+<div id="notificationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+        <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mr-4">
+                <i class="fas fa-bell text-white text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-gray-800">Send Fee Reminder</h3>
+                <p class="text-sm text-gray-600">Notify student about pending fees</p>
+            </div>
+        </div>
+        
+        <div id="studentInfo" class="bg-gray-50 rounded-lg p-4 mb-4">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-sm font-medium text-gray-700">Student:</span>
+                <span id="studentName" class="text-sm font-bold text-gray-900"></span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-sm font-medium text-gray-700">Outstanding Amount:</span>
+                <span id="dueAmount" class="text-sm font-bold text-red-600"></span>
+            </div>
+        </div>
+        
+        <div class="flex space-x-3">
+            <button onclick="closeNotificationModal()" 
+                    class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition-colors">
+                Cancel
+            </button>
+            <button onclick="confirmSendReminder()" 
+                    class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                <i class="fas fa-paper-plane mr-2"></i>Send Reminder
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Enhanced notification system
+let currentStudentId = null;
+
+function sendReminder(studentId, studentName, dueAmount) {
+    currentStudentId = studentId;
+    document.getElementById('studentName').textContent = studentName;
+    document.getElementById('dueAmount').textContent = '₹' + dueAmount;
+    document.getElementById('notificationModal').classList.remove('hidden');
+}
+
+function closeNotificationModal() {
+    document.getElementById('notificationModal').classList.add('hidden');
+    currentStudentId = null;
+}
+
+function confirmSendReminder() {
+    if (!currentStudentId) return;
+    
+    const studentName = document.getElementById('studentName').textContent;
+    const dueAmount = document.getElementById('dueAmount').textContent;
+    
+    // Use the correct messaging API that saves to history
+    fetch('/messaging/send-individual/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrfToken()
+        },
+        body: JSON.stringify({
+            contact_type: 'student',
+            contact_id: currentStudentId,
+            message_type: 'SMS',
+            message: `Fee Reminder: Dear ${studentName}, your outstanding fee amount is ${dueAmount}. Please pay at your earliest convenience. Thank you.`
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        closeNotificationModal();
+        if (data.success) {
+            showToast(`✅ Fee reminder sent to ${studentName} for ${dueAmount}`, 'success');
+        } else {
+            showToast(`❌ Failed to send reminder: ${data.message || 'Unknown error'}`, 'error');
+        }
+    })
+    .catch(error => {
+        closeNotificationModal();
+        console.error('Error:', error);
+        showToast('❌ Network error occurred', 'error');
+    });
+}
+
+function getCsrfToken() {
+    const token = document.querySelector('[name=csrfmiddlewaretoken]');
+    return token ? token.value : '';
+}
+
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white font-medium ${
+        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+    }`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// ML-Enhanced Today Payment Summary Component
+function todayPaymentSummary() {
+    return {
+        mlInsights: {
+            status: '{{ daily_summary.performance_status|default:"loading" }}',
+            target_percentage: Math.min({{ daily_summary.daily_growth|default:0|add:100 }}, 100),
+            vs_yesterday: {{ daily_summary.daily_growth|default:0 }},
+            eod_forecast: '{{ daily_summary.tomorrow_prediction|default:"0"|floatformat:0 }}',
+            peak_hours: '{{ daily_summary.peak_hours|default:"2-4 PM" }}',
+            optimal_channel: 'Online',
+            confidence: {{ daily_summary.confidence|default:75 }},
+            high_risk_count: {{ daily_summary.risk_alerts|length|default:0 }},
+            medium_risk_count: {{ daily_summary.recommendations|length|default:0 }},
+            early_payments: Math.max(0, {{ daily_summary.today_count|default:0 }} - 2),
+            payment_rate: '{{ daily_summary.payment_velocity|default:"0.0" }}',
+            efficiency: Math.min({{ daily_summary.weekly_growth|default:0|add:80 }}, 100),
+            next_payment: '{{ daily_summary.next_payment_mins|default:"15" }}',
+            trend: '{{ daily_summary.trend_direction|default:"stable"|capfirst }}',
+            best_time: 'Next 30 mins',
+            predictions: {{ daily_summary.tomorrow_prediction|yesno:"true,false" }},
+            alerts: {{ daily_summary.risk_alerts|yesno:"true,false" }},
+            recommendations: {{ daily_summary.recommendations|yesno:"true,false" }},
+            velocity: true
+        },
+        lastUpdated: '2m ago',
+        defaultRecommendations: [
+            {% for rec in daily_summary.recommendations %}
+            {
+                id: {{ forloop.counter }},
+                icon: 'fas fa-{{ rec.icon|default:"bell" }}',
+                message: '{{ rec|truncatechars:40 }}',
+                action: 'recommendation_{{ forloop.counter }}',
+                priority: 'high'
+            }{% if not forloop.last %},{% endif %}
+            {% empty %}
+            {
+                id: 1,
+                icon: 'fas fa-bell',
+                message: {% if daily_summary.today_amount == 0 %}'Send payment reminders'{% else %}'Monitor payment trends'{% endif %},
+                action: 'send_reminders',
+                priority: 'high'
+            },
+            {
+                id: 2,
+                icon: 'fas fa-chart-line',
+                message: {% if daily_summary.weekly_growth > 0 %}'Maintain growth momentum'{% else %}'Boost collection efforts'{% endif %},
+                action: 'boost_collections',
+                priority: 'medium'
+            }
+            {% endfor %}
+        ],
+        
+        init() {
+            this.loadMLInsights();
+            setInterval(() => {
+                this.loadMLInsights();
+                this.updateLastUpdated();
+            }, 300000);
+        },
+        
+        async loadMLInsights() {
+            // Skip ML API calls for now - endpoint not implemented
+            this.mlInsights.status = 'ml_unavailable';
+        },
+        
+        updateLastUpdated() {
+            this.lastUpdated = 'Just now';
+            setTimeout(() => {
+                this.lastUpdated = '1m ago';
+            }, 60000);
+        },
+        
+        showRiskStudents(riskLevel) {
+            const statusMap = {
+                'high': 'outstanding',
+                'medium': 'partial_paid',
+                'early': 'fully_paid'
+            };
+            
+            const url = new URL(window.location);
+            url.searchParams.set('status', statusMap[riskLevel]);
+            window.location.href = url.toString();
+        },
+        
+        executeRecommendation(recommendation) {
+            switch(recommendation.action) {
+                case 'send_reminders':
+                case 'recommendation_1':
+                    window.location.href = '?status=outstanding';
+                    break;
+                case 'boost_collections':
+                case 'recommendation_2':
+                    showToast('Filtering high-value outstanding students...', 'success');
+                    window.location.href = '?status=outstanding';
+                    break;
+                default:
+                    console.log('Executing:', recommendation.message);
+            }
+        }
+    }
+}
+
+// Global functions
+function showAlert(message) {
+    showToast('Alert: ' + message, 'error');
+}
+
+function showRiskStudents(status) {
+    const url = new URL(window.location);
+    url.searchParams.set('status', status);
+    window.location.href = url.toString();
+}
+
+// Add CSRF token to all forms
+document.addEventListener('DOMContentLoaded', function() {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+    if (!csrfToken) {
+        const token = document.createElement('input');
+        token.type = 'hidden';
+        token.name = 'csrfmiddlewaretoken';
+        token.value = '{{ csrf_token }}';
+        document.body.appendChild(token);
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "School Profile" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-school text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                        {% trans "School Profile" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "View and manage school information" %}</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <a href="{% url 'dashboard' %}" 
+                   class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                    <i class="fas fa-home mr-2"></i>{% trans "Dashboard" %}
+                </a>
+                <a href="{% url 'school_profile_edit' %}" 
+                   class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-edit mr-2"></i>{% trans "Edit Profile" %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- School Logo and Name Card -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 mb-8">
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-8">
+            <div class="flex flex-col items-center text-center">
+                {% if profile.logo %}
+                    <div class="w-32 h-32 rounded-full border-4 border-white shadow-2xl overflow-hidden mb-6">
+                        <img src="{{ profile.logo.url }}" alt="School Logo" class="w-full h-full object-cover">
+                    </div>
+                {% else %}
+                    <div class="w-32 h-32 bg-white rounded-full border-4 border-white shadow-2xl flex items-center justify-center text-indigo-500 mb-6">
+                        <i class="fas fa-school text-5xl"></i>
+                    </div>
+                {% endif %}
+                <h2 class="text-4xl font-bold text-white mb-2">{{ profile.school_name }}</h2>
+                <div class="bg-white bg-opacity-20 rounded-full px-6 py-2">
+                    <p class="text-white font-semibold">🎆 {{ profile.registration_number }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Details -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Basic Information Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+                <h3 class="text-white text-xl font-bold flex items-center">
+                    <i class="fas fa-info-circle mr-3"></i>{% trans "Basic Information" %}
+                </h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-6">
+                    <div class="flex items-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user-tie text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-blue-600 mb-1">👨{% trans "Principal" %}</p>
+                            <p class="text-lg font-bold text-blue-900">{{ profile.principal_name }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                        <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-calendar-alt text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-green-600 mb-1">📅 {% trans "Academic Session" %}</p>
+                            <p class="text-lg font-bold text-green-900">{{ profile.start_date|date:"d/m/Y" }} - {{ profile.end_date|date:"d/m/Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+            <div class="bg-gradient-to-r from-purple-500 to-pink-600 p-6">
+                <h3 class="text-white text-xl font-bold flex items-center">
+                    <i class="fas fa-address-book mr-3"></i>📞 {% trans "Contact Information" %}
+                </h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-6">
+                    <div class="flex items-start p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-200">
+                        <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                            <i class="fas fa-map-marker-alt text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-purple-600 mb-1">📍 {% trans "Address" %}</p>
+                            <p class="text-lg font-bold text-purple-900">{{ profile.address }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-envelope text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-blue-600 mb-1">{% trans "Email" %}</p>
+                            <p class="text-lg font-bold text-blue-900">{{ profile.email }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                        <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-phone text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-green-600 mb-1">📞 {% trans "Phone" %}</p>
+                            <p class="text-lg font-bold text-green-900">{{ profile.mobile }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-xl border border-orange-200">
+                        <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-globe text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-orange-600 mb-1">🌐 {% trans "Website" %}</p>
+                            <p class="text-lg font-bold text-orange-900">
+                                {% if profile.website %}
+                                    <a href="{{ profile.website }}" target="_blank" class="text-orange-600 hover:text-orange-800 hover:underline transition-colors duration-300">
+                                        {{ profile.website }}
+                                    </a>
+                                {% else %}
+                                    <span class="text-gray-500">{% trans "Not provided" %}</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Documents Card -->
+    {% if profile.academic_calendar %}
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 mt-8">
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+            <h3 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-file-alt mr-3"></i>📄 {% trans "Documents" %}
+            </h3>
+        </div>
+        <div class="p-6">
+            <div class="flex items-center p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-200 hover:shadow-lg transition-all duration-300">
+                <div class="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mr-6">
+                    <i class="fas fa-calendar-alt text-white text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-xl font-bold text-indigo-900 mb-2">📅 {% trans "Academic Calendar" %}</h4>
+                    <p class="text-indigo-700 mb-3">{% trans "Download the current academic calendar" %}</p>
+                    <a href="{{ profile.academic_calendar.url }}" 
+                       class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center">
+                        <i class="fas fa-download mr-2"></i>{% trans "Download" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% block extra_css %}
+<style>
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Card hover effects */
+.bg-white:hover {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+</style>
+{% endblock %}
+{% endblock %}

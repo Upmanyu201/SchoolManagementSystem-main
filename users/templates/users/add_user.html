@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Add New User - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-user-plus text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                                Add New User
+                            </h1>
+                            <p class="text-gray-600 mt-1">Create a new user account with role and permissions</p>
+                        </div>
+                    </div>
+                    <a href="{% url 'users:user_management' %}" 
+                       class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Users
+                    </a>
+                </div>
+            </div>
+
+            {% if form.errors %}
+            <div class="bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-2xl p-6 mb-8">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                    <h3 class="text-red-800 font-bold text-lg">Please correct the following errors:</h3>
+                </div>
+                <ul class="space-y-2">
+                    {% for field, errors in form.errors.items %}
+                    <li class="bg-white rounded-lg p-3 border border-red-200">
+                        <strong class="text-red-700">{{ field|capfirst }}:</strong> 
+                        <span class="text-red-600">{{ errors|join:", " }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+                    <h2 class="text-white text-xl font-bold flex items-center">
+                        <i class="fas fa-user-cog mr-3"></i>User Information Form
+                    </h2>
+                </div>
+                
+                <form method="POST" class="p-8">
+                    {% csrf_token %}
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <div class="form-group">
+                                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-user mr-2 text-blue-500"></i>Username*
+                                </label>
+                                <input type="text" name="username" value="{{ form.username.value|default:'' }}" 
+                                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300"
+                                       placeholder="Enter username" required>
+                                {% if form.username.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.username.errors|join:", " }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-user mr-2 text-green-500"></i>First Name*
+                                </label>
+                                <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" 
+                                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300"
+                                       placeholder="Enter first name" required>
+                                {% if form.first_name.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.first_name.errors|join:", " }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-user mr-2 text-orange-500"></i>Last Name*
+                                </label>
+                                <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" 
+                                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300"
+                                       placeholder="Enter last name" required>
+                                {% if form.last_name.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.last_name.errors|join:", " }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-envelope mr-2 text-purple-500"></i>Email
+                                </label>
+                                <input type="email" name="email" value="{{ form.email.value|default:'' }}" 
+                                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300"
+                                       placeholder="Enter email address">
+                                {% if form.email.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.email.errors|join:", " }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="form-group">
+                                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-mobile-alt mr-2 text-teal-500"></i>Mobile
+                                </label>
+                                <input type="text" name="mobile" value="{{ form.mobile.value|default:'' }}" 
+                                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300"
+                                       placeholder="Enter mobile number">
+                                {% if form.mobile.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.mobile.errors|join:", " }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-user-tag mr-2 text-indigo-500"></i>Role*
+                                </label>
+                                <select name="role" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300">
+                                    {% for value, label in form.role.field.choices %}
+                                        <option value="{{ value }}" {% if form.role.value == value %}selected{% endif %}>
+                                            {% translate label %}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                {% if form.role.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.role.errors|join:", " }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-lock mr-2 text-red-500"></i>Password*
+                                </label>
+                                <div class="relative">
+                                    <input type="password" name="password" id="id_password"
+                                           class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300 pr-10"
+                                           placeholder="Enter password" required>
+                                    <button type="button" 
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-gray-500 hover:text-blue-600 transition-colors"
+                                            onclick="togglePasswordVisibility('id_password', this)">
+                                        <i class="fas fa-eye-slash"></i>
+                                    </button>
+                                </div>
+                                {% if form.password.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.password.errors|join:", " }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                <label class="block text-gray-700 font-semibold mb-3 flex items-center">
+                                    <i class="fas fa-lock mr-2 text-red-500"></i>Confirm Password*
+                                </label>
+                                <div class="relative">
+                                    <input type="password" name="password2" id="id_password2"
+                                           class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300 pr-10"
+                                           placeholder="Confirm password" required>
+                                    <button type="button" 
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-gray-500 hover:text-blue-600 transition-colors"
+                                            onclick="togglePasswordVisibility('id_password2', this)">
+                                        <i class="fas fa-eye-slash"></i>
+                                    </button>
+                                </div>
+                                {% if form.password2.errors %}
+                                <div class="text-red-600 text-sm mt-1">{{ form.password2.errors|join:", " }}</div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                    <div class="mt-10 pt-6 border-t border-gray-200 flex justify-end">
+                        <button type="submit" 
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl flex items-center">
+                            <i class="fas fa-check-circle mr-3"></i>
+                            Create User
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Global function to toggle password visibility (Feature B JS)
+    function togglePasswordVisibility(fieldId, buttonElement) {
+        const field = document.getElementById(fieldId);
+        const icon = buttonElement.querySelector('i');
+
+        if (field.type === 'password') {
+            field.type = 'text';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        } else {
+            field.type = 'password';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form validation
+        const form = document.querySelector('form');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        
+        form.addEventListener('submit', function(e) {
+            const password1 = form.querySelector('input[name="password"]').value;
+            const password2 = form.querySelector('input[name="password2"]').value;
+            
+            if (password1 !== password2) {
+                e.preventDefault();
+                alert('Passwords do not match. Please try again.');
+                return false;
+            }
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>Creating User...';
+            submitBtn.disabled = true;
+        });
+        
+        // Add focus effects
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('ring-2', 'ring-blue-300');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('ring-2', 'ring-blue-300');
+            });
+        });
+    });
+</script>
+
+<style>
+.form-input, .form-select {
+    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-400 focus:ring-0 transition-all duration-300 bg-white;
+}
+
+.form-input:focus, .form-select:focus {
+    @apply shadow-lg transform translate-y-[-1px];
+}
+
+.form-group {
+    /* Style for the container to apply focus effects on parent */
+    position: relative;
+    transition: all 0.3s;
+    padding: 0;
+}
+</style>
+{% endblock %}

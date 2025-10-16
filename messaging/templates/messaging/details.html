@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load i18n %}
+
+{% block title %}{% trans "Message Details" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-indigo-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-info-circle text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-800 bg-clip-text text-transparent">
+                        📋 {% trans "Message Details" %}
+                    </h1>
+                    <p class="text-gray-600 mt-1">{% trans "View detailed message delivery information" %}</p>
+                </div>
+            </div>
+            <a href="{% url 'messaging:history' %}" 
+               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to History" %}
+            </a>
+        </div>
+    </div>
+    <!-- Message Summary -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- Message Information Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+                <h3 class="text-white text-xl font-bold flex items-center">
+                    <i class="fas fa-info-circle mr-3"></i>{% trans "Message Information" %}
+                </h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                        <span class="text-sm font-semibold text-gray-700 flex items-center">
+                            <i class="fas fa-tag mr-2 text-blue-500"></i>{% trans "Type" %}:
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full {% if message_log.message_type == 'WHATSAPP' %}bg-green-100 text-green-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+                            {% if message_log.message_type == 'WHATSAPP' %}
+                                <i class="fab fa-whatsapp mr-1"></i>💬 WhatsApp
+                            {% else %}
+                                <i class="fas fa-sms mr-1"></i>📱 SMS
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                        <span class="text-sm font-semibold text-gray-700 flex items-center">
+                            <i class="fas fa-users mr-2 text-purple-500"></i>{% trans "Recipients" %}:
+                        </span>
+                        <span class="text-sm font-bold text-purple-800 bg-purple-100 px-3 py-1 rounded-full">{{ message_log.get_recipient_type_display }}</span>
+                    </div>
+                    
+                    {% if message_log.class_filter %}
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                        <span class="text-sm font-semibold text-gray-700 flex items-center">
+                            <i class="fas fa-school mr-2 text-orange-500"></i>{% trans "Class" %}:
+                        </span>
+                        <span class="text-sm font-bold text-orange-800 bg-orange-100 px-3 py-1 rounded-full">{{ message_log.class_filter.name }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                        <span class="text-sm font-semibold text-gray-700 flex items-center">
+                            <i class="fas fa-calendar-alt mr-2 text-indigo-500"></i>{% trans "Sent" %}:
+                        </span>
+                        <span class="text-sm font-bold text-indigo-800">{{ message_log.created_at|date:"M d, Y H:i" }}</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                        <span class="text-sm font-semibold text-gray-700 flex items-center">
+                            <i class="fas fa-info-circle mr-2 text-teal-500"></i>{% trans "Status" %}:
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full {% if message_log.status == 'SENT' %}bg-green-100 text-green-800{% elif message_log.status == 'FAILED' %}bg-red-100 text-red-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                            {% if message_log.status == 'SENT' %}
+                                <i class="fas fa-check-circle mr-1"></i>✅
+                            {% elif message_log.status == 'FAILED' %}
+                                <i class="fas fa-times-circle mr-1"></i>❌
+                            {% else %}
+                                <i class="fas fa-clock mr-1"></i>⏳
+                            {% endif %}
+                            {{ message_log.status }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Delivery Statistics Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-6">
+                <h3 class="text-white text-xl font-bold flex items-center">
+                    <i class="fas fa-chart-bar mr-3"></i>{% trans "Delivery Statistics" %}
+                </h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="text-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
+                        <div class="text-3xl font-bold text-blue-600 mb-2">{{ message_log.total_recipients }}</div>
+                        <div class="text-blue-800 font-semibold">{% trans "Total" %}</div>
+                    </div>
+                    <div class="text-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                        <div class="text-3xl font-bold text-green-600 mb-2">{{ message_log.successful_sends }}</div>
+                        <div class="text-green-800 font-semibold">{% trans "Success" %}</div>
+                    </div>
+                    <div class="text-center p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl border border-red-200">
+                        <div class="text-3xl font-bold text-red-600 mb-2">{{ message_log.failed_sends }}</div>
+                        <div class="text-red-800 font-semibold">❌ {% trans "Failed" %}</div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-100 rounded-full h-4 mb-2">
+                    {% widthratio message_log.successful_sends message_log.total_recipients 100 as success_percentage %}
+                    <div class="bg-gradient-to-r from-green-500 to-emerald-600 h-4 rounded-full transition-all duration-500" style="width: {{ success_percentage }}%"></div>
+                </div>
+                <div class="text-center text-lg font-bold text-gray-800">{{ success_percentage }}% {% trans "Success Rate" %}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Content Card -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 mb-8">
+        <div class="bg-gradient-to-r from-purple-500 to-indigo-600 p-6">
+            <h3 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-comment-alt mr-3"></i>📝 {% trans "Message Content" %}
+            </h3>
+        </div>
+        <div class="p-6">
+            <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6 border-2 border-purple-200">
+                <div class="text-gray-800 text-lg leading-relaxed whitespace-pre-line">{{ message_log.message_content }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipients List Card -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+            <div class="flex items-center justify-between">
+                <h3 class="text-white text-xl font-bold flex items-center">
+                    <i class="fas fa-users mr-3"></i>{% trans "Recipients" %} ({{ recipients.count }})
+                </h3>
+                <div class="flex gap-2">
+                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-bold transition-all duration-300 transform hover:scale-105" onclick="filterRecipients('SENT')">
+                        {% trans "Successful" %} ({{ message_log.successful_sends }})
+                    </button>
+                    <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-bold transition-all duration-300 transform hover:scale-105" onclick="filterRecipients('FAILED')">
+                        ❌ {% trans "Failed" %} ({{ message_log.failed_sends }})
+                    </button>
+                    <button class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm font-bold transition-all duration-300 transform hover:scale-105" onclick="filterRecipients('')">
+                        {% trans "All" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full" id="recipientsTable">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-user mr-2 text-blue-500"></i>{% trans "Name" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-user-tag mr-2 text-green-500"></i>{% trans "Role" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-phone mr-2 text-purple-500"></i>{% trans "Phone" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-info-circle mr-2 text-orange-500"></i>{% trans "Status" %}
+                        </th>
+                        <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <i class="fas fa-exclamation-triangle mr-2 text-red-500"></i>{% trans "Error" %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for recipient in recipients %}
+                    <tr data-status="{{ recipient.status }}" class="hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 transition-all duration-300">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                                    {{ recipient.name|first|upper }}
+                                </div>
+                                <div class="text-sm font-bold text-gray-900">{{ recipient.name }}</div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full {% if recipient.role == 'Student' %}bg-blue-100 text-blue-800{% else %}bg-green-100 text-green-800{% endif %}">
+                                {% if recipient.role == 'Student' %}
+                                    <i class="fas fa-graduation-cap mr-1"></i>🎓
+                                {% else %}
+                                    <i class="fas fa-chalkboard-teacher mr-1"></i>👨🏫
+                                {% endif %}
+                                {{ recipient.role }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ recipient.phone_number }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-full {% if recipient.status == 'SENT' %}bg-green-100 text-green-800{% elif recipient.status == 'FAILED' %}bg-red-100 text-red-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                {% if recipient.status == 'SENT' %}
+                                    <i class="fas fa-check-circle mr-1"></i>✅
+                                {% elif recipient.status == 'FAILED' %}
+                                    <i class="fas fa-times-circle mr-1"></i>❌
+                                {% else %}
+                                    <i class="fas fa-clock mr-1"></i>⏳
+                                {% endif %}
+                                {{ recipient.status }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if recipient.error_message %}
+                            <div class="text-sm text-red-600 font-medium bg-red-50 px-3 py-1 rounded-lg">
+                                <i class="fas fa-exclamation-triangle mr-1"></i>{{ recipient.error_message|truncatechars:50 }}
+                            </div>
+                            {% else %}
+                            <span class="text-gray-400 font-medium">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Table row hover effects */
+tbody tr:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function filterRecipients(status) {
+    const rows = document.querySelectorAll('#recipientsTable tbody tr');
+    let visibleCount = 0;
+    
+    rows.forEach((row, index) => {
+        if (!status || row.dataset.status === status) {
+            row.style.display = '';
+            // Animate row appearance
+            row.style.opacity = '0';
+            row.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                row.style.transition = 'all 0.3s ease';
+                row.style.opacity = '1';
+                row.style.transform = 'translateY(0)';
+            }, visibleCount * 50);
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+// Animate table rows on load
+document.addEventListener('DOMContentLoaded', function() {
+    const tableRows = document.querySelectorAll('tbody tr');
+    tableRows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            row.style.transition = 'all 0.5s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
+});
+</script>
+{% endblock %}
+{% endblock %}

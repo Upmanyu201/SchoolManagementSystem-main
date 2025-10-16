@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load tz %}
+
+{% block title %}{% trans "Payment Successful" %} - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+{% timezone "Asia/Kolkata" %}
+<div class="animate-fade-in">
+    <!-- Success Header -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-green-200 text-center">
+        <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-check text-white text-3xl"></i>
+        </div>
+        {% if school.logo %}
+        <img src="{{ school.logo.url }}" alt="{{ school.name }} Logo" class="h-16 mx-auto mb-4 rounded-lg shadow-md">
+        {% endif %}
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-800 bg-clip-text text-transparent mb-4">
+            {% trans "Payment Successful!" %}
+        </h1>
+        <p class="text-gray-600 text-lg mb-2">{% trans "Your payment has been processed successfully" %}</p>
+        <p class="text-sm text-gray-500 flex items-center justify-center">
+            <i class="fas fa-clock mr-2 text-blue-500"></i>
+            {{ deposit_date|date:"d M Y" }} {% trans "at" %} {{ deposit_date|time:"H:i" }}
+        </p>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div id="form-messages" class="fixed top-4 right-4 z-50 space-y-2">
+        {% for message in messages %}
+        <div class="{% if message.tags == 'success' %}bg-green-500{% elif message.tags == 'error' %}bg-red-500{% else %}bg-blue-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in">
+            <div class="flex items-center">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} mr-3"></i>
+                <span class="font-medium">{{ message }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <!-- Student Information -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 mb-8">
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-user-graduate mr-3"></i>{% trans "Student Details" %}
+            </h2>
+        </div>
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                    <label class="block text-gray-600 text-sm font-semibold mb-1">
+                        <i class="fas fa-user mr-1 text-blue-500"></i>{% trans "Name" %}
+                    </label>
+                    <p class="font-bold text-gray-800 text-lg">{{ student.first_name }} {{ student.last_name }} ({{ student.admission_number }})</p>
+                </div>
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
+                    <label class="block text-gray-600 text-sm font-semibold mb-1">
+                        <i class="fas fa-school mr-1 text-purple-500"></i>{% trans "Class-Section" %}
+                    </label>
+                    <p class="font-bold text-gray-800 text-lg">{% if student.class_section %}{{ student.class_section.class_name }}{{ student.class_section.section_name }}{% else %}{{ student.class_assigned|default:"N/A" }}{% endif %}</p>
+                </div>
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
+                    <label class="block text-gray-600 text-sm font-semibold mb-1">
+                        <i class="fas fa-user-tie mr-1 text-green-500"></i>{% trans "Father Name" %}
+                    </label>
+                    <p class="font-bold text-gray-800 text-lg">{{ student.father_name|default:"N/A" }}</p>
+                </div>
+                <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4 border border-orange-200">
+                    <label class="block text-gray-600 text-sm font-semibold mb-1">
+                        <i class="fas fa-phone mr-1 text-orange-500"></i>{% trans "Mobile Number" %}
+                    </label>
+                    <p class="font-bold text-gray-800 text-lg font-mono">{{ student.mobile_number|default:"N/A" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Summary -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 mb-8">
+        <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-receipt mr-3"></i>📋 {% trans "Payment Summary" %}
+            </h2>
+        </div>
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                    <label class="block text-gray-600 text-sm font-semibold mb-1">
+                        <i class="fas fa-hashtag mr-1 text-blue-500"></i>{% trans "Receipt Number" %}
+                    </label>
+                    <p class="font-bold text-gray-800 text-lg font-mono">{{ receipt_no }}</p>
+                </div>
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
+                    <label class="block text-gray-600 text-sm font-semibold mb-1">
+                        <i class="fas fa-calendar mr-1 text-purple-500"></i>{% trans "Payment Date" %}
+                    </label>
+                    <p class="font-bold text-gray-800 text-lg">{{ deposit_date|date:"d M Y H:i" }}</p>
+                </div>
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
+                    <label class="block text-gray-600 text-sm font-semibold mb-1">
+                        <i class="fas fa-credit-card mr-1 text-green-500"></i>{% trans "Payment Mode" %}
+                    </label>
+                    <p class="font-bold text-gray-800 text-lg">{{ deposits.first.payment_mode }}</p>
+                </div>
+                {% if deposits.first.payment_mode != 'Cash' and deposits.first.transaction_no %}
+                <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4 border border-orange-200">
+                    <label class="block text-gray-600 text-sm font-semibold mb-1">
+                        <i class="fas fa-barcode mr-1 text-orange-500"></i>{% trans "Transaction Number" %}
+                    </label>
+                    <p class="font-bold text-gray-800 text-lg font-mono">
+                        {% if deposits.first.transaction_no %}
+                        {{ deposits.first.transaction_no }}
+                        {% if deposits.first.payment_source %}
+                        <span class="text-sm text-gray-600">({{ deposits.first.payment_source }})</span>
+                        {% endif %}
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Details -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 mb-8">
+        <div class="bg-gradient-to-r from-purple-500 to-pink-600 p-6">
+            <h2 class="text-white text-xl font-bold flex items-center">
+                <i class="fas fa-list-alt mr-3"></i>{% trans "Payment Details" %}
+            </h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead>
+                    <tr class="bg-gradient-to-r from-gray-50 to-gray-100">
+                        <th class="px-4 py-3 text-left">
+                            <i class="fas fa-tag mr-2 text-blue-500"></i>{% trans "Fee Type" %}
+                        </th>
+                        <th class="px-4 py-3 text-right">
+                            <i class="fas fa-money-bill mr-2 text-green-500"></i>{% trans "Amount" %}
+                        </th>
+                        <th class="px-4 py-3 text-right">
+                            <i class="fas fa-percentage mr-2 text-orange-500"></i>{% trans "Discount" %}
+                        </th>
+                        <th class="px-4 py-3 text-right">
+                            <i class="fas fa-check-circle mr-2 text-purple-500"></i>{% trans "Paid" %}
+                        </th>
+                        <th class="px-4 py-3 text-right">
+                            <i class="fas fa-history mr-2 text-blue-500"></i>{% trans "Previous Total Paid" %}
+                        </th>
+                        <th class="px-4 py-3 text-right">
+                            <i class="fas fa-exclamation-circle mr-2 text-red-500"></i>{% trans "Due" %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for deposit in regular_deposits %}
+                    <tr class="hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300">
+                        <td class="px-4 py-3 font-medium text-gray-800">
+                            {% if deposit.note and "Fee Payment:" in deposit.note %}
+                                {{ deposit.note|slice:"13:" }}
+                            {% else %}
+                                {{ deposit.note|default:"Fee Payment" }}
+                            {% endif %}
+                        </td>
+                        <td class="px-4 py-3 text-right font-mono text-gray-700">₹{{ deposit.amount|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-orange-600">₹{{ deposit.discount|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-green-600 font-bold">₹{{ deposit.paid_amount|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-blue-600">₹{{ deposit.previous_paid|default:0|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-red-600 font-bold">₹{{ deposit.due_amount|default:0|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% for deposit in cf_deposits %}
+                    <tr class="hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 transition-all duration-300">
+                        <td class="px-4 py-3 font-medium text-gray-800">{% trans "Previous Due" %}</td>
+                        <td class="px-4 py-3 text-right font-mono text-gray-700">₹{{ deposit.amount|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-orange-600">₹{{ deposit.discount|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-green-600 font-bold">₹{{ deposit.paid_amount|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-blue-600">₹{{ deposit.previous_paid|default:0|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-red-600 font-bold">₹{{ deposit.due_amount|default:0|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% for deposit in fine_deposits %}
+                    <tr class="hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 transition-all duration-300">
+                        <td class="px-4 py-3 font-medium text-gray-800">{{ deposit.note|slice:"14:" }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-gray-700">₹{{ deposit.amount|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-orange-600">₹{{ deposit.discount|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-green-600 font-bold">₹{{ deposit.paid_amount|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-blue-600">₹{{ deposit.previous_paid|default:0|floatformat:2 }}</td>
+                        <td class="px-4 py-3 text-right font-mono text-red-600 font-bold">₹{{ deposit.due_amount|default:0|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="bg-gradient-to-r from-green-100 to-emerald-100 border-t-2 border-green-300">
+                        <td class="px-4 py-4 font-bold text-gray-800 text-lg">{% trans "Total" %}</td>
+                        <td class="px-4 py-4 text-right font-mono font-bold text-gray-800 text-lg">₹{{ total_amount|floatformat:2 }}</td>
+                        <td class="px-4 py-4 text-right font-mono font-bold text-orange-700 text-lg">₹{{ total_discount|floatformat:2 }}</td>
+                        <td class="px-4 py-4 text-right font-mono font-bold text-green-700 text-xl">₹{{ total_paid|floatformat:2 }}</td>
+                        <td class="px-4 py-4 text-right font-mono font-bold text-blue-700 text-lg">₹{{ total_previous_paid|default:0|floatformat:2 }}</td>
+                        <td class="px-4 py-4 text-right font-mono font-bold text-red-700 text-xl">₹{{ total_due|default:0|floatformat:2 }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+        <a href="{% url 'student_fees:receipt_view' receipt_no %}"
+           class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center">
+            <i class="fas fa-print mr-3 text-xl"></i>
+            <div class="text-left">
+                <div class="font-bold">🖨️ {% trans "Print Receipt" %}</div>
+                <div class="text-xs opacity-90">{% trans "Physical copy" %}</div>
+            </div>
+        </a>
+
+        <a href="{% url 'student_fees:receipt_view' receipt_no %}"
+           class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center">
+            <i class="fas fa-download mr-3 text-xl"></i>
+            <div class="text-left">
+                <div class="font-bold">📥 {% trans "Download" %}</div>
+                <div class="text-xs opacity-90">{% trans "Save as PDF" %}</div>
+            </div>
+        </a>
+
+        <a href="{% url 'student_fees:student_fee_preview' student.id %}"
+           class="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center">
+            <i class="fas fa-user-graduate mr-3 text-xl"></i>
+            <div class="text-left">
+                <div class="font-bold">{% trans "Student Profile" %}</div>
+                <div class="text-xs opacity-90">{% trans "View details" %}</div>
+            </div>
+        </a>
+
+        <a href="{% url 'student_fees:fee_deposit' %}"
+           class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center">
+            <i class="fas fa-plus mr-3 text-xl"></i>
+            <div class="text-left">
+                <div class="font-bold">➕ {% trans "New Payment" %}</div>
+                <div class="text-xs opacity-90">{% trans "Add another" %}</div>
+            </div>
+        </a>
+    </div>
+
+    <!-- School Information -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mt-8 border border-gray-200 text-center">
+        <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center justify-center">
+                <i class="fas fa-school mr-3 text-blue-500"></i>{% trans "School Information" %}
+            </h3>
+            <div class="space-y-2 text-gray-600">
+                <p class="font-semibold text-gray-800">{{ school.name }}</p>
+                <p class="flex items-center justify-center">
+                    <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>
+                    {{ school.address }}, {{ school.city }}, {{ school.state }} - {{ school.pin_code }}
+                </p>
+                <div class="flex items-center justify-center gap-6 text-sm">
+                    <span class="flex items-center">
+                        <i class="fas fa-phone mr-1 text-green-500"></i>
+                        {{ school.phone }}
+                    </span>
+                    <span class="flex items-center">
+                        <i class="fas fa-envelope mr-1 text-blue-500"></i>
+                        {{ school.email }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-hide messages
+document.addEventListener('DOMContentLoaded', function() {
+    const messages = document.getElementById('form-messages');
+    if (messages) {
+        setTimeout(() => {
+            messages.style.opacity = '0';
+            messages.style.transform = 'translateX(100%)';
+            setTimeout(() => messages.remove(), 500);
+        }, 5000);
+    }
+});
+</script>
+
+{% block extra_css %}
+<style>
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Table hover effects */
+tbody tr:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Button hover effects */
+a {
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+</style>
+{% endblock %}
+{% endtimezone %}
+{% endblock %}

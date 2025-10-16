@@ -1,0 +1,192 @@
+{% load permission_tags %}
+<nav class="flex-1 py-6">
+    <ul class="space-y-2">
+        {% if user|can_access_module:'teachers' %}
+        <li>
+            <a href="{% url 'teacher_list' %}" class="menu-item">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span class="sidebar-text">{% trans "Manage Teachers" %}</span>
+                {% if not user|can_edit_module:'teachers' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'subjects' %}
+        <li>
+            <a href="{% url 'subjects_management' %}" class="menu-item">
+                <i class="fas fa-book"></i>
+                <span class="sidebar-text">{% trans "Manage Subjects" %}</span>
+                {% if not user|can_edit_module:'subjects' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'students' %}
+        <li>
+            <a href="/students/" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span class="sidebar-text">{% trans "Manage Students" %}</span>
+                {% if not user|can_edit_module:'students' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'transport' %}
+        <li>
+            <a href="{% url 'transport_management' %}" class="menu-item">
+                <i class="fas fa-bus"></i>
+                <span class="sidebar-text">{% trans "Manage Transport" %}</span>
+                {% if not user|can_edit_module:'transport' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'payments' %}
+        <li>
+            <a href="{% url 'student_fees:fee_deposit' %}" class="menu-item">
+                <i class="fas fa-money-bill-wave"></i>
+                <span class="sidebar-text">{% trans "Fee Deposit" %}</span>
+                {% if not user|can_edit_module:'payments' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'fees' %}
+        <li>
+            <a href="{% url 'fees:fees_setup' %}" class="menu-item">
+                <i class="fas fa-cog"></i>
+                <span class="sidebar-text">{% trans "Fee Setup" %}</span>
+                {% if not user|can_edit_module:'fees' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'fines' %}
+        <li>
+            <a href="{% url 'fines:base_fine' %}" class="menu-item">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span class="sidebar-text">{% trans "Fine Management" %}</span>
+                {% if not user|can_edit_module:'fines' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'attendance' %}
+        <li>
+            <a href="{% url 'attendance:attendance_manage' %}" class="menu-item">
+                <i class="fas fa-clipboard-check"></i>
+                <span class="sidebar-text">{% trans "Manage Attendance" %}</span>
+                {% if not user|can_edit_module:'attendance' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'promotion' %}
+        <li>
+            <a href="{% url 'promotion:promotion_class' %}" class="menu-item">
+                <i class="fas fa-graduation-cap"></i>
+                <span class="sidebar-text">{% trans "Promotion Class" %}</span>
+                {% if not user|can_edit_module:'promotion' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'messaging' %}
+        <li>
+            <a href="{% url 'messaging:dashboard' %}" class="menu-item">
+                <i class="fas fa-comments"></i>
+                <span class="sidebar-text">{% trans "Messaging" %}</span>
+                {% if not user|can_edit_module:'messaging' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'reports' %}
+        <li>
+            <a href="{% url 'reports:fees_report' %}" class="menu-item">
+                <i class="fas fa-chart-bar"></i>
+                <span class="sidebar-text">{% trans "Reports" %}</span>
+                {% if not user|can_edit_module:'reports' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'backup' %}
+        <li>
+            <a href="{% url 'backup:backup_restore' %}" class="menu-item">
+                <i class="fas fa-database"></i>
+                <span class="sidebar-text">{% trans "Backup / Restore" %}</span>
+                {% if not user|can_edit_module:'backup' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'users' %}
+        <li>
+            <a href="{% url 'users:user_management' %}" class="menu-item">
+                <i class="fas fa-user-cog"></i>
+                <span class="sidebar-text">{% trans "Manage Users" %}</span>
+                {% if not user|can_edit_module:'users' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'settings' %}
+        <li>
+            <a href="{% url 'language_settings' %}" class="menu-item">
+                <i class="fas fa-cogs"></i>
+                <span class="sidebar-text">{% trans "Settings" %}</span>
+                {% if not user|can_edit_module:'settings' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user|can_access_module:'school_profile' %}
+        <li>
+            <a href="{% url 'school_profile_view' %}" class="menu-item">
+                <i class="fas fa-building"></i>
+                <span class="sidebar-text">{% trans "School Profile" %}</span>
+                {% if not user|can_edit_module:'school_profile' %}
+                    <i class="fas fa-eye ml-auto text-xs text-blue-400" title="View Only"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        
+        {% get_user_modules user as user_modules %}
+        {% if not user_modules %}
+        <li class="px-4 py-3 text-gray-400 text-sm text-center">
+            <i class="fas fa-lock mr-2"></i>
+            {% trans "No modules accessible. Contact administrator." %}
+        </li>
+        {% endif %}
+    </ul>
+</nav>

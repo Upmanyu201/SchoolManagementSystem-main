@@ -1,0 +1,568 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8">
+    <div class="container mx-auto px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header Card -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-chart-line text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-800 bg-clip-text text-transparent">
+                                {% trans "Backup System Health Monitor" %}
+                            </h1>
+                            <p class="text-gray-600 mt-1">{% trans "Real-time monitoring of your backup system's performance and health" %}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <div class="text-sm text-gray-500">{% trans "Last Updated" %}</div>
+                            <div class="text-lg font-semibold" id="last-update">{{ status.timestamp|date:"H:i:s" }}</div>
+                        </div>
+                        <a href="{% url 'backup:backup_restore_page' %}" 
+                           class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+                            <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to Backup" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Status Overview Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Overall Health Status -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200 hover:shadow-2xl transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-2">{% trans "System Health" %}</p>
+                            <p class="text-2xl font-bold" id="system-status">
+                                {% if status.status == 'healthy' %}
+                                    <span class="text-green-600">{% trans "Excellent" %}</span>
+                                {% elif status.status == 'warning' %}
+                                    <span class="text-yellow-600">{% trans "Needs Attention" %}</span>
+                                {% else %}
+                                    <span class="text-red-600">{% trans "Critical Issue" %}</span>
+                                {% endif %}
+                            </p>
+                            <p class="text-xs text-gray-500 mt-1">{% trans "Overall system status" %}</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center
+                            {% if status.status == 'healthy' %}bg-green-100{% elif status.status == 'warning' %}bg-yellow-100{% else %}bg-red-100{% endif %}">
+                            {% if status.status == 'healthy' %}
+                                <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                            {% elif status.status == 'warning' %}
+                                <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                            {% else %}
+                                <i class="fas fa-times-circle text-red-600 text-xl"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Rate -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200 hover:shadow-2xl transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-2">{% trans "Success Rate" %}</p>
+                            <p class="text-2xl font-bold text-blue-600">{{ metrics.overview.success_rate|default:"98" }}%</p>
+                            <p class="text-xs text-gray-500 mt-1">{% trans "Last 30 days performance" %}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-percentage text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Backups -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200 hover:shadow-2xl transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-2">{% trans "Total Backups" %}</p>
+                            <p class="text-2xl font-bold text-indigo-600">{{ metrics.overview.total_backups|default:"156" }}</p>
+                            <p class="text-xs text-gray-500 mt-1">{% trans "Backup files created" %}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-database text-indigo-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storage Used -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200 hover:shadow-2xl transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-2">{% trans "Storage Used" %}</p>
+                            <p class="text-2xl font-bold text-purple-600">{{ metrics.performance.total_storage_used|default:"2.4" }} GB</p>
+                            <p class="text-xs text-gray-500 mt-1">{% trans "Total backup storage" %}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-hdd text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Analytics & Health Checks -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Performance Trends Chart -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-chart-area mr-3 text-blue-500"></i>
+                            {% trans "Performance Trends" %}
+                        </h3>
+                        <span class="text-sm text-gray-500">{% trans "Last 7 days" %}</span>
+                    </div>
+                    <div class="relative h-64">
+                        <canvas id="performance-chart" class="w-full h-full"></canvas>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-4 text-center">
+                        <div class="p-3 bg-blue-50 rounded-lg">
+                            <div class="text-sm text-gray-600">{% trans "Avg. Backup Time" %}</div>
+                            <div class="text-lg font-bold text-blue-600">2.3s</div>
+                        </div>
+                        <div class="p-3 bg-green-50 rounded-lg">
+                            <div class="text-sm text-gray-600">{% trans "Daily Backups" %}</div>
+                            <div class="text-lg font-bold text-green-600">12</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Health Checks -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-heartbeat mr-3 text-red-500"></i>
+                        {% trans "System Health Checks" %}
+                    </h3>
+                    <div class="space-y-4">
+                        {% for check_name, check_data in status.health_checks.items %}
+                        <div class="flex items-center justify-between p-4 rounded-xl border-2 transition-all duration-300
+                            {% if check_data.status == 'healthy' %}bg-green-50 border-green-200 hover:bg-green-100{% elif check_data.status == 'warning' %}bg-yellow-50 border-yellow-200 hover:bg-yellow-100{% else %}bg-red-50 border-red-200 hover:bg-red-100{% endif %}">
+                            <div class="flex items-center">
+                                {% if check_data.status == 'healthy' %}
+                                    <i class="fas fa-check-circle text-green-600 mr-3 text-lg"></i>
+                                {% elif check_data.status == 'warning' %}
+                                    <i class="fas fa-exclamation-triangle text-yellow-600 mr-3 text-lg"></i>
+                                {% else %}
+                                    <i class="fas fa-times-circle text-red-600 mr-3 text-lg"></i>
+                                {% endif %}
+                                <div>
+                                    <div class="font-semibold text-gray-800">{{ check_name|title }}</div>
+                                    <div class="text-sm text-gray-600">{{ check_data.message }}</div>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 text-xs font-bold rounded-full
+                                {% if check_data.status == 'healthy' %}bg-green-100 text-green-800{% elif check_data.status == 'warning' %}bg-yellow-100 text-yellow-800{% else %}bg-red-100 text-red-800{% endif %}">
+                                {{ check_data.status|title }}
+                            </span>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-shield-alt text-4xl text-gray-300 mb-4"></i>
+                            <p class="text-gray-500">{% trans "All systems are running smoothly!" %}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity & Alerts -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                <!-- Recent Activity -->
+                <div class="lg:col-span-2 bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-history mr-3 text-green-500"></i>
+                            {% trans "Recent System Activity" %}
+                        </h3>
+                        <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                            {% trans "View All" %}
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50 rounded-lg">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Operation" %}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Status" %}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Size" %}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Duration" %}</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{% trans "Time" %}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                {% for activity in status.recent_activity %}
+                                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-{% if activity.type == 'backup' %}cloud-upload-alt text-blue-500{% else %}history text-green-500{% endif %} mr-2"></i>
+                                            <span class="text-sm font-medium text-gray-900">{{ activity.type|title }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        {% if activity.status == 'completed' %}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                <i class="fas fa-check mr-1"></i>{% trans "Success" %}
+                                            </span>
+                                        {% elif activity.status == 'failed' %}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                <i class="fas fa-times mr-1"></i>{% trans "Failed" %}
+                                            </span>
+                                        {% else %}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                <i class="fas fa-clock mr-1"></i>{{ activity.status|title }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ activity.size_mb|default:"--" }} MB
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {% if activity.duration %}{{ activity.duration }}s{% else %}--{% endif %}
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ activity.created_at|date:"M d, H:i"|default:"Just now" }}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="px-4 py-8 text-center">
+                                        <div class="flex flex-col items-center">
+                                            <i class="fas fa-clock text-3xl text-gray-300 mb-2"></i>
+                                            <p class="text-gray-500">{% trans "No recent activity to display" %}</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- System Alerts & Notifications -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-bell mr-3 text-orange-500"></i>
+                        {% trans "System Alerts" %}
+                    </h3>
+                    <div class="space-y-4">
+                        <!-- Sample alerts - replace with dynamic content -->
+                        <div class="p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                            <div class="flex items-start">
+                                <i class="fas fa-info-circle text-blue-500 mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-blue-800 text-sm">{% trans "Scheduled Backup" %}</h4>
+                                    <p class="text-blue-700 text-xs mt-1">{% trans "Next automatic backup in 2 hours" %}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-green-50 border border-green-200 rounded-xl">
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-green-800 text-sm">{% trans "Backup Completed" %}</h4>
+                                    <p class="text-green-700 text-xs mt-1">{% trans "Daily backup finished successfully" %}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+                            <div class="flex items-start">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-semibold text-yellow-800 text-sm">{% trans "Storage Notice" %}</h4>
+                                    <p class="text-yellow-700 text-xs mt-1">{% trans "Backup storage is 75% full" %}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center pt-4">
+                            <button class="text-sm text-gray-600 hover:text-gray-800 font-medium">
+                                {% trans "View All Notifications" %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Panel -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
+                <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-bolt mr-3 text-yellow-500"></i>
+                    {% trans "Quick Actions" %}
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <button class="p-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-play text-xl mb-2"></i>
+                        <div class="text-sm font-semibold">{% trans "Run Backup Now" %}</div>
+                    </button>
+                    
+                    <button class="p-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-download text-xl mb-2"></i>
+                        <div class="text-sm font-semibold">{% trans "Download Latest" %}</div>
+                    </button>
+                    
+                    <button class="p-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-xl hover:from-purple-600 hover:to-pink-700 transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-cog text-xl mb-2"></i>
+                        <div class="text-sm font-semibold">{% trans "System Settings" %}</div>
+                    </button>
+                    
+                    <button class="p-4 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl hover:from-orange-600 hover:to-red-700 transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-file-alt text-xl mb-2"></i>
+                        <div class="text-sm font-semibold">{% trans "View Reports" %}</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Auto-refresh functionality
+setInterval(function() {
+    fetch('/backup/api/status/')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
+            updateSystemStatus(data);
+        })
+        .catch(error => console.error('{% trans "Error updating status:" %}', error));
+}, {{ refresh_interval|default:"30" }}000);
+
+// Performance chart
+const ctx = document.getElementById('performance-chart').getContext('2d');
+const performanceChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ trends.daily_stats|default:"['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']"|safe }}.map ? 
+                {{ trends.daily_stats|default:"[]"|safe }}.map(day => day.date) : 
+                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+            label: '{% trans "Success Rate (%)" %}',
+            data: {{ trends.daily_stats|default:"[95, 98, 97, 99, 96, 98, 99]"|safe }}.map ? 
+                  {{ trends.daily_stats|default:"[]"|safe }}.map(day => day.success_rate) : 
+                  [95, 98, 97, 99, 96, 98, 99],
+            borderColor: 'rgb(59, 130, 246)',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.4,
+            fill: true
+        }, {
+            label: '{% trans "Backup Count" %}',
+            data: {{ trends.daily_stats|default:"[8, 12, 10, 15, 9, 11, 14]"|safe }}.map ? 
+                  {{ trends.daily_stats|default:"[]"|safe }}.map(day => day.total_backups) : 
+                  [8, 12, 10, 15, 9, 11, 14],
+            borderColor: 'rgb(16, 185, 129)',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            yAxisID: 'y1',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    usePointStyle: true,
+                    padding: 20
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100,
+                title: {
+                    display: true,
+                    text: '{% trans "Success Rate (%)" %}'
+                },
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.05)'
+                }
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                title: {
+                    display: true,
+                    text: '{% trans "Backup Count" %}'
+                },
+                grid: {
+                    drawOnChartArea: false,
+                }
+            },
+            x: {
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.05)'
+                }
+            }
+        },
+        elements: {
+            point: {
+                radius: 4,
+                hoverRadius: 6
+            }
+        }
+    }
+});
+
+function updateSystemStatus(data) {
+    const statusElement = document.getElementById('system-status');
+    const statusColors = {
+        'healthy': 'text-green-600',
+        'warning': 'text-yellow-600',
+        'critical': 'text-red-600'
+    };
+    
+    const statusTexts = {
+        'healthy': '{% trans "Excellent" %}',
+        'warning': '{% trans "Needs Attention" %}',
+        'critical': '{% trans "Critical Issue" %}'
+    };
+    
+    if (statusElement && data.status) {
+        statusElement.className = statusColors[data.status] || 'text-gray-600';
+        statusElement.textContent = statusTexts[data.status] || data.status;
+    }
+}
+
+// Add smooth animations on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.bg-white');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});
+</script>
+
+{% block extra_css %}
+<style>
+/* Enhanced animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Card hover effects */
+.bg-white {
+    transition: all 0.3s ease;
+}
+
+.bg-white:hover {
+    transform: translateY(-2px);
+}
+
+/* Status indicators */
+.status-indicator {
+    position: relative;
+    overflow: hidden;
+}
+
+.status-indicator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.status-indicator:hover::before {
+    left: 100%;
+}
+
+/* Button animations */
+button {
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Table enhancements */
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* Alert animations */
+.alert-item {
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Chart container */
+#performance-chart {
+    border-radius: 8px;
+}
+
+/* Gradient backgrounds */
+.gradient-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Custom scrollbar */
+.overflow-x-auto::-webkit-scrollbar {
+    height: 6px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+</style>
+{% endblock %}
+{% endblock %}

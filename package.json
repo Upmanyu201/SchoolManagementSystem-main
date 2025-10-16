@@ -1,0 +1,19 @@
+{
+  "name": "school-management-system",
+  "version": "1.0.0",
+  "description": "School Management System with Django and Tailwind CSS",
+  "scripts": {
+    "build-css": "tailwindcss -i ./static/css/tailwind-input.css -o ./static/css/tailwind-output.css --minify",
+    "watch-css": "tailwindcss -i ./static/css/tailwind-input.css -o ./static/css/tailwind-output.css --watch",
+    "dev": "tailwindcss -i ./static/css/tailwind-input.css -o ./static/css/tailwind-output.css --watch",
+    "prod": "tailwindcss -i ./static/css/tailwind-input.css -o ./static/css/tailwind-output.css --minify"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.0"
+  },
+  "dependencies": {
+    "lucide": "^0.477.0"
+  }
+}

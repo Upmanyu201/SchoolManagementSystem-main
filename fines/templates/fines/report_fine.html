@@ -1,0 +1,232 @@
+{% extends 'fines/base_fine.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block fine_content %}
+<div class="animate-fade-in">
+    <!-- Header Card -->
+    <div class="card mb-6" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-chart-bar text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold">{% trans "Fine Reports" %}</h1>
+                    <p class="opacity-90 mt-1">{% trans "Generate and view fine reports" %}</p>
+                </div>
+            </div>
+            <a href="{% url 'fines:fine_history' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left mr-2"></i>{% trans "Back to History" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Report Filters Card -->
+    <div class="card mb-6">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-filter mr-2 text-blue-500"></i>🔍 {% trans "Report Filters" %}
+            </h3>
+        </div>
+        
+        <form method="GET" class="space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-calendar mr-2 text-green-500"></i>📅 {% trans "From Date" %}
+                    </label>
+                    <input type="date" name="from_date" value="{{ request.GET.from_date }}" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-calendar mr-2 text-red-500"></i>📅 {% trans "To Date" %}
+                    </label>
+                    <input type="date" name="to_date" value="{{ request.GET.to_date }}" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-tag mr-2 text-purple-500"></i>{% trans "Fine Type" %}
+                    </label>
+                    <select name="fine_type" class="form-select">
+                        <option value="">{% trans "All Types" %}</option>
+                        {% for type in fine_types %}
+                        <option value="{{ type.id }}" {% if request.GET.fine_type == type.id|stringformat:"s" %}selected{% endif %}>
+                            {{ type.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-school mr-2 text-indigo-500"></i>{% trans "Class" %}
+                    </label>
+                    <select name="class_filter" class="form-select">
+                        <option value="">{% trans "All Classes" %}</option>
+                        {% for class in classes %}
+                        <option value="{{ class.id }}" {% if request.GET.class_filter == class.id|stringformat:"s" %}selected{% endif %}>
+                            {{ class.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-check-circle mr-2 text-green-500"></i>{% trans "Payment Status" %}
+                    </label>
+                    <select name="payment_status" class="form-select">
+                        <option value="">{% trans "All Status" %}</option>
+                        <option value="paid" {% if request.GET.payment_status == 'paid' %}selected{% endif %}>{% trans "Paid" %}</option>
+                        <option value="pending" {% if request.GET.payment_status == 'pending' %}selected{% endif %}>⏳ {% trans "Pending" %}</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="flex justify-center space-x-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search mr-2"></i>🔍 {% trans "Generate Report" %}
+                </button>
+                <a href="{% url 'fines:report_fine' %}" class="btn btn-secondary">
+                    <i class="fas fa-refresh mr-2"></i>{% trans "Clear Filters" %}
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Report Summary Cards -->
+    {% if report_data %}
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+        <div class="card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1)); border: 2px solid rgba(59, 130, 246, 0.2);">
+            <div class="text-center">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #3b82f6, #9333ea);">
+                    <i class="fas fa-receipt text-white text-2xl"></i>
+                </div>
+                <div class="text-2xl font-bold text-blue-600">{{ report_data.total_fines }}</div>
+                <div class="text-sm text-gray-600">📋 {% trans "Total Fines" %}</div>
+            </div>
+        </div>
+        
+        <div class="card" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1)); border: 2px solid rgba(16, 185, 129, 0.2);">
+            <div class="text-center">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #10b981, #059669);">
+                    <i class="fas fa-rupee-sign text-white text-2xl"></i>
+                </div>
+                <div class="text-2xl font-bold text-green-600">₹{{ report_data.total_amount|floatformat:2 }}</div>
+                <div class="text-sm text-gray-600">{% trans "Total Amount" %}</div>
+            </div>
+        </div>
+        
+        <div class="card" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(21, 128, 61, 0.1)); border: 2px solid rgba(34, 197, 94, 0.2);">
+            <div class="text-center">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #22c55e, #15803d);">
+                    <i class="fas fa-check-circle text-white text-2xl"></i>
+                </div>
+                <div class="text-2xl font-bold text-green-600">₹{{ report_data.paid_amount|floatformat:2 }}</div>
+                <div class="text-sm text-gray-600">{% trans "Paid Amount" %}</div>
+            </div>
+        </div>
+        
+        <div class="card" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1)); border: 2px solid rgba(245, 158, 11, 0.2);">
+            <div class="text-center">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                    <i class="fas fa-clock text-white text-2xl"></i>
+                </div>
+                <div class="text-2xl font-bold text-yellow-600">₹{{ report_data.pending_amount|floatformat:2 }}</div>
+                <div class="text-sm text-gray-600">⏳ {% trans "Pending Amount" %}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Table -->
+    <div class="card">
+        <div class="card-header">
+            <div class="flex items-center justify-between">
+                <h3 class="card-title">
+                    <i class="fas fa-table mr-2 text-indigo-500"></i>{% trans "Fine Report Details" %}
+                </h3>
+                <div class="flex space-x-2">
+
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-hashtag mr-2 text-blue-500"></i>{% trans "Fine ID" %}</th>
+                        <th><i class="fas fa-tag mr-2 text-purple-500"></i>{% trans "Type" %}</th>
+                        <th><i class="fas fa-user mr-2 text-green-500"></i>{% trans "Student" %}</th>
+                        <th><i class="fas fa-school mr-2 text-indigo-500"></i>{% trans "Class" %}</th>
+                        <th><i class="fas fa-rupee-sign mr-2 text-green-500"></i>{% trans "Amount" %}</th>
+                        <th><i class="fas fa-calendar mr-2 text-orange-500"></i>{% trans "Due Date" %}</th>
+                        <th><i class="fas fa-info-circle mr-2 text-blue-500"></i>{% trans "Status" %}</th>
+                        <th><i class="fas fa-calendar-check mr-2 text-green-500"></i>{% trans "Paid Date" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fine in fines %}
+                    <tr>
+                        <td class="font-mono">#{{ fine.id }}</td>
+                        <td>
+                            <span class="badge badge-info">{{ fine.fine_type.name }}</span>
+                        </td>
+                        <td>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mr-3">
+                                    <span class="text-white text-xs font-bold">{{ fine.student.first_name|first }}</span>
+                                </div>
+                                <div>
+                                    <div class="font-semibold">{{ fine.student.get_full_name }}</div>
+                                    <div class="text-sm text-gray-500">{{ fine.student.admission_number }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">{{ fine.student.student_class.name }}</span>
+                        </td>
+                        <td class="font-semibold text-green-600">₹{{ fine.amount|floatformat:2 }}</td>
+                        <td>{{ fine.due_date|date:"d M Y" }}</td>
+                        <td>
+                            {% if fine.is_paid %}
+                                <span class="badge badge-success">{% trans "Paid" %}</span>
+                            {% else %}
+                                <span class="badge badge-warning">⏳ {% trans "Pending" %}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if fine.paid_date %}
+                                {{ fine.paid_date|date:"d M Y" }}
+                            {% else %}
+                                <span class="text-gray-400">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-8">
+                            <div class="text-gray-500">
+                                <i class="fas fa-search text-4xl mb-4"></i>
+                                <p class="text-lg">📭 {% trans "No fines found matching your criteria" %}</p>
+                                <p class="text-sm">{% trans "Try adjusting your filters" %}</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+
+</script>
+{% endblock %}

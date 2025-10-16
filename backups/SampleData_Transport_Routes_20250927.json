@@ -1,0 +1,157 @@
+[
+{
+  "model": "transport.route",
+  "pk": 101,
+  "fields": {
+    "name": "Route 6 - North Zone"
+  }
+},
+{
+  "model": "transport.route",
+  "pk": 102,
+  "fields": {
+    "name": "Route 7 - South Zone"
+  }
+},
+{
+  "model": "transport.route",
+  "pk": 103,
+  "fields": {
+    "name": "Route 8 - East Zone"
+  }
+},
+{
+  "model": "transport.route",
+  "pk": 104,
+  "fields": {
+    "name": "Route 9 - West Zone"
+  }
+},
+{
+  "model": "transport.route",
+  "pk": 105,
+  "fields": {
+    "name": "Route 10 - Central Zone"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 101,
+  "fields": {
+    "route": 101,
+    "name": "Sahiyara Main"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 102,
+  "fields": {
+    "route": 101,
+    "name": "Sahiyara School"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 103,
+  "fields": {
+    "route": 101,
+    "name": "Sahiyara Market"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 104,
+  "fields": {
+    "route": 102,
+    "name": "Konsar Chowk"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 105,
+  "fields": {
+    "route": 102,
+    "name": "Konsar Temple"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 106,
+  "fields": {
+    "route": 102,
+    "name": "Konsar Hospital"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 107,
+  "fields": {
+    "route": 103,
+    "name": "Jaharpur Main"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 108,
+  "fields": {
+    "route": 103,
+    "name": "Jaharpur School"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 109,
+  "fields": {
+    "route": 103,
+    "name": "Jaharpur Market"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 110,
+  "fields": {
+    "route": 104,
+    "name": "Sauli Main"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 111,
+  "fields": {
+    "route": 104,
+    "name": "Sauli Chowk"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 112,
+  "fields": {
+    "route": 104,
+    "name": "Sauli Temple"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 113,
+  "fields": {
+    "route": 105,
+    "name": "Kundal Main"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 114,
+  "fields": {
+    "route": 105,
+    "name": "Kundal School"
+  }
+},
+{
+  "model": "transport.stoppage",
+  "pk": 115,
+  "fields": {
+    "route": 105,
+    "name": "Kundal Market"
+  }
+}
+]

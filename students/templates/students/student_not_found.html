@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Not Found{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-user-slash fa-5x text-muted"></i>
+                    </div>
+                    <h3 class="card-title text-danger mb-3">Student Not Found</h3>
+                    <p class="card-text text-muted mb-4">
+                        We couldn't find a student with admission number: 
+                        <strong>{{ admission_number }}</strong>
+                    </p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'students:student_list' %}" class="btn btn-primary">
+                            <i class="fas fa-list me-2"></i>View All Students
+                        </a>
+                        <a href="{% url 'students:add_student' %}" class="btn btn-outline-success">
+                            <i class="fas fa-plus me-2"></i>Add New Student
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

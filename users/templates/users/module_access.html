@@ -1,0 +1,708 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}🔐 Advanced Module Access Control - {{ school_name|default:"School Management" }}{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+    <!-- Enhanced Header with Stats -->
+    <div class="bg-white rounded-2xl shadow-2xl p-8 mb-8 border border-indigo-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="w-16 h-16 bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center mr-6 shadow-lg">
+                    <i class="fas fa-shield-alt text-white text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-700 to-pink-700 bg-clip-text text-transparent">
+                        🔐 Advanced Module Access Control
+                    </h1>
+                    <p class="text-gray-600 mt-2 text-lg">Secure role-based permissions for all system modules</p>
+                    <div class="flex items-center mt-3 space-x-6">
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                            <i class="fas fa-users mr-1"></i>{{ total_users|default:0 }} Active Users
+                        </span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                            <i class="fas fa-key mr-1"></i>{{ users_with_permissions|default:0 }} With Permissions
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex space-x-3">
+                <a href="{% url 'users:user_management' %}" class="btn btn-secondary px-6 py-3 rounded-xl hover:scale-105 transition-all">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Users
+                </a>
+                <button type="button" id="bulkActionsBtn" class="btn btn-primary px-6 py-3 rounded-xl hover:scale-105 transition-all">
+                    <i class="fas fa-layer-group mr-2"></i>Bulk Actions
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Panel -->
+    <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-gray-200">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                <i class="fas fa-bolt mr-2 text-yellow-500"></i>Quick Permission Templates
+            </h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <button type="button" class="permission-template bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all" data-template="teacher">
+                <i class="fas fa-chalkboard-teacher text-2xl mb-2"></i>
+                <div class="font-bold">Teacher Role</div>
+                <div class="text-sm opacity-90">Students, Subjects, Attendance</div>
+            </button>
+            <button type="button" class="permission-template bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all" data-template="accountant">
+                <i class="fas fa-calculator text-2xl mb-2"></i>
+                <div class="font-bold">Accountant Role</div>
+                <div class="text-sm opacity-90">Fees, Payments, Financial Reports</div>
+            </button>
+            <button type="button" class="permission-template bg-gradient-to-r from-purple-500 to-purple-600 text-white p-4 rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all" data-template="admin_staff">
+                <i class="fas fa-user-tie text-2xl mb-2"></i>
+                <div class="font-bold">Admin Staff</div>
+                <div class="text-sm opacity-90">Students, Teachers, Transport, Reports</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Enhanced Permission Form -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 p-8">
+            <h2 class="text-white text-2xl font-bold flex items-center">
+                <i class="mr-3"></i>🛡️ Advanced Permission Settings
+            </h2>
+            <p class="text-white/80 mt-2">Configure granular access control for each user and module</p>
+        </div>
+        
+        <form method="POST" class="p-8">
+            {% csrf_token %}
+            
+            <!-- Form Errors Display -->
+            {% if form.errors %}
+            <div class="mb-8 bg-red-50 border-2 border-red-200 rounded-2xl p-6">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-xl mr-3"></i>
+                    <h3 class="text-red-800 font-bold text-lg">Please correct the following errors:</h3>
+                </div>
+                <ul class="space-y-2">
+                    {% for field, errors in form.errors.items %}
+                    <li class="bg-white rounded-lg p-3 border border-red-200">
+                        <strong class="text-red-700">{{ field|capfirst }}:</strong> 
+                        <span class="text-red-600">{{ errors|join:", " }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- Enhanced User Selection -->
+            <div class="mb-8">
+                <label class="block text-gray-700 font-bold mb-4 flex items-center text-lg">
+                    <i class="fas fa-user-circle mr-3 text-indigo-500"></i>Select User for Permission Management
+                </label>
+                <div class="relative">
+                    {{ form.user }}
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+                {% if form.user.errors %}
+                <div class="mt-2 text-red-600 text-sm">
+                    {{ form.user.errors|join:", " }}
+                </div>
+                {% endif %}
+                <p class="text-sm text-gray-500 mt-2 flex items-center">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Only non-superuser accounts are shown. Superusers have full access by default.
+                </p>
+            </div>
+
+            <!-- Enhanced Current Permissions Display -->
+            <div id="currentPermissions" class="mb-8 hidden">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border-2 border-blue-200 shadow-inner">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-blue-800 flex items-center">
+                            <i class="fas fa-eye mr-3"></i>Current Permission Overview
+                        </h3>
+                        <div class="flex items-center space-x-2">
+                            <span id="permissionCount" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">0 modules</span>
+
+                        </div>
+                    </div>
+                    <div id="permissionsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Module Permissions -->
+            <div class="space-y-8">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-cubes mr-3 text-purple-500"></i>Module Permission Matrix
+                        </h3>
+                        <p class="text-gray-600 mt-1">Configure view and edit permissions for each system module</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" id="selectAllView" class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-lg">
+                            <i class="fas fa-eye mr-2"></i>Grant All View
+                        </button>
+                        <button type="button" id="selectAllEdit" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg">
+                            <i class="fas fa-edit mr-2"></i>Grant All Edit
+                        </button>
+                        <button type="button" id="clearAll" class="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all shadow-lg">
+                            <i class="fas fa-ban mr-2"></i>Revoke All
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dynamic Module Grid - All 18 Modules -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {% for field in form %}
+                        {% if field.name != 'user' and '_view' in field.name %}
+                            {% with module_name=field.name|slice:":-5" %}
+                            <div class="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-indigo-400 hover:shadow-lg transition-all duration-300 group">
+                                <h5 class="font-bold text-gray-800 mb-4 flex items-center text-lg">
+                                    {% if 'students' in field.name %}<i class="fas fa-user-graduate mr-3 text-blue-500"></i>{% endif %}
+                                    {% if 'teachers' in field.name %}<i class="fas fa-chalkboard-teacher mr-3 text-green-500"></i>{% endif %}
+                                    {% if 'subjects' in field.name %}<i class="fas fa-book mr-3 text-indigo-500"></i>{% endif %}
+                                    {% if 'fees' in field.name %}<i class="fas fa-money-bill-wave mr-3 text-green-500"></i>{% endif %}
+                                    {% if 'payments' in field.name %}<i class="fas fa-credit-card mr-3 text-blue-500"></i>{% endif %}
+                                    {% if 'fines' in field.name %}<i class="fas fa-exclamation-triangle mr-3 text-red-500"></i>{% endif %}
+                                    {% if 'attendance' in field.name %}<i class="fas fa-calendar-check mr-3 text-purple-500"></i>{% endif %}
+                                    {% if 'transport' in field.name %}<i class="fas fa-bus mr-3 text-yellow-600"></i>{% endif %}
+                                    {% if 'reports' in field.name %}<i class="fas fa-chart-bar mr-3 text-indigo-500"></i>{% endif %}
+                                    {% if 'messaging' in field.name %}<i class="fas fa-comments mr-3 text-pink-500"></i>{% endif %}
+                                    {% if 'promotion' in field.name %}<i class="fas fa-graduation-cap mr-3 text-teal-500"></i>{% endif %}
+                                    {% if 'users' in field.name %}<i class="fas fa-users mr-3 text-red-500"></i>{% endif %}
+                                    {% if 'settings' in field.name %}<i class="fas fa-cogs mr-3 text-gray-500"></i>{% endif %}
+                                    {% if 'backup' in field.name %}<i class="fas fa-database mr-3 text-cyan-500"></i>{% endif %}
+                                    {% if 'school_profile' in field.name %}<i class="fas fa-building mr-3 text-emerald-500"></i>{% endif %}
+                                    {{ module_name|title }}
+                                </h5>
+                                <div class="space-y-3">
+                                    <div class="flex items-center p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                                        {{ field }}
+                                        <label for="{{ field.id_for_label }}" class="ml-3 text-sm font-medium text-gray-700 flex items-center cursor-pointer">
+                                            <i class="fas fa-eye mr-2 text-green-600"></i>View Access
+                                        </label>
+                                    </div>
+                                    {% if field.errors %}
+                                    <div class="text-red-600 text-xs mt-1">
+                                        {{ field.errors|join:", " }}
+                                    </div>
+                                    {% endif %}
+                                    {% for edit_field in form %}
+                                        {% if edit_field.name == module_name|add:'_edit' %}
+                                    <div class="flex items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                                        {{ edit_field }}
+                                        <label for="{{ edit_field.id_for_label }}" class="ml-3 text-sm font-medium text-gray-700 flex items-center cursor-pointer">
+                                            <i class="fas fa-edit mr-2 text-blue-600"></i>Edit Access
+                                        </label>
+                                    </div>
+                                    {% if edit_field.errors %}
+                                    <div class="text-red-600 text-xs mt-1">
+                                        {{ edit_field.errors|join:", " }}
+                                    </div>
+                                    {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endwith %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Enhanced Submit Section -->
+            <div class="mt-12 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-8 border border-indigo-200">
+                <div class="text-center">
+                    <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center justify-center">
+                        <i class="fas fa-shield-check mr-2 text-green-500"></i>Finalize Permission Changes
+                    </h4>
+                    <p class="text-gray-600 mb-6">Review the permissions above and click save to apply changes</p>
+                    <div class="flex justify-center space-x-4">
+                        <button type="button" id="previewChanges" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-eye mr-3"></i>Preview Changes
+                        </button>
+                        <button type="submit" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-12 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-shield-alt mr-3"></i>Save Permissions
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔧 Module Access Control - JavaScript Initialized');
+    
+    // Clear any existing error messages on page load that are empty
+    const errorElements = document.querySelectorAll('.alert-danger, .error-message, .text-red-500, .text-red-600');
+    errorElements.forEach(element => {
+        if (!element.textContent.trim()) {
+            console.log('🧹 Removing empty error element:', element);
+            element.remove();
+        }
+    });
+    
+    const userSelect = document.getElementById('id_user');
+    const currentPermissions = document.getElementById('currentPermissions');
+    const permissionsList = document.getElementById('permissionsList');
+    const permissionCount = document.getElementById('permissionCount');
+    
+    console.log('📋 Form Elements Found:', {
+        userSelect: !!userSelect,
+        currentPermissions: !!currentPermissions,
+        permissionsList: !!permissionsList,
+        permissionCount: !!permissionCount
+    });
+    
+    // Log all form fields for debugging
+    const allFormFields = document.querySelectorAll('input[type="checkbox"]');
+    console.log('🎯 Total Form Fields Found:', allFormFields.length);
+    
+    const moduleFields = {};
+    allFormFields.forEach(field => {
+        const [module, type] = field.name.split('_');
+        if (!moduleFields[module]) moduleFields[module] = [];
+        moduleFields[module].push(type);
+    });
+    console.log('📊 Modules Detected:', moduleFields);
+    
+    // Auto-select user if provided in URL
+    const selectedUserId = '{{ selected_user_id|default:"" }}';
+    if (selectedUserId && userSelect) {
+        userSelect.value = selectedUserId;
+        console.log('🎯 Auto-selected user from URL:', selectedUserId);
+        
+        // Trigger change event to load permissions
+        if (userSelect.value) {
+            showLoadingState();
+            loadCurrentPermissions(userSelect.value);
+        }
+    }
+    
+    // Enhanced user selection with loading state
+    userSelect.addEventListener('change', function() {
+        console.log('👤 User Selected:', this.value, this.options[this.selectedIndex]?.text);
+        
+        if (this.value) {
+            showLoadingState();
+            loadCurrentPermissions(this.value);
+        } else {
+            console.log('❌ No user selected, hiding permissions');
+            currentPermissions.classList.add('hidden');
+        }
+    });
+    
+    function showLoadingState() {
+        permissionsList.innerHTML = '<div class="col-span-full text-center py-8"><i class="fas fa-spinner fa-spin text-2xl text-blue-500"></i><p class="mt-2 text-gray-600">Loading permissions...</p></div>';
+        currentPermissions.classList.remove('hidden');
+    }
+    
+    async function loadCurrentPermissions(userId) {
+        console.log('🔄 Loading permissions for user ID:', userId);
+        
+        try {
+            const response = await fetch(`/users/get-user-permissions/?user_id=${userId}`);
+            console.log('📡 API Response Status:', response.status);
+            
+            const data = await response.json();
+            console.log('📦 API Response Data:', data);
+            
+            if (data.permissions) {
+                console.log('✅ Permissions loaded successfully:', Object.keys(data.permissions).length, 'modules');
+                displayCurrentPermissions(data.permissions);
+                updateFormFields(data.permissions);
+                updatePermissionCount(data.permissions);
+                currentPermissions.classList.remove('hidden');
+            } else {
+                console.warn('⚠️ No permissions data in response');
+            }
+        } catch (error) {
+            console.error('❌ Error loading permissions:', error);
+            showErrorState();
+        }
+    }
+    
+    function showErrorState() {
+        permissionsList.innerHTML = '<div class="col-span-full text-center py-8 text-red-500"><i class="fas fa-exclamation-triangle text-2xl"></i><p class="mt-2">Error loading permissions</p></div>';
+    }
+    
+    function displayCurrentPermissions(permissions) {
+        permissionsList.innerHTML = '';
+        
+        const moduleIcons = {
+            students: 'fa-user-graduate', teachers: 'fa-chalkboard-teacher',
+            subjects: 'fa-book', fees: 'fa-money-bill-wave', payments: 'fa-credit-card', 
+            fines: 'fa-exclamation-triangle', attendance: 'fa-calendar-check', 
+            transport: 'fa-bus', reports: 'fa-chart-bar', 
+            messaging: 'fa-comments', promotion: 'fa-graduation-cap', users: 'fa-users', 
+            settings: 'fa-cogs', backup: 'fa-database', school_profile: 'fa-building'
+        };
+        
+        for (const [module, perms] of Object.entries(permissions)) {
+            const hasAnyPermission = perms.view || perms.edit;
+            const div = document.createElement('div');
+            div.className = `bg-white rounded-xl p-4 border-2 transition-all duration-300 ${
+                hasAnyPermission ? 'border-green-200 shadow-md' : 'border-gray-200'
+            }`;
+            
+            div.innerHTML = `
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center">
+                        <i class="fas ${moduleIcons[module] || 'fa-cube'} text-lg mr-2 text-indigo-500"></i>
+                        <span class="font-bold text-gray-800">${module.replace('_', ' ').toUpperCase()}</span>
+                    </div>
+                    ${hasAnyPermission ? '<i class="fas fa-check-circle text-green-500"></i>' : '<i class="fas fa-times-circle text-gray-400"></i>'}
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="flex items-center justify-center p-2 rounded-lg ${
+                        perms.view ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-500'
+                    }">
+                        <i class="fas fa-eye mr-1"></i>
+                        <span class="text-xs font-medium">${perms.view ? 'View' : 'No View'}</span>
+                    </div>
+                    <div class="flex items-center justify-center p-2 rounded-lg ${
+                        perms.edit ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-500'
+                    }">
+                        <i class="fas fa-edit mr-1"></i>
+                        <span class="text-xs font-medium">${perms.edit ? 'Edit' : 'No Edit'}</span>
+                    </div>
+                </div>
+            `;
+            permissionsList.appendChild(div);
+        }
+    }
+    
+    function updatePermissionCount(permissions) {
+        const activeModules = Object.values(permissions).filter(p => p.view || p.edit).length;
+        const totalModules = Object.keys(permissions).length;
+        permissionCount.textContent = `${activeModules}/${totalModules} modules active`;
+    }
+    
+    function updateFormFields(permissions) {
+        console.log('🔄 Updating form fields with permissions:', permissions);
+        
+        // Clear all checkboxes first with animation
+        const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+        console.log('🧹 Clearing', allCheckboxes.length, 'checkboxes');
+        
+        allCheckboxes.forEach(cb => {
+            cb.checked = false;
+            cb.parentElement.classList.remove('ring-2', 'ring-blue-300');
+        });
+        
+        // Set permissions based on current user permissions with animation
+        let fieldsUpdated = 0;
+        for (const [module, perms] of Object.entries(permissions)) {
+            const viewField = document.querySelector(`input[name="${module}_view"]`);
+            const editField = document.querySelector(`input[name="${module}_edit"]`);
+            
+            console.log(`🔍 Module: ${module}`, {
+                viewField: !!viewField,
+                editField: !!editField,
+                permissions: perms
+            });
+            
+            if (viewField && perms.view) {
+                viewField.checked = true;
+                viewField.parentElement.classList.add('ring-2', 'ring-green-300');
+                setTimeout(() => viewField.parentElement.classList.remove('ring-2', 'ring-green-300'), 1000);
+                fieldsUpdated++;
+                console.log(`✅ Set ${module}_view = true`);
+            }
+            if (editField && perms.edit) {
+                editField.checked = true;
+                editField.parentElement.classList.add('ring-2', 'ring-blue-300');
+                setTimeout(() => editField.parentElement.classList.remove('ring-2', 'ring-blue-300'), 1000);
+                fieldsUpdated++;
+                console.log(`✅ Set ${module}_edit = true`);
+            }
+        }
+        
+        console.log('📊 Form fields updated:', fieldsUpdated, 'fields set');
+    }
+    
+    // Enhanced bulk actions with confirmation
+    document.getElementById('selectAllView').addEventListener('click', function() {
+        console.log('🔓 Grant All View clicked');
+        
+        if (confirm('Grant view access to all modules for this user?')) {
+            const viewFields = document.querySelectorAll('input[type="checkbox"][name$="_view"]');
+            console.log('✅ Granting view access to', viewFields.length, 'modules');
+            
+            viewFields.forEach(cb => {
+                cb.checked = true;
+                cb.parentElement.classList.add('animate-pulse');
+                setTimeout(() => cb.parentElement.classList.remove('animate-pulse'), 500);
+                console.log('✅ Granted view:', cb.name);
+            });
+        }
+    });
+    
+    document.getElementById('selectAllEdit').addEventListener('click', function() {
+        console.log('🔓 Grant All Edit clicked');
+        
+        if (confirm('Grant full edit access to all modules for this user? This includes view permissions.')) {
+            const allFields = document.querySelectorAll('input[type="checkbox"]');
+            console.log('✅ Granting full access to', allFields.length, 'permissions');
+            
+            allFields.forEach(cb => {
+                cb.checked = true;
+                cb.parentElement.classList.add('animate-pulse');
+                setTimeout(() => cb.parentElement.classList.remove('animate-pulse'), 500);
+                console.log('✅ Granted permission:', cb.name);
+            });
+        }
+    });
+    
+    document.getElementById('clearAll').addEventListener('click', function() {
+        console.log('🔒 Revoke All clicked');
+        
+        if (confirm('Remove all permissions for this user? This action will revoke access to all modules.')) {
+            const allFields = document.querySelectorAll('input[type="checkbox"]');
+            console.log('❌ Revoking all permissions from', allFields.length, 'fields');
+            
+            allFields.forEach(cb => {
+                cb.checked = false;
+                cb.parentElement.classList.add('animate-pulse');
+                setTimeout(() => cb.parentElement.classList.remove('animate-pulse'), 500);
+                console.log('❌ Revoked permission:', cb.name);
+            });
+        }
+    });
+    
+    // Enhanced auto-check view when edit is checked
+    document.querySelectorAll('input[type="checkbox"][name$="_edit"]').forEach(editCb => {
+        editCb.addEventListener('change', function() {
+            if (this.checked) {
+                const moduleName = this.name.replace('_edit', '');
+                const viewCb = document.querySelector(`input[name="${moduleName}_view"]`);
+                if (viewCb && !viewCb.checked) {
+                    viewCb.checked = true;
+                    viewCb.parentElement.classList.add('ring-2', 'ring-yellow-300', 'animate-pulse');
+                    setTimeout(() => {
+                        viewCb.parentElement.classList.remove('ring-2', 'ring-yellow-300', 'animate-pulse');
+                    }, 1000);
+                }
+            }
+        });
+    });
+    
+    // Permission templates
+    document.querySelectorAll('.permission-template').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const template = this.dataset.template;
+            const userName = userSelect.options[userSelect.selectedIndex]?.text;
+            
+            if (!userSelect.value) {
+                alert('Please select a user first.');
+                return;
+            }
+            
+            if (confirm(`Apply ${template.replace('_', ' ')} permissions to ${userName}?`)) {
+                applyPermissionTemplate(template);
+            }
+        });
+    });
+    
+    function applyPermissionTemplate(template) {
+        // Clear all first
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+        
+        const templates = {
+            teacher: ['students_view', 'subjects_view', 'attendance_view', 'attendance_edit', 'messaging_view'],
+            accountant: ['fees_view', 'fees_edit', 'payments_view', 'payments_edit', 'fines_view', 'fines_edit', 'reports_view'],
+            admin_staff: ['students_view', 'students_edit', 'teachers_view', 'teachers_edit', 'subjects_view', 'transport_view', 'transport_edit', 'reports_view', 'messaging_view', 'promotion_view', 'promotion_edit', 'backup_view', 'school_profile_view']
+        };
+        
+        if (templates[template]) {
+            templates[template].forEach(permission => {
+                const field = document.querySelector(`input[name="${permission}"]`);
+                if (field) {
+                    field.checked = true;
+                    field.parentElement.classList.add('animate-bounce');
+                    setTimeout(() => field.parentElement.classList.remove('animate-bounce'), 1000);
+                }
+            });
+        }
+    }
+    
+
+    
+    // Preview changes
+    document.getElementById('previewChanges')?.addEventListener('click', function() {
+        console.log('👁️ Preview Changes clicked');
+        
+        const checkedPermissions = {};
+        const checkedFields = document.querySelectorAll('input[type="checkbox"]:checked');
+        
+        console.log('📊 Currently checked fields:', checkedFields.length);
+        
+        checkedFields.forEach(cb => {
+            const [module, type] = cb.name.split('_');
+            if (!checkedPermissions[module]) checkedPermissions[module] = {};
+            checkedPermissions[module][type] = true;
+            console.log('✅ Checked:', cb.name);
+        });
+        
+        console.log('📋 Preview of changes:', checkedPermissions);
+        alert(`Preview: ${Object.keys(checkedPermissions).length} modules will have permissions`);
+    });
+    
+    // Add form submission logging and prevent multiple submissions
+    const form = document.querySelector('form');
+    let isSubmitting = false;
+    
+    if (form) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        
+        form.addEventListener('submit', function(e) {
+            console.log('📤 Form submission started');
+            
+            // Prevent multiple submissions
+            if (isSubmitting) {
+                console.warn('⚠️ Form already submitting, preventing duplicate');
+                e.preventDefault();
+                return;
+            }
+            
+            // Check if user is selected
+            const userSelect = document.getElementById('id_user');
+            if (!userSelect || !userSelect.value) {
+                console.error('❌ No user selected!');
+                e.preventDefault();
+                alert('Please select a user before saving permissions.');
+                return;
+            }
+            
+            // Prevent duplicate submissions
+            if (isSubmitting) {
+                console.warn('⚠️ Preventing duplicate submission');
+                e.preventDefault();
+                return;
+            }
+            
+            // Set submitting state
+            isSubmitting = true;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>Saving...';
+            }
+            
+            const formData = new FormData(form);
+            const submissionData = {};
+            
+            for (let [key, value] of formData.entries()) {
+                submissionData[key] = value;
+            }
+            
+            console.log('📦 Form data being submitted:', submissionData);
+            console.log('👤 Selected user:', userSelect.options[userSelect.selectedIndex]?.text);
+            
+            const checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            console.log('✅ Total permissions being submitted:', checkedCount);
+            
+            // Log permission summary
+            const permissionSummary = {};
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                const [module, type] = cb.name.split('_');
+                if (!permissionSummary[module]) permissionSummary[module] = [];
+                permissionSummary[module].push(type);
+            });
+            console.log('📊 Permission summary:', permissionSummary);
+            
+            // Reset state after 5 seconds as fallback
+            setTimeout(() => {
+                isSubmitting = false;
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-shield-alt mr-3"></i>Save Permissions';
+                }
+            }, 5000);
+        });
+    }
+    
+    // Log any form errors on page load
+    const errorMessages = document.querySelectorAll('.errorlist, .alert-danger, .text-red-500, .text-red-600');
+    if (errorMessages.length > 0) {
+        console.error('🚨 Form errors detected on page load:', errorMessages.length);
+        errorMessages.forEach((error, index) => {
+            const errorText = error.textContent.trim();
+            console.error(`Error ${index + 1}:`, errorText || 'Empty error message');
+            console.error(`Error ${index + 1} HTML:`, error.innerHTML);
+        });
+    }
+    
+    // Also check for Django form errors specifically
+    const djangoErrors = document.querySelectorAll('ul.errorlist li, .form-errors li');
+    if (djangoErrors.length > 0) {
+        console.error('🚨 Django form errors found:', djangoErrors.length);
+        djangoErrors.forEach((error, index) => {
+            console.error(`Django Error ${index + 1}:`, error.textContent.trim());
+        });
+    }
+    
+    // Check for field-specific errors
+    const fieldErrors = document.querySelectorAll('input + .text-red-600, select + .text-red-600');
+    if (fieldErrors.length > 0) {
+        console.error('🚨 Field-specific errors found:', fieldErrors.length);
+        fieldErrors.forEach((error, index) => {
+            const fieldName = error.previousElementSibling?.name || 'unknown';
+            console.error(`Field Error ${index + 1} (${fieldName}):`, error.textContent.trim());
+        });
+    }
+    
+    console.log('🎉 Module Access Control - JavaScript Setup Complete');
+});
+</script>
+
+<!-- Bulk Actions Modal -->
+<div id="bulkModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+        <h3 class="text-xl font-bold mb-4 flex items-center">
+            <i class="fas fa-layer-group mr-2 text-purple-500"></i>Bulk Permission Actions
+        </h3>
+        <p class="text-gray-600 mb-6">Apply permission templates to multiple users at once.</p>
+        <div class="space-y-3">
+            <button class="w-full p-3 bg-blue-50 hover:bg-blue-100 rounded-lg text-left transition-colors">
+                <i class="fas fa-chalkboard-teacher mr-2 text-blue-500"></i>Apply Teacher Template to Selected Users
+            </button>
+            <button class="w-full p-3 bg-green-50 hover:bg-green-100 rounded-lg text-left transition-colors">
+                <i class="fas fa-calculator mr-2 text-green-500"></i>Apply Accountant Template to Selected Users
+            </button>
+            <button class="w-full p-3 bg-purple-50 hover:bg-purple-100 rounded-lg text-left transition-colors">
+                <i class="fas fa-user-tie mr-2 text-purple-500"></i>Apply Admin Staff Template to Selected Users
+            </button>
+        </div>
+        <div class="flex justify-end space-x-3 mt-6">
+            <button id="closeBulkModal" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-select {
+    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-400 focus:ring-0 transition-all duration-300 bg-white;
+}
+
+.form-checkbox {
+    @apply h-5 w-5 text-purple-600 rounded focus:ring-purple-500;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transport Debug</title>
+</head>
+<body>
+    <h1>Transport Assignment Debug</h1>
+    
+    <h2>Student Info</h2>
+    <p>Name: {{ student.name }}</p>
+    <p>Admission Number: {{ student.admission_number }}</p>
+    <p>ID: {{ student.id }}</p>
+    
+    <h2>Student's Transport Assignment</h2>
+    {% if student_assignment %}
+        <p>Route: {{ student_assignment.route.name }}</p>
+        <p>Stoppage: {{ student_assignment.stoppage.name }}</p>
+        <p>Assigned Date: {{ student_assignment.assigned_date }}</p>
+    {% else %}
+        <p>No transport assignment found for this student</p>
+    {% endif %}
+    
+    <h2>All Transport Assignments ({{ total_assignments }})</h2>
+    {% for assignment in all_assignments %}
+        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+            <p>Student: {{ assignment.student.name }} ({{ assignment.student.admission_number }})</p>
+            <p>Route: {{ assignment.route.name }}</p>
+            <p>Stoppage: {{ assignment.stoppage.name }}</p>
+            <p>Date: {{ assignment.assigned_date }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,382 @@
+[
+{
+  "model": "subjects.subject",
+  "pk": 101,
+  "fields": {
+    "name": "Physics",
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 102,
+  "fields": {
+    "name": "Chemistry",
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 103,
+  "fields": {
+    "name": "Biology",
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 104,
+  "fields": {
+    "name": "History",
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 105,
+  "fields": {
+    "name": "Geography",
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 106,
+  "fields": {
+    "name": "Economics",
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 107,
+  "fields": {
+    "name": "Political Science",
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 108,
+  "fields": {
+    "name": "Psychology",
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 109,
+  "fields": {
+    "name": "Physical Education",
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subject",
+  "pk": 110,
+  "fields": {
+    "name": "Fine Arts",
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 101,
+  "fields": {
+    "class_section": 1,
+    "subject": 4,
+    "teacher": 101,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 102,
+  "fields": {
+    "class_section": 1,
+    "subject": 101,
+    "teacher": 102,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 103,
+  "fields": {
+    "class_section": 1,
+    "subject": 3,
+    "teacher": 103,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 104,
+  "fields": {
+    "class_section": 1,
+    "subject": 102,
+    "teacher": 104,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 105,
+  "fields": {
+    "class_section": 1,
+    "subject": 103,
+    "teacher": 105,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 106,
+  "fields": {
+    "class_section": 2,
+    "subject": 1,
+    "teacher": 106,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 107,
+  "fields": {
+    "class_section": 2,
+    "subject": 104,
+    "teacher": 107,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 108,
+  "fields": {
+    "class_section": 2,
+    "subject": 105,
+    "teacher": 108,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 109,
+  "fields": {
+    "class_section": 3,
+    "subject": 7,
+    "teacher": 109,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 110,
+  "fields": {
+    "class_section": 3,
+    "subject": 10,
+    "teacher": 110,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 111,
+  "fields": {
+    "class_section": 3,
+    "subject": 2,
+    "teacher": 111,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 112,
+  "fields": {
+    "class_section": 4,
+    "subject": 109,
+    "teacher": 112,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 113,
+  "fields": {
+    "class_section": 4,
+    "subject": 106,
+    "teacher": 113,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 114,
+  "fields": {
+    "class_section": 1,
+    "subject": 4,
+    "teacher": 114,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 115,
+  "fields": {
+    "class_section": 2,
+    "subject": 107,
+    "teacher": 115,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 116,
+  "fields": {
+    "class_section": 3,
+    "subject": 5,
+    "teacher": 116,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 117,
+  "fields": {
+    "class_section": 4,
+    "subject": 9,
+    "teacher": 117,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 118,
+  "fields": {
+    "class_section": 5,
+    "subject": 108,
+    "teacher": 118,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 119,
+  "fields": {
+    "class_section": 6,
+    "subject": 6,
+    "teacher": 119,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 120,
+  "fields": {
+    "class_section": 7,
+    "subject": 9,
+    "teacher": 120,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 121,
+  "fields": {
+    "class_section": 8,
+    "subject": 9,
+    "teacher": 121,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 122,
+  "fields": {
+    "class_section": 9,
+    "subject": 110,
+    "teacher": 122,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 123,
+  "fields": {
+    "class_section": 10,
+    "subject": 4,
+    "teacher": 123,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 124,
+  "fields": {
+    "class_section": 11,
+    "subject": 6,
+    "teacher": 124,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 125,
+  "fields": {
+    "class_section": 12,
+    "subject": 3,
+    "teacher": 125,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 126,
+  "fields": {
+    "class_section": 13,
+    "subject": 103,
+    "teacher": 126,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 127,
+  "fields": {
+    "class_section": 14,
+    "subject": 103,
+    "teacher": 127,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 128,
+  "fields": {
+    "class_section": 27,
+    "subject": 1,
+    "teacher": 128,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 129,
+  "fields": {
+    "class_section": 1,
+    "subject": 7,
+    "teacher": 129,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+},
+{
+  "model": "subjects.subjectassignment",
+  "pk": 130,
+  "fields": {
+    "class_section": 2,
+    "subject": 1,
+    "teacher": 130,
+    "created_at": "2025-09-27T10:00:00.000Z"
+  }
+}
+]
