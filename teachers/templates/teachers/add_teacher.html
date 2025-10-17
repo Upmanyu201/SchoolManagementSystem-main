@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="animate-fade-in">
-    <!-- Header Card -->
     <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-pink-200">
         <div class="flex items-center justify-between">
             <div class="flex items-center">
@@ -25,7 +24,6 @@
         </div>
     </div>
 
-    <!-- Messages -->
     {% if messages %}
     <div class="mb-6">
         {% for message in messages %}
@@ -36,8 +34,13 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    <!-- Teacher Form Card -->
+    
+    <div id="validation-error-container" class="mb-6 hidden">
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span id="validation-error-message"></span>
+        </div>
+    </div>
     <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
         <div class="bg-gradient-to-r from-pink-500 to-red-600 p-6">
             <h2 class="text-white text-xl font-bold flex items-center">
@@ -45,17 +48,16 @@
             </h2>
         </div>
         
-        <form method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
+        <form id="teacher-form" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
             {% csrf_token %}
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Left Column -->
                 <div class="space-y-6">
                     <div class="form-group">
                         <label class="block text-gray-700 font-semibold mb-3 flex items-center">
                             <i class="fas fa-user mr-2 text-blue-500"></i>{% trans "Full Name" %}*
                         </label>
-                        <input type="text" name="name" required 
+                        <input type="text" name="name" id="id_name" required 
                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-0 transition-all duration-300" 
                                placeholder="{% trans 'Enter teacher full name' %}">
                     </div>
@@ -64,47 +66,45 @@
                         <label class="block text-gray-700 font-semibold mb-3 flex items-center">
                             <i class="fas fa-phone mr-2 text-green-500"></i>📞 {% trans "Mobile Number" %}*
                         </label>
-                        <input type="tel" name="mobile" required 
+                        <input type="tel" name="mobile" id="id_mobile" required 
                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-0 transition-all duration-300" 
                                placeholder="{% trans 'Enter mobile number' %}">
                     </div>
 
                     <div class="form-group">
                         <label class="block text-gray-700 font-semibold mb-3 flex items-center">
-                            <i class="fas fa-envelope mr-2 text-purple-500"></i>✉️ {% trans "Email Address" %}*
+                            <i class="fas fa-envelope mr-2 text-purple-500"></i>✉️ {% trans "Email Address" %}
                         </label>
-                        <input type="email" name="email" required 
+                        <input type="email" name="email" id="id_email" 
                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-0 transition-all duration-300" 
-                               placeholder="{% trans 'Enter email address' %}">
+                               placeholder="{% trans 'Enter email address (optional)' %}">
                     </div>
 
                     <div class="form-group">
                         <label class="block text-gray-700 font-semibold mb-3 flex items-center">
                             <i class="fas fa-graduation-cap mr-2 text-indigo-500"></i>{% trans "Qualification" %}*
                         </label>
-                        <input type="text" name="qualification" required 
+                        <input type="text" name="qualification" id="id_qualification" required 
                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-0 transition-all duration-300" 
                                placeholder="{% trans 'Enter educational qualification' %}">
                     </div>
                 </div>
 
-                <!-- Right Column -->
                 <div class="space-y-6">
                     <div class="form-group">
                         <label class="block text-gray-700 font-semibold mb-3 flex items-center">
                             <i class="fas fa-calendar-alt mr-2 text-orange-500"></i>📅 {% trans "Joining Date" %}*
                         </label>
-                        <input type="date" name="joining_date" required 
+                        <input type="date" name="joining_date" id="id_joining_date" required 
                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-0 transition-all duration-300">
                     </div>
 
-                    <!-- Photo Upload -->
                     <div class="form-group">
                         <label class="block text-gray-700 font-semibold mb-3 flex items-center">
-                            <i class="fas fa-camera mr-2 text-pink-500"></i>🖼️ {% trans "Teacher Photo" %}*
+                            <i class="fas fa-camera mr-2 text-pink-500"></i>🖼️ {% trans "Teacher Photo" %}
                         </label>
                         <div class="relative">
-                            <input type="file" id="photo" name="photo" accept="image/*" required 
+                            <input type="file" id="photo" name="photo" accept="image/jpeg, image/png" 
                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100 cursor-pointer border-2 border-dashed border-gray-300 rounded-xl p-4 hover:border-pink-400 transition-colors">
                         </div>
                         <div class="mt-4 flex items-center justify-center">
@@ -117,39 +117,35 @@
                 </div>
             </div>
 
-            <!-- Document Uploads Section -->
             <div class="mt-8">
                 <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
                     <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
                         <i class="fas fa-upload mr-3 text-blue-500"></i>📄 {% trans "Document Uploads" %}
                     </h3>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <!-- Resume Upload -->
                         <div class="form-group">
                             <label class="block text-gray-700 font-semibold mb-3 flex items-center">
-                                <i class="fas fa-file-pdf mr-2 text-red-500"></i>📄 {% trans "Resume (PDF)" %}*
+                                <i class="fas fa-file-pdf mr-2 text-red-500"></i>📄 {% trans "Resume (PDF)" %}
                             </label>
-                            <input type="file" name="resume" accept=".pdf" required 
+                            <input type="file" id="resume" name="resume" accept=".pdf" 
                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer border-2 border-dashed border-gray-300 rounded-xl p-4 hover:border-red-400 transition-colors">
-                            <p class="text-xs text-gray-500 mt-2">PDF format only, max 5MB</p>
+                            <p class="text-xs text-gray-500 mt-2">PDF format only, max 5MB (optional)</p>
                         </div>
 
-                        <!-- Joining Letter Upload -->
                         <div class="form-group">
                             <label class="block text-gray-700 font-semibold mb-3 flex items-center">
-                                <i class="fas fa-file-contract mr-2 text-green-500"></i>{% trans "Joining Letter (PDF)" %}*
+                                <i class="fas fa-file-contract mr-2 text-green-500"></i>{% trans "Joining Letter (PDF)" %}
                             </label>
-                            <input type="file" name="joining_letter" accept=".pdf" required 
+                            <input type="file" id="joining_letter" name="joining_letter" accept=".pdf" 
                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 cursor-pointer border-2 border-dashed border-gray-300 rounded-xl p-4 hover:border-green-400 transition-colors">
-                            <p class="text-xs text-gray-500 mt-2">PDF format only, max 5MB</p>
+                            <p class="text-xs text-gray-500 mt-2">PDF format only, max 5MB (optional)</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Submit Button -->
             <div class="mt-10 text-center">
-                <button type="submit" 
+                <button type="submit" id="submit-btn"
                         class="bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-600 hover:to-red-700 text-white font-bold py-4 px-12 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
                     <i class="fas fa-user-plus mr-3"></i>{% trans "Add Teacher" %}
                 </button>
@@ -159,44 +155,175 @@
 </div>
 
 <script>
-// Image Preview
 document.addEventListener('DOMContentLoaded', function() {
     const photoInput = document.getElementById('photo');
     const photoPreview = document.getElementById('photo_preview');
+    const form = document.getElementById('teacher-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const errorContainer = document.getElementById('validation-error-container');
+    const errorMessage = document.getElementById('validation-error-message');
+    const joiningDateInput = document.getElementById('id_joining_date');
     
+    const MAX_PHOTO_SIZE = 2 * 1024 * 1024; // 2MB
+    const MAX_DOC_SIZE = 5 * 1024 * 1024; // 5MB
+    const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD format
+
+    function displayError(message) {
+        errorMessage.textContent = message;
+        errorContainer.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function clearError() {
+        errorContainer.classList.add('hidden');
+        errorMessage.textContent = '';
+    }
+
+    // --- File Input Handlers (for instant feedback on size) ---
+
     if (photoInput) {
         photoInput.addEventListener('change', function(event) {
-            if (event.target.files && event.target.files[0]) {
+            clearError();
+            const file = event.target.files[0];
+            if (file) {
+                // Check size
+                if (file.size > MAX_PHOTO_SIZE) {
+                    displayError("{% trans 'Teacher Photo size exceeds 2MB limit.' %}");
+                    photoInput.value = ''; 
+                    photoPreview.src = photoPreview.getAttribute('onerror').replace("this.src='", "").replace("}'", "");
+                    return;
+                }
+                
+                // Show preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     photoPreview.src = e.target.result;
                     photoPreview.classList.add('animate-pulse');
                     setTimeout(() => photoPreview.classList.remove('animate-pulse'), 1000);
                 };
-                reader.readAsDataURL(event.target.files[0]);
+                reader.readAsDataURL(file);
             }
         });
     }
-    
-    // Form validation enhancement
-    const form = document.querySelector('form');
-    const submitBtn = form.querySelector('button[type="submit"]');
-    
-    form.addEventListener('submit', function() {
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>{% trans "Adding Teacher..." %}';
-        submitBtn.disabled = true;
+
+    document.getElementById('resume').addEventListener('change', function(event) {
+        clearError();
+        const file = event.target.files[0];
+        if (file && file.size > MAX_DOC_SIZE) {
+            displayError("{% trans 'Resume file size exceeds 5MB limit.' %}");
+            event.target.value = ''; 
+        }
+    });
+
+    document.getElementById('joining_letter').addEventListener('change', function(event) {
+        clearError();
+        const file = event.target.files[0];
+        if (file && file.size > MAX_DOC_SIZE) {
+            displayError("{% trans 'Joining Letter file size exceeds 5MB limit.' %}");
+            event.target.value = '';
+        }
+    });
+
+    // --- Form Submission Handler (The main validation logic) ---
+
+    form.addEventListener('submit', function(event) {
+        clearError(); // Clear previous errors
+        let hasError = false;
+
+        // **CRITICAL FIX: DATE FORMAT VALIDATION FIRST**
+        const dateValue = joiningDateInput.value;
+
+        if (dateValue && !DATE_REGEX.test(dateValue)) {
+            displayError("{% trans 'Joining Date format is invalid. It must be in YYYY-MM-DD format (e.g., 2025-10-15).' %}");
+            hasError = true;
+        }
+
+        // Use checkValidity() for native HTML5 required field checks ONLY IF date is valid
+        if (!hasError && !form.checkValidity()) {
+            // If date is fine, let the browser handle other required fields' popups.
+            // We only continue to custom file validation if form.checkValidity() passes.
+            return;
+        }
+        
+        if(hasError) {
+            event.preventDefault(); // Stop form submission immediately if date is wrong
+            // Fallthrough to the final control block to reset the button
+        }
+        
+        // 2. File-specific checks (Size and Type checks)
+        // Only run if hasError is still false
+        if (!hasError) {
+            const photoFile = photoInput.files[0];
+            const resumeFile = document.getElementById('resume').files[0];
+            const joiningLetterFile = document.getElementById('joining_letter').files[0];
+
+            // Photo checks
+            if (photoFile) {
+                if (photoFile.size > MAX_PHOTO_SIZE) {
+                    displayError("{% trans 'Teacher Photo size exceeds 2MB limit. Please upload a smaller file.' %}");
+                    hasError = true;
+                } else if (!['image/jpeg', 'image/png'].includes(photoFile.type)) {
+                    displayError("{% trans 'Teacher Photo must be a JPEG or PNG file.' %}");
+                    hasError = true;
+                }
+            }
+
+            // Resume checks
+            if (!hasError && resumeFile) {
+                if (resumeFile.size > MAX_DOC_SIZE) {
+                    displayError("{% trans 'Resume file size exceeds 5MB limit. Please upload a smaller PDF.' %}");
+                    hasError = true;
+                } else if (resumeFile.type !== 'application/pdf') {
+                    displayError("{% trans 'Resume must be a PDF file.' %}");
+                    hasError = true;
+                }
+            }
+
+            // Joining Letter checks
+            if (!hasError && joiningLetterFile) {
+                if (joiningLetterFile.size > MAX_DOC_SIZE) {
+                    displayError("{% trans 'Joining Letter file size exceeds 5MB limit. Please upload a smaller PDF.' %}");
+                    hasError = true;
+                } else if (joiningLetterFile.type !== 'application/pdf') {
+                    displayError("{% trans 'Joining Letter must be a PDF file.' %}");
+                    hasError = true;
+                }
+            }
+        }
+        
+        // 3. Final Submission control
+        if (hasError) {
+            event.preventDefault(); // Stop form submission
+            // Ensure button state is correct if error occurred
+            submitBtn.innerHTML = '<i class="fas fa-user-plus mr-3"></i>{% trans "Add Teacher" %}';
+            submitBtn.disabled = false;
+        } else {
+            // Proceed with submission, update button state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>{% trans "Adding Teacher..." %}';
+            submitBtn.disabled = true;
+        }
     });
     
+    // --- Other Enhancements ---
+
     // Add focus effects to form inputs
-    const inputs = document.querySelectorAll('input, select, textarea');
+    const inputs = document.querySelectorAll('input:not([type="file"]), select, textarea');
     inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.classList.add('ring-2', 'ring-pink-300');
-        });
-        
-        input.addEventListener('blur', function() {
-            this.parentElement.classList.remove('ring-2', 'ring-pink-300');
-        });
+        const parentGroup = input.closest('.form-group');
+        if (parentGroup) {
+            input.addEventListener('focus', function() {
+                parentGroup.classList.add('ring-2', 'ring-pink-300', 'rounded-xl');
+            });
+            
+            input.addEventListener('blur', function() {
+                parentGroup.classList.remove('ring-2', 'ring-pink-300', 'rounded-xl');
+            });
+        }
+    });
+
+    // Mobile Number Input: Simple non-numeric/length check as a UX guide
+    document.getElementById('id_mobile').addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9+() -]/g, '');
     });
 });
 </script>

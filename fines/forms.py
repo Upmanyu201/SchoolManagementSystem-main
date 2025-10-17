@@ -158,7 +158,7 @@ class FineForm(forms.ModelForm):
         if dynamic_amount_percent is not None:
             try:
                 percent_value = float(dynamic_amount_percent)
-                if percent_value <= 0 or percent_value > 100:
+                if percent_value < 0 or percent_value > 100:
                     raise ValidationError("Percentage must be between 0.01% and 100%.")
             except (ValueError, TypeError):
                 raise ValidationError("Please enter a valid percentage value.")
@@ -167,7 +167,7 @@ class FineForm(forms.ModelForm):
         if amount is not None:
             try:
                 amount_value = float(amount)
-                if amount_value <= 0:
+                if amount_value < 0:
                     raise ValidationError("Amount must be greater than 0.")
             except (ValueError, TypeError):
                 raise ValidationError("Please enter a valid amount.")

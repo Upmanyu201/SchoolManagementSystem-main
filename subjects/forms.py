@@ -11,6 +11,12 @@ class ClassSectionForm(forms.ModelForm):
             'section_name': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'e.g., A, B, C'}),
             'room_number': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'e.g., R-101, Room-A1'}),
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make section_name and room_number optional
+        self.fields['section_name'].required = False
+        self.fields['room_number'].required = False
 
 class SubjectForm(forms.ModelForm):
     class Meta:

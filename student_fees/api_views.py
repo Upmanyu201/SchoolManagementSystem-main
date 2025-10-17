@@ -147,7 +147,7 @@ def process_payment_api(request):
                         total_amount += amount - discount
                         logger.info(f"Processing fee: id={fee_id}, amount={amount}, discount={discount}, payable={amount-discount}")
         
-        if total_amount <= 0:
+        if total_amount < 0:
             logger.warning(f"No valid fees found. Data received: {data}")
             return JsonResponse({
                 'status': 'error',
@@ -166,7 +166,7 @@ def process_payment_api(request):
                     discount = item['discount']
                     paid_amount = item['paid_amount']
                     
-                    if paid_amount <= 0:
+                    if paid_amount < 0:
                         continue
                     
                     # Create deposit based on fee type

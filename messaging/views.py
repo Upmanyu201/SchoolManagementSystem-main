@@ -175,7 +175,7 @@ def send_individual_message(request):
     
     try:
         contact_id_int = int(contact_id)
-        if contact_id_int <= 0:
+        if contact_id_int < 0:
             raise ValidationError("Invalid contact ID")
     except (ValueError, TypeError, ValidationError):
         return JsonResponse({
@@ -343,7 +343,7 @@ def send_bulk_message(request):
             })
         try:
             class_id_int = int(class_id)
-            if class_id_int <= 0:
+            if class_id_int < 0:
                 raise ValidationError("Invalid class ID")
         except (ValueError, TypeError, ValidationError):
             return JsonResponse({

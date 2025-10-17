@@ -66,15 +66,15 @@ def add_teacher(request):
     if request.method == "POST":
         name = request.POST['name']
         mobile = request.POST['mobile']
-        email = request.POST['email']
+        email = request.POST.get('email', '').strip() or None  # Handle optional email
         qualification = request.POST['qualification']
         joining_date = request.POST['joining_date']
         photo = request.FILES.get('photo')
         resume = request.FILES.get('resume')
         joining_letter = request.FILES.get('joining_letter')
 
-        # Duplicate email check
-        if Teacher.objects.filter(email=email).exists():
+        # Duplicate email check only if email is provided
+        if email and Teacher.objects.filter(email=email).exists():
             messages.error(request, f'Sorry, the email {email} is already registered. Please use a different email address.')
             return redirect('add_teacher')
 

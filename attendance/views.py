@@ -38,7 +38,7 @@ def get_students(request, class_section_id):
         # Validate class section ID
         try:
             section_id = int(class_section_id)
-            if section_id <= 0:
+            if section_id < 0:
                 raise ValidationError("Invalid class section ID")
         except (ValueError, TypeError):
             return JsonResponse({'error': 'Invalid class section ID format'}, status=400)
@@ -76,7 +76,7 @@ def get_previous_attendance(request):
         # Validate class section ID
         try:
             section_id = int(class_section_id)
-            if section_id <= 0:
+            if section_id < 0:
                 raise ValidationError("Invalid class section ID")
         except (ValueError, TypeError):
             return JsonResponse({'error': 'Invalid class section ID'}, status=400)
@@ -122,7 +122,7 @@ def mark_attendance(request):
             # Validate class section ID
             try:
                 section_id = int(class_section_id)
-                if section_id <= 0:
+                if section_id < 0:
                     raise ValidationError("Invalid class section ID")
             except (ValueError, TypeError):
                 return JsonResponse({'error': 'Invalid class section information'}, status=400)
@@ -162,7 +162,7 @@ def mark_attendance(request):
                 try:
                     # Validate student ID
                     student_id_int = int(student_id)
-                    if student_id_int <= 0:
+                    if student_id_int < 0:
                         continue
                     
                     student = Student.objects.get(id=student_id_int, class_section=class_section)

@@ -873,7 +873,7 @@
             
             if (percentageAmount) {
                 const percent = parseFloat(percentageAmount);
-                if (percent <= 0) {
+                if (percent < 0) {
                     alert('Percentage must be greater than 0%.');
                     document.getElementById('id_dynamic_amount_percent').focus();
                     return false;
@@ -887,7 +887,7 @@
             
             if (fixedAmount) {
                 const amount = parseFloat(fixedAmount);
-                if (amount <= 0) {
+                if (amount < 0) {
                     alert('Amount must be greater than 0.');
                     document.getElementById('id_amount').focus();
                     return false;

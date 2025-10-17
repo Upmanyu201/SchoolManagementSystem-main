@@ -188,7 +188,7 @@ def deactivate_fine(request, fine_id):
         
         # Validate fine ID
         fine_id_int = int(fine_id)
-        if fine_id_int <= 0:
+        if fine_id_int < 0:
             raise ValidationError("Invalid fine ID")
         
         # Deactivate fine using service
@@ -254,7 +254,7 @@ def delete_fine(request, fine_id):
         
         # Validate fine ID
         fine_id_int = int(fine_id)
-        if fine_id_int <= 0:
+        if fine_id_int < 0:
             raise ValidationError("Invalid fine ID")
         
         # Get the fine object
@@ -459,7 +459,7 @@ def delete_fine_type(request, fine_type_id):
         
         # Validate fine type ID
         fine_type_id_int = int(fine_type_id)
-        if fine_type_id_int <= 0:
+        if fine_type_id_int < 0:
             raise ValidationError("Invalid fine type ID")
         
         # Get the fine type object
@@ -498,7 +498,7 @@ def load_students_for_class(request):
         if class_id:
             try:
                 class_id_int = int(class_id)
-                if class_id_int <= 0:
+                if class_id_int < 0:
                     return JsonResponse({'error': 'Invalid class ID'}, status=400)
                 
                 # Load students for the specific class
@@ -662,7 +662,7 @@ def get_fine_type_usage(request, fine_type_id):
         # Validate fine type ID
         try:
             type_id_int = int(fine_type_id)
-            if type_id_int <= 0:
+            if type_id_int < 0:
                 return JsonResponse({'error': 'Invalid fine type ID'}, status=400)
         except (ValueError, TypeError):
             return JsonResponse({'error': 'Invalid fine type ID format'}, status=400)

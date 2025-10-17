@@ -249,7 +249,7 @@ class AtomicFeeCalculator {
                     payableInput.className = 'w-20 px-2 py-1 border rounded text-right payable-input';
                     payableInput.min = '0';
                     payableInput.max = payableAmount.toFixed(2);
-                    payableInput.step = '0.01';
+                    payableInput.step = '10.0';
                     payableInput.value = payableAmount.toFixed(2);
                     
                     // Add event listener for payable input changes
@@ -258,7 +258,7 @@ class AtomicFeeCalculator {
                         const maxPayable = parseFloat(payableInput.max);
                         
                         if (newPayable > maxPayable) {
-                            payableInput.value = maxPayable.toFixed(2);
+                            //payableInput.value = maxPayable.toFixed(2);
                             alert(`Payable amount cannot exceed ₹${maxPayable.toFixed(2)}`);
                         }
                         
@@ -298,7 +298,7 @@ class AtomicFeeCalculator {
                     
                     // Only update value if input is empty or exceeds max
                     const currentValue = parseFloat(payableInput.value || 0);
-                    if (currentValue === 0 || currentValue > payableAmount) {
+                    if (currentValue < 0 || currentValue > payableAmount) {
                         payableInput.value = payableAmount.toFixed(2);
                     }
                     // Otherwise preserve user's custom input
@@ -375,14 +375,14 @@ class AtomicFeeCalculator {
             const discount = this.toDecimal(fee.discount || 0);
             const payable = amount - discount;
 
-            if (payable <= 0) {
+            if (payable < 0) {
                 errors.push(`Invalid amount for ${fee.display_name}`);
             }
 
             totalPayable += payable;
         });
 
-        if (totalPayable <= 0) {
+        if (totalPayable < 0) {
             errors.push('Total payable amount must be greater than zero');
         }
 

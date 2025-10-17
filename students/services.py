@@ -302,7 +302,7 @@ class StudentService:
                 'total_outstanding': float(max(total_outstanding, Decimal('0'))),
                 'payment_count': fee_stats['payment_count'] or 0,
                 'last_payment': last_payment,
-                'payment_status': 'paid' if total_outstanding <= 0 else 'pending'
+                'payment_status': 'paid' if total_outstanding < 0 else 'pending'
             }
             
             # Cache for 15 minutes

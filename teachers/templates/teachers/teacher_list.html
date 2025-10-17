@@ -16,18 +16,20 @@
     <div class="bg-white rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
         <div class="flex items-center justify-between">
             <div class="flex items-center">
-                <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center mr-4">
+                <div
+                    class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center mr-4">
                     <i class="fas fa-chalkboard-teacher text-white text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-800 bg-clip-text text-transparent">
+                    <h1
+                        class="text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-800 bg-clip-text text-transparent">
                         👨{% trans "Teachers Management" %}
                     </h1>
                     <p class="text-gray-600 mt-1">{% trans "Manage and view all teacher records" %}</p>
                 </div>
             </div>
-            <a href="{% url 'dashboard' %}" 
-               class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
+            <a href="{% url 'dashboard' %}"
+                class="btn btn-secondary px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105">
                 <i class="fas fa-home mr-2"></i>{% trans "Dashboard" %}
             </a>
         </div>
@@ -37,10 +39,12 @@
     {% if messages %}
     <div id="form-messages" class="fixed top-20 right-4 z-50 space-y-2 max-w-md">
         {% for message in messages %}
-        <div class="{% if message.tags == 'error' %}bg-red-500{% else %}bg-green-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in message-item" data-message-id="{{ forloop.counter }}">
+        <div class="{% if message.tags == 'error' %}bg-red-500{% else %}bg-green-500{% endif %} text-white p-4 rounded-xl shadow-lg animate-slide-in message-item"
+            data-message-id="{{ forloop.counter }}">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} mr-3"></i>
+                    <i
+                        class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} mr-3"></i>
                     <span class="font-medium">{{ message }}</span>
                 </div>
                 <button onclick="removeMessage(this)" class="ml-3 text-white hover:text-gray-200 font-bold">
@@ -57,7 +61,8 @@
         {% csrf_token %}
         <div class="flex flex-wrap gap-4 justify-center">
             {% if user|can_edit_module:'teachers' %}
-            <a href="{% url 'add_teacher' %}" class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+            <a href="{% url 'add_teacher' %}"
+                class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
                 <i class="fas fa-plus mr-2"></i>{% trans "Add New Teacher" %}
             </a>
             {% elif user|can_access_module:'teachers' %}
@@ -65,17 +70,23 @@
                 <i class="fas fa-eye mr-2"></i>{% trans "View-only access" %}
             </div>
             {% endif %}
-            
+
             <!-- Export Buttons -->
             <div class="export-buttons">
                 <div class="btn-group" role="group">
-                    <button type="button" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg" data-export="excel">
+                    <button type="button"
+                        class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                        data-export="excel">
                         <i class="fas fa-file-excel mr-2"></i>Excel (.xlsx)
                     </button>
-                    <button type="button" class="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg ml-2" data-export="csv">
+                    <button type="button"
+                        class="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg ml-2"
+                        data-export="csv">
                         <i class="fas fa-file-csv mr-2"></i>CSV
                     </button>
-                    <button type="button" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg ml-2" data-export="pdf">
+                    <button type="button"
+                        class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg ml-2"
+                        data-export="pdf">
                         <i class="fas fa-file-pdf mr-2"></i>PDF
                     </button>
                 </div>
@@ -121,7 +132,8 @@
                     <tr class="hover:bg-gradient-to-r hover:from-orange-50 hover:to-red-50 transition-all duration-300">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-sm shadow-lg mr-3">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-sm shadow-lg mr-3">
                                     {{ teacher.name|first|upper }}
                                 </div>
                                 <div>
@@ -157,8 +169,10 @@
                                     class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <button onclick="showDeleteModal('{{ teacher.name }}', '{{ teacher.id }}', '{% url 'delete_teacher' teacher.id %}')"
-                                    class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md">
+                                <button
+                                    class="delete-btn bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-3 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md"
+                                    data-teacher-name="{{ teacher.name }}" data-teacher-id="{{ teacher.id }}"
+                                    data-delete-url="{% url 'delete_teacher' teacher.id %}">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                                 {% elif user|can_access_module:'teachers' %}
@@ -177,7 +191,8 @@
                                 <h3 class="text-xl font-bold text-gray-500 mb-2">{% trans "No Teachers Found" %}</h3>
                                 <p class="text-gray-400 mb-4">{% trans "No teachers have been added yet" %}</p>
                                 {% if user|can_edit_module:'teachers' %}
-                                <a href="{% url 'add_teacher' %}" class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                                <a href="{% url 'add_teacher' %}"
+                                    class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
                                     <i class="fas fa-plus mr-2"></i>{% trans "Add First Teacher" %}
                                 </a>
                                 {% endif %}
@@ -200,19 +215,22 @@
             </div>
             <h3 class="text-2xl font-bold text-gray-800 mb-2">{% trans "Confirm Deletion" %}</h3>
             <p class="text-gray-600">
-                {% trans "Are you sure you want to delete teacher" %} <span id="teacherName" class="font-semibold text-red-600"></span>?
+                {% trans "Are you sure you want to delete teacher" %} <span id="teacherName"
+                    class="font-semibold text-red-600"></span>?
             </p>
             <p class="text-sm text-gray-500 mt-2">
                 {% trans "Teacher ID:" %} <span id="teacherId" class="font-semibold"></span>
             </p>
         </div>
         <div class="flex gap-4">
-            <button onclick="hideDeleteModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-xl transition-all duration-300">
+            <button onclick="hideDeleteModal()"
+                class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-4 rounded-xl transition-all duration-300">
                 <i class="fas fa-times mr-2"></i>{% trans "Cancel" %}
             </button>
             <form id="deleteForm" method="POST" class="flex-1">
                 {% csrf_token %}
-                <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105">
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105">
                     <i class="fas fa-trash-alt mr-2"></i>{% trans "Delete" %}
                 </button>
             </form>
@@ -221,139 +239,157 @@
 </div>
 
 <script>
-function showDeleteModal(teacherName, teacherId, deleteUrl) {
-    document.getElementById('teacherName').textContent = teacherName;
-    document.getElementById('teacherId').textContent = teacherId;
-    document.getElementById('deleteForm').action = deleteUrl;
-    document.getElementById('deleteModal').classList.remove('hidden');
-    document.body.classList.add('overflow-hidden');
-}
-
-function hideDeleteModal() {
-    document.getElementById('deleteModal').classList.add('hidden');
-    document.body.classList.remove('overflow-hidden');
-}
-
-// Close modal when clicking outside
-document.getElementById('deleteModal').addEventListener('click', function (e) {
-    if (e.target === this) {
-        hideDeleteModal();
+    function showDeleteModal(teacherName, teacherId, deleteUrl) {
+        document.getElementById('teacherName').textContent = teacherName;
+        document.getElementById('teacherId').textContent = teacherId;
+        document.getElementById('deleteForm').action = deleteUrl;
+        document.getElementById('deleteModal').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
     }
-});
 
-// Export functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const exportButtons = document.querySelectorAll('[data-export]');
-    exportButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const format = this.getAttribute('data-export');
-            
-            // Show loading state
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Exporting...';
-            this.disabled = true;
-            
-            // Create download link
-            const url = new URL(window.location.href);
-            url.searchParams.set('export', format);
-            
-            // Trigger download
-            window.location.href = url.toString();
-            
-            // Reset button after delay
-            setTimeout(() => {
-                this.innerHTML = originalText;
-                this.disabled = false;
-            }, 2000);
+    function hideDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('deleteModal').addEventListener('click', function (e) {
+        if (e.target === this) {
+            hideDeleteModal();
+        }
+    });
+
+    // Export functionality
+    document.addEventListener('DOMContentLoaded', function () {
+        const exportButtons = document.querySelectorAll('[data-export]');
+        exportButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const format = this.getAttribute('data-export');
+
+                // Show loading state
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Exporting...';
+                this.disabled = true;
+
+                // Create download link
+                const url = new URL(window.location.href);
+                url.searchParams.set('export', format);
+
+                // Trigger download
+                window.location.href = url.toString();
+
+                // Reset button after delay
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.disabled = false;
+                }, 2000);
+            });
         });
     });
-});
 
-// Message handling functions
-function removeMessage(button) {
-    const messageItem = button.closest('.message-item');
-    messageItem.style.opacity = '0';
-    messageItem.style.transform = 'translateX(100%)';
-    setTimeout(() => {
-        messageItem.remove();
-        // Remove container if no messages left
-        const container = document.getElementById('form-messages');
-        if (container && container.children.length === 0) {
-            container.remove();
-        }
-    }, 300);
-}
-
-// Auto-hide messages
-document.addEventListener('DOMContentLoaded', function() {
-    const messageItems = document.querySelectorAll('.message-item');
-    messageItems.forEach((item, index) => {
+    // Message handling functions
+    function removeMessage(button) {
+        const messageItem = button.closest('.message-item');
+        messageItem.style.opacity = '0';
+        messageItem.style.transform = 'translateX(100%)';
         setTimeout(() => {
-            if (item.parentNode) { // Check if still exists
-                removeMessage(item.querySelector('button'));
+            messageItem.remove();
+            // Remove container if no messages left
+            const container = document.getElementById('form-messages');
+            if (container && container.children.length === 0) {
+                container.remove();
             }
-        }, 4000 + (index * 500)); // Stagger removal
+        }, 300);
+    }
+
+    // Auto-hide messages
+    document.addEventListener('DOMContentLoaded', function () {
+        const messageItems = document.querySelectorAll('.message-item');
+        messageItems.forEach((item, index) => {
+            setTimeout(() => {
+                if (item.parentNode) { // Check if still exists
+                    removeMessage(item.querySelector('button'));
+                }
+            }, 4000 + (index * 500)); // Stagger removal
+        });
+
+        // Animate table rows on load
+        const tableRows = document.querySelectorAll('tbody tr');
+        tableRows.forEach((row, index) => {
+            row.style.opacity = '0';
+            row.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                row.style.transition = 'all 0.5s ease';
+                row.style.opacity = '1';
+                row.style.transform = 'translateY(0)';
+            }, index * 50);
+        });
+
+        // Handle delete button clicks
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const teacherName = this.getAttribute('data-teacher-name');
+                const teacherId = this.getAttribute('data-teacher-id');
+                const deleteUrl = this.getAttribute('data-delete-url');
+                showDeleteModal(teacherName, teacherId, deleteUrl);
+            });
+        });
     });
-}
-    
-    // Animate table rows on load
-    const tableRows = document.querySelectorAll('tbody tr');
-    tableRows.forEach((row, index) => {
-        row.style.opacity = '0';
-        row.style.transform = 'translateY(20px)';
-        
-        setTimeout(() => {
-            row.style.transition = 'all 0.5s ease';
-            row.style.opacity = '1';
-            row.style.transform = 'translateY(0)';
-        }, index * 50);
-    });
-});
 </script>
 
 
 
 {% block extra_css %}
 <style>
-@keyframes slide-in {
-    from {
-        opacity: 0;
-        transform: translateX(100%);
+    @keyframes slide-in {
+        from {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
     }
-    to {
-        opacity: 1;
-        transform: translateX(0);
+
+    .animate-slide-in {
+        animation: slide-in 0.3s ease-out;
     }
-}
 
-.animate-slide-in {
-    animation: slide-in 0.3s ease-out;
-}
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-in-out;
+    }
 
-.animate-fade-in {
-    animation: fadeIn 0.8s ease-in-out;
-}
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-/* Badge styling */
-.badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-}
+    /* Badge styling */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
 
-.badge-info {
-    background: linear-gradient(135deg, #06B6D4, #0891B2);
-    color: white;
-}
+    .badge-info {
+        background: linear-gradient(135deg, #06B6D4, #0891B2);
+        color: white;
+    }
 </style>
 {% endblock %}
 {% endblock %}

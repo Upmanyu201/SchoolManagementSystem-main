@@ -464,7 +464,7 @@ class AtomicFeeCalculator:
                 else:
                     paid_amount = original_amount - discount
                 
-                if paid_amount <= 0:
+                if paid_amount < 0:
                     continue
                 
                 deposit_data = {
@@ -590,7 +590,7 @@ class AtomicFeeCalculator:
                         f"Payment amount ₹{custom_pay} exceeds maximum allowed "
                         f"₹{calc['max_allowed_payable']} for {fee.get('display_name', 'fee')}"
                     )
-                elif custom_pay <= 0:
+                elif custom_pay < 0:
                     errors.append(
                         f"Payment amount must be greater than zero for {fee.get('display_name', 'fee')}"
                     )

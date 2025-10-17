@@ -40,7 +40,7 @@ class PaymentProcessor:
         # Validate amount
         try:
             amount = Decimal(str(amount))
-            if amount <= 0 or amount > Decimal('999999.99'):
+            if amount < 0 or amount > Decimal('999999.99'):
                 raise ValidationError("Invalid payment amount")
         except (ValueError, TypeError):
             raise ValidationError("Invalid amount format")
@@ -66,7 +66,7 @@ class PaymentProcessor:
         
         # First, pay fines (higher priority)
         for fine in breakdown['fines']:
-            if remaining_amount <= 0:
+            if remaining_amount < 0:
                 break
                 
             allocation_amount = min(remaining_amount, fine.amount)
@@ -89,7 +89,7 @@ class PaymentProcessor:
         
         # Then, pay fees
         for fee in breakdown['fees']:
-            if remaining_amount <= 0:
+            if remaining_amount < 0:
                 break
                 
             allocation_amount = min(remaining_amount, fee.amount)

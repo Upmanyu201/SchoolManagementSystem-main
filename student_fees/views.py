@@ -49,7 +49,7 @@ def validate_numeric_id(value, field_name="ID"):
     """Simple numeric ID validation"""
     try:
         num_id = int(value)
-        if num_id <= 0:
+        if num_id < 0:
             raise ValidationError(f"Invalid {field_name}")
         return num_id
     except (ValueError, TypeError):
@@ -480,7 +480,7 @@ def submit_deposit(request):
                 
                 logger.info(f"✅ [BACKEND] Fee {fee_id}: final amount={amount}")
                 
-                if payable_amount > 0:
+                if payable_amount >= 0:
                     payment_items.append({
                         'fee_id': fee_id,
                         'original_amount': original_amount,
@@ -804,7 +804,7 @@ def receipt_view(request, receipt_no):
             'current_session_due': current_session_due,
             'previous_session_due': previous_session_due,
             'show_discount': any(p.discount for p in enhanced_payments),
-            'copy_labels': ['Original', 'Duplicate'],
+            'copy_labels': ['School', 'Parent'],
             'amount_in_words': f"Rupees {number_to_words(receipt_data['total_paid']).title()} Only"
         })
         

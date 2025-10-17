@@ -87,7 +87,7 @@ def get_students_by_class(request):
         # Validate class ID
         try:
             class_id_int = int(class_id)
-            if class_id_int <= 0:
+            if class_id_int < 0:
                 raise ValidationError("Invalid class ID")
         except (ValueError, TypeError, ValidationError):
             return JsonResponse({'status': 'error', 'message': 'Invalid class selection'})
@@ -198,7 +198,7 @@ def promote_students(request):
             try:
                 student_id_int = int(student_id)
                 new_class_id_int = int(new_class_id)
-                if student_id_int <= 0 or new_class_id_int <= 0:
+                if student_id_int < 0 or new_class_id_int < 0:
                     raise ValidationError("Invalid ID")
             except (ValueError, TypeError, ValidationError):
                 errors.append(f"Invalid student or class information")

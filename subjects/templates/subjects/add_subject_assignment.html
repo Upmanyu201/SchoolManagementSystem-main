@@ -125,9 +125,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const submitBtn = form.querySelector('button[type="submit"]');
     
-    form.addEventListener('submit', function() {
+    form.addEventListener('submit', function(e) {
+        // Show loading state
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>Processing...';
         submitBtn.disabled = true;
+        
+        // Allow form to submit normally - redirection will be handled by Django view
+        return true;
     });
     
     // Add focus effects to form inputs

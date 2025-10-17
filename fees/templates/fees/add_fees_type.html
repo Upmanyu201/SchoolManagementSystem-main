@@ -517,6 +517,7 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating Fee Types...';
             submitBtn.disabled = true;
             
+            // Allow form to submit normally - redirection will be handled by Django view
             return true;
         });
     }
@@ -532,7 +533,7 @@ function validateDynamicForm() {
         return false;
     }
     
-    if (!amount || parseFloat(amount) <= 0) {
+    if (!amount || parseFloat(amount) < 0) {
         showValidationError('Please enter a valid amount greater than 0.');
         return false;
     }

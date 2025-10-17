@@ -54,7 +54,7 @@ class PaymentProcessor:
             
             # Priority 1: Pay fines first
             for fine in breakdown['fines']:
-                if remaining_amount <= 0:
+                if remaining_amount < 0:
                     break
                     
                 allocation_amount = min(remaining_amount, fine.amount)
@@ -77,7 +77,7 @@ class PaymentProcessor:
             
             # Priority 2: Pay fees
             for fee in breakdown['fees']:
-                if remaining_amount <= 0:
+                if remaining_amount < 0:
                     break
                     
                 allocation_amount = min(remaining_amount, fee.amount)

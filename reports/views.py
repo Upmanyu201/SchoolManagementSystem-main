@@ -85,7 +85,7 @@ def _validate_numeric_id(id_value: str, field_name: str) -> int:
     """Validate and convert ID to integer"""
     try:
         id_int = int(id_value)
-        if id_int <= 0:
+        if id_int < 0:
             raise ValidationError(f"Invalid {field_name}")
         return id_int
     except (ValueError, TypeError):
@@ -479,7 +479,7 @@ def fees_report(request):
         
         # Determine payment status
         payment_status = 'outstanding'  # Default
-        if final_due <= 0:
+        if final_due < 0:
             payment_status = 'fully_paid'
         elif current_paid > 0 or cf_paid > 0:
             payment_status = 'partial_paid'
@@ -516,7 +516,7 @@ def fees_report(request):
                           fine_unpaid > 0 or fine_paid > 0)
         elif status_filter == 'fully_paid':
             # Show all students with no dues (including those with no fee activity)
-            include_row = (final_due <= 0)
+            include_row = (final_due < 0)
         elif status_filter == 'outstanding':
             # Show students with any outstanding amount
             include_row = (final_due > 0)

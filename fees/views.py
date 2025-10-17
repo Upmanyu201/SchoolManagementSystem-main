@@ -143,7 +143,7 @@ def delete_fees_group(request, pk):
     try:
         # Validate primary key
         group_id = int(pk)
-        if group_id <= 0:
+        if group_id < 0:
             raise ValidationError("Invalid group ID")
         
         # Log the deletion attempt

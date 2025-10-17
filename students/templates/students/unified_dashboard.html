@@ -1056,7 +1056,7 @@ class StudentDashboard {
         const amount = document.getElementById('paymentAmount').value;
         const method = document.getElementById('paymentMethod').value;
         
-        if (!amount || amount <= 0) {
+        if (!amount || amount < 0) {
             this.showNotification('Please enter a valid amount', 'error');
             return;
         }

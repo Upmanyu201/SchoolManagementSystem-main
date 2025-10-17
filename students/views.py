@@ -90,7 +90,7 @@ def student_list(request):
             # DO NOT override queryset - respect the filters!
         
         # Ensure page_size is valid
-        if page_size <= 0 or page_size > 100:
+        if page_size < 0 or page_size > 100:
             page_size = 20
         
         # Pagination - Force creation
@@ -290,7 +290,7 @@ def edit_student(request, id):
     try:
         # Validate ID parameter
         student_id = int(id)
-        if student_id <= 0:
+        if student_id < 0:
             raise ValidationError("Invalid student ID")
         
         # Optimized query with select_related
@@ -350,7 +350,7 @@ def change_student_status(request, id):
     """Change student status (suspend, archive, graduate, reactivate)"""
     try:
         student_id = int(id)
-        if student_id <= 0:
+        if student_id < 0:
             raise ValidationError("Invalid student ID")
         
         student = get_object_or_404(Student.objects.all_statuses(), id=student_id)
@@ -394,7 +394,7 @@ def delete_student(request, id):
     """Legacy delete endpoint - now archives student instead"""
     try:
         student_id = int(id)
-        if student_id <= 0:
+        if student_id < 0:
             raise ValidationError("Invalid student ID")
         
         student = get_object_or_404(Student.objects.all_statuses(), id=student_id)

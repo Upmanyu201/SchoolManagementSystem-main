@@ -18,8 +18,8 @@ class ClassSectionManager(models.Manager):
 
 class ClassSection(models.Model):
     class_name = models.CharField(max_length=50)
-    section_name = models.CharField(max_length=10)
-    room_number = models.CharField(max_length=20, unique=True)
+    section_name = models.CharField(max_length=10, blank=True, null=True)
+    room_number = models.CharField(max_length=20, blank=True, null=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     objects = ClassSectionManager()
@@ -29,11 +29,11 @@ class ClassSection(models.Model):
         unique_together = ['class_name', 'section_name']
     
     def __str__(self):
-        return f"{self.class_name}{self.section_name}"
+        return f"{self.class_name}{self.section_name or ''}"
     
     @property
     def display_name(self):
-        return f"{self.class_name}{self.section_name}"
+        return f"{self.class_name}{self.section_name or ''}"
 
 class Subject(models.Model):
     name = models.CharField(max_length=100, unique=True)

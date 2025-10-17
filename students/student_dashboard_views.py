@@ -123,7 +123,7 @@ def student_payment_api(request, admission_number):
         amount = payment_data.get('amount', 0)
         payment_method = payment_data.get('payment_method', 'Cash')
         
-        if amount <= 0:
+        if amount < 0:
             return JsonResponse({
                 'success': False,
                 'error': 'Invalid payment amount'

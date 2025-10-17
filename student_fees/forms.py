@@ -32,7 +32,7 @@ class FeePaymentForm(forms.ModelForm):
     
     def clean_amount(self):
         amount = self.cleaned_data.get('amount')
-        if amount and amount <= 0:
+        if amount and amount < 0:
             raise forms.ValidationError("Amount must be greater than zero")
         return amount
     

@@ -14,7 +14,7 @@ class FeeValidator:
         """Validate payment amount"""
         try:
             amount = Decimal(str(amount))
-            if amount <= 0:
+            if amount < 0:
                 raise ValidationError("Payment amount must be greater than zero")
             if amount > Decimal('999999.99'):
                 raise ValidationError("Payment amount is too large")
