@@ -102,12 +102,12 @@ def generate_receipt_no():
     import random
     import time
     
-    max_attempts = 50
+    max_attempts = 100
     
     for attempt in range(max_attempts):
         # Generate 4-digit random number
-        random_digits = random.randint(1000, 9999)
-        receipt_no = f"REC-{random_digits}"
+        random_digits = random.randint(100000, 999999)
+        receipt_no = f"SV-{random_digits}"
         
         # Check uniqueness
         if not FeeDeposit.objects.filter(receipt_no=receipt_no).exists():

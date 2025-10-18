@@ -33,6 +33,15 @@ from .models import FeeDeposit
 from .forms import FeePaymentForm
 from .utils import generate_receipt_no
 from .services import FeeCalculationService, PaymentProcessingService, FeeReportingService
+
+# Fee service availability check
+try:
+    from core.fee_management import fee_service
+    FEE_SERVICE_AVAILABLE = True
+except ImportError:
+    fee_service = None
+    FEE_SERVICE_AVAILABLE = False
+
 # Security utilities moved to centralized service
 from django.utils.html import escape
 from django.core.exceptions import ValidationError
@@ -456,11 +465,11 @@ def submit_deposit(request):
             receipt_no = generate_receipt_no()
             
             # Skip auto-sync to avoid receipt validation errors
-            # if FEE_SERVICE_AVAILABLE:
-            #     try:
-            #         fee_service.sync_student_fees_and_fines(student)
-            #     except Exception as e:
-            #         logger.warning(f"Auto-sync failed before payment: {e}")
+            if FEE_SERVICE_AVAILABLE:
+                try:
+                     fee_service.sync_student_fees_and_fines(student)
+                except Exception as e:
+                     logger.warning(f"Auto-sync failed before payment: {e}")
             
             # Prepare payment data
             payment_items = []
@@ -550,7 +559,7 @@ def submit_deposit(request):
             
             # Final validation before saving
             for deposit in deposits:
-                if not deposit.receipt_no or len(deposit.receipt_no) < 5:
+                if not deposit.receipt_no or len(deposit.receipt_no) < 8:
                     return JsonResponse({
                         "status": "error",
                         "message": "Invalid receipt number detected. Please try again.",
@@ -804,7 +813,7 @@ def receipt_view(request, receipt_no):
             'current_session_due': current_session_due,
             'previous_session_due': previous_session_due,
             'show_discount': any(p.discount for p in enhanced_payments),
-            'copy_labels': ['School', 'Parent'],
+            'copy_labels': ['Original'],  # Disabled duplicate copy - only show one receipt
             'amount_in_words': f"Rupees {number_to_words(receipt_data['total_paid']).title()} Only"
         })
         
