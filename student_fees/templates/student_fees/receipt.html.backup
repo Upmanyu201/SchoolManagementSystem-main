@@ -36,12 +36,12 @@
             /* Ensure the two copies touch in the middle and are only padded on their outer edges */
             .print-page:nth-child(odd) {
                 padding-right: 1mm; /* Small internal space/padding */
-                padding-left: 2mm;  /* Wider outer padding */
+                padding-left: 5mm;  /* Wider outer padding */
             }
             .print-page:nth-child(even) {
                 margin-right: 0;
-                padding-left: 1mm;  /* Small internal space/padding */
-                padding-right: 2mm; /* Wider outer padding */
+                padding-left: 3mm;  /* Small internal space/padding */
+                padding-right: 5mm; /* Wider outer padding */
             }
             
             .cut-mark {
