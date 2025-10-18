@@ -48,6 +48,6 @@ if "%PRODUCTION_MODE%"=="true" (
 
 :: Run the Python startup script
 echo [INFO] Starting School Management System...
-python ImpScripts\start_server.py
+python ImpScripts\enhanced_start_server.py
 
 pause

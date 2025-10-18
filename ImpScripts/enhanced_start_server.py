@@ -80,7 +80,7 @@ def run_django_checks():
 
 def start_server():
     """Start Django server"""
-    print_header("DJANGO DEVELOPMENT SERVER")
+    print_header("DJANGO School Managment SERVER")
     print(f"Working Directory: {os.getcwd()}")
     print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     

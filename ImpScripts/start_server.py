@@ -51,18 +51,16 @@ class SchoolServerManager:
         
     def print_banner(self):
         """Display beautiful startup banner"""
-        mode_text = "PRODUCTION MODE" if self.production_mode else "DEVELOPMENT MODE"
         mode_color = Colors.RED if self.production_mode else Colors.GREEN
         
         banner = f"""
 {Colors.CYAN}================================================================
                                                                 
-   {Colors.BOLD}[SCHOOL] SCHOOL MANAGEMENT SYSTEM - SMART LAUNCHER{Colors.END}{Colors.CYAN}               
-   {mode_color}{Colors.BOLD}[START] {mode_text}{Colors.END}{Colors.CYAN}                                         
+   {Colors.BOLD}SCHOOL MANAGEMENT SYSTEM - SMART LAUNCHER{Colors.END}{Colors.CYAN}               
                                                                 
-   {Colors.GREEN}[EMOJI] Auto Network Detection  [EMOJI] Mobile Hotspot Support{Colors.END}{Colors.CYAN}       
-   {Colors.GREEN}[NETWORK] Browser Auto-Launch     [HEALTH] Real-time Logs{Colors.END}{Colors.CYAN}              
-   {Colors.GREEN}[EMOJI] HTTP Only (Offline)     [EMOJI] License Management{Colors.END}{Colors.CYAN}           
+   {Colors.GREEN}   Auto Network Detection     Mobile Hotspot Support{Colors.END}{Colors.CYAN}       
+   {Colors.GREEN} Browser Auto-Launch      Real-time Logs{Colors.END}{Colors.CYAN}              
+   {Colors.GREEN}   HTTP Only (Offline)        License Management{Colors.END}{Colors.CYAN}           
                                                                 
 ================================================================{Colors.END}
 """
@@ -74,7 +72,7 @@ class SchoolServerManager:
             print(f"{Colors.YELLOW}   • Static files served efficiently{Colors.END}")
             print(f"{Colors.YELLOW}   • HTTP-only for offline use{Colors.END}")
         else:
-            print(f"{Colors.GREEN}[EMOJI] HTTP-Only Mode - Perfect for Offline Use{Colors.END}")
+            print(f"{Colors.GREEN}   HTTP-Only Mode - Perfect for Offline Use{Colors.END}")
         
         # Check demo status
         self.check_demo_status()
@@ -124,12 +122,12 @@ class SchoolServerManager:
         
         if 'wi-fi' in name_lower or 'wireless' in name_lower or 'wlan' in name_lower:
             if ip.startswith('192.168.43.') or ip.startswith('192.168.137.'):
-                return '[EMOJI] Mobile Hotspot'
-            return '[EMOJI] WiFi'
+                return '   Mobile Hotspot'
+            return '   WiFi'
         elif 'ethernet' in name_lower or 'local' in name_lower or 'eth' in name_lower:
-            return '[EMOJI] Ethernet'
+            return '   Ethernet'
         elif 'bluetooth' in name_lower:
-            return '[EMOJI] Bluetooth'
+            return '   Bluetooth'
         else:
             return '[NETWORK] Network'
     
@@ -144,10 +142,10 @@ class SchoolServerManager:
             return None
             
         # Always add localhost option
-        print(f"{Colors.GREEN}0.{Colors.END} [EMOJI] Localhost Only (127.0.0.1)")
+        print(f"{Colors.GREEN}0.{Colors.END}    Localhost Only (127.0.0.1)")
         
         for i, interface in enumerate(interfaces, 1):
-            status_icon = "🟢" if self.test_port_availability(interface['ip']) else "[EMOJI]"
+            status_icon = "🟢" if self.test_port_availability(interface['ip']) else "  "
             print(f"{Colors.GREEN}{i}.{Colors.END} {interface['type']} - {Colors.BOLD}{interface['ip']}{Colors.END} ({interface['name']}) {status_icon}")
         
         print(f"{Colors.CYAN}{'='*60}{Colors.END}")
@@ -181,7 +179,7 @@ class SchoolServerManager:
     
     def setup_http_mode(self):
         """Configure HTTP-only mode for offline use"""
-        print(f"\n{Colors.GREEN}[EMOJI] HTTP Mode - Optimized for Offline Use{Colors.END}")
+        print(f"\n{Colors.GREEN} HTTP Mode - Optimized for Offline Use{Colors.END}")
         print(f"{Colors.CYAN}   • No SSL complexity{Colors.END}")
         print(f"{Colors.CYAN}   • Faster startup{Colors.END}")
         print(f"{Colors.CYAN}   • Perfect for local networks{Colors.END}")
@@ -200,25 +198,23 @@ class SchoolServerManager:
     def display_server_info(self):
         """Display server information and URLs"""
         protocol = 'http'  # Always HTTP for offline use
-        mode_text = "PRODUCTION" if self.production_mode else "DEVELOPMENT"
         mode_color = Colors.RED if self.production_mode else Colors.GREEN
         
         print(f"\n{Colors.BOLD}{Colors.GREEN}[START] Server Starting...{Colors.END}")
         print(f"{Colors.CYAN}{'='*60}{Colors.END}")
         print(f"{Colors.BOLD}[LOCATION] Server Details:{Colors.END}")
         print(f"   [NETWORK] Protocol: {Colors.BOLD}{protocol.upper()}{Colors.END}")
-        print(f"   [EMOJI] IP Address: {Colors.BOLD}{self.selected_ip}{Colors.END}")
-        print(f"   [EMOJI] Port: {Colors.BOLD}{self.port}{Colors.END}")
-        print(f"   [START] Mode: {mode_color}{Colors.BOLD}{mode_text}{Colors.END}")
-        print(f"   [EMOJI] Started: {Colors.BOLD}{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}{Colors.END}")
+        print(f"   [IP]   IP Address: {Colors.BOLD}{self.selected_ip}{Colors.END}")
+        print(f"   [Port] Port: {Colors.BOLD}{self.port}{Colors.END}")
+        print(f"   [Date] Started: {Colors.BOLD}{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}{Colors.END}")
         
-        print(f"\n{Colors.BOLD}[EMOJI] Access URLs:{Colors.END}")
+        print(f"\n{Colors.BOLD}   Access URLs:{Colors.END}")
         for i, url in enumerate(self.server_urls, 1):
             print(f"   {i}. {Colors.BLUE}{Colors.UNDERLINE}{url}{Colors.END}")
         
         if self.selected_ip not in ['127.0.0.1', 'localhost']:
-            print(f"\n{Colors.BOLD}[EMOJI] Mobile/Other Device Access:{Colors.END}")
-            print(f"   [EMOJI] Use: {Colors.BOLD}{Colors.GREEN}{protocol}://{self.selected_ip}:{self.port}/{Colors.END}")
+            print(f"\n{Colors.BOLD}   Mobile/Other Device Access:{Colors.END}")
+            print(f"      Use: {Colors.BOLD}{Colors.GREEN}{protocol}://{self.selected_ip}:{self.port}/{Colors.END}")
         
         print(f"{Colors.CYAN}{'='*60}{Colors.END}")
     
@@ -330,7 +326,7 @@ class SchoolServerManager:
                 except:
                     pass
         
-        print(f"{Colors.GREEN}[EMOJI] School Management System stopped successfully!{Colors.END}")
+        print(f"{Colors.GREEN}   School Management System stopped successfully!{Colors.END}")
     
     def check_demo_status(self):
         """Check demo/license status before starting server"""
@@ -422,7 +418,7 @@ class SchoolServerManager:
                     print(f"{Colors.YELLOW}   • {status.days_remaining} days remaining{Colors.END}")
                     print(f"{Colors.YELLOW}   • Activate at: /demo/status/{Colors.END}")
                 else:
-                    print(f"\n{Colors.BOLD}{Colors.RED}[EMOJI] Activation Required:{Colors.END}")
+                    print(f"\n{Colors.BOLD}{Colors.RED}   Activation Required:{Colors.END}")
                     print(f"{Colors.RED}   • Visit: /demo/expired/ to activate{Colors.END}")
                 
         except:
