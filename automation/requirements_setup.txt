@@ -1,0 +1,21 @@
+# Additional dependencies for setup and management tools
+# Install with: pip install -r requirements_setup.txt
+
+# System monitoring
+psutil>=5.9.0
+
+# QR code generation
+qrcode[pil]>=7.4.2
+
+# HTTP requests for update checking
+requests>=2.31.0
+
+# Colored terminal output
+colorama>=0.4.6
+
+# Progress bars
+tqdm>=4.66.0
+
+# Already in main requirements.txt but listed here for reference:
+# python-dotenv>=1.0.0
+# Django>=5.0.0

@@ -1,0 +1,8 @@
+{
+  "current_version": "1.0.0",
+  "last_check": null,
+  "github_repo": "your-org/school-management-system",
+  "update_channel": "stable",
+  "auto_check_updates": true,
+  "check_interval_hours": 24
+}

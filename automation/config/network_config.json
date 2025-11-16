@@ -1,0 +1,32 @@
+{
+  "default_port": 8000,
+  "auto_open_browser": true,
+  "detected_networks": [
+    {
+      "name": "Localhost",
+      "ip": "127.0.0.1",
+      "type": "localhost"
+    },
+    {
+      "name": "Local Network",
+      "ip": "192.168.1.7",
+      "type": "local"
+    },
+    {
+      "name": "Ethernet adapter Ethernet 2",
+      "ip": "192.168.56.1",
+      "type": "ethernet"
+    },
+    {
+      "name": "Ethernet adapter VMware Network Adapter VMnet1",
+      "ip": "192.168.65.1",
+      "type": "ethernet"
+    },
+    {
+      "name": "Ethernet adapter VMware Network Adapter VMnet8",
+      "ip": "192.168.137.1",
+      "type": "ethernet"
+    }
+  ],
+  "last_network_scan": "2025-11-16T19:06:45.532479"
+}

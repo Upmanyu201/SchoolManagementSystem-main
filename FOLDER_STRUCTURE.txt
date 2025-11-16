@@ -1,0 +1,65 @@
+SCHOOL MANAGEMENT SYSTEM - FOLDER STRUCTURE
+===========================================
+
+automation/
+├── config/                      Configuration files
+│   ├── version.json
+│   ├── setup_config.json
+│   ├── network_config.json
+│   └── update_cache.json
+│
+├── scripts/                     Batch file launchers
+│   ├── start.bat
+│   ├── install_setup_tools.bat
+│   ├── setup_wizard.bat
+│   ├── launch_server.bat
+│   ├── quick_actions.bat
+│   ├── diagnostics.bat
+│   ├── check_updates.bat
+│   └── factory_reset.bat
+│
+├── setup/                       Setup tools
+│   ├── setup_wizard.py
+│   ├── diagnostics.py
+│   └── factory_reset.py
+│
+├── server/                      Server management
+│   ├── launch_server.py
+│   └── network_manager.py
+│
+├── updates/                     Update management
+│   └── update_checker.py
+│
+├── tools/                       Utility tools
+│   └── quick_actions.py
+│
+├── requirements_setup.txt
+└── README.md
+
+docs/automation/                 Documentation
+├── START_HERE.md
+├── README_NEW_FEATURES.md
+├── SETUP_GUIDE.md
+├── QUICK_REFERENCE.md
+├── FEATURES.md
+├── ARCHITECTURE.md
+├── WORKFLOW.md
+├── IMPLEMENTATION_SUMMARY.md
+└── NEW_FILES_INDEX.md
+
+Root Launchers:
+├── INSTALL_TOOLS.bat
+├── SETUP_WIZARD.bat
+├── START_AUTOMATION.bat
+├── LAUNCH_SERVER.bat
+├── AUTOMATION_GUIDE.md
+└── FOLDER_STRUCTURE.txt
+
+QUICK START:
+1. INSTALL_TOOLS.bat
+2. SETUP_WIZARD.bat
+3. LAUNCH_SERVER.bat
+
+DOCUMENTATION:
+- Start: docs/automation/START_HERE.md
+- Guide: AUTOMATION_GUIDE.md

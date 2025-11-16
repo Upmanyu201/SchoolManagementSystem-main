@@ -1,0 +1,11 @@
+{
+  "first_run": true,
+  "setup_completed": false,
+  "database_initialized": false,
+  "admin_created": false,
+  "network_configured": false,
+  "tailwind_compiled": false,
+  "setup_date": null,
+  "python_version": null,
+  "installation_path": null
+}
